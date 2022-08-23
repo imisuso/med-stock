@@ -111,8 +111,9 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm,usePage  } from '@inertiajs/inertia-vue3';
-import { onMounted } from '@vue/runtime-core';
-const { ref }=require("@vue/reactivity");
+import {ref , onMounted} from "vue"
+// import { onMounted } from '@vue/runtime-core';
+// const { ref }=require("@vue/reactivity");
 
 defineProps({
       order :{type:Object , required:true},

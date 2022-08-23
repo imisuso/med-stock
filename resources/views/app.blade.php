@@ -15,15 +15,11 @@
           <!-- Styles Mix-->
         @routes
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <style>
-            @font-face {
-                font-family: 'Sarabun';
-                src: '../asset/fonts/Sarabun-Regular.ttf';
-            }
-        </style>
+      
 
     </head>
-    <body>
+    @include('font-theme')
+    <body class="font-sarabun">
         @inertia
 
        

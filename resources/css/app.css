@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: 'Sarabun';
-    src: '../asset/fonts/Sarabun-Regular.ttf';
+
+.font-sarabun{
+    font-family: 'Sarabun', sans-serif;
 }

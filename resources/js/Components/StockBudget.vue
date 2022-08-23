@@ -252,8 +252,9 @@ import PurchaseOrder from '@/Components/PurchaseOrder.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-vue3';
-const { ref, computed }=require("@vue/reactivity")
-const { onMounted, watch }=require("@vue/runtime-core")
+import {ref,computed,onMounted, watch} from 'vue';
+// const { ref, computed }=require("@vue/reactivity")
+// const { onMounted, watch }=require("@vue/runtime-core")
 
 const props = defineProps({
     stockIndex:{type:Number,required:true},
