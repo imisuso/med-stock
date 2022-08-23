@@ -2,13 +2,15 @@
     <AppLayout>
   
 
-        <div class=" bg-pink-200">
+        <div class=" bg-blue-50">
             <div class=" w-full flex justify-center font-bold  ">บันทึกการตรวจรับพัสดุจากใบสั่งซื้อ</div>
             <div class=" w-full flex justify-center font-bold  ">{{$page.props.auth.user.profile.division_name}}</div>
             <div class="w-full flex justify-center p-2 my-2  border-b-2 border-gray-600 " >
                 <div class=" w-full  ">
-                    <div>ชื่อโครงการ:{{order.project_name}}</div>
-                    <div>จำนวน {{order.items.length}} รายการ</div>
+                    <div>วันที่สั่งซื้อ: <label class=" text-blue-700 font-bold">{{date_thai}}</label></div>
+                    <div>ชื่อโครงการ: <label class=" text-blue-700 font-bold">{{order.project_name}}</label></div>
+                    <div>จำนวน:<label class=" text-blue-700 font-bold">{{order.items.length}}</label>  รายการ</div>
+                    <div>วงเงินงบประมาณ:<label class=" text-blue-700 font-bold">{{approve_budget}}</label> บาท</div>
                 </div>
                 <div v-if="order.status == 'checkin'"
                     class=" flex justify-center text-green-700 text-lg"
@@ -22,12 +24,26 @@
             </div>
         </div>
 
-        <div class=" bg-gray-200">
-            {{order}}
+         <!-- <ShowReceivePurchaseOrder /> -->
+        <div v-for="(order,key) in order.items" :key="order.id"
+                class=" m-2 p-2 border-b-2 border-blue-700  shadow-md"
+                >
+                <ShowReceivePurchaseOrder 
+                    :item-index="key"
+                    :purchase-order="order[0]"
+                    :old-items-sum="old_items_sum"
+                />
+               
         </div>
-
-        <div class=" bg-green-200">
+        <!-- <div class=" bg-green-200">
             {{old_items_sum}}
+        </div> -->
+        <div class="w-full flex justify-center">
+            <button
+                 class=" flex justify-center px-4 py-1   text-sm  text-white bg-red-500 rounded-md hover:bg-green-400 focus:outline-none"
+            >
+            ตรวจรับทั้งหมด?
+            </button>
         </div>
 
 
@@ -37,9 +53,31 @@
 </template>
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import ShowReceivePurchaseOrder from '@/Components/ShowReceivePurchaseOrder.vue';
+import {ref, onMounted ,computed} from 'vue';
 
 const props = defineProps({
       order :{type:Object , required:true},
       old_items_sum : {type:Array},
+})
+const approve_budget = ref(0);
+
+onMounted(() => {
+   // console.log('Component BudgetOrder');
+   // console.log(props.orderItem.timeline['approve_budget'])
+    approve_budget.value = props.order['budget'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+   //  console.log(approve_budget.value)
+})
+
+const date_thai = computed(()=>{
+    //console.log(props.stockBudget.budget)
+    let thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+    //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
+    let date_arr = props.order.date_order.split('-');
+
+    let month = thaimonth[parseInt(date_arr[1])];
+    let year = parseInt(date_arr[0])+543;
+    let output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
+    return output;
 })
 </script>

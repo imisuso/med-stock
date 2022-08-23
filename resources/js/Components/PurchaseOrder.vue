@@ -11,8 +11,6 @@
     </div> -->
 </template>
 <script setup>
-// const { ref }=require("@vue/reactivity")
-// const { onMounted }=require("@vue/runtime-core")
 import {ref,onMounted} from 'vue';
 
 const props = defineProps({

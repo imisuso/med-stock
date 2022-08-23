@@ -73,10 +73,6 @@ class CheckInOrderPurchaseController extends Controller
         }
        // return 'test';
          Log::info($old_items_sum);
-
-        // return Inertia::render('Stock/ReceiveOrderPurchase',[   
-        //                          'order'=>$order,
-        //     ]);
        
         return Inertia::render('Stock/ReceiveOrderPurchase',
                                 [
