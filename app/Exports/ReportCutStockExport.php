@@ -47,7 +47,6 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings
             $TransactionCheckout->stockItem->item_name,
             $TransactionCheckout->date_action,
             $TransactionCheckout->user->name
-          //  $TransactionCheckout->stock_item->item_name,
            // Date::dateTimeToExcel($TransactionCheckout->created_at),
         ];
     }
