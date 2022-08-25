@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ReportCutStockExport;
 use App\Http\Controllers\Controller;
 use App\Models\ItemTransaction;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use App\Models\StockItem;
 use App\Models\Unit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportStockController extends Controller
 {
@@ -54,6 +56,8 @@ class ReportStockController extends Controller
         }
        
     }
+
+   
 
     /**
      * Show the form for creating a new resource.
@@ -117,6 +121,14 @@ class ReportStockController extends Controller
             'item_trans' => $stock_item_checkouts
         ]);
        
+    }
+
+    public function export($stock_id,$year,$month) 
+    {
+  
+        $filename_xls = 'ReportCutStock'.$month.$year.'.xlsx';
+
+        return (new ReportCutStockExport($stock_id,$year,$month))->download($filename_xls);
     }
 
     /**

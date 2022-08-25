@@ -31,6 +31,7 @@
   <!-- {{stock_item_sum}} -->
   <!-- {{$page.props.can_abilities}} -->
   <!-- {{$page.props.can}} -->
+
     <div class="w-full mt-3 p-2  ">
   
   
@@ -52,15 +53,22 @@ import CheckoutItem from '@/Components/CheckoutItem.vue'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
 import { onBeforeMount, onMounted, ref } from '@vue/runtime-core';
-
-defineProps({
+const props = defineProps({
     stocks:Array,
     stock_items:Array,
     unit:Object,
     errors: Object,
     //can_abilities: { type: Object, required: true },
     can: { type: Object, required: true },
-});
+})
+// defineProps({
+//     stocks:Array,
+//     stock_items:Array,
+//     unit:Object,
+//     errors: Object,
+//     //can_abilities: { type: Object, required: true },
+//     can: { type: Object, required: true },
+// });
 
 
 

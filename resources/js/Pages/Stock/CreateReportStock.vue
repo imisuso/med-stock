@@ -57,11 +57,14 @@
     <!-- {{item_trans}} -->
     <!-- {{stocks}}-->
         <!-- {{stock_id}} -->
+        <div  class=" w-full py-3 text-center font-bold text-lg ">
+            <label for="">รายงานบันทึกตัดสต๊อก</label>
+        </div>  
         <div v-if="stock_id !=0"  class=" w-full text-center font-bold text-lg">
             <label for="">  {{stocks[stock_id-1].stockname}} </label>
         </div>    
         <div  class=" w-full py-3 text-center font-bold text-lg border-b-4 border-gray-300">
-            <label for="">ข้อมูลการตัดสต๊อกของเดือน {{month_thai[form.month_selected]}} ปี {{form.year_selected}}</label>
+            <label for=""> {{month_thai[form.month_selected]}} ปี {{form.year_selected}}</label>
         </div>    
         <div v-if="item_trans.length==0" class=" w-full text-center">
             <label for="">ไม่พบข้อมูล</label>
@@ -113,14 +116,11 @@
          
             พิมพ์รายงาน
         </button> -->
-        <button
-            class=" flex justify-center mt-3 px-8 py-1   text-md  text-white bg-green-700 rounded-sm shadow-md hover:bg-green-400 focus:outline-none"
-            >
-            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg> -->
-            export excel 
-        </button>
+       
+         <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-yellow-400 rounded-sm shadow-md hover:bg-green-400 focus:outline-none" 
+            :href="route('export-checkout-item', {stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })">
+            Export Excel
+        </a>
     </div>
 
      
@@ -130,6 +130,7 @@
 <script setup>
 //import { ref } from 'vue';
 //import { usePage } from '@inertiajs/inertia-vue3'
+import { Inertia } from '@inertiajs/inertia';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
 import { ref } from '@vue/reactivity';
@@ -177,11 +178,6 @@ const item_trans=ref('')
 //const stock_all=ref(Object);
 const stock_id=ref(0);
 
-// onMounted(() => {
-//     console.log('onMounted');
-//       stock_all.value = usePage().props.value.stocks;
-//      console.log(stock_all);
-// });
 
 const form = useForm({
     unit_selected:'',
@@ -197,7 +193,7 @@ const setStockID=()=>{
 }
 
 const  getReportStock=(stock_id,year,month)=>{
-//             console.log('hi');
+           console.log('getReportStock');
     // console.log(stock_id);
     // console.log(year);
     // console.log(month);
@@ -212,6 +208,8 @@ const  getReportStock=(stock_id,year,month)=>{
     });
   
 }
+
+
 
 
 </script>
