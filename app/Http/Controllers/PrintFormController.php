@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\budget;
+use App\Models\ItemTransaction;
 use App\Models\OrderItem;
 use App\Models\OrderPurchase;
 use App\Models\Stock;
@@ -783,6 +784,139 @@ class PrintFormController extends Controller
         $pdf->SetFontSize('16'); 
         $total_all_print = 'รวมเป็นเงิน    '.number_format($total_budget,2).'  บาท';
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $total_all_print));
+
+        $pdf->Output('I');
+       
+    }
+
+    public function printCutStock(int $stock_id,int $year,int $month)
+    {
+        //Log::info('printCutStock');
+         $pdf = new FPDI('l'); //แนวนอน
+        
+        $pdf->AddPage();
+        $pdf->AddFont('THSarabunNew','','THSarabunNew.php');
+        $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
+
+        //title
+        $pdf->SetFont('THSarabunNew','B');
+        $pdf->SetFontSize('18'); 
+
+        // วันเวลาที่พิมพ์
+        $mutable = Carbon::now();
+        //\Log::info($mutable);
+        $tmp_date_now = explode(' ', $mutable);
+        $split_date_now = explode('-', $tmp_date_now[0]);
+        $year_print = (int) $split_date_now[0] + 543;
+        $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+        $date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year_print;
+
+        $pdf->SetFontSize('14');
+        $pdf->SetXY(200,3);
+        $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
+        $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'R');
+
+
+         $stock = Stock::find($stock_id);
+      
+        $pdf->SetXY(14, 13);
+        $head = 'รายงานบันทึกการตัดสต๊อกพัสดุ ';
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $head),0,0,'C');
+
+        $pdf->SetXY(14, 20);
+        $head2 = $stock->stockname."  ภาควิชาอายุรศาสตร์";
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $head2),0,0,'C');
+
+        $pdf->SetXY(14, 27);
+        $head3 = "เดือน".$thaimonth[(int) $month]."  ปี ".$year+543;
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $head3),0,0,'C');
+
+         //head column
+        $pdf->SetFont('THSarabunNew','B');
+        $pdf->SetFontSize('16'); 
+        $pdf->SetXY(12, 37);
+        $pdf->SetLineWidth(1);
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      SAP                         ชื่อพัสดุ                                 วันที่หมดอายุ      วันที่เบิกจ่าย       จำนวน                      ผู้เบิก                      คงเหลือ            '),'B');
+       
+    //     //body  list item
+
+        $stock_item_checkouts = ItemTransaction::where(
+                                                        [   'stock_id'=>$stock_id,
+                                                            'year'=>$year,
+                                                            'month'=>$month,
+                                                            'action'=>'checkout',
+                                                            'status'=>'active'
+                                                        ])
+                                                        ->with('stockItem:id,item_name,item_code,item_sum')
+                                                        ->with('user:id,name')
+                                                        ->orderBy('stock_item_id')->get();
+        $y=48;
+        $x=15;
+        $pdf->SetFont('THSarabunNew');
+        $pdf->SetXY($x, $y);
+       // $pdf->SetLineWidth(0.1);
+        $pdf->SetLineWidth(0.1);
+       
+
+            $seq = 0;
+            $total_budget = 0.0;
+        foreach ($stock_item_checkouts as $item) {
+            $seq++;
+           // Log::info($item);
+            $pdf->SetFontSize('16'); 
+          
+            // $pdf->SetXY($x, $y);
+            // $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq),'B'); //print line buttom
+
+            $pdf->SetXY($x, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq));
+
+            $pdf->SetXY(23, $y);
+            $pdf->SetFontSize('14'); 
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_code']));
+
+            $pdf->SetFontSize('16'); 
+            $pdf->SetXY(41, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_name']));
+
+            // $TransactionCheckout->date_expire,
+            // $TransactionCheckout->date_action,
+            // $TransactionCheckout->item_count,
+            // $TransactionCheckout->user->name,
+            // $TransactionCheckout->stockItem->item_sum,
+
+            $pdf->SetXY(110, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->date_expire));
+
+            $pdf->SetXY(152, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->date_action));
+
+            $pdf->SetXY(182, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->item_count));
+
+            $pdf->SetXY(197, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->user['name']));
+
+            $pdf->SetXY(255, $y);
+            $pdf->SetFontSize('14'); 
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_sum']));
+
+            // $total_budget += $item[0]['total'];
+             $y = $y+10;
+             $pdf->SetXY($x, $y);
+        
+
+        }
+        $y=$y-5;
+        $pdf->SetXY($x, $y);
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', ''),'B'); //print line buttom
+
+        // $y = $y+10;
+        // $pdf->SetXY(160, $y);
+        // $pdf->SetFont('THSarabunNew','B');
+        // $pdf->SetFontSize('16'); 
+        // $total_all_print = 'รวมเป็นเงิน    '.number_format($total_budget,2).'  บาท';
+        // $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $total_all_print));
 
         $pdf->Output('I');
        

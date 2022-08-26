@@ -81,7 +81,7 @@
                      {{item_tran.stock_item['item_code']}} 
                  </label>
                  ชื่อพัสดุ:
-                 <label class=" font-bold">{{item_tran.stock_item['item_name']}}</label>
+                 <label class=" font-bold">{{item_tran.stock_item['item_name']}} ปัจจุบันคงเหลือ: {{item_tran.stock_item['item_sum']}}</label>
                 <!-- <span  
                     class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -117,9 +117,21 @@
             พิมพ์รายงาน
         </button> -->
        
-         <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-yellow-400 rounded-sm shadow-md hover:bg-green-400 focus:outline-none" 
+         <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-yellow-600 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none" 
             :href="route('export-checkout-item', {stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })">
             Export Excel
+        </a>
+
+        <!-- <a :href="route('print-purchase-order-item',purchaseOrder.id)"  target="blank" -->
+            <a :href="route('print-cutstock-pdf',{stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })"  target="blank"
+                class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-purple-500 rounded-sm shadow-md hover:bg-purple-200 focus:outline-none"
+                >
+            <div class="flex items-center" >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+                </svg>
+                    พิมพ์รายงานตัดสต๊อกพัสดุ
+            </div>
         </a>
     </div>
 

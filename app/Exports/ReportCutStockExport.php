@@ -8,32 +8,30 @@ use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Date as DateTimeExcelDate;
 
-class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings
+class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,WithTitle ,WithColumnWidths ,WithHeadingRow ,WithStyles
 {
     use Exportable;
 
-    public function __construct(int $stock_id,int $year,int $month)
+    public function __construct(int $stock_id,int $year,int $month,string $stockname)
     {
         $this->stock_id = $stock_id;
         $this->month = $month;
         $this->year = $year;
-        Log::info("In class ReportCutStockExport");
-        Log::info($this->stock_id);
+        $this->stockname = $stockname;
+       // Log::info("In class ReportCutStockExport");
+       // Log::info($this->stock_id);
     }
 
     public function map($TransactionCheckout): array
     {
-            // {
-            //     "id":104,"stock_id":4,"stock_item_id":17,"user_id":3,"order_item_id":null,"year":2022,"month":8,"date_action":"2022-08-11","action":"checkout","date_expire":null,"item_count":2,"status":"active","profile":null,"created_at":"2022-08-24T04:52:31.000000Z","updated_at":"2022-08-24T04:52:31.000000Z",
-            //     "stock_item":
-            //     {"id":17,"item_name":"KOVAC's  Indole Reagent (MERCK)","item_code":"40005400","item_sum":6},
-            //     "user":
-            //     {"id":3,"name":"officer.endocrine"}
-            // }
-
     
         Log::info("In Map");
         Log::info($TransactionCheckout);
@@ -43,11 +41,16 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings
         //Log::info($TransactionCheckout->stock_item->item_code);
         
         return [
-            $TransactionCheckout->stockItem->item_code,
-            $TransactionCheckout->stockItem->item_name,
-            $TransactionCheckout->date_action,
-            $TransactionCheckout->user->name
-           // Date::dateTimeToExcel($TransactionCheckout->created_at),
+          
+                $TransactionCheckout->stockItem->item_code,
+                $TransactionCheckout->stockItem->item_name,
+                $TransactionCheckout->date_expire,
+                $TransactionCheckout->date_action,
+                $TransactionCheckout->item_count,
+                $TransactionCheckout->user->name,
+                $TransactionCheckout->stockItem->item_sum,
+            // Date::dateTimeToExcel($TransactionCheckout->created_at),
+           
         ];
     }
 
@@ -56,8 +59,11 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings
         return [
             'SAP',
             'ชื่อพัสดุ',
+            'วันที่หมดอายุ',
             'วันที่เบิกจ่าย',
+            'จำนวน',
             'ผู้เบิก',
+            'ปัจจุบันคงเหลือ'
         ];
     }
 
@@ -74,8 +80,53 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings
                                 ])
                                 ->with('stockItem:id,item_name,item_code,item_sum')
                                 ->with('user:id,name')
-                                ->orderBy('date_action');
+                                ->orderBy('stock_item_id');
         return $TransactionCheckout;
     }
+    public function title(): string
+    {
+        $format_month = sprintf("%02d",$this->month);
+       //  $title = $this->stockname."_".$format_month.$this->year;
+        $title = $format_month.$this->year;
+        return $title;
+    }
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 9,
+            'B' => 40, 
+            'C' => 12,   
+            'D' => 12, 
+            'F' => 20,            
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            // Style the first row as bold text.
+            1    => ['font' => ['bold' => true , 'size' => 12]],
+
+            // Styling a specific cell by coordinate.
+          //  'B2' => ['font' => ['italic' => true]],
+
+            // Styling an entire column.
+          //  'C'  => ['font' => ['size' => 16]],
+        ];
+    }
+    // public function properties(): array
+    // {
+    //     return [
+    //         'creator'        => 'Patrick Brouwers',
+    //         'lastModifiedBy' => 'Patrick Brouwers',
+    //         'title'          => 'MED-STOCK Export',
+    //         'description'    => 'Latest Invoices',
+    //         'subject'        => 'Invoices',
+    //         'keywords'       => 'invoices,export,spreadsheet',
+    //         'category'       => 'Invoices',
+    //         'manager'        => 'Patrick Brouwers',
+    //         'company'        => 'Maatwebsite',
+    //     ];
+    // }
 
 }

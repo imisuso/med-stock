@@ -105,7 +105,7 @@ class ReportStockController extends Controller
                                                     ])
                                                     ->with('stockItem:id,item_name,item_code,item_sum')
                                                     ->with('user:id,name')
-                                                    ->orderBy('date_action')->get();
+                                                    ->orderBy('stock_item_id')->get();
 
        // Log::info($stock_item_checkouts);
       
@@ -125,10 +125,12 @@ class ReportStockController extends Controller
 
     public function export($stock_id,$year,$month) 
     {
-  
-        $filename_xls = 'ReportCutStock'.$month.$year.'.xlsx';
+        $format_month = sprintf("%02d",$month);
+        $stock_name = Stock::select('stockengname')->whereId($stock_id)->first();
 
-        return (new ReportCutStockExport($stock_id,$year,$month))->download($filename_xls);
+        $filename_xls = 'ReportCutStock'."_".$stock_name->stockengname."_".$format_month.$year.'.xlsx';
+       
+        return (new ReportCutStockExport($stock_id,$year,$month,$stock_name->stockengname))->download($filename_xls);
     }
 
     /**
