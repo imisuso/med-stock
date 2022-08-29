@@ -836,7 +836,7 @@ class PrintFormController extends Controller
         $pdf->SetFontSize('16'); 
         $pdf->SetXY(12, 37);
         $pdf->SetLineWidth(1);
-        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      SAP                         ชื่อพัสดุ                                 วันที่หมดอายุ      วันที่เบิกจ่าย       จำนวน                      ผู้เบิก                      คงเหลือ            '),'B');
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      SAP                         ชื่อพัสดุ                                 วันที่หมดอายุ      วันที่เบิกจ่าย       จำนวน                ผู้เบิก                  คงเหลือ ณ ปัจจุบัน            '),'B');
        
     //     //body  list item
 
@@ -859,7 +859,7 @@ class PrintFormController extends Controller
        
 
             $seq = 0;
-            $total_budget = 0.0;
+            $tmp_item_code = '0';
         foreach ($stock_item_checkouts as $item) {
             $seq++;
            // Log::info($item);
@@ -897,15 +897,21 @@ class PrintFormController extends Controller
             $pdf->SetXY(197, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->user['name']));
 
-            $pdf->SetXY(255, $y);
-            $pdf->SetFontSize('14'); 
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_sum']));
+           
+
+            if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) {
+                $pdf->SetXY(255, $y);
+                $pdf->SetFontSize('14');
+                $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $item->stockItem['item_sum']));
+            }
+
+            $tmp_item_code = $item->stockItem['item_code'];
 
             // $total_budget += $item[0]['total'];
              $y = $y+10;
              $pdf->SetXY($x, $y);
         
-
+          
         }
         $y=$y-5;
         $pdf->SetXY($x, $y);
