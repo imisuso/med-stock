@@ -871,14 +871,15 @@ class PrintFormController extends Controller
             $pdf->SetXY($x, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq));
 
-            $pdf->SetXY(23, $y);
-            $pdf->SetFontSize('14'); 
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_code']));
+            if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) {
+                $pdf->SetXY(23, $y);
+                $pdf->SetFontSize('14'); 
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_code']));
 
-            $pdf->SetFontSize('16'); 
-            $pdf->SetXY(41, $y);
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_name']));
-
+                $pdf->SetFontSize('16'); 
+                $pdf->SetXY(41, $y);
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_name']));
+            }
             // $TransactionCheckout->date_expire,
             // $TransactionCheckout->date_action,
             // $TransactionCheckout->item_count,
@@ -917,12 +918,7 @@ class PrintFormController extends Controller
         $pdf->SetXY($x, $y);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', ''),'B'); //print line buttom
 
-        // $y = $y+10;
-        // $pdf->SetXY(160, $y);
-        // $pdf->SetFont('THSarabunNew','B');
-        // $pdf->SetFontSize('16'); 
-        // $total_all_print = 'รวมเป็นเงิน    '.number_format($total_budget,2).'  บาท';
-        // $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $total_all_print));
+        
 
         $pdf->Output('I');
        
