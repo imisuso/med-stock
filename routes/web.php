@@ -18,6 +18,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrintFormController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\StockItemController;
+use App\Http\Controllers\StockItemImportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,9 +31,9 @@ use App\Http\Controllers\StockItemController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+ Route::get('/welcome', function () {
+   return view('welcome');
+ });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -152,3 +153,13 @@ Route::get('/receive-order-purchase/{order}', [CheckInOrderPurchaseController::c
 Route::get('/search-stock-item/{item_name_search}', [StockItemController::class,'searchByItemName'])->name('search-stock-item')->middleware('auth');
 //printForm test
 Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');
+
+//Import Data From Excel
+Route::get('/stockitem/import',[StockItemImportController::class,'index'])->name('stock-item-import')->middleware('auth');
+
+Route::post('/stockitem/import',[StockItemImportController::class,'show'])->name('stock-item-import-show')->middleware('auth');
+
+Route::get('/nong', function () {
+    return view('welcome');
+    //return view('stock.StockItemImport');
+  });

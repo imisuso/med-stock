@@ -27,7 +27,7 @@
                         {{itemIndex+1}}.
                         SAP:{{stockItem.item_code}} 
                         <label for="" class="text-blue-600">{{stockItem.item_name}}</label>
-                        (หน่วย: {{stockItem.unit_count.countname}})
+                        (หน่วย: {{stockItem.unit_count}})
                         <Link :href="route('list-stock-item',stockItem)">
                         <span
                             class="inline-flex text-md font-semibold leading-5 text-green-800 bg-green-200 rounded-lg"

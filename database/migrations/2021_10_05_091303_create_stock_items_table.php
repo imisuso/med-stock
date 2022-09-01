@@ -19,9 +19,9 @@ class CreateStockItemsTable extends Migration
             $table->uuid('slug');
             $table->unsignedSmallInteger('stock_id');
             $table->unsignedSmallInteger('user_id')->default(1);
-            $table->string('item_code');   //SAP พัสดุ
+            $table->string('item_code')->uniqid();   //SAP พัสดุ
             $table->string('item_name');
-            $table->integer('unit_count_id');
+            $table->string('unit_count')->nullable();
             $table->integer('item_sum');
             // $table->date('date_receive');
             // $table->date('date_expire');

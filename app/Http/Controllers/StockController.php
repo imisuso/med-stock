@@ -26,8 +26,7 @@ class StockController extends Controller
       //  Log::info('StockController index');
         $user = Auth::user();
         $stocks = Stock::where('unit_id',$user->profile['division_id'])->get();
-        $stock_items = StockItem::with('unitCount:id,countname')
-                                ->where('stock_id',$user->profile['division_id'])->get();
+        $stock_items = StockItem::where('stock_id',$user->profile['division_id'])->get();
       
         foreach($stock_items as $key=>$stock_item){
             $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)

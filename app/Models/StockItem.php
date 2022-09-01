@@ -20,7 +20,7 @@ class StockItem extends Model
         'user_id',
         'item_code',
         'item_name',
-        'unit_count_id',
+        'unit_count',
         'item_sum',
         'price',
         'status' ,     // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
@@ -37,10 +37,10 @@ class StockItem extends Model
             $user->slug = Str::uuid()->toString();
         });
     }
-    public function unitCount()
-    {
-        return $this->hasOne(UnitCount::class,'id','unit_count_id');
-    }
+    // public function unitCount()
+    // {
+    //     return $this->hasOne(UnitCount::class,'id','unit_count_id');
+    // }
     public function stock()
     {
         return $this->belongsTo(Stock::class);
@@ -59,19 +59,20 @@ class StockItem extends Model
 
     public static function loadData($fileName){
         
-      
+    //  Log::info('loadData');
         $stock_items = loadCSV($fileName);
        //$stock_items = loadCSV('business_load_utf8');
       //  \Log::info('FILENAME==>'.$fileName);
-        //stocks_id,item_code,item_name,unit_count_id,item_receive,date_receive,date_expire,price,catalog_number,lot_number
+        //stocks_id,item_code,item_name,unit_count,item_receive,date_receive,date_expire,price,catalog_number,lot_number
         foreach($stock_items as $stock_item){
-       //     \Log::info($aaa);
+         //   Log::info($stock_item['item_code']);
+         //   Log::info($stock_item['unit_count']);
            StockItem::create([
                                 'stock_id'=>$stock_item['stock_id'],
                                 'user_id'=>1,
                                 'item_code'=>$stock_item['item_code'],
                                 'item_name'=>$stock_item['item_name'],
-                                'unit_count_id'=>$stock_item['unit_count_id'],
+                                'unit_count'=>$stock_item['unit_count'],
                                 'item_sum'=>$stock_item['item_receive'],
                                 'price'=>$stock_item['price'],
                             ]);
@@ -109,7 +110,7 @@ class StockItem extends Model
                                 'user_id'=>1,
                                 'item_code'=>$stock_item['item_code'],
                                 'item_name'=>$stock_item['item_name'],
-                                'unit_count_id'=>$stock_item['unit_count_id'],
+                                'unit_count'=>$stock_item['unit_count'],
                                 'item_sum'=>$stock_item['item_receive'],
                                 'price'=>$stock_item['price'],
                                 'status'=>2
