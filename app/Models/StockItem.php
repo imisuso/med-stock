@@ -69,7 +69,7 @@ class StockItem extends Model
          //   Log::info($stock_item['unit_count']);
            StockItem::create([
                                 'stock_id'=>$stock_item['stock_id'],
-                                'user_id'=>1,
+                                'user_id'=>6,
                                 'item_code'=>$stock_item['item_code'],
                                 'item_name'=>$stock_item['item_name'],
                                 'unit_count'=>$stock_item['unit_count'],
@@ -82,7 +82,7 @@ class StockItem extends Model
             ItemTransaction::create([
                                 'stock_id' =>$stock_item['stock_id'],
                                 'stock_item_id'=>$stock_item_id->id,
-                                'user_id'=>1,
+                                'user_id'=>6,
                                 'year'=> 2021,
                                 'month'=>10,
                                 'date_action'=>$stock_item['date_receive'],
@@ -92,6 +92,7 @@ class StockItem extends Model
                                 'status'=>'active',
                                 'profile'=>['catalog_number'=>$stock_item['catalog_number'],
                                             'lot_number'=>$stock_item['lot_number'],
+                                            'price'=>$stock_item['price'],
                                             ],
                             ]);
         }
@@ -107,7 +108,7 @@ class StockItem extends Model
           //  Log::info($stock_item['price']);
            StockItem::create([
                                 'stock_id'=>$stock_item['stock_id'],
-                                'user_id'=>1,
+                                'user_id'=>6,
                                 'item_code'=>$stock_item['item_code'],
                                 'item_name'=>$stock_item['item_name'],
                                 'unit_count'=>$stock_item['unit_count'],
@@ -121,7 +122,7 @@ class StockItem extends Model
             ItemTransaction::create([
                                 'stock_id' =>$stock_item['stock_id'],
                                 'stock_item_id'=>$stock_item_id->id,
-                                'user_id'=>1,
+                                'user_id'=>6,
                                 'year'=> 2021,
                                 'month'=>10,
                                 'date_action'=>$stock_item['date_receive'],
@@ -131,6 +132,7 @@ class StockItem extends Model
                                 'status'=>'active',
                                 'profile'=>['catalog_number'=>$stock_item['catalog_number'],
                                             'lot_number'=>$stock_item['lot_number'],
+                                            'price'=>$stock_item['price'],
                                             ],
                             ]);
         }

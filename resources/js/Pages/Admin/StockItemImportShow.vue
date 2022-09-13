@@ -1,15 +1,22 @@
 <template>
     <AppLayout>
-        <div class=" w-full p-4  text-center text-lg font-bold bg-blue-100 rounded-md ">
+       
+        <div class=" w-full p-4   text-lg font-bold bg-blue-100 rounded-md ">
             <div class=" ">
-                <p class=" my-2 ">Import Excel Stock Item</p> 
+                <p class="  ">นำเข้ารายการพัสดุจากไฟล์ Excel</p> 
             </div>
             <div>
-                <label for="">{{stocks}}</label> 
+                <label for="">{{stock_name}}</label> 
             </div>
             <div>
-                <label for="" v-if="stock_item_status==1">จากใบสัญญาสั่งซื้อ</label>
-                <label for="" v-else>จากใบสั่งซื้อ</label>
+                <label for="" v-if="stock_item_status==1">ประเภทใบสัญญาสั่งซื้อ</label>
+                <label for="" v-else>ประเภทใบสั่งซื้อ</label>
+            </div>
+            <!-- <div>
+                <label>วันที่ตรวจรับ:{{date_receive}}</label>
+            </div> -->
+            <div>
+                <label for="">จำนวนพัสดุจากไฟล์มี : {{stock_item_import_count}} รายการ</label>
             </div>
         </div>  
  
@@ -33,17 +40,14 @@
                                 
                 </div> -->
 
-            <div class=" border p-1 " 
+            <!-- <div class=" border p-1 " 
                 v-for="(item_import,index) in stock_item_import"
                 :key="index"
-            >
+             >
                 <div class=" w-full flex-row md:flex md:justify-between ">
                     <div class="  ">
-                        {{index+1}}.  {{item_import.item_code}}
+                        {{index+1}}.  {{item_import.item_code}}:{{item_import.item_name}}
                     </div >
-                    <div class="  ">
-                       <label for=""  class=" text-sm">{{item_import.item_name}} </label> 
-                    </div>
                     <div class=" ">
                          จำนวน {{item_import.item_receive}} {{item_import.unit_count}}  
                     </div>
@@ -53,20 +57,23 @@
                     <div>
                         ({{item_import.catalog_number}}-{{item_import.lot_number}})
                     </div>
+                    <div>
+                        วันที่รับเข้า:{{item_import.date_receive}} วันที่หมดอายุ:{{item_import.date_expire}}
+                    </div>
                                 
                 </div>
-            </div>
+            </div> -->
             
         </div> 
         <div class=" mt-2">
             <button
             class="  w-full flex justify-center py-2  text-md   font-bold bg-green-300 hover:bg-green-200 focus:outline-none"
-            
+            @click="CheckInToStockItem()"
             >
                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
                     </svg>
-                    เพิ่มพัสดุทั้งหมด
+                    ยืนยันการเพิ่มพัสดุ
             </button>
         </div>
         <div class=" w-full  mt-2">
@@ -80,49 +87,84 @@
                     คำถาม ถ้าใบสัญญาสั่งซื้อจะเป็นพัสดุเดิมที่เคยมีในคลังพัสดุอยู่แล้ว เท่านั้นใช่หรือไม่
                 </label>
         </div>
+
+        <ModalUpToYou :isModalOpen="show_alert_msg_import_success" >
+            <template v-slot:header>
+            <p class="text-md font-bold text-red-600 ">กรุณาอ่าน: </p> 
+                                    
+            </template>
+            <template v-slot:body>
+            <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+                    <div for="">
+                    <!-- {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}  -->
+                    <label for="">บันทึกข้อมูลพัสดุลงคลังสำเร็จ</label>
+                    </div>
+            </div>
+            </template>
+    
+            <template v-slot:footer>
+            <div class=" w-full  text-center  md:block">
+                    <button 
+                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    v-on:click="closeAlertEdit"
+                    >
+                    ตกลง
+                    </button>
+            
+            </div>
+            </template>
+        </ModalUpToYou>
     </AppLayout>
  </template>
  <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { useForm } from '@inertiajs/inertia-vue3';
 import { ref } from 'vue';
+import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 
 const props =defineProps({
-    stocks:{type:String},
+    stock_id:{type:Number},
+    stock_name:{type:String},
     stock_item_status:{type:Number},
     stock_item_import: {type:Array, default:[]},
+    stock_item_import_count:{type:Number},
+   // date_receive:{type:String},
     
 })
 
 const stock_item_types=[{'type_id':'1','type_name':'ใบสัญญาสั่งซื้อ'},
                       {'type_id':'2','type_name':'ใบสั่งซื้อ'}
-                     ]
+                     ];
 
+const show_alert_msg_import_success=ref(false);
 
 const form = useForm({
-    file_stock_item: File,
-    unit_id:0,
-    stock_item_status:0,
+    stock_id:props.stock_id ? props.stock_id : 0,
+    stock_item_status:props.stock_item_status ? props.stock_item_status : 0,
+    import_items: props.stock_item_import ? props.stock_item_import : '',
+   // date_receive: props.date_receive ? props.date_receive : 0,
 })
 
 
 
 
 
-const ImportStockItem=(()=>{
-    console.log('----------Import Stock------')
-    console.log(form.unit_id);
-    console.log(form.file_stock_item);
+const CheckInToStockItem=(()=>{
+    console.log('----------CheckInToStockItem------')
+    console.log(form.stock_id);
     console.log(form.stock_item_status);
-    form.post(route('stock-item-import-show'), {
+    console.log(form.import_items);
+   // console.log(form.date_receive);
+    form.post(route('import-checkin-to-stock'), {
         preserveState: true,
         preserveScroll: true,
         onSuccess: page => { console.log('success');},
         onError: errors => { 
-            console.log('error');
+            console.log('msg error');
         },
         onFinish: visit => { 
-            console.log('finish');
+            console.log('msg finish');
+          //  show_alert_msg_import_success.value = true;
            // import_stock_items.value = res.data.stock_item_import;   
         },
     })

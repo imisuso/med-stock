@@ -1,5 +1,17 @@
 <template>
     <AppLayout>
+         <!--Header Alert-->
+         <div v-if="$page.props.flash.status=='success'" 
+            class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
+            <input type="checkbox" class="hidden" id="banneralert">
+            
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                {{ $page.props.flash.msg }}
+                <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+            </label>
+        </div>
         <div class=" w-full p-4 flex-col justify-center bg-blue-100 rounded-md ">
             <div class=" text-center text-lg font-bold ">
                 <p class=" my-2 ">Import Excel Stock Item</p> 
@@ -28,6 +40,13 @@
                 >
                     <option v-for="(stock_item_types) in  stock_item_types" :key=stock_item_types.type_id :value="stock_item_types.type_id">{{stock_item_types.type_name}}</option>
                 </select>
+
+                <!-- <div class="mt-3">
+                    <label for="">วันที่ตรวจรับพัสดุ:</label>
+                    <input type="date" name="" id=""
+                        v-model="form.date_receive"
+                        class="w-full px-12 py-2  rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                </div> -->
            
             </div>
             <div class=" text-center">
@@ -39,18 +58,25 @@
                     <!-- <form action="" method="post" enctype="multipart/form-data"> -->
                         <div class="">
                             <input type="file" name="file" id="" @change="onChangeFile">
+                           
+                        </div>
+                        <div>
                             <button type="submit" 
-                                class="  inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-4 border border-green-500 rounded"
+                                class="  inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-6 border border-green-500 rounded"
                                 @click="ImportStockItem()"
                                 >
-                                Import
+                                ตกลง
                             </button>
                         </div>
                     <!-- </form> -->
             </div>
+
+         
         </div>
-        <div>
-            {{stock_item_import}}
+        <div class=" w-full p-4 mt-2  justify-center bg-red-100">
+            <p for="">คำแนะนำการนำเข้าพัสดุจากไฟล์ excel</p>
+            <p for="">1.กรุณาตรวจสอบชื่อคอลัมน์และจำนวนคอลัมน์ให้ถูกต้องตามตัวอย่างไฟล์ excel</p>
+            <p for="">2.กรุณาตรวจสอบจำนวนรายการพัสดุต้องไม่เกิน 50 รายการต่อ 1 ไฟล์ excel</p>
         </div> 
     </AppLayout>
  </template>
@@ -76,6 +102,7 @@ const form = useForm({
     file_stock_item: File,
     unit_id:0,
     stock_item_status:0,
+  //  date_receive:0,
 })
 
 const onChangeFile=((e)=>{
@@ -95,10 +122,11 @@ const onChangeFile=((e)=>{
 // }
 
 const ImportStockItem=(()=>{
-    console.log('----------Import Stock------')
-    console.log(form.unit_id);
-    console.log(form.file_stock_item);
-    console.log(form.stock_item_status);
+    // console.log('----------Import Stock------')
+    // console.log(form.unit_id);
+    // console.log(form.file_stock_item);
+    // console.log(form.stock_item_status);
+    // console.log(form.date_receive);
     form.post(route('stock-item-import-show'), {
         preserveState: true,
         preserveScroll: true,
