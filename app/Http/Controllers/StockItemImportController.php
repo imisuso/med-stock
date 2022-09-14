@@ -79,7 +79,7 @@ class StockItemImportController extends Controller
                 );
             }
         }
-        //Logger(count($collect));
+        Logger($collect);
       //  dd('test');
         // $temp["collect"]=$collect;
         // echo json_encode($temp);
@@ -115,16 +115,18 @@ class StockItemImportController extends Controller
             //   ),
         $user = Auth::user();
         // Logger($request->stock_id);
-        // Logger($request->stock_item_status);
+         Logger($request->stock_item_status);
         // Logger($request->date_receive);
-        $date_split = explode('-',$request->date_receive);
+     
         foreach($request->import_items as $key => $item )
         {
-            // Logger($item['item_code']);
-            // Logger($item['item_name']);
-            // Logger($item['item_receive']);
-            // Logger($item['date_receive']);
-            // Logger($item['date_expire']);
+            Logger($item['item_code']);
+            Logger($item['item_name']);
+            Logger($item['item_receive']);
+            Logger($item['date_receive']);
+            Logger($item['date_expire']);
+
+            $date_split = explode('-',$item['date_receive']);
           
             $has_old_item = StockItem::where([
                                         'item_code'=>$item['item_code'],
@@ -133,8 +135,8 @@ class StockItemImportController extends Controller
                                         ])->first();
           //  Logger($has_old_item);
             if($has_old_item){
-              //  Logger('has item');
-                //insert item_transactions
+               Logger('has item');
+                //*****insert item_transactions
                 try{
                     ItemTransaction::create([
                                             'stock_id'=>$request->stock_id ,
@@ -159,15 +161,64 @@ class StockItemImportController extends Controller
                        // return redirect()->back();
                         return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
                     }
-                //update stock_item
+                //*****update stock_item
                 $item_add = (int)$has_old_item->item_sum + (int)$item['item_receive'];
                 $has_old_item->item_sum = $item_add;
                 $has_old_item->save();
 
             }else{
                 Logger('no item');
-                 //insert stock_item
-                //insert item_transactions
+                //******insert stock_item
+                try{
+                     $stock_item_add=StockItem::create([
+                        'stock_id'=>$request->stock_id,
+                        'user_id'=>$user->id,
+                        'item_code'=>$item['item_code'],
+                        'item_name'=>$item['item_name'],
+                        'unit_count'=>$item['unit_count'],
+                        'item_sum'=>$item['item_receive'],
+                        'price'=>$item['price'],
+                        'status'=>$request->stock_item_status
+                    ]);
+
+               
+            
+                    }catch(\Illuminate\Database\QueryException $e){
+                        //rollback
+                       // return redirect()->back();
+                        return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
+                    }
+                //****insert item_transactions
+
+                // $stock_item_id = StockItem::select('id')->where(['item_code'=>$item['item_code'],
+                //                                                 'stock_id'=>$request->stock_id,
+                //                                                 'status'=>$request->stock_item_status]
+                //                                         )->first();
+                Logger($stock_item_add);
+                try{
+                    ItemTransaction::create([
+                                            'stock_id'=>$request->stock_id ,
+                                            'stock_item_id'=>$stock_item_add->id ,
+                                            'user_id'=>$user->id,
+                                            'year'=>$date_split[0],
+                                            'month'=>$date_split[1],
+                                            'date_action'=>$item['date_receive'],
+                                            'action'=>'checkin',
+                                            'date_expire'=>$item['date_expire'],
+                                            'item_count'=>$item['item_receive'],
+                                            'status'=>'active',
+                                            'profile'=>['catalog_number'=>$item['catalog_number'],
+                                                        'lot_number'=>$item['lot_number'],
+                                                        'price'=>$item['price'],
+                                                        'import'=>true,
+                                                        ],
+                                        ]);
+            
+                    }catch(\Illuminate\Database\QueryException $e){
+                        //rollback
+                       // return redirect()->back();
+                        return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
+                    }
                
             }
           

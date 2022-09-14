@@ -44,7 +44,7 @@
             </div>
             </Link> -->
 <!-- {{$page.props.auth.user.id}} -->
-        <Link :href="route('create-order')">
+        <!-- <Link :href="route('create-order')">
           <div class="w-full flex items-center text-blue-600 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -75,7 +75,7 @@
             </svg>
             <span class="text-gray-700 ml-2">ดูเอกสารใบสั่งซื้อพัสดุ</span>
           </div>
-        </Link>
+        </Link> -->
       </div>
 <!-- v-if="$page.props.flash.mainMenuLinks.is_admin_division_stock" -->
 <!-- {{$page.props.auth.abilities.includes("manage_master_data")}} -->
@@ -102,11 +102,11 @@
               <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>คลังพัสดุ</div>
             </div>
           </Link>
-          <Link href="#">
+          <!-- <Link href="#">
             <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
               <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>หน่วยนับ</div>
             </div>
-          </Link>
+          </Link> -->
           <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
             <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>สิทธิ์ผู้ใช้งาน</div>
           </div>
@@ -142,14 +142,14 @@
         </div> -->
 
             
-        <Link :href="route('budget-list')">
+        <!-- <Link :href="route('budget-list')">
           <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span class="text-gray-700 ml-2">งบประมาณประจำปี</span>
           </div>
-        </Link>
+        </Link> -->
 
         <Link :href="route('stock-item-import')">
           <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
@@ -160,14 +160,14 @@
           </div>
         </Link>
       
-        <Link :href="route('add-order-purchase')">
+        <!-- <Link :href="route('add-order-purchase')">
           <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
             </svg>
             <span class="text-gray-700 ml-2">บันทึกข้อมูลใบสั่งซื้อ(เก่า)</span>
           </div>
-        </Link>
+        </Link> -->
 
         <Link :href="route('report-list','27')">
         <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
@@ -188,7 +188,7 @@
         </Link>
 
 
-        <Link :href="route('check-order-list')">
+        <!-- <Link :href="route('check-order-list')">
           <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
@@ -204,19 +204,9 @@
             </svg>
             <span class="text-gray-700 ml-2">ดูเอกสารใบสั่งซื้อ</span>
           </div>
-        </Link>
-
-       
+        </Link> -->
 
 
-        <!-- <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-          </svg>
-          <span class="text-gray-700 ml-2">ตรวจรับพัสดุ</span>
-        </div> -->
-
-      
       </div>
 
      

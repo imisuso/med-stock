@@ -49,16 +49,32 @@
     <div  class="w-full  p-2  ">
   
         <div v-for="(stock_item,key) in stock_items" :key=stock_item.index
-            class="w-full bg-red-100  mt-3 border-2 border-red-300 rounded-lg lg:max-w-full lg:flex">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-2o" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            class="w-full mt-3 border-2 border-red-300 rounded-lg "
+            >
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-2o" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-       
+            </svg> -->
+            <div v-if="stock_item.status == 1"
+                class="flex flex-col p-2 bg-pink-200 items-center overflow-hidden text-center  bg-cover rounded-t "
+            >
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg> -->
+                <label for="">สัญญาซื้อ</label>
+            </div>
+            <div v-else
+                class="flex flex-col p-2 bg-blue-200 items-center overflow-hidden text-center  bg-cover rounded-t "
+            >
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg> -->
+                    <label for="">ใบสั่งซื้อ</label>
+            </div>
 
             <div
             class="w-full  leading-normal  border-b border-l border-r border-gray-200 rounded-b lg:border-l-0 lg:border-t lg:border-gray-200 lg:rounded-b-none lg:rounded-r"
             >   
-                <div class=" mb-2">
+                <div class=" mb-2  ">
                 
                     <div class="p-2 text-md font-bold text-gray-900">
                         {{key+1}}.

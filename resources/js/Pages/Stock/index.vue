@@ -24,6 +24,12 @@
             </select>
            
         </div>
+        <div class=" w-full flex mt-2   p-2 rounded-md ">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-red-500 ">
+                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                </svg>
+           <label for="">เตือนเมื่อพัสดุมีน้อยกว่า 6 ชิ้น </label> 
+        </div>
      
   <!-- <div v-if="$page.props.flash.status=='success'" class="w-full mx-auto shadow-md rounded-md p-2 mt-2 text-black bg-green-200 border-white">
         <label for=""> {{ $page.props.flash.msg }}</label>
@@ -32,7 +38,7 @@
   <!-- {{$page.props.can_abilities}} -->
   <!-- {{$page.props.can}} -->
 
-    <div class="w-full mt-3 p-2  ">
+    <div class="w-full  p-2  ">
   
   
         <CheckoutItem v-for="(stock_item,key) in stock_items" :key=stock_item.id

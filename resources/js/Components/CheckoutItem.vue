@@ -1,20 +1,52 @@
 <template>
-    <div  class="w-full  mt-3 border-2 border-gray-500   rounded-lg lg:max-w-full lg:flex">
-        <div v-if="stockItem.status == 1"
-            class="flex flex-col bg-pink-200 items-center overflow-hidden text-center  bg-cover rounded-t lg:h-auto lg:w-36 lg:rounded-t-none lg:rounded-l"
+    <div  class="w-full  mt-2 border-2 border-gray-500   rounded-lg ">
+        <!-- <div v-if="stockItem.item_sum < 6"
+            class="flex flex-row  items-center lg:items-start overflow-hidden text-center  bg-cover rounded-l "
         >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-red-500 ">
+                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                </svg>
+                <p for="">ใกล้หมด</p>
+
+        </div> -->
+         <!-- <div v-else
+            class="flex flex-col bg-green-600 items-center overflow-hidden text-center  bg-cover rounded-t lg:h-auto lg:w-6 lg:rounded-t-none lg:rounded-l"
+         >
+           
+                <label  class=" lg:text-blue-200">ใบสั่งซื้อ</label>
+        </div> -->
+
+        <div v-if="stockItem.status == 1"
+            class="flex  bg-pink-200  overflow-hidden text-center  bg-cover rounded-t  "
+        >
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-              <label for="">สัญญาซื้อ</label>
+            </svg> -->
+            <!-- <div v-if="stockItem.item_sum < 6">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-red-500 ">
+                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                </svg>
+            </div> -->
+            <div>
+                <label  >สัญญาซื้อ</label>
+            </div>
+            
         </div>
          <div v-else
-            class="flex flex-col bg-blue-200 items-center overflow-hidden text-center  bg-cover rounded-t lg:h-auto lg:w-36 lg:rounded-t-none lg:rounded-l"
+            class="flex  bg-blue-200 items-center overflow-hidden text-center  bg-cover rounded-t "
          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <label for="">ใบสั่งซื้อ</label>
+                </svg> -->
+                <!-- <div v-if="stockItem.item_sum < 6">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-red-500 ">
+                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                    </svg>
+                </div> -->
+                <div>
+                    <label  >ใบสั่งซื้อ</label>
+                </div>  
         </div>
        
             
@@ -48,7 +80,18 @@
                             </svg>
                             {{stockItem.item_sum}}
                             </span>
+                           
+                              
+                            
                             </p> 
+                            <svg v-if="stockItem.item_sum < 6"
+                                xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 24 24" fill="currentColor" 
+                                class="w-6 h-6 text-red-500 "
+                                
+                                >
+                                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                                </svg>
                         </div>
                         <div class="flex ml-2"> วันหมดอายุ : 
                             <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.date_expire}}</p> 
