@@ -107,10 +107,15 @@
               <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>หน่วยนับ</div>
             </div>
           </Link> -->
-          <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
-            <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>สิทธิ์ผู้ใช้งาน</div>
+            <Link :href="route('stock-item-import')">
+              <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
+              
+                <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>เพิ่มผู้ใช้งาน</div>
+              
+              </div>
+            </link>
           </div>
-        </div>
+        
 
         <!-- budget menu group -->
         

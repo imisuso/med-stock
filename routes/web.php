@@ -161,6 +161,9 @@ Route::post('/stockitem/import',[StockItemImportController::class,'show'])->name
 
 Route::post('/stockitem/checkin-to-stock',[StockItemImportController::class,'store'])->name('import-checkin-to-stock')->middleware('auth');
 
+//Add User
+//Route::get('/user/add',[StockItemImportController::class,'index'])->name('user-add')->middleware('auth');
+
 Route::get('/nong', function () {
     return view('welcome');
     //return view('stock.StockItemImport');

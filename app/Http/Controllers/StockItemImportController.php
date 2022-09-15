@@ -42,25 +42,52 @@ class StockItemImportController extends Controller
        
          $rows = Excel::toArray(new StockItemImportToCollection(),$request->file('file_stock_item'));
         //$rows = Excel::toCollection(new StockItemImportToCollection(),$request->file('file_stock_item'));
-       // Logger($rows);
-       // return Redirect::route('stock-item-import', ['stock_item_import'=>$rows[0]]);
-      
+     
+        //****rule validate excel import
+        $col_excel = 9;
+        $head_row = array(0 => 'item_code',
+                          1 => 'item_name',
+                          2 => 'unit_count',
+                          3 => 'date_receive',
+                          4 => 'item_receive',
+                          5 => 'date_expire',
+                          6 => 'price',
+                          7 => 'catalog_number',
+                          8 => 'lot_number'
+                         );
 
         $collect = array();
         foreach ($rows[0] as $key => $row)
         {
-            // Logger($row);
-            // Logger($row[0]);
+           // Logger($row);
+          
+            //* validate head row */
+            if($key==0){ 
+                logger(count($row));
+                if(count($row)!=$col_excel){
+                    $error_validate_excel ='จำนวนคอลัมน์ไม่ตรงที่กำหนด ในไฟล์มี '.count($row). ' ที่กำหนดต้องมี '.$col_excel.' คอลัมน์';
+                    return Inertia::render('Admin/StockItemImportShow',[
+                        'validate_excel'=>false,
+                        'msg_validate_excel'=> $error_validate_excel,
+                    ]);
+                }
+                  
+
+                $result=array_diff($row,$head_row);
+                // logger($result);
+                // logger(count($result));
+                
+                if(count($result)>0){
+                    $error_validate_excel ='พบชื่อคอลัมน์ไม่ตรงกับที่กำหนด';
+                    return Inertia::render('Admin/StockItemImportShow',[
+                        'validate_excel'=>false,
+                        'msg_validate_excel'=> $error_validate_excel,
+                        'header_diff'=>$result,
+                    ]);
+                }         
+            }
             if($key!=0){
-                // $collect[]= array(
-                //     'item_code' => $row[0],
-                //     'item_name' => $row[1],
-                //     'unit_count' => $row[2],
-                //     'item_receive' => $row[3],
-                //     'price' => $row[4],
-                //     'catalog_number' => $row[5],
-                //     'lot_number' => $row[6],
-                // );
+        
 
                  $date_temp=date_create($row[3]);
                  $date_format_receive = date_format($date_temp,"Y-m-d");
@@ -79,17 +106,27 @@ class StockItemImportController extends Controller
                 );
             }
         }
-        Logger($collect);
+      //  Logger($collect);
+       //  Logger(count($collect));
       //  dd('test');
-        // $temp["collect"]=$collect;
-        // echo json_encode($temp);
+
+        if(count($collect)>50){
+            $error_validate_excel ='จำนวนรายการพัสดุต้องไม่เกิน 50 รายการต่อการนำเข้าระบบ 1 ครั้ง';
+                    return Inertia::render('Admin/StockItemImportShow',[
+                        'validate_excel'=>false,
+                        'msg_validate_excel'=> $error_validate_excel,
+                        'stock_item_import_count'=>count($collect),
+                    ]);
+        }
+     
         return Inertia::render('Admin/StockItemImportShow',[
                                 'stock_id'=>$stock->id,
                                 'stock_name'=>$stock->stockname,
                                 'stock_item_status'=> $request->stock_item_status,
                                // 'date_receive'=> $request->date_receive,
                                 'stock_item_import_count'=> count($collect),
-                                'stock_item_import'=> $collect
+                                'stock_item_import'=> $collect,
+                                'validate_excel'=>true
         ]);
      
 
@@ -98,21 +135,7 @@ class StockItemImportController extends Controller
     {
        // Logger($request->all());
 
-            //         'stock_id' => 4,
-            //   'stock_item_status' => '2',
-            //   'import_items' => 
-            //   array (
-            //     0 => 
-            //     array (
-            //       'item_code' => 40005400,
-            //       'item_name' => 'KOVAC\'s  Indole Reagent (MERCK)',
-            //       'unit_count' => 'PACK',
-            //       'item_receive' => 12,
-            //       'price' => 1800,
-            //       'catalog_number' => 'AHGH106',
-            //       'lot_number' => '234123A',
-            //     ),
-            //   ),
+        
         $user = Auth::user();
         // Logger($request->stock_id);
          Logger($request->stock_item_status);
@@ -120,11 +143,11 @@ class StockItemImportController extends Controller
      
         foreach($request->import_items as $key => $item )
         {
-            Logger($item['item_code']);
-            Logger($item['item_name']);
-            Logger($item['item_receive']);
-            Logger($item['date_receive']);
-            Logger($item['date_expire']);
+            // Logger($item['item_code']);
+            // Logger($item['item_name']);
+            // Logger($item['item_receive']);
+            // Logger($item['date_receive']);
+            // Logger($item['date_expire']);
 
             $date_split = explode('-',$item['date_receive']);
           
@@ -135,7 +158,7 @@ class StockItemImportController extends Controller
                                         ])->first();
           //  Logger($has_old_item);
             if($has_old_item){
-               Logger('has item');
+              // Logger('has item');
                 //*****insert item_transactions
                 try{
                     ItemTransaction::create([
@@ -167,7 +190,7 @@ class StockItemImportController extends Controller
                 $has_old_item->save();
 
             }else{
-                Logger('no item');
+               // Logger('no item');
                 //******insert stock_item
                 try{
                      $stock_item_add=StockItem::create([

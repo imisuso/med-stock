@@ -24,6 +24,7 @@ class UsersTableSeeder extends Seeder
             'admin_division_stock.ambu',
             'admin_med_stock.stockmed',
             'admin_it.itmed',
+            'officer.id',
         ];
 
         $password = Hash::make('11111111');

@@ -5,10 +5,10 @@ namespace App\Imports;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class StockItemImportToCollection implements ToCollection ,WithValidation
+class StockItemImportToCollection implements ToCollection , WithValidation
 {
     /**
     * @param array $row
@@ -21,6 +21,7 @@ class StockItemImportToCollection implements ToCollection ,WithValidation
         // {
         //     Logger($row);
         // }
+        Logger('-------------------');
     }
     public function rules(): array
     {

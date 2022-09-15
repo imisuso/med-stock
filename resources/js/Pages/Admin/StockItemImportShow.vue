@@ -1,7 +1,20 @@
 <template>
     <AppLayout>
+      
+        <div v-if="!validate_excel"
+            class=" w-full p-4   text-lg font-bold bg-red-200 rounded-md "
+        >
+            <label for="">{{msg_validate_excel}}</label>
+            <li v-for="(header_false,index) in header_diff" :key="index">
+                {{header_false}}
+            </li>
+            <p for="">ในไฟล์นี้พบว่ามี {{stock_item_import_count}} รายการ</p>
+            <!-- {{header_diff}} -->
+        </div>
        
-        <div class=" w-full p-4   text-lg font-bold bg-blue-100 rounded-md ">
+        <div v-else
+            class=" w-full p-4   text-lg font-bold bg-blue-100 rounded-md "
+            >
             <div class=" ">
                 <p class="  ">นำเข้ารายการพัสดุจากไฟล์ Excel</p> 
             </div>
@@ -65,7 +78,7 @@
             </div> -->
             
         </div> 
-        <div class=" mt-2">
+        <div v-if="validate_excel" class=" mt-2">
             <button
             class="  w-full flex justify-center py-2  text-md   font-bold bg-green-300 hover:bg-green-200 focus:outline-none"
             @click="CheckInToStockItem()"
@@ -77,14 +90,14 @@
             </button>
         </div>
         <div class=" w-full  mt-2">
-                <label class=" text-red-600">***ถ้าเป็นพัสดุใหม่ รหัสพัสดุต้องไม่ซ้ำกับพัสดุที่มีอยู่แล้ว ถ้ารหัสพัสดุซ้ำระบบจะนำจำนวนสั่งซื้อครั้งนี้ไปบวกเพิ่มให้อัตโนมัติ 
+                <label class=" text-red-600">-ถ้าเป็นพัสดุใหม่ รหัสพัสดุต้องไม่ซ้ำกับพัสดุที่มีอยู่แล้ว ถ้ารหัสพัสดุซ้ำระบบจะนำจำนวนสั่งซื้อครั้งนี้ไปบวกเพิ่มให้อัตโนมัติ 
                     และปรับปรุงข้อมูลราคาให้อัตโนมัติ
                     แต่ถ้าเป็นรหัสพัสดุใหม่ระบบจะเพิ่มรายการพัสดุเป็นรายการใหม่
                 </label>
         </div>
-        <div class=" w-full  mt-2">
+        <div class=" w-full  mt-2 text-red-600">
                 <label for="">
-                    คำถาม ถ้าใบสัญญาสั่งซื้อจะเป็นพัสดุเดิมที่เคยมีในคลังพัสดุอยู่แล้ว เท่านั้นใช่หรือไม่
+                    - ถ้าใบสัญญาสั่งซื้อจะเป็นพัสดุเดิมที่เคยมีในคลังพัสดุอยู่แล้ว เท่านั้นใช่หรือไม่
                 </label>
         </div>
 
@@ -128,6 +141,9 @@ const props =defineProps({
     stock_item_status:{type:Number},
     stock_item_import: {type:Array, default:[]},
     stock_item_import_count:{type:Number},
+    validate_excel:{type:Boolean},
+    msg_validate_excel:{type:String},
+    header_diff:{type:Array}
    // date_receive:{type:String},
     
 })
