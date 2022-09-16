@@ -34,18 +34,4 @@ class Stock extends Model
     }
 
 
-    // public function scopeStudentLast($year)
-    // {
-    //    // return $this->hasOne(Student::class,'siriraj_id','siriraj_id');
-    //     $stock_id = $this->id;
-    //     $budget_order = 0;
-     
-    //     $order = OrderItem::where(['unit_id'=>$stock_id , 'year'=>$year])->get(); 
-    //     foreach($order->items as $item){
-    //                 //  Log::info($item);
-    //                 //  Log::info($item[0]['total']);
-    //                   $budget_order += (int)$item[0]['total'];
-    //             }
-    //     return $budget_order;
-    // }
 }

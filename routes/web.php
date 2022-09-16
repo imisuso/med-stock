@@ -19,6 +19,7 @@ use App\Http\Controllers\PrintFormController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\StockItemImportController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,7 +163,9 @@ Route::post('/stockitem/import',[StockItemImportController::class,'show'])->name
 Route::post('/stockitem/checkin-to-stock',[StockItemImportController::class,'store'])->name('import-checkin-to-stock')->middleware('auth');
 
 //Add User
-//Route::get('/user/add',[StockItemImportController::class,'index'])->name('user-add')->middleware('auth');
+Route::get('/user/add',[UserController::class,'index'])->name('user-add')->middleware('auth');
+Route::get('/stock/get-list-stock-unit/{unit_id}',[StockController::class,'getListStockUnit'])->name('get-list-stock-unit')->middleware('auth');
+//get-list-stock-unit
 
 Route::get('/nong', function () {
     return view('welcome');

@@ -107,7 +107,7 @@
               <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>หน่วยนับ</div>
             </div>
           </Link> -->
-            <Link :href="route('stock-item-import')">
+            <Link :href="route('user-add')">
               <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
               
                 <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>เพิ่มผู้ใช้งาน</div>

@@ -84,7 +84,8 @@ class StockController extends Controller
      */
     public function show($id)
     {
-        //
+       //
+
     }
 
     /**
@@ -119,5 +120,18 @@ class StockController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function getListStockUnit($unit_id)
+    {
+       // logger('StockController show');
+        //logger($request->all());
+
+        $list_stock_unit = Stock::where('unit_id',$unit_id)->get();
+        return response()->json([
+            'list_stock_unit' => $list_stock_unit
+        ]);
+
     }
 }
