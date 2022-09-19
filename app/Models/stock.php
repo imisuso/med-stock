@@ -10,6 +10,14 @@ class Stock extends Model
 {
     use HasFactory;
 
+
+    protected $fillable = [ 
+        'stockname',
+        'stockengname',
+        'unit_id',
+        'user_id'
+    ];
+
     protected static function booted()
     {
         static::creating(function ($user) {

@@ -97,7 +97,7 @@
           <i :class="managementMenuOpen ? iconExpland : iconCollapse" class="ml-2" style="fontSize: 0.7rem"></i>
         </div >
         <div :class="managementMenuOpen ? '' : 'hidden'">
-          <Link href="#">
+          <Link :href="route('stock-add')">
             <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
               <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>คลังพัสดุ</div>
             </div>

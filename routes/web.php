@@ -164,8 +164,14 @@ Route::post('/stockitem/checkin-to-stock',[StockItemImportController::class,'sto
 
 //Add User
 Route::get('/user/add',[UserController::class,'index'])->name('user-add')->middleware('auth');
-Route::get('/stock/get-list-stock-unit/{unit_id}',[StockController::class,'getListStockUnit'])->name('get-list-stock-unit')->middleware('auth');
+
+//Add Stock
+Route::get('/stock/add',[StockController::class,'create'])->name('stock-add')->middleware('auth');
+Route::post('/stock/add',[StockController::class,'store'])->name('stock-add-confirm')->middleware('auth');
+
 //get-list-stock-unit
+Route::get('/stock/get-list-stock-unit/{unit_id}',[StockController::class,'getListStockUnit'])->name('get-list-stock-unit')->middleware('auth');
+
 
 Route::get('/nong', function () {
     return view('welcome');

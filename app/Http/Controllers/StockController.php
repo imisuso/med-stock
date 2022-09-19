@@ -11,6 +11,7 @@ use App\Models\StockItem;
 use App\Models\Unit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
 class StockController extends Controller
 {
@@ -62,7 +63,11 @@ class StockController extends Controller
      */
     public function create()
     {
-        //
+        //$user = Auth::user();
+        $units = Unit::all();
+        return Inertia::render('Admin/AddStock',[
+            'units'=> $units,
+            ]);
     }
 
     /**
@@ -73,7 +78,17 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        logger($request->all());
+        $user = Auth::user();
+        Stock::create([
+            'stockname'=>$request->stock_name_thai,
+            'stockengname'=>$request->stock_name_en,
+            'status'=>1,
+            'unit_id'=>$request->unit,
+            'user_id'=>$user->id
+            ]);
+        return Redirect::route('stock-add')
+            ->with(['status' => 'success', 'msg' => 'บันทึกเรียบร้อยแล้ว']);
     }
 
     /**

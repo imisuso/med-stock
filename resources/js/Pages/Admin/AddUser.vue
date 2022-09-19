@@ -22,11 +22,17 @@
 
                {{ $page.props.stocks }} -->
             <div class=" w-full  bg-blue-100 p-2 rounded-md ">
+                <div class="mt-3" >
+                    <label for="">ระบุรหัสเจ้าหน้าที่ 8 หลัก(SAP):</label> 
+                </div>
+                <input type="text" name="" class="w-full  py-2 rounded-md ">
+            </div>
+            <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                 <!-- <div class="bg-blue-800 text-white text-xl text-center ">
                     {{$page.props.auth.user.profile.division_name}}
                 </div> -->
                 <div class="mt-3" >
-                    <label for="">เลือกหน่วยงาน</label> 
+                    <label for="">เลือกหน่วยงานที่สังกัด:</label> 
                 </div>
                 <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
                     v-model="form.unit_id"
@@ -40,13 +46,14 @@
                  
                 </div>
                 <div class="mt-3" >
-                    <label for="">เลือกคลัง</label> 
+                    <label for="">เลือกคลังพัสดุที่ต้องการให้บันทึกตัดสต๊อก:</label> 
                 </div>
                 <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
                     
                 >
                     <option v-for="(stock) in  stocks_unit" :key=stock.id :value="stock.id">{{stock.stockname}}</option>
                 </select>
+                
             </div>
 
             <div class=" text-center">
