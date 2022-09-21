@@ -78,7 +78,7 @@ class StockItemImportController extends Controller
                 // logger(count($result));
                 
                 if(count($result)>0){
-                    $error_validate_excel ='พบชื่อคอลัมน์ไม่ตรงกับที่กำหนด';
+                    $error_validate_excel ='พบชื่อคอลัมน์ไม่ตรงกับที่กำหนด ดังนี้';
                     return Inertia::render('Admin/StockItemImportShow',[
                         'validate_excel'=>false,
                         'msg_validate_excel'=> $error_validate_excel,

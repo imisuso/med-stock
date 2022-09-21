@@ -38,16 +38,16 @@
             </div>
             <!-- {{count(stocks_unit)}} -->
             <div v-if="stocks_unit_count>0"
-                class="w-full  bg-green-100 p-2 my-2 rounded-md"
+                class="w-full text-sm  bg-green-100 p-2 my-2 rounded-md"
                 >
-                <label for="">รายชื่อคลังในหน่วย/สาขา นี้:</label>
+                <label for="">รายชื่อคลังที่มีอยู่แล้วในหน่วย/สาขา นี้:</label>
                 <li v-for="(stock) in  stocks_unit" :key=stock.id :value="stock.id"
                 
                 >
                 {{stock.stockname}}({{stock.stockengname}})
                 </li>
             </div>  
-            <div v-else
+            <div v-if="stocks_unit_count==0"
                 class="w-full  bg-yellow-100 p-2 my-2 rounded-md"
                 >
                 <label for="">ไม่พบรายชื่อคลังในหน่วย/สาขา นี้:</label>
@@ -79,17 +79,17 @@
                 
             </div>
 
-            <div class=" text-center">
+            <div class=" my-2 ">
               
-                        <div>
-                            <button type="submit" 
-                                class="  inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-6 border border-green-500 rounded"
-                                @click="confirmAddStock()"
-                                >
-                                ตกลง
-                            </button>
-                        </div>
-                    <!-- </form> -->
+                <div class="  ">
+                    <button type="submit" 
+                        class=" w-full flex justify-center py-2  text-md  bg-green-500 hover:bg-green-700 text-white  border border-green-500 rounded"
+                        @click="confirmAddStock()"
+                        >
+                        ตกลง
+                    </button>
+                </div>
+        
             </div>
 
          
@@ -156,7 +156,7 @@ const props =defineProps({
 })
 
 const stocks_unit = ref('');
-const stocks_unit_count = ref(0);
+const stocks_unit_count = ref();
 
 const confirm_add_stock=ref(false);
  const unit_name = ref('');

@@ -8,7 +8,7 @@
             <li v-for="(header_false,index) in header_diff" :key="index">
                 {{header_false}}
             </li>
-            <p for="">ในไฟล์นี้พบว่ามี {{stock_item_import_count}} รายการ</p>
+            <p for="" v-if="validate_excel">ในไฟล์นี้พบว่ามี {{stock_item_import_count}} รายการ</p>
             <!-- {{header_diff}} -->
         </div>
        
