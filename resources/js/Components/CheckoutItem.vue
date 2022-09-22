@@ -94,10 +94,10 @@
                                 </svg>
                         </div>
                         <div class="flex ml-2"> วันหมดอายุ : 
-                            <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.date_expire}}</p> 
+                            <p class=" ml-2 text-blue-600">{{date_thai(stockItem.checkin_last.date_expire)}}</p> 
                         </div>
                         <div class="flex ml-2"> วันที่รับเข้า : 
-                            <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.date_action}}</p> 
+                            <p class=" ml-2 text-blue-600">{{date_thai(stockItem.checkin_last.date_action)}}</p> 
                         </div>
                         <div class="flex ml-2"> Cat.No/Lot.No : 
                             <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.profile['catalog_number']}} /{{stockItem.checkin_last.profile['lot_number']}}</p> 
@@ -210,6 +210,18 @@ const confirm_checkout=ref(false);
 const date_alert=ref(false);
 const unitcheckout_alert=ref(false);
 const msg_alert=ref('');
+
+const date_thai = (date_action)=>{
+    //console.log(props.stockBudget.budget)
+    let thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+    //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
+    let date_arr = date_action.split('-');
+
+    let month = thaimonth[parseInt(date_arr[1])];
+    let year = parseInt(date_arr[0])+543;
+    let output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
+    return output;
+}
 
 const form = useForm({
     unit_checkout:0,

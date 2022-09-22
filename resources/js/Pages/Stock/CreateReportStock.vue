@@ -64,7 +64,7 @@
             <label for="">  {{stocks[stock_id-1].stockname}} </label>
         </div>    
         <div  class=" w-full py-3 text-center font-bold text-lg border-b-4 border-gray-300">
-            <label for=""> {{month_thai[form.month_selected]}} ปี {{form.year_selected}}</label>
+            <label for=""> {{month_thai[form.month_selected]}} ปี {{year_thai(form.year_selected)}}</label>
         </div>    
         <div v-if="item_trans.length==0" class=" w-full text-center">
             <label for="">ไม่พบข้อมูล</label>
@@ -73,38 +73,40 @@
       <div  class="w-full mt-3 p-2  ">
   
         <div v-for="(item_tran,key) in item_trans" :key=item_tran.id
-            class="w-full bg-blue-100 my-3  border-b-2 border-gray-300 shadow-md ">
+            class="w-full my-3  border-b-2 border-gray-500 shadow-sm ">
             <!-- {{item_tran}} -->
-            <div class=" mx-2" >
-                 {{key+1}}.SAP:
+            <div class="flex flex-col lg:flex-row  mx-2">
+                <div>
+                    {{key+1}}.วันที่เบิก:
+                    <label class=" font-bold">{{date_action_thai(item_tran.date_action)}}</label>
+                </div>
+              
+                <div class=" lg:ml-5">
+                    ผู้เบิก:
+                <label class=" font-bold">{{item_tran.user['name']}}</label>
+                </div>
+            </div>  
+            <div class="flex flex-col lg:flex-row lg:justify-between  mx-2"  >
+                <div>
+                 SAP:
                  <label class=" font-bold">
                      {{item_tran.stock_item['item_code']}} 
                  </label>
-                 ชื่อพัสดุ:
-                 <label class=" font-bold">{{item_tran.stock_item['item_name']}} ปัจจุบันคงเหลือ: {{item_tran.stock_item['item_sum']}}</label>
-                <!-- <span  
-                    class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                    </svg>
-                    {{item_tran.stock_item['item_sum']}}
-                </span> -->
-                
-            </div>   
-            <div class="flex flex-row  mx-2">
-                <div>
-                    วันที่เบิก:
-                    <label class=" font-bold">{{item_tran.date_action}}</label>
+                 -
+                 <label class=" font-bold">{{item_tran.stock_item['item_name']}}  [Exp.{{date_short_thai(item_tran.date_expire_last)}}]  </label>
                 </div>
-                <div class=" ml-5">
-                     จำนวนที่เบิก:
+                <div class=" lg:ml-5">
+                    จำนวนที่เบิก:
                     <label class=" font-bold">{{item_tran.item_count}} ชิ้น</label>
                 </div>
-            </div>  
-            <div class=" mx-2 mb-3">
-                ผู้เบิก:
-                <label class=" font-bold">{{item_tran.user['name']}}</label>
-            </div>      
+                <div class=" lg:ml-5">
+                    ปัจจุบันคงเหลือ:
+                    <label class=" font-bold">  {{item_tran.stock_item['item_sum']}}</label>
+                </div>
+            </div>   
+        
+           
+          
         </div>
       </div>
 
@@ -189,6 +191,34 @@ const   years=ref([2022,2021,2020,2019,2018])
 const item_trans=ref('')
 //const stock_all=ref(Object);
 const stock_id=ref(0);
+
+const year_thai = (year_select)=>{
+    return year_select+543;
+}
+
+const date_action_thai = (date_action)=>{
+    //console.log(props.stockBudget.budget)
+    let thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+    //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
+    let date_arr = date_action.split('-');
+
+    let month = thaimonth[parseInt(date_arr[1])];
+    let year = parseInt(date_arr[0])+543;
+    let output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
+    return output;
+}
+
+const date_short_thai = (date_action)=>{
+    //console.log(props.stockBudget.budget)
+    let thaimonth = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
+    let date_arr = date_action.split('-');
+
+    let month = thaimonth[parseInt(date_arr[1])];
+    let year = parseInt(date_arr[0])+543;
+    let output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
+    return output;
+}
 
 
 const form = useForm({

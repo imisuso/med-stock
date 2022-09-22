@@ -67,14 +67,6 @@ const props = defineProps({
     //can_abilities: { type: Object, required: true },
     can: { type: Object, required: true },
 })
-// defineProps({
-//     stocks:Array,
-//     stock_items:Array,
-//     unit:Object,
-//     errors: Object,
-//     //can_abilities: { type: Object, required: true },
-//     can: { type: Object, required: true },
-// });
 
 
 

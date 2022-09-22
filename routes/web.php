@@ -71,6 +71,7 @@ Route::controller(ItemTransactionController::class)
 Route::get('/report-checkout-item/{division_id}', [ReportStockController::class,'index'])->name('report-checkout-item')->middleware('auth','can:manage_master_data');
 Route::get('/get-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'show'])->name('get-checkout-item')->middleware('auth');
 Route::get('/export-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'export'])->name('export-checkout-item')->middleware('auth');
+Route::get('/export-checkout-item-test/{checkout_items}', [ReportStockController::class,'export_test'])->name('export-checkout-item-test')->middleware('auth');
 Route::get('/print-cutstock/pdf/{stock_id}/{year}/{month}', [PrintFormController::class,'printCutStock'])->name('print-cutstock-pdf')->middleware('auth');
 
 

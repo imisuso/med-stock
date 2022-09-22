@@ -836,7 +836,7 @@ class PrintFormController extends Controller
         $pdf->SetFontSize('16'); 
         $pdf->SetXY(12, 37);
         $pdf->SetLineWidth(1);
-        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      SAP                         ชื่อพัสดุ                                 วันที่หมดอายุ      วันที่เบิกจ่าย       จำนวน                ผู้เบิก                  คงเหลือ ณ ปัจจุบัน            '),'B');
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      SAP                         ชื่อพัสดุ                          วันที่หมดอายุ          วันที่เบิกจ่าย            จำนวน                ผู้เบิก              คงเหลือ ณ ปัจจุบัน            '),'B');
        
     //     //body  list item
 
@@ -862,7 +862,7 @@ class PrintFormController extends Controller
             $tmp_item_code = '0';
         foreach ($stock_item_checkouts as $item) {
             $seq++;
-           // Log::info($item);
+            Log::info($item);
             $pdf->SetFontSize('16'); 
           
             // $pdf->SetXY($x, $y);
@@ -880,22 +880,30 @@ class PrintFormController extends Controller
                 $pdf->SetXY(41, $y);
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_name']));
             }
-            // $TransactionCheckout->date_expire,
-            // $TransactionCheckout->date_action,
-            // $TransactionCheckout->item_count,
-            // $TransactionCheckout->user->name,
-            // $TransactionCheckout->stockItem->item_sum,
+ 
 
-            $pdf->SetXY(110, $y);
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->date_expire));
+            $pdf->SetXY(112, $y);
+            $date_expire_last = ItemTransaction::select('date_expire')->where(['stock_item_id'=>$item->stock_item_id,
+                                                        'action'=>'checkin',
+                                                        'status'=>'active'    
+                                                ])
+                                                ->orderBy('created_at','desc')
+                                                ->first();
+            $split_date_expire = explode('-', $date_expire_last->date_expire);
+            $year_print = (int) $split_date_expire[0] + 543;
+            $date_expire_show = $split_date_expire[2].'  '.$thaimonth[(int) $split_date_expire[1]].' '.$year_print;              
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_expire_show));
 
-            $pdf->SetXY(152, $y);
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->date_action));
+            $pdf->SetXY(150, $y);
+            $split_date_action = explode('-', $item->date_action);
+            $year_print = (int) $split_date_action[0] + 543;
+            $date_action_show = $split_date_action[2].'  '.$thaimonth[(int) $split_date_action[1]].' '.$year_print;
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_action_show));
 
-            $pdf->SetXY(182, $y);
+            $pdf->SetXY(186, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->item_count));
 
-            $pdf->SetXY(197, $y);
+            $pdf->SetXY(199, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->user['name']));
 
            

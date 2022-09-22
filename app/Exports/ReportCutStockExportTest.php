@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -16,18 +17,24 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Date as DateTimeExcelDate;
 
-class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,WithTitle ,WithColumnWidths ,WithHeadingRow ,WithStyles
+class ReportCutStockExportTest implements FromArray ,WithHeadings  ,WithTitle ,WithColumnWidths ,WithHeadingRow ,WithStyles
 {
     use Exportable;
 
-    public function __construct(int $stock_id,int $year,int $month,string $stockname)
+    public function array(): array
     {
-        $this->stock_id = $stock_id;
-        $this->month = $month;
-        $this->year = $year;
-        $this->stockname = $stockname;
-       // Log::info("In class ReportCutStockExport");
-       // Log::info($this->stock_id);
+        return [
+            [1, 2, 3],
+            [4, 5, 6]
+        ];
+    }
+
+    public function __construct(array $stock_item_checkouts)
+    {
+       
+         $this->stock_item_checkouts = $stock_item_checkouts;
+       Log::info("In class ReportCutStockExportTest");
+       Log::info($this->stock_item_checkouts);
     }
 
     public function map($TransactionCheckout): array
