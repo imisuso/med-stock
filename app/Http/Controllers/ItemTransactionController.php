@@ -57,6 +57,14 @@ class ItemTransactionController extends Controller
         // Log::info($stock_item->stock);
         $year_checkout= substr($request->confirm_item_date,0,4);
         $month_checkout= substr($request->confirm_item_date,5,2);
+
+        $date_expire_last = ItemTransaction::select('date_expire')
+                                    ->where(['stock_item_id'=>$stock_item->id,
+                                                        'action'=>'checkin',
+                                                        'status'=>'active'    
+                                                ])
+                                    ->orderBy('created_at','desc')
+                                    ->first();
         try{
                 ItemTransaction::create([
                                         'stock_id'=>$stock_item->stock_id ,
@@ -66,6 +74,7 @@ class ItemTransactionController extends Controller
                                         'month'=>$month_checkout,
                                         'date_action'=>$request->confirm_item_date,
                                         'action'=>'checkout',
+                                        'date_expire'=> $date_expire_last->date_expire,
                                         'item_count'=>$request->confirm_item_count,
                                     ]);
 

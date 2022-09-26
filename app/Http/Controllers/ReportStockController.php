@@ -112,7 +112,7 @@ class ReportStockController extends Controller
        // Log::info($stock_item_checkouts);
 
         foreach($stock_item_checkouts as $key=>$tran_checkout){
-            Log::info($tran_checkout->stock_item_id);
+          //  Log::info($tran_checkout->stock_item_id);
             $date_expire_last = ItemTransaction::query()->select('date_expire')
                                                 ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
                                                                     'action'=>'checkin',
@@ -120,7 +120,9 @@ class ReportStockController extends Controller
                                                             ])
                                                 ->orderBy('created_at','desc')
                                                 ->first();
+          //  Log::info($date_expire_last->date_expire);
             $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
+            
         }
   
       
@@ -131,7 +133,7 @@ class ReportStockController extends Controller
         ];
   
         request()->session()->flash('mainMenuLinks', $main_menu_links);
-
+      //  Log::info($stock_item_checkouts);
         return response()->json([
             'item_trans' => $stock_item_checkouts
         ]);
@@ -143,40 +145,48 @@ class ReportStockController extends Controller
         $format_month = sprintf("%02d",$month);
         $stock_name = Stock::select('stockengname')->whereId($stock_id)->first();
 
-        $stock_item_checkouts = ItemTransaction::where(
-                                    [   'stock_id'=>$stock_id,
-                                        'year'=>$year,
-                                        'month'=>$month,
-                                        'action'=>'checkout',
-                                        'status'=>'active'
-                                    ])
-                                    ->with('stockItem:id,item_name,item_code,item_sum')
-                                    ->with('user:id,name')
-                                    ->orderBy('stock_item_id')->get();
+        // $stock_item_checkouts = ItemTransaction::where(
+        //                             [   'stock_id'=>$stock_id,
+        //                                 'year'=>$year,
+        //                                 'month'=>$month,
+        //                                 'action'=>'checkout',
+        //                                 'status'=>'active'
+        //                             ])
+        //                             ->with('stockItem:id,item_name,item_code,item_sum')
+        //                             ->with('user:id,name')
+        //                             ->orderBy('stock_item_id')->get();
 
-            // Log::info($stock_item_checkouts);
+        //     // Log::info($stock_item_checkouts);
 
-        foreach($stock_item_checkouts as $key=>$tran_checkout){
-            Log::info($tran_checkout->stock_item_id);
-            $date_expire_last = ItemTransaction::select('date_expire')
-                                            ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
-                                                                'action'=>'checkin',
-                                                                'status'=>'active'    
-                                                        ])
-                                            ->orderBy('created_at','desc')
-                                            ->first();
-            $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
-        }
+        // foreach($stock_item_checkouts as $key=>$tran_checkout){
+        //     Log::info($tran_checkout->stock_item_id);
+        //     $date_expire_last = ItemTransaction::select('date_expire')
+        //                                     ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
+        //                                                         'action'=>'checkin',
+        //                                                         'status'=>'active'    
+        //                                                 ])
+        //                                     ->orderBy('created_at','desc')
+        //                                     ->first();
+        //     $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
+        // }
 
         $filename_xls = 'ReportCutStock'."_".$stock_name->stockengname."_".$format_month.$year.'.xlsx';
-       // return (new ReportCutStockExportTest($stock_item_checkouts))->download($filename_xls);
+        //return (new ReportCutStockExportTest($stock_item_checkouts))->download($filename_xls);
         return (new ReportCutStockExport($stock_id,$year,$month,$stock_name->stockengname))->download($filename_xls);
     }
 
     public function export_test($checkout_items) 
     {
         Log::info('export_test');
-        Log::info($checkout_items[0]);
+        Log::info($checkout_items);
+
+      
+
+        $checkout_items_array = explode(',',$checkout_items);
+       // Log::info($checkout_items_array[0]['id']);
+        //dd('export_test');
+        return Excel::download(new ReportCutStockExportTest, 'test_export_cut_stock.xlsx');
+        //return (new ReportCutStockExportTest->download('test_export_cut_stock.xlsx');
         //Logger($checkout_items);
 
         // $filename_xls = 'ReportCutStock'."_".$stock_name->stockengname."_".$format_month.$year.'.xlsx';

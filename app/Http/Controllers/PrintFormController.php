@@ -882,17 +882,29 @@ class PrintFormController extends Controller
             }
  
 
-            $pdf->SetXY(112, $y);
-            $date_expire_last = ItemTransaction::select('date_expire')->where(['stock_item_id'=>$item->stock_item_id,
-                                                        'action'=>'checkin',
-                                                        'status'=>'active'    
-                                                ])
-                                                ->orderBy('created_at','desc')
-                                                ->first();
-            $split_date_expire = explode('-', $date_expire_last->date_expire);
-            $year_print = (int) $split_date_expire[0] + 543;
-            $date_expire_show = $split_date_expire[2].'  '.$thaimonth[(int) $split_date_expire[1]].' '.$year_print;              
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_expire_show));
+          
+            // $date_expire_last = ItemTransaction::select('date_expire')->where(['stock_item_id'=>$item->stock_item_id,
+            //                                             'action'=>'checkin',
+            //                                             'status'=>'active'    
+            //                                     ])
+            //                                     ->orderBy('created_at','desc')
+            //                                     ->first();
+            // $split_date_expire = explode('-', $date_expire_last->date_expire);
+            // $year_print = (int) $split_date_expire[0] + 543;
+            // $date_expire_show = $split_date_expire[2].'  '.$thaimonth[(int) $split_date_expire[1]].' '.$year_print;       
+            if(strlen($item->date_expire)==0){
+                $date_expire_show= "-";
+                $pdf->SetXY(125, $y);
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_expire_show));
+            }else{
+                $split_date_expire = explode('-', $item->date_expire);
+                $year_print = (int) $split_date_expire[0] + 543;
+                $date_expire_show = $split_date_expire[2].'  '.$thaimonth[(int) $split_date_expire[1]].' '.$year_print;       
+                $pdf->SetXY(112, $y);
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_expire_show));
+            }
+                   
+            
 
             $pdf->SetXY(150, $y);
             $split_date_action = explode('-', $item->date_action);

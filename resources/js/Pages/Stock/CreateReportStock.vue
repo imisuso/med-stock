@@ -103,26 +103,23 @@
                     ปัจจุบันคงเหลือ:
                     <label class=" font-bold">  {{item_tran.stock_item['item_sum']}}</label>
                 </div>
-            </div>   
-        
-           
-          
+            </div>     
         </div>
       </div>
-
+   
 
     <div v-if="item_trans.length !=0"   class=" mt-6 flex flex-col  ">
-        <!-- <button
-            class=" flex justify-center mt-3 px-8 py-1   text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
-        >
-         
-            พิมพ์รายงาน
-        </button> -->
-       
-         <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-yellow-600 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none" 
+ 
+        <!-- {{item_trans}} -->
+         <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-blue-700 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none" 
             :href="route('export-checkout-item', {stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })">
             Export Excel
         </a>
+
+        <!-- <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-yellow-600 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none" 
+            :href="route('export-checkout-item-test', {checkout_items:item_trans })">
+            Export Excel Test
+        </a> -->
 
         <!-- <a :href="route('print-purchase-order-item',purchaseOrder.id)"  target="blank" -->
             <a :href="route('print-cutstock-pdf',{stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })"  target="blank"

@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -17,52 +18,82 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Date as DateTimeExcelDate;
 
-class ReportCutStockExportTest implements FromArray ,WithHeadings  ,WithTitle ,WithColumnWidths ,WithHeadingRow ,WithStyles
+class ReportCutStockExportTest implements FromCollection
 {
     use Exportable;
 
-    public function array(): array
+    //protected $stock_item_checkouts;
+
+    public function collection()
     {
-        return [
-            [1, 2, 3],
-            [4, 5, 6]
-        ];
+        return ItemTransaction::all();
     }
 
-    public function __construct(array $stock_item_checkouts)
-    {
+    // public function __construct($stock_item_checkouts)
+    // {
        
-         $this->stock_item_checkouts = $stock_item_checkouts;
-       Log::info("In class ReportCutStockExportTest");
-       Log::info($this->stock_item_checkouts);
-    }
+    //      $this->stock_item_checkouts = $stock_item_checkouts;
+    //    Log::info("In class ReportCutStockExportTest");
+    //    Log::info($this->stock_item_checkouts);
+    // }
+    // public function query()
+    // {
+    //     Log::info('In Query');
+    //     return ItemTransaction::query()->whereKey($this);
 
-    public function map($TransactionCheckout): array
-    {
-    
-        Log::info("In Map");
-       // Log::info($TransactionCheckout);
-        Log::info($TransactionCheckout->id);
-        Log::info($TransactionCheckout->date_expire);
-        Log::info($TransactionCheckout->date_expire_last);
-        Log::info($TransactionCheckout->user->name);
-        Log::info($TransactionCheckout->user->id);
-        Log::info($TransactionCheckout->stockItem->id);
-        Log::info($TransactionCheckout->stockItem->item_code);
-        
-        return [
+    //     $TransactionCheckout =  ItemTransaction::query()->where(
+    //                             [   'stock_id'=>$this->stock_id,
+    //                                 'year'=>$this->year,
+    //                                 'month'=>$this->month,
+    //                                 'action'=>'checkout',
+    //                                 'status'=>'active'
+    //                             ])
+    //                             ->with('stockItem:id,item_name,item_code,item_sum')
+    //                             ->with('user:id,name')
+    //                             ->orderBy('stock_item_id');
+
           
-                $TransactionCheckout->stockItem->item_code,
-                $TransactionCheckout->stockItem->item_name,
-                $TransactionCheckout->date_expire_last,
-                $TransactionCheckout->date_action,
-                $TransactionCheckout->item_count,
-                $TransactionCheckout->user->name,
-                $TransactionCheckout->stockItem->item_sum,
-            // Date::dateTimeToExcel($TransactionCheckout->created_at),
+    //     // foreach($TransactionCheckout as $key=>$tran_checkout){
+    //     //     Log::info($tran_checkout->stock_item_id);
+    //     //     $date_expire_last = ItemTransaction::query()->select('date_expire')
+    //     //                                         ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
+    //     //                                                             'action'=>'checkin',
+    //     //                                                             'status'=>'active'    
+    //     //                                                     ])
+    //     //                                         ->orderBy('created_at','desc')
+    //     //                                         ->first();
+    //     //     $TransactionCheckout[$key]['date_expire_last'] = $date_expire_last->date_expire;
+    //     // }
+      
+    //     return $TransactionCheckout;
+    // }
+
+    // public function map($TransactionCheckout): array
+    // {
+    
+    //     Log::info("In Map");
+    //    // Log::info($TransactionCheckout);
+    //     Log::info($TransactionCheckout->id);
+    //     Log::info($TransactionCheckout->date_expire);
+    //     Log::info($TransactionCheckout->date_expire_last);
+    //     Log::info($TransactionCheckout->user->name);
+    //     Log::info($TransactionCheckout->user->id);
+    //     Log::info($TransactionCheckout->stockItem->id);
+    //     Log::info($TransactionCheckout->stockItem->item_code);
+        
+    //     return [
+          
+    //             $TransactionCheckout->stockItem->item_code,
+    //             $TransactionCheckout->stockItem->item_name,
+    //             $TransactionCheckout->date_expire_last,
+    //             $TransactionCheckout->date_action,
+    //             $TransactionCheckout->item_count,
+    //             $TransactionCheckout->user->name,
+    //             $TransactionCheckout->stockItem->item_sum,
+    //         // Date::dateTimeToExcel($TransactionCheckout->created_at),
            
-        ];
-    }
+    //     ];
+    // }
 
     public function headings(): array
     {
@@ -77,36 +108,7 @@ class ReportCutStockExportTest implements FromArray ,WithHeadings  ,WithTitle ,W
         ];
     }
 
-    public function query()
-    {
-
-
-        $TransactionCheckout =  ItemTransaction::query()->where(
-                                [   'stock_id'=>$this->stock_id,
-                                    'year'=>$this->year,
-                                    'month'=>$this->month,
-                                    'action'=>'checkout',
-                                    'status'=>'active'
-                                ])
-                                ->with('stockItem:id,item_name,item_code,item_sum')
-                                ->with('user:id,name')
-                                ->orderBy('stock_item_id');
-
-        //     Log::info('In Query');
-        // foreach($TransactionCheckout as $key=>$tran_checkout){
-        //     Log::info($tran_checkout->stock_item_id);
-        //     $date_expire_last = ItemTransaction::query()->select('date_expire')
-        //                                         ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
-        //                                                             'action'=>'checkin',
-        //                                                             'status'=>'active'    
-        //                                                     ])
-        //                                         ->orderBy('created_at','desc')
-        //                                         ->first();
-        //     $TransactionCheckout[$key]['date_expire_last'] = $date_expire_last->date_expire;
-        // }
-      
-        return $TransactionCheckout;
-    }
+   
     public function title(): string
     {
         $format_month = sprintf("%02d",$this->month);

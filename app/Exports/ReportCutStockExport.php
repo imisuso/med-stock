@@ -35,19 +35,20 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
     
         Log::info("In Map");
        // Log::info($TransactionCheckout);
-        Log::info($TransactionCheckout->id);
-        Log::info($TransactionCheckout->date_expire);
-        Log::info($TransactionCheckout->date_expire_last);
-        Log::info($TransactionCheckout->user->name);
-        Log::info($TransactionCheckout->user->id);
-        Log::info($TransactionCheckout->stockItem->id);
-        Log::info($TransactionCheckout->stockItem->item_code);
+         Log::info($TransactionCheckout->id);
+        // Log::info($TransactionCheckout->date_expire);
+        // Log::info($TransactionCheckout->date_expire_last);
+        // Log::info($TransactionCheckout->user->name);
+        // Log::info($TransactionCheckout->user->id);
+        // Log::info($TransactionCheckout->stockItem->id);
+        // Log::info($TransactionCheckout->stockItem->item_code);
+       // Log::info($TransactionCheckout->date_expire_last);
         
         return [
           
                 $TransactionCheckout->stockItem->item_code,
                 $TransactionCheckout->stockItem->item_name,
-                $TransactionCheckout->date_expire_last,
+                $TransactionCheckout->date_expire,
                 $TransactionCheckout->date_action,
                 $TransactionCheckout->item_count,
                 $TransactionCheckout->user->name,
@@ -72,7 +73,8 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
 
     public function query()
     {
-
+        // ->with('stockItem:id,item_name,item_code,item_sum')
+        // ->with('user:id,name')
 
         $TransactionCheckout =  ItemTransaction::query()->where(
                                 [   'stock_id'=>$this->stock_id,
@@ -84,19 +86,11 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
                                 ->with('stockItem:id,item_name,item_code,item_sum')
                                 ->with('user:id,name')
                                 ->orderBy('stock_item_id');
+                                // ->get();
 
-        //     Log::info('In Query');
-        // foreach($TransactionCheckout as $key=>$tran_checkout){
-        //     Log::info($tran_checkout->stock_item_id);
-        //     $date_expire_last = ItemTransaction::query()->select('date_expire')
-        //                                         ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
-        //                                                             'action'=>'checkin',
-        //                                                             'status'=>'active'    
-        //                                                     ])
-        //                                         ->orderBy('created_at','desc')
-        //                                         ->first();
-        //     $TransactionCheckout[$key]['date_expire_last'] = $date_expire_last->date_expire;
-        // }
+            Log::info('In Query');
+   
+       
       
         return $TransactionCheckout;
     }
@@ -112,8 +106,8 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
         return [
             'A' => 9,
             'B' => 40, 
-            'C' => 12,   
-            'D' => 12, 
+            'C' => 16,   
+            'D' => 16, 
             'F' => 20,            
         ];
     }
