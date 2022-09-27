@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+//use Illuminate\Validation\Validator as ValidationValidator;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -57,13 +60,16 @@ class StockItemImportController extends Controller
                          );
 
         $collect = array();
+
+        $error_validate = array();
+        $error_index=array();
         foreach ($rows[0] as $key => $row)
         {
-           // Logger($row);
+          //  Logger($row);
           
             //* validate head row */
             if($key==0){ 
-                logger(count($row));
+               // logger(count($row));
                 if(count($row)!=$col_excel){
                     $error_validate_excel ='จำนวนคอลัมน์ไม่ตรงที่กำหนด ในไฟล์มี '.count($row). ' ที่กำหนดต้องมี '.$col_excel.' คอลัมน์';
                     return Inertia::render('Admin/StockItemImportShow',[
@@ -87,25 +93,73 @@ class StockItemImportController extends Controller
                 }         
             }
             if($key!=0){
-        
+                
+                /************ START Validation data row in excel ************/
+                // $validated = $row->validate([
+                //     'item_code' => ['required','min:8'],
+                //     'date_receive' => 'required',
+                // ]);
 
-                 $date_temp=date_create($row[3]);
-                 $date_format_receive = date_format($date_temp,"Y-m-d");
-              //  $row[3]->formatDates(true, 'Y-m-d');
-               // $reader->formatDates(true, 'Y-m-d');
-                  $collect[]= array(
-                    'item_code' => $row[0],
-                    'item_name' => $row[1],
-                    'unit_count' => $row[2],
-                    'date_receive' => $date_format_receive,
-                    'item_receive' => $row[4],
-                    'date_expire' => $row[5],
-                    'price' => $row[6],
-                    'catalog_number' => $row[7],
-                    'lot_number' => $row[8],
-                );
+                $rules = ['0' => 'required|integer|digits:8', //item_code
+                          '1' => 'required',    //item_name
+                          '2' => 'required',    //unit_count
+                          '3' => 'required|date', //date_receive
+                          '4' => 'required|integer|digits_between:1,3', //item_receive
+                          '5' => 'required|date',       //date_expire
+                          '6' => 'required|regex:/^(([0-9]*)(\.([0-9]+))?)$/|max:8',        //price
+                          '7' => 'nullable|max:20',        //catalog_number
+                          '8' => 'nullable|max:20',        //lot_number
+                ];
+ 
+                $customMessages = [
+                    'required' => 'attribute field is required.',
+                    '0.integer' => 'ข้อมูล item_code ต้องเป็นตัวเลขเท่านั้น',
+                    '0.digits' => 'ข้อมูล item_code ต้องเป็นตัวเลข 8 หลัก เท่านั้น',
+                    '4.integer' => 'ข้อมูล item_receive ต้องเป็นตัวเลขเท่านั้น',
+                    '4.digits_between' => 'ข้อมูล item_receive ต้องเป็นตัวเลขไม่เกิน 3 หลักเท่านั้น',
+                    '3.date'=>'ข้อมูล date_receive รูปแบบของวันที่ไม่ถูกต้อง (ตัวอย่าง 2022-12-31)',
+                    '5.date'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้อง (ตัวอย่าง 2022-12-31)',
+                    '6.regex' => 'ข้อมูล price ต้องเป็นตัวเลขเท่านั้น',
+                    '6.max' => 'ข้อมูล price ต้องเป็นตัวเลขไม่เกิน 8 หลักเท่านั้น',
+                    '7.max'=>'ข้อมูล catalog_number ต้องไม่เกิน 20 ตัวอักษร',
+                ];
+
+                //dd(Validator::make($row,$rules,$customMessages)->errors());
+                //if(Validator::make($row,$rules,$customMessages)->passes())
+                $tmp_error_validate = Validator::make($row,$rules,$customMessages)->errors();
+                //  Logger($tmp_error_validate);
+                // Logger($tmp_error_validate->first($key));
+                // dd($tmp_error_validate);
+                // dd($tmp_error_validate->array_count_values($tmp_error_validate['messages']));
+               if(count($tmp_error_validate)>0){
+                     $error_validate[$key] = $tmp_error_validate;
+               }else{
+                    $date_temp=date_create($row[3]);
+                    $date_format_receive = date_format($date_temp,"Y-m-d");
+                //  $row[3]->formatDates(true, 'Y-m-d');
+                // $reader->formatDates(true, 'Y-m-d');
+                    $collect[]= array(
+                        'item_code' => $row[0],
+                        'item_name' => $row[1],
+                        'unit_count' => $row[2],
+                        'date_receive' => $date_format_receive,
+                        'item_receive' => $row[4],
+                        'date_expire' => $row[5],
+                        'price' => $row[6],
+                        'catalog_number' => $row[7],
+                        'lot_number' => $row[8],
+                    );
+                }
             }
         }
+      //  dd(count($error_validate));
+
+        if(count($error_validate)>0){
+            return Inertia::render('Admin/StockItemImportShow',[
+                'validate_row_excel'=>false,
+                'msg_validate_row'=> $error_validate,
+            ]);
+         }
       //  Logger($collect);
        //  Logger(count($collect));
       //  dd('test');
@@ -126,7 +180,8 @@ class StockItemImportController extends Controller
                                // 'date_receive'=> $request->date_receive,
                                 'stock_item_import_count'=> count($collect),
                                 'stock_item_import'=> $collect,
-                                'validate_excel'=>true
+                                'validate_excel'=>true,
+                                'validate_row_excel'=>true
         ]);
      
 

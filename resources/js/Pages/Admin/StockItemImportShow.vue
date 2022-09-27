@@ -1,9 +1,24 @@
 <template>
     <AppLayout>
       
+        <div v-if="!validate_row_excel"
+            class=" w-full p-4   text-lg font-bold bg-red-200 rounded-md "
+        >
+            <!-- {{msg_validate_row}} -->
+            <li v-for="(msg_validate,index) in msg_validate_row" :key="index">
+                รายการพัสดุแถวที่:{{index}} 
+                <div v-for="(msg,index_msg) in msg_validate" :key="index_msg"
+                 class="mx-5"
+                >
+                    - {{msg[0]}}
+                </div>
+         
+            </li>
+        </div>
         <div v-if="!validate_excel"
             class=" w-full p-4   text-lg font-bold bg-red-200 rounded-md "
         >
+      
             <label for="">{{msg_validate_excel}}</label>
             <li v-for="(header_false,index) in header_diff" :key="index">
                 {{header_false}}
@@ -12,7 +27,7 @@
             <!-- {{header_diff}} -->
         </div>
        
-        <div v-else
+        <div v-if="validate_excel && validate_row_excel"
             class=" w-full p-4   text-lg font-bold bg-blue-100 rounded-md "
             >
             <div class=" ">
@@ -78,7 +93,7 @@
             </div> -->
             
         </div> 
-        <div v-if="validate_excel" class=" mt-2">
+        <div v-if="validate_excel && validate_row_excel" class=" mt-2">
             <button
             class="  w-full flex justify-center py-2  text-md   font-bold bg-green-300 hover:bg-green-200 focus:outline-none"
             @click="CheckInToStockItem()"
@@ -141,9 +156,11 @@ const props =defineProps({
     stock_item_status:{type:Number},
     stock_item_import: {type:Array, default:[]},
     stock_item_import_count:{type:Number},
-    validate_excel:{type:Boolean},
+    validate_excel:{type:Boolean,default:true},
     msg_validate_excel:{type:String},
-    header_diff:{type:Array}
+    header_diff:{type:Array},
+    validate_row_excel:{type:Boolean,default:true},
+    msg_validate_row:{type:Array}
    // date_receive:{type:String},
     
 })
