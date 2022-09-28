@@ -95,33 +95,41 @@ class StockItemImportController extends Controller
             if($key!=0){
                 
                 /************ START Validation data row in excel ************/
-                // $validated = $row->validate([
-                //     'item_code' => ['required','min:8'],
-                //     'date_receive' => 'required',
-                // ]);
-
+  
                 $rules = ['0' => 'required|integer|digits:8', //item_code
-                          '1' => 'required',    //item_name
-                          '2' => 'required',    //unit_count
-                          '3' => 'required|date', //date_receive
+                          '1' => 'required|max:100',        //item_name
+                          '2' => 'required|max:20',         //unit_count
+                          '3' => 'required|date',           //date_receive
                           '4' => 'required|integer|digits_between:1,3', //item_receive
-                          '5' => 'required|date',       //date_expire
-                          '6' => 'required|regex:/^(([0-9]*)(\.([0-9]+))?)$/|max:8',        //price
-                          '7' => 'nullable|max:20',        //catalog_number
-                          '8' => 'nullable|max:20',        //lot_number
+                          '5' => 'required|date',           //date_expire
+                          '6' => 'required|regex:/^(([0-9]*)(\.([0-9]+))?)$/|max:8',    //price
+                          '7' => 'required|max:20',        //catalog_number
+                          '8' => 'required|max:20',        //lot_number
                 ];
  
                 $customMessages = [
-                    'required' => 'attribute field is required.',
+                    '0.required' => 'ต้องรหัสพัสดุในคอลัมน์ item_code ',
                     '0.integer' => 'ข้อมูล item_code ต้องเป็นตัวเลขเท่านั้น',
                     '0.digits' => 'ข้อมูล item_code ต้องเป็นตัวเลข 8 หลัก เท่านั้น',
+                    '1.required' => 'ต้องระบุชื่อพัสดุในคอลัมน์ item_name ',
+                    '1.max' => 'ข้อมูลชื่อพัสดุในคอลัมน์ item_name ต้องไม่เกิน 100 ตัวอักษร ',
+                    '2.required' => 'ต้องใส่ข้อมูลหน่วยนับของพัสดุที่ตรวจรับในคอลัมน์ unit_count ', 
+                    '2.max' => 'ข้อมูลหน่วยนับในคอลัมน์ unit_count ต้องไม่เกิน 20 ตัวอักษร ',
+                    '3.required' => 'ต้องใส่ข้อมูลวันที่ตรวจรับพัสดุในคอลัมน์ date_receive ',
+                    '3.date'=>'ข้อมูล date_receive รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
+                    '4.required' => 'ต้องใส่ข้อมูลจำนวนพัสดุในคอลัมน์ item_receive ',
                     '4.integer' => 'ข้อมูล item_receive ต้องเป็นตัวเลขเท่านั้น',
                     '4.digits_between' => 'ข้อมูล item_receive ต้องเป็นตัวเลขไม่เกิน 3 หลักเท่านั้น',
-                    '3.date'=>'ข้อมูล date_receive รูปแบบของวันที่ไม่ถูกต้อง (ตัวอย่าง 2022-12-31)',
-                    '5.date'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้อง (ตัวอย่าง 2022-12-31)',
+                    '5.required' => 'ต้องใส่ข้อมูลวันที่หมดอายุของพัสดุในคอลัมน์ date_expire ',
+                    '5.date'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
+                    '6.required' => 'ต้องใส่ข้อมูลราคาต่อหน่วยของพัสดุในคอลัมน์ price ',
                     '6.regex' => 'ข้อมูล price ต้องเป็นตัวเลขเท่านั้น',
-                    '6.max' => 'ข้อมูล price ต้องเป็นตัวเลขไม่เกิน 8 หลักเท่านั้น',
+                    '6.max' => 'ข้อมูลราคาพัสดุในคอลัมน์ price ต้องเป็นตัวเลขไม่เกิน 8 หลักเท่านั้น',
+                    '7.required' => 'ต้องใส่ข้อมูลในคอลัมน์ catalog_number',
                     '7.max'=>'ข้อมูล catalog_number ต้องไม่เกิน 20 ตัวอักษร',
+                    '8.required' => 'ต้องใส่ข้อมูลในคอลัมน์ lot_number',
+                    '8.max'=>'ข้อมูล lot_number ต้องไม่เกิน 20 ตัวอักษร',
+                   
                 ];
 
                 //dd(Validator::make($row,$rules,$customMessages)->errors());

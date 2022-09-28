@@ -8,7 +8,7 @@
             <li v-for="(msg_validate,index) in msg_validate_row" :key="index">
                 รายการพัสดุแถวที่:{{index}} 
                 <div v-for="(msg,index_msg) in msg_validate" :key="index_msg"
-                 class="mx-5"
+                 class="mx-5 text-sm "
                 >
                     - {{msg[0]}}
                 </div>

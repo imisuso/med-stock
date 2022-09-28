@@ -68,44 +68,75 @@
         </div>    
         <div v-if="item_trans.length==0" class=" w-full text-center">
             <label for="">ไม่พบข้อมูล</label>
-        </div>    
-      
-      <div  class="w-full mt-3 p-2  ">
-  
-        <div v-for="(item_tran,key) in item_trans" :key=item_tran.id
-            class="w-full my-3  border-b-2 border-gray-500 shadow-sm ">
-            <!-- {{item_tran}} -->
-            <div class="flex flex-col lg:flex-row  mx-2">
-                <div>
-                    {{key+1}}.วันที่เบิก:
-                    <label class=" font-bold">{{date_action_thai(item_tran.date_action)}}</label>
-                </div>
-              
-                <div class=" lg:ml-5">
-                    ผู้เบิก:
-                <label class=" font-bold">{{item_tran.user['name']}}</label>
-                </div>
-            </div>  
-            <div class="flex flex-col lg:flex-row lg:justify-between  mx-2"  >
-                <div>
-                 SAP:
-                 <label class=" font-bold">
-                     {{item_tran.stock_item['item_code']}} 
-                 </label>
-                 -
-                 <label class=" font-bold">{{item_tran.stock_item['item_name']}}  [Exp.{{date_short_thai(item_tran.date_expire_last)}}]  </label>
-                </div>
-                <div class=" lg:ml-5">
-                    จำนวนที่เบิก:
-                    <label class=" font-bold">{{item_tran.item_count}} ชิ้น</label>
-                </div>
-                <div class=" lg:ml-5">
-                    ปัจจุบันคงเหลือ:
-                    <label class=" font-bold">  {{item_tran.stock_item['item_sum']}}</label>
-                </div>
-            </div>     
+        </div> 
+        
+        <div>
+            <div 
+                class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
+                <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
+                    
+                    <div class=" lg:w-2/12  ">
+                        วันที่เบิก:
+                    </div>
+                
+                    <div class=" lg:w-2/12 ">
+                        ผู้เบิก:
+                    </div>
+                    <div class=" lg:w-5/12 ">
+                        SAP-ชื่อพัสดุ:
+                    </div>
+                    <div class=" lg:w-2/12 ">
+                        วันที่หมดอายุ:
+                    </div>
+                    <div class=" lg:w-1/12 ">
+                        จำนวนที่เบิก:
+                    </div>
+                    <div class=" lg:w-1/12 ">
+                        จำนวนคงเหลือปัจจุบัน:
+                    </div>
+                </div>     
+            </div>
         </div>
-      </div>
+      
+        <div  class="w-full mt-3  ">
+  
+            <div v-for="(item_tran,key) in item_trans" :key=item_tran.id
+                class="w-full border-b-2   border-gray-500 shadow-sm ">
+              
+                <div class="flex flex-col  lg:flex-row   "  >
+                    
+                    <div class=" bg-blue-100 lg:bg-transparent lg:w-2/12  ">
+                        <label for="" class="  lg:hidden">{{key+1}}.วันที่เบิก:</label>
+                        <label class=" font-bold">{{date_action_thai(item_tran.date_action)}}</label>
+                    </div>
+                
+                    <div class=" lg:w-2/12   ">
+                        <label for="" class="   lg:hidden">ผู้เบิก:</label>
+                        <label class=" font-bold">{{item_tran.user['name']}}</label>
+                    </div>
+                    <div class="   lg:w-5/12 lg:text-sm ">
+                        <label for="" class="   lg:hidden">SAP:</label>
+                        <label class=" font-bold">
+                            {{item_tran.stock_item['item_code']}} 
+                        </label>
+                        -
+                        <label class=" font-bold">{{item_tran.stock_item['item_name']}}   </label>
+                    </div>
+                    <div class=" lg:w-2/12  ">
+                        <label for="" class="  lg:hidden">วันที่หมดอายุ:</label>
+                        <label class=" font-bold">{{date_short_thai(item_tran.date_expire_last)}}</label>
+                    </div>
+                    <div class="  lg:w-1/12 ">
+                        <label for="" class="  lg:hidden">จำนวนที่เบิก:</label>
+                        <label class=" font-bold">{{item_tran.item_count}} </label>
+                    </div>
+                    <div class="  lg:w-1/12 ">
+                        <label for="" class="  lg:hidden">จำนวนคงเหลือปัจจุบัน:</label>
+                        <label class=" font-bold">  {{item_tran.stock_item['item_sum']}}</label>
+                    </div>
+                </div>     
+            </div>
+        </div>
    
 
     <div v-if="item_trans.length !=0"   class=" mt-6 flex flex-col  ">
@@ -195,7 +226,8 @@ const year_thai = (year_select)=>{
 
 const date_action_thai = (date_action)=>{
     //console.log(props.stockBudget.budget)
-    let thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+    let thaimonth = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    //let thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
     //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
     let date_arr = date_action.split('-');
 

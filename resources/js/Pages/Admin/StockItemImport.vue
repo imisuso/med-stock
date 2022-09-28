@@ -12,16 +12,22 @@
                 </svg>
             </label>
         </div>
-        <div class=" w-full p-4 flex-col justify-center bg-blue-100 rounded-md ">
-            <div class=" text-center text-lg font-bold ">
-                <p class=" my-2 ">Import Excel Stock Item</p> 
+        <div class=" w-full p-4 mt-2  justify-center bg-red-100">
+            <p class=" flex font-bold underline">กรุณาอ่าน:คำแนะนำการนำเข้าพัสดุจากไฟล์ excel</p>
+            <p >1.ตรวจสอบชื่อคอลัมน์และจำนวนคอลัมน์ให้ถูกต้องตามตัวอย่างไฟล์ excel</p>
+            <p >2.ตรวจสอบจำนวนรายการพัสดุต้องไม่เกิน 50 รายการต่อ 1 ไฟล์ excel</p>
+            <p >3.ตรวจสอบ Format Cell ให้ตรงกับตัวอย่างไฟล์ excel ทุกคอลัมน์</p>
+        </div> 
+        <div class=" w-full p-4 mt-2 flex-col justify-center bg-blue-100 rounded-md ">
+            <div class=" bg-blue-800 text-white text-center text-lg font-bold ">
+                <p class=" my-2 ">นำเข้าข้อมูลพัสดุจากไฟล์ Excel ตรวจรับพัสดุ</p> 
             </div>
             
                <!-- {{ $page.props.unit }}
 
                {{ $page.props.stocks }} -->
             <div class=" w-full  bg-blue-100 p-2 rounded-md ">
-                <div class="bg-blue-800 text-white text-xl text-center ">
+                <div class="  text-xl text-center ">
                     {{$page.props.unit.unitname}}
                 </div>
                 <div class="mt-3" >
@@ -73,11 +79,7 @@
 
          
         </div>
-        <div class=" w-full p-4 mt-2  justify-center bg-red-100">
-            <p for="">คำแนะนำการนำเข้าพัสดุจากไฟล์ excel</p>
-            <p for="">1.กรุณาตรวจสอบชื่อคอลัมน์และจำนวนคอลัมน์ให้ถูกต้องตามตัวอย่างไฟล์ excel</p>
-            <p for="">2.กรุณาตรวจสอบจำนวนรายการพัสดุต้องไม่เกิน 50 รายการต่อ 1 ไฟล์ excel</p>
-        </div> 
+       
     </AppLayout>
  </template>
  <script setup>
