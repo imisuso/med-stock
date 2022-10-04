@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -18,6 +19,7 @@ class Stock extends Model
         'user_id'
     ];
 
+    protected $appends = ['status_name'];
     protected static function booted()
     {
         static::creating(function ($user) {
@@ -39,6 +41,30 @@ class Stock extends Model
 
     public function orderPurchases(){
         return $this->hasMany(OrderPurchase::class,'unit_id','unit_id');
+    }
+
+    public function Unit()
+    {
+        return $this->belongsTo(Unit::class,'unit_id','unitid');
+    }
+
+    protected function statusName(): Attribute
+    {
+        // return Attribute::make(
+        // get: fn () => "{$this->slug}/{$this->cover}", // หรือเขียน function () {} ก็ได้นะครับ ต้องมี return
+        // );
+        return Attribute::make(
+            get:function () {
+                    if($this->status==1)
+                        return "เปิดใช้งาน";
+                    else if($this->status==2)
+                        return "ปิดใช้งาน";
+                    else if($this->status==3)
+                        return "ยกเลิกแล้ว";
+                    else
+                        return "status is invalid";
+        });      
+
     }
 
 

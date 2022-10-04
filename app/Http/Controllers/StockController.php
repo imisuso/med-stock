@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use App\Models\Stock;
 use App\Models\StockItem;
 use App\Models\Unit;
+use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -78,7 +79,7 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        logger($request->all());
+       // logger($request->all());
         $user = Auth::user();
         Stock::create([
             'stockname'=>$request->stock_name_thai,
@@ -99,7 +100,7 @@ class StockController extends Controller
      */
     public function show($id)
     {
-       //
+      
 
     }
 
@@ -109,9 +110,17 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Stock $stock)
     {
-        //
+        //Logger($stock);
+       // Logger($stock->unit);
+        $stock->unit;
+        // $aa =Stock::where('id',1)->with('unit:id,unitid,unitname')->get()
+        //$unit =  $stock->unit;
+        return Inertia::render('Admin/EditStock',[
+            'stock'=> $stock,
+          //  'unit' => $unit,
+            ]);
     }
 
     /**

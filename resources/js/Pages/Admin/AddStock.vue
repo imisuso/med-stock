@@ -15,7 +15,7 @@
         
         <div class=" w-full p-4 flex-col justify-center bg-blue-100 rounded-md ">
             <div class=" text-center text-lg font-bold ">
-                <p class=" my-2 ">เพิ่มคลังพัสดุใหม่</p> 
+                <p class=" my-2 ">จัดการข้อมูลคลังพัสดุ</p> 
             </div>
             
                <!-- {{ $page.props.unit }}
@@ -38,59 +38,97 @@
             </div>
             <!-- {{count(stocks_unit)}} -->
             <div v-if="stocks_unit_count>0"
-                class="w-full text-sm  bg-green-100 p-2 my-2 rounded-md"
+                class="w-full   text-sm   my-2 rounded-md"
                 >
                 <label for="">รายชื่อคลังที่มีอยู่แล้วในหน่วย/สาขา นี้:</label>
-                <li v-for="(stock) in  stocks_unit" :key=stock.id :value="stock.id"
-                
+                <div v-for="(stock,index) in  stocks_unit" :key=index :value="stock.id"
+                    class=" bg-white p-2  lg:flex lg:justify-between border-b-2  border-gray-300 "
                 >
-                {{stock.stockname}}({{stock.stockengname}})
-                </li>
+                    <div>
+                        {{index+1}}. {{stock.stockname}}({{stock.stockengname}})
+                        <label class=" text-blue-600">สถานะ:</label>
+                        {{stock.status_name}}
+                        <!-- <label for="" v-if="stock.status==1" class=" ml-4 "> สถานะ:ใช้งาน</label> -->
+                    </div>
+                    <div  >
+                        <a :href="route('show-detail-stock',stock)" class=" bg-yellow-200 px-2 rounded-md shadow-md " >
+                            แก้ไข
+                        </a>
+                     
+                        <!-- <button type="submit" 
+                            class="   ml-4 px-2 text-md  bg-red-500 hover:bg-red-700 text-white  border border-red-500  rounded-md shadow-md"
+                            @click="confirmDeleteStock()"
+                            >
+                            ลบ
+                        </button> -->
+                    </div>
+                   
+                </div>
+                <div class=" my-2 ">
+                    <button type="submit" 
+                        class=" w-full flex justify-center py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        @click="showFormAddStock()"
+                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        เพิ่มคลังพัสดุ
+                    </button>
+                </div>
             </div>  
             <div v-if="stocks_unit_count==0"
-                class="w-full  bg-yellow-100 p-2 my-2 rounded-md"
+                class="w-full   p-2 my-2 rounded-md"
                 >
-                <label for="">ไม่พบรายชื่อคลังในหน่วย/สาขา นี้:</label>
+                <label for="">ไม่พบรายชื่อคลังในหน่วย/สาขา นี้</label>
+                <div class=" my-2 ">
+                    <button type="submit" 
+                        class=" w-full flex justify-center py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        @click="showFormAddStock()"
+                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                            เพิ่มคลังพัสดุ
+                    </button>
+                </div>
             </div>
+
+            <div v-if="show_form_add_stock">
+                <div class=" w-full  bg-blue-100 p-2 rounded-md ">
+               
+                    <div class="mt-3" >
+                        <label for="">ระบุชื่อคลังพัสดุ(ภาษาไทย):</label> 
+                    </div>
+                    <input type="text" class="w-full  py-2 rounded-md "
+                        v-model="form.stock_name_thai"
+                    >
+                
+                </div>
+                <div class=" w-full  bg-blue-100 p-2 rounded-md ">
+                
+                    <div class="mt-3" >
+                        <label for="">ระบุชื่อคลังพัสดุ(ภาษาอังกฤษ):</label> 
+                    </div>
+                    <input type="text" class="w-full  py-2 rounded-md "
+                        v-model="form.stock_name_en"
+                    >
+                    
+                </div>
+
            
-
-            <div class=" w-full  bg-blue-100 p-2 rounded-md ">
-                <div class="bg-blue-800 text-white text-xl text-center ">
-                 
-                </div>
-                <div class="mt-3" >
-                    <label for="">ระบุชื่อคลังพัสดุ(ภาษาไทย):</label> 
-                </div>
-                <input type="text" class="w-full  py-2 rounded-md "
-                     v-model="form.stock_name_thai"
-                >
-                
-            </div>
-            <div class=" w-full  bg-blue-100 p-2 rounded-md ">
-                <div class="bg-blue-800 text-white text-xl text-center ">
-                 
-                </div>
-                <div class="mt-3" >
-                    <label for="">ระบุชื่อคลังพัสดุ(ภาษาอังกฤษ):</label> 
-                </div>
-                <input type="text" class="w-full  py-2 rounded-md "
-                     v-model="form.stock_name_en"
-                >
-                
-            </div>
-
-            <div class=" my-2 ">
               
                 <div class="  ">
                     <button type="submit" 
                         class=" w-full flex justify-center py-2  text-md  bg-green-500 hover:bg-green-700 text-white  border border-green-500 rounded"
                         @click="confirmAddStock()"
                         >
-                        ตกลง
+                        บันทึก
                     </button>
                 </div>
-        
+    
+            
             </div>
+           
 
          
         </div>
@@ -133,11 +171,9 @@
                 </div>
             </template>
         </ModalUpToYou>
-        <!-- <div class=" w-full p-4 mt-2  justify-center bg-red-100">
-            <p for="">คำแนะนำการนำเข้าพัสดุจากไฟล์ excel</p>
-            <p for="">1.กรุณาตรวจสอบชื่อคอลัมน์และจำนวนคอลัมน์ให้ถูกต้องตามตัวอย่างไฟล์ excel</p>
-            <p for="">2.กรุณาตรวจสอบจำนวนรายการพัสดุต้องไม่เกิน 50 รายการต่อ 1 ไฟล์ excel</p>
-        </div>  -->
+
+       
+  
     </AppLayout>
  </template>
  <script setup>
@@ -159,9 +195,14 @@ const stocks_unit = ref('');
 const stocks_unit_count = ref();
 
 const confirm_add_stock=ref(false);
- const unit_name = ref('');
-// const unit_name = computed(()=>{
-// });
+
+const unit_name = ref('');
+const show_form_add_stock=ref(false);
+
+const showFormAddStock=()=>{
+    show_form_add_stock.value=true
+}
+
 const  cancelAddStock=()=>{
     confirm_add_stock.value = false;
 }
@@ -184,15 +225,13 @@ const getUnitname = () => {
 }
 
 const getListStockUnit=(()=>{
-     console.log('----------getListStockUnit------')
+    // console.log('----------getListStockUnit------')
     //console.log(unit);
-   
-
-
     axios.get(route('get-list-stock-unit',{unit_id:form.unit})).then(res => {
         console.log(res.data.list_stock_unit.length);
        stocks_unit.value = res.data.list_stock_unit;   
        stocks_unit_count.value = res.data.list_stock_unit.length;
+       show_form_add_stock.value=false
        //console.log(stocks_unit.count());
     });
 })

@@ -18,7 +18,7 @@ class CreateStocksTable extends Migration
             $table->uuid('slug');
             $table->string('stockname');
             $table->string('stockengname')->nullable();
-            $table->integer('status')->default(1);
+            $table->integer('status')->default(1);  //1=ใช้งาน ,2=ไม่ใช้งาน ,3=ยกเลิก
             $table->unsignedSmallInteger('unit_id');
             $table->unsignedSmallInteger('user_id');
             $table->json('config')->nullable();
