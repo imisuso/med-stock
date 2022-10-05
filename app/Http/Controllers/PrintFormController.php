@@ -478,7 +478,7 @@ class PrintFormController extends Controller
         
         $purchase_orders = OrderPurchase::where('unit_id',$stock_id)
                                 ->where('year',$year)
-                                ->whereIn('status',['approved','checkin'])
+                                ->whereIn('status',['approved','checkin','received'])
                                 ->orderBy('date_order')
                                 ->get();
 

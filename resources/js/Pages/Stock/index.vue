@@ -12,46 +12,47 @@
                     </svg>
                 </label>
         </div>
-        <div class=" w-full  bg-blue-100 p-2 rounded-md ">
-            <div class="bg-blue-800 text-white text-xl text-center ">
-                {{$page.props.unit.unitname}}
-            </div>
-            <div class="mt-3" >
-                <label for="">เลือกคลังพัสดุ</label> 
-            </div>
-            <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                <option v-for="(stock) in  $page.props.stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
-            </select>
-           
-        </div>
-        <div class=" w-full flex mt-2   p-2 rounded-md ">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-red-500 ">
-                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
-                </svg>
-           <label for="">เตือนเมื่อพัสดุมีน้อยกว่า 6 ชิ้น </label> 
-        </div>
-     
-  <!-- <div v-if="$page.props.flash.status=='success'" class="w-full mx-auto shadow-md rounded-md p-2 mt-2 text-black bg-green-200 border-white">
-        <label for=""> {{ $page.props.flash.msg }}</label>
-  </div> -->
-  <!-- {{stock_item_sum}} -->
-  <!-- {{$page.props.can_abilities}} -->
-  <!-- {{$page.props.can}} -->
 
-    <div class="w-full  p-2  ">
-  
-  
-        <CheckoutItem v-for="(stock_item,key) in stock_items" :key=stock_item.id
-            :itemIndex="key"
-            :stockItem="stock_item"
-            :canAbility="can"
-         />
-     
+      
+        <div v-if="stock_status=='close'">
+            <div class=" w-full flex justify-center  bg-blue-100 p-2 rounded-md ">
+                คลัง{{$page.props.auth.user.profile.division_name}} ถูกปิดการใช้งาน
+            </div>  
+        </div>
+        <div v-else>
 
-    
-    
-    </div>
-   
+       
+            <div class=" w-full  bg-blue-100 p-2 rounded-md ">
+                <div class="bg-blue-800 text-white text-xl text-center ">
+                    {{$page.props.unit.unitname}}
+                </div>
+                <div class="mt-3" >
+                    <label for="">เลือกคลังพัสดุ</label> 
+                </div>
+                <!-- {{stocks}} -->
+                <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
+                    <option v-for="(stock) in  $page.props.stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
+                </select>
+            
+            </div>
+            <div class=" w-full flex mt-2   p-2 rounded-md ">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-red-500 ">
+                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                    </svg>
+            <label for="">เตือนเมื่อพัสดุมีน้อยกว่า 6 ชิ้น </label> 
+            </div>
+
+
+            <div class="w-full  p-2  ">
+        
+                <CheckoutItem v-for="(stock_item,key) in stock_items" :key=stock_item.id
+                    :itemIndex="key"
+                    :stockItem="stock_item"
+                    :canAbility="can"
+                />
+            
+            </div>
+        </div>
     </AppLayout>
 </template>
 <script setup>
@@ -64,8 +65,8 @@ const props = defineProps({
     stock_items:Array,
     unit:Object,
     errors: Object,
-    //can_abilities: { type: Object, required: true },
     can: { type: Object, required: true },
+    stock_status:{type:String}
 })
 
 

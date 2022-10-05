@@ -10,7 +10,7 @@ class Unit extends Model
     use HasFactory;
     protected $table = 'units';
 
-    public function Stock()
+    public function stock()
     {
         return $this->hasMany(Stock::class,'unit_id','unitid');
     }

@@ -20,6 +20,9 @@ class Stock extends Model
     ];
 
     protected $appends = ['status_name'];
+
+    // protected $with = ['unit'];
+
     protected static function booted()
     {
         static::creating(function ($user) {
@@ -43,7 +46,7 @@ class Stock extends Model
         return $this->hasMany(OrderPurchase::class,'unit_id','unit_id');
     }
 
-    public function Unit()
+    public function unit()
     {
         return $this->belongsTo(Unit::class,'unit_id','unitid');
     }

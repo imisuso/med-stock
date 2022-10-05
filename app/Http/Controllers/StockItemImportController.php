@@ -26,7 +26,7 @@ class StockItemImportController extends Controller
     // logger($stock_item_import);
 
     $user = Auth::user();
-    $stocks = Stock::all();
+    $stocks = Stock::where('status',1)->get();
     $unit = Unit::where('unitid',$user->profile['division_id'])->first();
      //   Logger('StockItemImportController');
        return Inertia::render('Admin/StockItemImport',[

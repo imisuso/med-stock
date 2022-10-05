@@ -39,38 +39,47 @@
                     <input type="text" class="w-full  py-2 rounded-md "
                         v-model="form.stock_name_thai"
                     >
-                
                 </div>
                 <div class=" w-full  bg-blue-100 p-2 rounded-md ">
-                
                     <div class="mt-3" >
                         <label for="">ระบุชื่อคลังพัสดุ(ภาษาอังกฤษ):</label> 
                     </div>
                     <input type="text" class="w-full  py-2 rounded-md "
                         v-model="form.stock_name_en"
                     >
-                    
                 </div>
-
+                <div class=" w-full  bg-blue-100 p-2 rounded-md ">
+                    <div class="mt-3" >
+                        <label for="">ระบุสถานะคลังพัสดุ:</label> 
+                    </div>
+                 
+                        <!-- <div>Status: {{ form.status_stock }}</div> -->
+                        <div v-for="(status) in stock_status_list" :key=status.id 
+                            class="form-check">
+                            <input type="radio" id="one"  :value="status.id" v-model="form.status_stock" 
+                                class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                            />
+                            <label for="one">{{status.desc}}</label>
+                        </div>
+                       
+                      
+                </div>
            
               
                 <div class="  ">
                     <button type="submit" 
                         class=" w-full flex justify-center py-2  text-md  bg-green-500 hover:bg-green-700 text-white  border border-green-500 rounded"
-                        @click="confirmAddStock()"
+                        @click="confirmEditStock()"
                         >
                         แก้ไข
                     </button>
                 </div>
-    
-            
+
             </div>
            
-
-         
         </div>
 
-        <ModalUpToYou :isModalOpen="confirm_add_stock" >
+        <ModalUpToYou :isModalOpen="confirm_edit_stock" >
             <template v-slot:header>
                 <p class="text-md font-bold text-red-600 ">คุณต้องการแก้ไขคลังพัสดุนี้ใช่หรือไม่?</p> 
                                         
@@ -78,11 +87,7 @@
 
             <template v-slot:body>
                 <div class="text-gray-900 text-md font-medium dark:text-white">
-                     <label for=""
-                     class="  flex  justify-start w-full text-sm "
-                     >
-                            หน่วย/สาขา:{{getUnitname()}}
-                        </label>
+                  
                     <label 
                             class="  flex  justify-start w-full text-sm ">
                         <!-- ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}} -->
@@ -95,13 +100,13 @@
                 <div class=" w-full  text-center  md:block">
                     <button 
                         class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
-                        v-on:click="okconfirmAddStock"
+                        v-on:click="okconfirmEditStock"
                         >
                         ตกลง
                     </button>
                     <button 
                         class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
-                        v-on:click="cancelAddStock"
+                        v-on:click="cancelEditStock"
                     >
                         ยกเลิก
                     </button>
@@ -123,70 +128,62 @@ import { ref ,computed} from 'vue';
 
 const props =defineProps({
     stock:Array,
-    unit:Object,
+    stock_status_list:{type:Array,required:true},
     //stock_item_import: {type:Array, default:[]},
     
 })
 
-console.log(props.stock);
-console.log(props.unit);
 
-const confirm_add_stock=ref(false);
+const confirm_edit_stock=ref(false);
 
 
 const show_form_add_stock=ref(false);
 
-const showFormAddStock=()=>{
-    show_form_add_stock.value=true
-}
+// const showFormAddStock=()=>{
+//     show_form_add_stock.value=true
+// }
 
-const  cancelAddStock=()=>{
-    confirm_add_stock.value = false;
+const  cancelEditStock=()=>{
+    confirm_edit_stock.value = false;
 }
 
 const form = useForm({
     unit:'',
     stock_name_thai:props.stock.stockname ? props.stock.stockname : '',
     stock_name_en:props.stock.stockengname ? props.stock.stockengname : '',
-
+    status_stock:props.stock.status ? props.stock.status : 0,
 })
 
-const getUnitname = () => {
-    console.log('getUnitname')
-    let unit = {}
-    unit = props.units.find( item => item.unitid === form.unit) // เอาค่าแรกที่เจอค่าเดียว
-  //  console.log(unit)
-    return unit.unitname
-}
+// const getUnitname = () => {
+//     console.log('getUnitname')
+//     let unit = {}
+//     unit = props.units.find( item => item.unitid === form.unit) // เอาค่าแรกที่เจอค่าเดียว
+//   //  console.log(unit)
+//     return unit.unitname
+// }
 
 
+const confirmEditStock=(()=>{
+  //console.log('----------confirmAddStock------');
 
-
-const confirmAddStock=(()=>{
-  console.log('----------confirmAddStock------');
-  //console.log(form.unit);
-  //console.log(form.stock_name_thai);
-  //console.log(unit_name);
- // console.log(getUnitname());
-
-  confirm_add_stock.value = true;
+  confirm_edit_stock.value = true;
 })
 
-const okconfirmAddStock=()=>{
-    confirm_add_stock.value = false;
+const okconfirmEditStock=()=>{
+    confirm_edit_stock.value = false;
     // console.log(form.order_id);
-       console.log('----------okconfirmAddStock------');
+       console.log('----------okconfirmEditStock------');
  
     
-      form.post(route('stock-add-confirm'), {
-        preserveState: false,
-        preserveScroll: true,
-        onSuccess: page => { console.log('success');},
-        onError: errors => { 
-            console.log('error');
-        },
-        onFinish: visit => { console.log('finish');},
-    })
+    //   form.post(route('stock-add-confirm'), {
+    //     preserveState: false,
+    //     preserveScroll: true,
+    //     onSuccess: page => { console.log('success');},
+    //     onError: errors => { 
+    //         console.log('error');
+    //     },
+    //     onFinish: visit => { console.log('finish');},
+    // })
 }
 
 

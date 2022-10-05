@@ -27,7 +27,20 @@ class StockController extends Controller
     
       //  Log::info('StockController index');
         $user = Auth::user();
-        $stocks = Stock::where('unit_id',$user->profile['division_id'])->get();
+        $stocks = Stock::where('unit_id',$user->profile['division_id'])
+                        ->where('status',1)
+                        ->get();
+
+        //dd($stocks);
+        //dd(count($stocks));
+        if(count($stocks)==0){
+            return Inertia::render('Stock/index',[
+                'stock_status'=> 'close',
+                'can'=>[
+                        'checkout_item'=>$user->can('checkout_item')
+                        ],
+                ]);
+        }
         $stock_items = StockItem::where('stock_id',$user->profile['division_id'])->get();
       
         foreach($stock_items as $key=>$stock_item){
@@ -112,14 +125,20 @@ class StockController extends Controller
      */
     public function edit(Stock $stock)
     {
-        //Logger($stock);
-       // Logger($stock->unit);
-        $stock->unit;
-        // $aa =Stock::where('id',1)->with('unit:id,unitid,unitname')->get()
-        //$unit =  $stock->unit;
+        $stock_status_list = array(
+                            ['id'=>'1','desc'=>'เปิดใช้งาน'],
+                            ['id'=>'2','desc'=>'ปิดใช้งาน'],
+                            ['id'=>'3','desc'=>'ยกเลิก'],
+                        );
+       
+        // $unit =Stock::with('unit:unitid,unitname')->where('id',$stock->id)->first();
+      
+        //$stock->unit;
+        $stock->load(['unit']);  //load relation unit 
         return Inertia::render('Admin/EditStock',[
             'stock'=> $stock,
-          //  'unit' => $unit,
+            'stock_status_list'=>$stock_status_list
+            //'unitname' => $unit->unit->unitname,
             ]);
     }
 

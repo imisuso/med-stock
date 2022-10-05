@@ -66,7 +66,7 @@ class BudgetController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request);
+       // Log::info($request);
         $user = Auth::user();
       //  return ' BudgetController store';
         try{
@@ -138,7 +138,7 @@ class BudgetController extends Controller
                 $purchase_orders = OrderPurchase::select('date_order','project_name','budget','timeline')
                                         ->where('unit_id',$stock->id)
                                         ->where('year',$year)
-                                        ->whereIn('status',['created','approved'])
+                                        ->whereIn('status',['created','approved','received'])
                                         ->get();
                 if( $purchase_orders->count()!=0){
                     foreach($purchase_orders as $purchase_order){
