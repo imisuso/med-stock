@@ -170,10 +170,13 @@ Route::get('/user/add',[UserController::class,'index'])->name('user-add')->middl
 Route::get('/stock/add',[StockController::class,'create'])->name('stock-add')->middleware('auth');
 Route::post('/stock/add',[StockController::class,'store'])->name('stock-add-confirm')->middleware('auth');
 
+//**********เมนูการจัดการคลังพัสดุ 
 //get-list-stock-unit
 Route::get('/stock/get-list-stock-unit/{unit_id}',[StockController::class,'getListStockUnit'])->name('get-list-stock-unit')->middleware('auth');
+//show detail stock for edit
 Route::get('/stock/show-detail-stock/{stock}',[StockController::class,'edit'])->name('show-detail-stock')->middleware('auth');
-Route::post('/stock/update-stock/',[StockController::class,'update'])->name('update-stock')->middleware('auth');
+//show detail stock for edit
+Route::post('/stock/update-stock/{stock}',[StockController::class,'update'])->name('update-stock')->middleware('auth');
 
 
 Route::get('/nong', function () {

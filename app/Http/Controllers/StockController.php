@@ -149,9 +149,60 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Stock $stock)
+    {   
+
+    
+      //**********insert log before update
+      $stock_old = array(
+                     [ 'column'=>'stockname' , 'old'=>$stock->stockname],
+                     [ 'column'=>'stockengname' , 'old'=>$stock->stockengname],
+                     [ 'column'=>'status' , 'old'=>$stock->status],
+      );
+      Logger($stock_old);
+      $stock->stockname = request()->input('stock_name_thai');
+      $stock->stockengname = request()->input('stock_name_en');
+      $stock->status = request()->input('stock_status');
+        if($stock->isDirty()){
+            $stock_dirtys = $stock->getDirty();
+           //dd($stock->getDirty());
+           $stock_change = [];
+           foreach($stock_dirtys as $x=>$val){
+            
+                 $stock_change[] = [ 'column'=>$x , 'new'=>$val];
+           }
+           Logger($stock_change);
+       
+           $stock->save();
+            //******* update log stock_change
+
+            $units = Unit::all();
+            return Inertia::render('Admin/AddStock',[
+                'units'=> $units,
+                'status' => 'success', 
+                'msg' => 'แก้ไขข้อมูลสำเร็จ'
+                ]);
+
+            return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
+        }else{
+           // dd("unchange");
+            //******* update log 
+           return Redirect::back()->with(['status' => 'warning', 'msg' => 'ข้อมูลที่ระบุมาไม่มีการเปลี่ยนแปลง']);
+  
+        }
+
+       
+
+     // $user = Auth::user();
+    //   Stock::where('id',$request->stock_id)
+    //         ->update([
+    //                 'stockname'=>$request->stock_name_thai,
+    //                 'stockengname'=>$request->stock_name_en,
+    //                 'status'=>1,
+    //                 'unit_id'=>$request->unit,
+    //                 'user_id'=>$user->id
+    //                 ]);
+    //       return Redirect::back()->withErrors(['status' => 'success', 'msg' => $e->getMessage()]);
     }
 
     /**

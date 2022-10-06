@@ -1,13 +1,36 @@
 <template>
     <AppLayout>
          <!--Header Alert-->
-         <div v-if="$page.props.flash.status=='success'" 
+         <!-- {{$page.props.flash.status}}--{{status}} -->
+         <div v-if="status=='success'" 
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
             
             <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
-                {{ $page.props.flash.msg }}
+                {{ msg }}
                 <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+            </label>
+        </div>
+        <div v-if="status=='warning'" 
+            class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
+            <input type="checkbox" class="hidden" id="banneralert">
+            
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-yellow-200 shadow rounded-md text-yellow-800 font-bold" title="close" for="banneralert">
+                {{ msg }}
+                <svg class="fill-current text-red " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+            </label>
+        </div>
+        <div v-if="status=='error'" 
+            class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
+            <input type="checkbox" class="hidden" id="banneralert">
+            
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-200 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+                {{ msg }}
+                <svg class="fill-current text-red " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
                 </svg>
             </label>
@@ -42,17 +65,35 @@
                 >
                 <label for="">รายชื่อคลังที่มีอยู่แล้วในหน่วย/สาขา นี้:</label>
                 <div v-for="(stock,index) in  stocks_unit" :key=index :value="stock.id"
-                    class=" bg-white p-2  lg:flex lg:justify-between border-b-2  border-gray-300 "
+                    class=" bg-white p-2 my-2  lg:flex lg:justify-between border-b-2  border-gray-300 "
                 >
-                    <div>
-                        {{index+1}}. {{stock.stockname}}({{stock.stockengname}})
-                        <label class=" text-blue-600">สถานะ:</label>
-                        {{stock.status_name}}
+                    <div class=" flex flex-col lg:flex-row ">
+                        <div>
+                            {{index+1}}. {{stock.stockname}}({{stock.stockengname}})
+                        </div>
+                        <div>
+                            <label class=" p-2 text-blue-600">สถานะ:</label>
+                            {{stock.status_name}}
+                            
+                        </div>
+                       <div>
+                            <label  class=" mx-2  text-xs bg-green-100 rounded-full ">
+                                แก้ไขเมื่อ: 
+                                {{dayjs(stock.updated_at).locale('th').format('D MMM BBBB H:mm')}}
+                                น.
+                            </label>
+                       </div>
+                       
                         <!-- <label for="" v-if="stock.status==1" class=" ml-4 "> สถานะ:ใช้งาน</label> -->
                     </div>
-                    <div  >
-                        <a :href="route('show-detail-stock',stock)" class=" bg-yellow-200 px-2 rounded-md shadow-md " >
-                            แก้ไข
+                    <div class="flex  justify-center bg-yellow-200 px-2 rounded-md shadow-md " >
+                        
+                        <a :href="route('show-detail-stock',stock)"  >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                            </svg>
+
+                          
                         </a>
                      
                         <!-- <button type="submit" 
@@ -182,16 +223,26 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { useForm } from '@inertiajs/inertia-vue3';
 import { ref ,computed} from 'vue';
+import dayjs from 'dayjs';
+import 'dayjs/locale/th'
+import buddhistEra from 'dayjs/plugin/buddhistEra'
+dayjs.extend(buddhistEra)
 
 
 const props =defineProps({
     //stocks:Array,
     units:Object,
+    status:String,
+    msg:String,
     //stock_item_import: {type:Array, default:[]},
     
 })
 
+
+//console.log(dayjs().format())
 const stocks_unit = ref('');
+
+
 const stocks_unit_count = ref();
 
 const confirm_add_stock=ref(false);

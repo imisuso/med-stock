@@ -1,6 +1,8 @@
 <template>
     <AppLayout>
          <!--Header Alert-->
+         <!-- {{status}} -->
+        <!-- {{$page.props.flash.status}} -->
          <div v-if="$page.props.flash.status=='success'" 
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
@@ -8,6 +10,28 @@
             <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+            </label>
+        </div>
+        <div v-if="$page.props.flash.status=='warning'" 
+            class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
+            <input type="checkbox" class="hidden" id="banneralert">
+            
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-yellow-200 shadow rounded-md text-yellow-800 font-bold" title="close" for="banneralert">
+                {{ $page.props.flash.msg }}
+                <svg class="fill-current text-red " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+            </label>
+        </div>
+        <div v-if="$page.props.flash.status=='error'" 
+            class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
+            <input type="checkbox" class="hidden" id="banneralert">
+            
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-200 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+                {{ $page.props.flash.msg }}
+                <svg class="fill-current text-red " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
                 </svg>
             </label>
@@ -53,10 +77,10 @@
                         <label for="">ระบุสถานะคลังพัสดุ:</label> 
                     </div>
                  
-                        <!-- <div>Status: {{ form.status_stock }}</div> -->
+                        <!-- <div>Status: {{ form.stock_status }}</div> -->
                         <div v-for="(status) in stock_status_list" :key=status.id 
                             class="form-check">
-                            <input type="radio" id="one"  :value="status.id" v-model="form.status_stock" 
+                            <input type="radio" id="one"  :value="status.id" v-model="form.stock_status" 
                                 class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                             />
                             <label for="one">{{status.desc}}</label>
@@ -64,8 +88,8 @@
                        
                       
                 </div>
-           
-              
+        
+            
                 <div class="  ">
                     <button type="submit" 
                         class=" w-full flex justify-center py-2  text-md  bg-green-500 hover:bg-green-700 text-white  border border-green-500 rounded"
@@ -81,17 +105,18 @@
 
         <ModalUpToYou :isModalOpen="confirm_edit_stock" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการแก้ไขคลังพัสดุนี้ใช่หรือไม่?</p> 
+                <p class="text-md font-bold text-red-600 ">คุณต้องการแก้ไขข้อมูลใช่หรือไม่?</p> 
                                         
             </template>
 
             <template v-slot:body>
                 <div class="text-gray-900 text-md font-medium dark:text-white">
                   
-                    <label 
-                            class="  flex  justify-start w-full text-sm ">
-                        <!-- ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}} -->
+                    <label  class="  flex  justify-start w-full text-sm ">
                         ชื่อคลัง: {{form.stock_name_thai}} ({{form.stock_name_en}})
+                    </label>
+                    <label  class="  flex  justify-start w-full text-sm ">
+                        สถานะ:   {{status_desc_selectd(form.stock_status)}}
                     </label>
                 </div>
             </template>
@@ -130,6 +155,7 @@ const props =defineProps({
     stock:Array,
     stock_status_list:{type:Array,required:true},
     //stock_item_import: {type:Array, default:[]},
+    // status:{type:Array}
     
 })
 
@@ -138,6 +164,10 @@ const confirm_edit_stock=ref(false);
 
 
 const show_form_add_stock=ref(false);
+
+const status_desc_selectd =(status)=>{
+    return  props.stock_status_list[status-1].desc;
+};
 
 // const showFormAddStock=()=>{
 //     show_form_add_stock.value=true
@@ -148,19 +178,14 @@ const  cancelEditStock=()=>{
 }
 
 const form = useForm({
-    unit:'',
+   // unit:props.stock.unit_id,
+    stock_id:props.stock.id,
     stock_name_thai:props.stock.stockname ? props.stock.stockname : '',
     stock_name_en:props.stock.stockengname ? props.stock.stockengname : '',
-    status_stock:props.stock.status ? props.stock.status : 0,
+    stock_status:props.stock.status ? props.stock.status : 0,
+    
 })
 
-// const getUnitname = () => {
-//     console.log('getUnitname')
-//     let unit = {}
-//     unit = props.units.find( item => item.unitid === form.unit) // เอาค่าแรกที่เจอค่าเดียว
-//   //  console.log(unit)
-//     return unit.unitname
-// }
 
 
 const confirmEditStock=(()=>{
@@ -173,17 +198,15 @@ const okconfirmEditStock=()=>{
     confirm_edit_stock.value = false;
     // console.log(form.order_id);
        console.log('----------okconfirmEditStock------');
- 
-    
-    //   form.post(route('stock-add-confirm'), {
-    //     preserveState: false,
-    //     preserveScroll: true,
-    //     onSuccess: page => { console.log('success');},
-    //     onError: errors => { 
-    //         console.log('error');
-    //     },
-    //     onFinish: visit => { console.log('finish');},
-    // })
+      form.post(route('update-stock',form.stock_id), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: page => { console.log('success');},
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
 }
 
 
