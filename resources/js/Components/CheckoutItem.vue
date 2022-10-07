@@ -94,10 +94,12 @@
                                 </svg>
                         </div>
                         <div class="flex ml-2"> วันหมดอายุ : 
-                            <p class=" ml-2 text-blue-600">{{date_thai(stockItem.checkin_last.date_expire)}}</p> 
+                            <p class=" ml-2 text-blue-600">
+                                {{dayjs(stockItem.checkin_last.date_expire).locale('th').format('D MMMM BBBB')}}
+                            </p> 
                         </div>
                         <div class="flex ml-2"> วันที่รับเข้า : 
-                            <p class=" ml-2 text-blue-600">{{date_thai(stockItem.checkin_last.date_action)}}</p> 
+                            <p class=" ml-2 text-blue-600">{{dayjs(stockItem.checkin_last.date_action).locale('th').format('D MMMM BBBB')}}</p> 
                         </div>
                         <div class="flex ml-2"> Cat.No/Lot.No : 
                             <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.profile['catalog_number']}} /{{stockItem.checkin_last.profile['lot_number']}}</p> 
@@ -201,6 +203,11 @@
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { Link, useForm } from '@inertiajs/inertia-vue3'
 import { ref } from '@vue/reactivity';
+import dayjs from 'dayjs';
+import 'dayjs/locale/th'
+import buddhistEra from 'dayjs/plugin/buddhistEra'
+dayjs.extend(buddhistEra)
+
 const props = defineProps({
     itemIndex:{type:Number,required:true},
     stockItem:{type:Object,required:true},
@@ -210,18 +217,6 @@ const confirm_checkout=ref(false);
 const date_alert=ref(false);
 const unitcheckout_alert=ref(false);
 const msg_alert=ref('');
-
-const date_thai = (date_action)=>{
-    //console.log(props.stockBudget.budget)
-    let thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
-    //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
-    let date_arr = date_action.split('-');
-
-    let month = thaimonth[parseInt(date_arr[1])];
-    let year = parseInt(date_arr[0])+543;
-    let output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
-    return output;
-}
 
 const form = useForm({
     unit_checkout:0,

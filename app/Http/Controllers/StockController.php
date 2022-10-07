@@ -152,44 +152,76 @@ class StockController extends Controller
     public function update(Stock $stock)
     {   
 
-    
-      //**********insert log before update
-      $stock_old = array(
-                     [ 'column'=>'stockname' , 'old'=>$stock->stockname],
-                     [ 'column'=>'stockengname' , 'old'=>$stock->stockengname],
-                     [ 'column'=>'status' , 'old'=>$stock->status],
-      );
-      Logger($stock_old);
-      $stock->stockname = request()->input('stock_name_thai');
-      $stock->stockengname = request()->input('stock_name_en');
-      $stock->status = request()->input('stock_status');
-        if($stock->isDirty()){
-            $stock_dirtys = $stock->getDirty();
-           //dd($stock->getDirty());
-           $stock_change = [];
-           foreach($stock_dirtys as $x=>$val){
-            
-                 $stock_change[] = [ 'column'=>$x , 'new'=>$val];
-           }
-           Logger($stock_change);
-       
-           $stock->save();
-            //******* update log stock_change
+        // $stock->fill(request()->all());
+        // $stock->forceFill(request()->all());
 
-            $units = Unit::all();
-            return Inertia::render('Admin/AddStock',[
-                'units'=> $units,
-                'status' => 'success', 
-                'msg' => 'แก้ไขข้อมูลสำเร็จ'
+        $original_val = $stock->getOriginal(); //เก็บค่าเก่าไว้ก่อน
+      
+        $old_changes =array();
+        $stock->update([
+                        'stockname'=> request()->input('stock_name_thai'),
+                        'stockengname'=> request()->input('stock_name_en'),
+                        'status'=> request()->input('stock_status')
                 ]);
-
+        $changes = $stock->getChanges(); //ได้เฉพาะคอลัมน์ที่มีการเปลี่ยนแปลงค่า + updated_at ถ้าตารางนี้มีการใช้ timestamp
+        if(count($changes)){
+          
+            foreach($changes as $key=>$val){
+                $old_changes[] = [ 'column'=>$key , 'old'=>$original_val[$key] , 'new'=>$val];
+            }
+            array_pop($old_changes); //เอา updated_at  ออก
+           
+            /****************  insert log ****************/
+           // logger($old_changes);
             return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
-        }else{
-           // dd("unchange");
-            //******* update log 
-           return Redirect::back()->with(['status' => 'warning', 'msg' => 'ข้อมูลที่ระบุมาไม่มีการเปลี่ยนแปลง']);
-  
         }
+            /****************  insert log ****************/
+           // logger($old_changes);
+        return Redirect::back()->with(['status' => 'warning', 'msg' => 'ข้อมูลที่ระบุมาไม่มีการเปลี่ยนแปลง']);
+
+      
+     
+       
+
+      //**********insert log before update
+    //   $stock_old = array(
+    //                  [ 'column'=>'stockname' , 'old'=>$stock->stockname],
+    //                  [ 'column'=>'stockengname' , 'old'=>$stock->stockengname],
+    //                  [ 'column'=>'status' , 'old'=>$stock->status],
+    //   );
+    //   Logger($stock_old);
+
+    //   dd($stock_old);
+    //   $stock->stockname = request()->input('stock_name_thai');
+    //   $stock->stockengname = request()->input('stock_name_en');
+    //   $stock->status = request()->input('stock_status');
+    //     if($stock->isDirty()){
+    //         $stock_dirtys = $stock->getDirty();
+    //        //dd($stock->getDirty());
+    //        $stock_change = [];
+    //        foreach($stock_dirtys as $x=>$val){
+            
+    //              $stock_change[] = [ 'column'=>$x , 'new'=>$val];
+    //        }
+    //        Logger($stock_change);
+       
+    //        $stock->save();
+    //         //******* update log stock_change
+
+    //         $units = Unit::all();
+    //         return Inertia::render('Admin/AddStock',[
+    //             'units'=> $units,
+    //             'status' => 'success', 
+    //             'msg' => 'แก้ไขข้อมูลสำเร็จ'
+    //             ]);
+
+    //         return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
+    //     }else{
+    //        // dd("unchange");
+    //         //******* update log 
+    //        return Redirect::back()->with(['status' => 'warning', 'msg' => 'ข้อมูลที่ระบุมาไม่มีการเปลี่ยนแปลง']);
+  
+    //     }
 
        
 

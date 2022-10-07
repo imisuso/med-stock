@@ -82,7 +82,7 @@
                     <div class=" lg:w-2/12 ">
                         ผู้เบิก:
                     </div>
-                    <div class=" lg:w-5/12 ">
+                    <div class=" lg:w-4/12 ">
                         SAP-ชื่อพัสดุ:
                     </div>
                     <div class=" lg:w-2/12 ">
@@ -107,24 +107,28 @@
                     
                     <div class=" bg-blue-100 lg:bg-transparent lg:w-2/12  ">
                         <label for="" class="  lg:hidden">{{key+1}}.วันที่เบิก:</label>
-                        <label class=" font-bold">{{date_action_thai(item_tran.date_action)}}</label>
+                        <label class=" font-bold">
+                            <!-- {{date_action_thai(item_tran.date_action)}} -->
+                            {{dayjs(item_tran.date_action).locale('th').format('D MMM BBBB')}}
+                        </label>
                     </div>
                 
                     <div class=" lg:w-2/12   ">
                         <label for="" class="   lg:hidden">ผู้เบิก:</label>
                         <label class=" font-bold">{{item_tran.user['name']}}</label>
                     </div>
-                    <div class="   lg:w-5/12 lg:text-sm ">
+                    <div class="   lg:w-4/12 lg:text-xs ">
                         <label for="" class="   lg:hidden">SAP:</label>
                         <label class=" font-bold">
-                            {{item_tran.stock_item['item_code']}} 
+                            {{item_tran.stock_item['item_code']}} - {{item_tran.stock_item['item_name']}}
                         </label>
-                        -
-                        <label class=" font-bold">{{item_tran.stock_item['item_name']}}   </label>
+                    
                     </div>
                     <div class=" lg:w-2/12  ">
                         <label for="" class="  lg:hidden">วันที่หมดอายุ:</label>
-                        <label class=" font-bold">{{date_short_thai(item_tran.date_expire_last)}}</label>
+                        <label class=" font-bold">
+                            {{dayjs(item_tran.date_expire_last).locale('th').format('D MMM BBBB')}}
+                        </label>
                     </div>
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  lg:hidden">จำนวนที่เบิก:</label>
@@ -177,6 +181,10 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
 import { ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
+import dayjs from 'dayjs';
+import 'dayjs/locale/th'
+import buddhistEra from 'dayjs/plugin/buddhistEra'
+dayjs.extend(buddhistEra)
 
 defineProps({
     stocks:Object,
@@ -223,32 +231,6 @@ const stock_id=ref(0);
 const year_thai = (year_select)=>{
     return year_select+543;
 }
-
-const date_action_thai = (date_action)=>{
-    //console.log(props.stockBudget.budget)
-    let thaimonth = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-    //let thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
-    //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
-    let date_arr = date_action.split('-');
-
-    let month = thaimonth[parseInt(date_arr[1])];
-    let year = parseInt(date_arr[0])+543;
-    let output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
-    return output;
-}
-
-const date_short_thai = (date_action)=>{
-    //console.log(props.stockBudget.budget)
-    let thaimonth = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-    //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
-    let date_arr = date_action.split('-');
-
-    let month = thaimonth[parseInt(date_arr[1])];
-    let year = parseInt(date_arr[0])+543;
-    let output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
-    return output;
-}
-
 
 const form = useForm({
     unit_selected:'',

@@ -906,7 +906,7 @@ class PrintFormController extends Controller
                    
             
 
-            $pdf->SetXY(150, $y);
+            $pdf->SetXY(147, $y);
             $split_date_action = explode('-', $item->date_action);
             $year_print = (int) $split_date_action[0] + 543;
             $date_action_show = $split_date_action[2].'  '.$thaimonth[(int) $split_date_action[1]].' '.$year_print;
