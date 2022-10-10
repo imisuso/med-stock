@@ -33,9 +33,13 @@
                 
                      <!-- <img src="/storage/images/hq_med_v3.png" class=""> -->
                 <div>
-                    <p class="font-semibold mt-2 text-2xl text-blue-400 ">
-                    ระบบพัสดุ
-                  </p>
+                    <!-- <p class="font-semibold mt-2 text-2xl text-blue-400 "> -->
+                    <a :href="route('annouce')"  
+                    class="font-semibold mt-2 text-2xl text-blue-400 "
+                    >
+                      ระบบพัสดุ
+                    </a>  
+                  <!-- </p> -->
                  
                 </div>
                 

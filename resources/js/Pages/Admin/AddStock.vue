@@ -73,16 +73,16 @@
                         </div>
                         <div>
                             <label class=" p-2 text-blue-600">สถานะ:</label>
-                            {{stock.status_name}}
+                            <label class=" bg-red-100">{{stock.status_name}}</label>
                             
                         </div>
-                       <div>
-                            <label  class=" mx-2  text-xs bg-green-100 rounded-full ">
-                                แก้ไขเมื่อ: 
-                                {{dayjs(stock.updated_at).locale('th').format('D MMM BBBB H:mm')}}
-                                น.
-                            </label>
-                       </div>
+                        <div class="">
+                                <label  class=" mx-2  text-xs ">
+                                    แก้ไขล่าสุดเมื่อ: 
+                                    {{dayjs(stock.updated_at).locale('th').format('D MMM BBBB H:mm')}}
+                                    น.
+                                </label>
+                        </div>
                        
                         <!-- <label for="" v-if="stock.status==1" class=" ml-4 "> สถานะ:ใช้งาน</label> -->
                     </div>

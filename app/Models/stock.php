@@ -16,7 +16,8 @@ class Stock extends Model
         'stockname',
         'stockengname',
         'unit_id',
-        'user_id'
+        'user_id',
+        'status'
     ];
 
     protected $appends = ['status_name'];

@@ -118,6 +118,7 @@
                     <label  class="  flex  justify-start w-full text-sm ">
                         สถานะ:   {{status_desc_selectd(form.stock_status)}}
                     </label>
+                  
                 </div>
             </template>
 

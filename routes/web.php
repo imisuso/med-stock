@@ -44,7 +44,7 @@ require __DIR__.'/auth.php';
 
 Route::get('/', function () {
     // return view('welcome');
-    return Inertia('Auth/Login');
+    return Inertia('Auth/LoginAD');
 });
     
 Route::get('/annouce', [LoginController::class,'index'])->name('annouce')->middleware('auth');

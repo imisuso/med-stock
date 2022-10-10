@@ -155,15 +155,18 @@ class StockController extends Controller
         // $stock->fill(request()->all());
         // $stock->forceFill(request()->all());
 
+       // logger(request()->all());
+
         $original_val = $stock->getOriginal(); //เก็บค่าเก่าไว้ก่อน
-      
+      //  logger($original_val);
         $old_changes =array();
         $stock->update([
                         'stockname'=> request()->input('stock_name_thai'),
                         'stockengname'=> request()->input('stock_name_en'),
                         'status'=> request()->input('stock_status')
-                ]);
+                ]); // สัมพันธ์กับ protected fillable ใน Model
         $changes = $stock->getChanges(); //ได้เฉพาะคอลัมน์ที่มีการเปลี่ยนแปลงค่า + updated_at ถ้าตารางนี้มีการใช้ timestamp
+      // dd($changes);
         if(count($changes)){
           
             foreach($changes as $key=>$val){
@@ -172,7 +175,7 @@ class StockController extends Controller
             array_pop($old_changes); //เอา updated_at  ออก
            
             /****************  insert log ****************/
-           // logger($old_changes);
+          //  logger($old_changes);
             return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
         }
             /****************  insert log ****************/
