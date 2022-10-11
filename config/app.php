@@ -196,6 +196,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        App\Providers\AuthUserServiceProvider::class,
 
     ],
 
@@ -214,5 +215,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
+
+    'AUTH_USER_PROVIDER' => env('AUTH_USER_PROVIDER', '\App\APIs\FakeUserAPI'),
 
 ];

@@ -32,9 +32,9 @@ use App\Http\Controllers\UserController;
 |
 */
 
- Route::get('/welcome', function () {
-   return view('welcome');
- });
+//  Route::get('/welcome', function () {
+//    return view('welcome');
+//  });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -42,11 +42,22 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/', function () {
+Route::get('/login-test', function () {
     // return view('welcome');
-    return Inertia('Auth/LoginAD');
+    return Inertia('Auth/Login');
+   
 });
     
+
+Route::get('/', function () {
+    // return view('welcome');
+    //return Inertia('Auth/Login');
+    return Inertia('Auth/LoginAD');
+})->name('welcome');
+
+Route::post('/login',[LoginController::class, 'authenticate'])->name('login')->middleware('guest');
+    
+Route::get('/logout', [LoginController::class,'logout'])->name('logout')->middleware('auth');
 Route::get('/annouce', [LoginController::class,'index'])->name('annouce')->middleware('auth');
 //แสดงหน้าเบิกพัสดุ
 Route::get('/stock', [StockController::class,'index'])->name('stock')->middleware('auth','can:checkout_item');

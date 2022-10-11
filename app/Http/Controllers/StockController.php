@@ -25,7 +25,7 @@ class StockController extends Controller
     {
      
     
-      //  Log::info('StockController index');
+        Log::info('StockController index');
         $user = Auth::user();
         $stocks = Stock::where('unit_id',$user->profile['division_id'])
                         ->where('status',1)
@@ -59,6 +59,7 @@ class StockController extends Controller
           ];
   
         request()->session()->flash('mainMenuLinks', $main_menu_links);
+        // request()->session()->flash('user', $user);
         return Inertia::render('Stock/index',[
                                 'stocks'=>$stocks,
                                 'stock_items'=>$stock_items,
@@ -77,7 +78,13 @@ class StockController extends Controller
      */
     public function create()
     {
-        //$user = Auth::user();
+        $user = Auth::user();
+        $main_menu_links = [
+            'is_admin_division_stock'=> $user->can('view_master_data'),
+           // 'user_abilities'=>$user->abilities,
+          ];
+        request()->session()->flash('mainMenuLinks', $main_menu_links);
+         request()->session()->flash('user', $user);
         $units = Unit::all();
         return Inertia::render('Admin/AddStock',[
             'units'=> $units,

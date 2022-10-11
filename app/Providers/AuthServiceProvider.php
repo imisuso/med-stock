@@ -26,11 +26,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        // Log::info('AuthServiceProvider boot');
+         Log::info('AuthServiceProvider boot');
     
         Gate::before(function ($user , $ability ) {
             Log::info('gate before');
-           // Log::info($user->abilities);
+           Log::info($user->abilities);
            if($user->abilities->contains($ability)){
                return true;
            }

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -36,15 +37,33 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return array_merge(parent::share($request), [
-            'auth' => $request->user() ?[
-                'user' => $request->user(),
-                'abilities'=> $request->user()->abilities,
+        Logger('IN HandleInertiaRequests');
+        $user = Auth::user();
+        Logger($user);
+        Logger('-------------------------');
+        // return array_merge(parent::share($request), [
+        //     'auth' => $request->user() ?[
+        //         'user' => $request->user(),
+        //         'abilities'=> $request->user()->abilities,
+        //     ]:null,
+        //     'flash' => [
+        //         'status' => fn () => $request->session()->pull('status'),
+        //         'msg' => fn () => $request->session()->pull('msg'),
+        //         'mainMenuLinks' => fn () => $request->session()->pull('mainMenuLinks',[]),
+        //         // 'actionMenu' => fn () => $request->session()->pull('action-menu', []),
+        //     ],
+        // ]);
+
+           return array_merge(parent::share($request), [
+            'auth' => $user?[
+                'user' => fn () => $request->session()->pull('user'),
+                'abilities'=> fn () => $request->session()->pull('abilities'),
             ]:null,
             'flash' => [
                 'status' => fn () => $request->session()->pull('status'),
                 'msg' => fn () => $request->session()->pull('msg'),
                 'mainMenuLinks' => fn () => $request->session()->pull('mainMenuLinks',[]),
+                'user'=> fn () => $request->session()->pull('user',[])
                 // 'actionMenu' => fn () => $request->session()->pull('action-menu', []),
             ],
         ]);
