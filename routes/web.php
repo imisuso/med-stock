@@ -37,7 +37,8 @@ use App\Http\Controllers\UserController;
 //  });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+   // return view('dashboard');
+    return Inertia('Dashboard');
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
@@ -58,7 +59,9 @@ Route::get('/', function () {
 Route::post('/login',[LoginController::class, 'authenticate'])->name('login')->middleware('guest');
     
 Route::get('/logout', [LoginController::class,'logout'])->name('logout')->middleware('auth');
-Route::get('/annouce', [LoginController::class,'index'])->name('annouce')->middleware('auth');
+Route::get('/annouce',function () {
+    return Inertia('Annouce');
+})->name('annouce')->middleware('auth');
 //แสดงหน้าเบิกพัสดุ
 Route::get('/stock', [StockController::class,'index'])->name('stock')->middleware('auth','can:checkout_item');
 

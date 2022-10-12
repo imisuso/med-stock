@@ -54,7 +54,7 @@
                     </div>
                     <div>
                          คุณ 
-                         <!-- {{$page.props.user.name}} -->
+                         {{$page.props.auth.user.name}}
                     </div>
                 </div>
 

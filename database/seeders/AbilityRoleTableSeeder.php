@@ -35,16 +35,24 @@ class AbilityRoleTableSeeder extends Seeder
         }
 
         
-        $roles = [
-            'officer',
-            'super_officer',
-            'admin_division_stock',
-            'admin_med_stock',
-            'admin_it',
-        ];
+        // $roles = [
+        //     'officer',
+        //     'super_officer',
+        //     'admin_division_stock',
+        //     'admin_med_stock',
+        //     'admin_it',
+        // ];
+
+        $roles = array(
+            ['name' => 'officer', 'label' => 'เจ้าหน้าที่'],
+            ['name' => 'super_officer', 'label' => 'หัวหน้างาน'],
+            ['name' => 'admin_division_stock', 'label' => 'ผู้ดูแลคลังพัสดุสาขา'],
+            ['name' => 'admin_med_stock', 'label' => 'ผู้ดูแลคลังพัสดุทั้งหมดของภาควิชาฯ'],
+            ['name' => 'admin_it', 'label' => 'ผู้ดูแลระบบ'],
+        );
 
         foreach ($roles as $role) {
-            Role::create(['name' => $role]);
+            Role::create(['name' => $role['name'],'label'=>$role['label']]);
         }
 
 // *officer

@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-    {{ $page.props }}
+   
         <div v-if="$page.props.flash.status=='success'" 
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">

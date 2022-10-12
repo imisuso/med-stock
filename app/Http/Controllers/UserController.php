@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\Stock;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -17,13 +18,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+       // $user = Auth::user();
         $stocks = Stock::all();
         $units = Unit::all();
+        $roles = Role::all();
         //   Logger('StockItemImportController');
         return Inertia::render('Admin/AddUser',[
                                     'stocks'=>$stocks,
                                     'units'=> $units,
+                                    'roles'=>$roles,
                                 ]);
     }
 

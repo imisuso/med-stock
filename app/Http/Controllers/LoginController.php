@@ -65,8 +65,10 @@ class LoginController extends Controller
             ];
          
             request()->session()->flash('mainMenuLinks', $main_menu_links);
-            request()->session()->flash('user', $user);
-            return Inertia::render('Annouce',['user'=>$user]);
+           // request()->session()->flash('user', $user);
+           return redirect()->intended(RouteServiceProvider::HOME);
+           return redirect()->route('annouce');
+           // return Inertia::render('Annouce');
            
         }
 
@@ -87,24 +89,7 @@ class LoginController extends Controller
 
     public function index()
     {
-        Log::info('LoginController index');
-        
-        // // return Inertia::render('Annouce');
-        // $user = Auth::user();
-        // //$user->abilities;
-        // Log::info($user->abilities);
-        // // return Inertia::render('Annouce');
-        // // $can_abilities= [
-        // //         'can' => $user->can('manage_master_data'),
-        // // ];
-        // // Log::info($can_abilities);
-        // $main_menu_links = [
-        //        'is_admin_division_stock'=> $user->can('view_master_data'),
-        //       // 'user_abilities'=>$user->abilities,
-        // ];
-     
-        // request()->session()->flash('mainMenuLinks', $main_menu_links);
-        return Inertia::render('Annouce');
+       
     }
 
     /**
@@ -173,7 +158,7 @@ class LoginController extends Controller
         //
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         // $log_activity = new LogActivity;
         // $log_activity->siriraj_id = Auth::user()->siriraj_id;
@@ -182,7 +167,10 @@ class LoginController extends Controller
         // $log_activity->save();
       
         Auth::logout();
-        Session::forget('user');
+        //Session::forget('user');
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
         Logger('---------logout-------------');
         return Redirect::route('welcome');
     }

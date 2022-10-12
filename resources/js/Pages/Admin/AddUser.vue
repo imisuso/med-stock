@@ -36,12 +36,12 @@
                 </div>
                 <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
                     v-model="form.unit_id"
-                   @change="getListStockUnit()"
+                
                 >
                     <option v-for="(unit) in  units" :key=unit.id :value="unit.unitid">{{unit.unitname}}</option>
                 </select>
             </div>
-            <div class=" w-full  bg-blue-100 p-2 rounded-md ">
+            <!-- <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                 <div class="bg-blue-800 text-white text-xl text-center ">
                  
                 </div>
@@ -52,6 +52,21 @@
                     
                 >
                     <option v-for="(stock) in  stocks_unit" :key=stock.id :value="stock.id">{{stock.stockname}}</option>
+                </select>
+                
+            </div> -->
+
+            <div class=" w-full  bg-blue-100 p-2 rounded-md ">
+                <div class="bg-blue-800 text-white text-xl text-center ">
+                 
+                </div>
+                <div class="mt-3" >
+                    <label for="">ระบุสิทธิการใช้งานระบบ:</label> 
+                </div>
+                <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
+                 v-model="form.role_id"
+                >
+                    <option v-for="(role) in  roles" :key=role.id :value="role.id">{{role.label}}</option>
                 </select>
                 
             </div>
@@ -87,6 +102,7 @@ import { ref } from 'vue';
 const props =defineProps({
     stocks:Array,
     units:Object,
+    roles:Object,
     //stock_item_import: {type:Array, default:[]},
     
 })
@@ -96,6 +112,7 @@ const stocks_unit = ref('');
 
 const form = useForm({
     unit_id:0,
+    role_id:0,
    // stock_item_status:0,
   //  date_receive:0,
 })

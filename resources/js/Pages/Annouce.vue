@@ -27,13 +27,7 @@
 <script setup>
 //import { ref } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
-const props =defineProps({
-    //stocks:Array,
-    user:{type:Array},
-    
-    //stock_item_import: {type:Array, default:[]},
-    
-})
+
 
 
 </script>
