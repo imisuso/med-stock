@@ -43,22 +43,15 @@ class LoginController extends Controller
         }
 
         $user_check =  User::where('name',$sirirajUser['name'])->first();
-        Logger($user_check);
+        //Logger($user_check);
         if($user_check){
             Auth::login($user_check);
            
             $user = Auth::user();
-            Logger('after auth');
-            Logger($user);
-            //$user->abilities;
-            Logger($user->abilities);
-            // return Inertia::render('Annouce');
-            // $can_abilities= [
-            //         'can' => $user->can('manage_master_data'),
-            // ];
-            // Log::info($can_abilities);
-            // request()->session()->auth('user', $user);
-            // request()->session()->auth('abilities', $user->abilities);
+            // Logger('after auth');
+            // Logger($user);
+            // Logger($user->abilities);
+
             $main_menu_links = [
                    'is_admin_division_stock'=> $user->can('view_master_data'),
                   // 'user_abilities'=>$user->abilities,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\AuthUserAPI;
 use App\Models\Role;
 use App\Models\Stock;
 use App\Models\Unit;
@@ -94,5 +95,29 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function checkEmployeeStatus($sap_id,AuthUserAPI $api)
+    {
+        //Logger(request()->all());
+        //Logger($sap_id);
+
+        $check_status_emp = $api->checkEmployeeStatus($sap_id);
+        // Logger($check_status_emp);
+        // Logger($check_status_emp['Status']);
+
+        if(strcmp($check_status_emp['Status'],'Active') ==0)
+        {
+            $get_user = array();
+
+            $get_user = $api->getUserAD($check_status_emp['AccountName']);
+            $get_user['Status'] = 'Active';
+           // Logger($get_user);
+            return $get_user;
+        }
+
+       // Logger('Withdrawn');
+        return $check_status_emp;
+     
     }
 }

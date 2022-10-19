@@ -24,15 +24,36 @@
             <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                 <div class="mt-3" >
                     <label for="">ระบุรหัสเจ้าหน้าที่ 8 หลัก(SAP):</label> 
+                    <button type="submit" 
+                                class="  inline-flex text-sm ml-3 bg-blue-500 hover:bg-blue-700 text-white py-1 px-6 border border-blue-500 rounded"
+                                @click="CheckEmployeeStatus()"
+                                >
+                                ตรวจสอบสถานะ
+                            </button>
                 </div>
-                <input type="text" name="" class="w-full  py-2 rounded-md ">
+                <input type="text" name="" class="w-full  py-2 rounded-md "   v-model="form.sap_id">
+                 <label for="" v-if="employeeStatus=='Active'" class=" p-4 text-green-600"> 
+                    สถานะ:{{employeeStatus}}
+                 </label>
+                 <label for="" v-else class=" text-red-600"> 
+                    สถานะ:{{employeeStatus}} 
+                </label>
+            </div>
+
+        <div v-if="employeeStatus=='Active'">
+            <div class=" p-4 text-sm">
+                <p for="" class=" text-red-500">กรุณาตรวจสอบความถูกต้องก่อนเพิ่มผู้ใช้งาน</p>
+                <label for="">ข้อมูลที่ได้รับมาจากการเชื่อมโยงกับระบบของคณะฯ:</label>
+                <li>ชื่อ: {{form.employee_full_name}}</li>
+                <li>สังกัด: {{form.employee_division_name}}</li>
+                <li>หมายเหตุ: {{form.employee_remark}}</li>
             </div>
             <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                 <!-- <div class="bg-blue-800 text-white text-xl text-center ">
                     {{$page.props.auth.user.profile.division_name}}
                 </div> -->
                 <div class="mt-3" >
-                    <label for="">เลือกหน่วยงานที่สังกัด:</label> 
+                    <label for="">ระบุหน่วยงานที่สังกัด:</label> 
                 </div>
                 <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
                     v-model="form.unit_id"
@@ -75,8 +96,8 @@
               
                         <div>
                             <button type="submit" 
-                                class="  inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-6 border border-green-500 rounded"
-                                @click="ImportStockItem()"
+                                class=" w-full text-sm  bg-green-500 hover:bg-green-700 text-white py-1 px-6 border border-green-500 rounded"
+                              
                                 >
                                 ตกลง
                             </button>
@@ -84,13 +105,17 @@
                     <!-- </form> -->
             </div>
 
+        </div>
+           
          
         </div>
-        <!-- <div class=" w-full p-4 mt-2  justify-center bg-red-100">
-            <p for="">คำแนะนำการนำเข้าพัสดุจากไฟล์ excel</p>
-            <p for="">1.กรุณาตรวจสอบชื่อคอลัมน์และจำนวนคอลัมน์ให้ถูกต้องตามตัวอย่างไฟล์ excel</p>
-            <p for="">2.กรุณาตรวจสอบจำนวนรายการพัสดุต้องไม่เกิน 50 รายการต่อ 1 ไฟล์ excel</p>
-        </div>  -->
+         sap test:  10032608 , โลหิต 10003133 ,หายใจ 10016895
+        <div class=" w-full text-sm p-4 mt-2  justify-center bg-red-100">
+            <p for="" class=" underline underline-offset-1 " >คำแนะนำการเพิ่มผู้ใช้งาน</p>
+            <p for="">1.ระบุรหัสเจ้าหน้าที่ แล้วกดปุ่มตรวจสอบสถานะ หากสถานะเป็น Active ให้ตรวจสอบข้อมูลว่าเป็นบุคคลที่ต้องการเพิ่มเป็นผู้ใช้งานระบบนี้หรือไม่</p>
+            <p for="">2.ระบุหน่วยงานภายในภาควิชาฯที่บุคคลนี้สังกัด ซึ่งหากสังกัดหน่วยงานใดก็จะมีสิทธิเข้าถึงคลังพัสดุของหน่วยงานนั้นเท่านั้น </p>
+            <p for="">3.ระบุสิทธิการใช้งานระบบ (หากเป็นเจ้าหน้าที่สาขาทำหน้าที่บันทึกตัดสต๊อก ให้ระบุสิทธิเป็น เจ้าหน้าที่)</p>
+        </div> 
     </AppLayout>
  </template>
  <script setup>
@@ -108,13 +133,20 @@ const props =defineProps({
 })
 
 const stocks_unit = ref('');
+const employeeStatus=ref('');
+const employeeAccountName=ref('');
+
+
 
 
 const form = useForm({
+    sap_id:'10035479',
     unit_id:0,
     role_id:0,
-   // stock_item_status:0,
-  //  date_receive:0,
+    employee_full_name:'',
+    employee_division_name:'',
+    employee_division_id:'',
+    employee_remark:'',
 })
 
 const getListStockUnit=(()=>{
@@ -128,7 +160,29 @@ const getListStockUnit=(()=>{
     });
 })
 
+const CheckEmployeeStatus=(()=>{
 
+    axios.get(route('check-employee-status',
+                         {sap_id:form.sap_id }
+                    )).then(res => {
+                // console.log(res.data);
+                // console.log(res.data.Status);
+                employeeStatus.value =  res.data.Status;
+                employeeAccountName.value = res.data.AccountName
+
+                if(res.data.Status == 'Active')
+                {
+                    form.employee_full_name = res.data.full_name
+                    form.employee_division_name = res.data.division_name
+                    form.employee_division_id = res.data.division_id
+                    form.employee_remark = res.data.remark
+                }
+
+        });
+
+
+
+})
 
 // const ImportStockItem=(()=>{
 //     // console.log('----------Import Stock------')
