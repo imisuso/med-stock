@@ -45,8 +45,8 @@ class AbilityRoleTableSeeder extends Seeder
 
         $roles = array(
             ['name' => 'officer', 'label' => 'เจ้าหน้าที่'],
-            ['name' => 'super_officer', 'label' => 'หัวหน้างาน'],
-            ['name' => 'admin_division_stock', 'label' => 'ผู้ดูแลคลังพัสดุสาขา'],
+            // ['name' => 'super_officer', 'label' => 'หัวหน้างาน'],
+            // ['name' => 'admin_division_stock', 'label' => 'ผู้ดูแลคลังพัสดุสาขา'],
             ['name' => 'admin_med_stock', 'label' => 'ผู้ดูแลคลังพัสดุทั้งหมดของภาควิชาฯ'],
             ['name' => 'admin_it', 'label' => 'ผู้ดูแลระบบ'],
         );
@@ -90,20 +90,20 @@ class AbilityRoleTableSeeder extends Seeder
         $officer->allowTo('checkout_item');
         $officer->allowTo('view_report_item');
 
-        $super_officer = Role::whereName('super_officer')->first();
-        $super_officer->allowTo('view_item');
-        $super_officer->allowTo('view_order');
-        $super_officer->allowTo('view_master_data');
-        $super_officer->allowTo('view_report_item');
+        // $super_officer = Role::whereName('super_officer')->first();
+        // $super_officer->allowTo('view_item');
+        // $super_officer->allowTo('view_order');
+        // $super_officer->allowTo('view_master_data');
+        // $super_officer->allowTo('view_report_item');
        
-        $admin_division_stock = Role::whereName('admin_division_stock')->first();
-        $admin_division_stock->allowTo('view_item');
-        $admin_division_stock->allowTo('checkout_item');
-        $admin_division_stock->allowTo('create_order');
-        $admin_division_stock->allowTo('view_order');
-        $admin_division_stock->allowTo('send_order');
-        $admin_division_stock->allowTo('delete_order');
-        $admin_division_stock->allowTo('receive_order');
+        // $admin_division_stock = Role::whereName('admin_division_stock')->first();
+        // $admin_division_stock->allowTo('view_item');
+        // $admin_division_stock->allowTo('checkout_item');
+        // $admin_division_stock->allowTo('create_order');
+        // $admin_division_stock->allowTo('view_order');
+        // $admin_division_stock->allowTo('send_order');
+        // $admin_division_stock->allowTo('delete_order');
+        // $admin_division_stock->allowTo('receive_order');
 
         $admin_med_stock = Role::whereName('admin_med_stock')->first();
         $admin_med_stock->allowTo('view_item');

@@ -28,6 +28,8 @@ class CreateStockItemsTable extends Migration
             $table->float('price');
             $table->string('catalog_number')->nullable();
             $table->string('lot_number')->nullable();
+            $table->string('po_number');
+            $table->string('business_name');
             $table->integer('status')->default(1);    // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
             $table->json('profile')->nullable();
             $table->timestamps();

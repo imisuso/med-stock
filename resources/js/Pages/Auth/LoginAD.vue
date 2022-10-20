@@ -15,14 +15,14 @@
             </svg>
             <label class=" my-2 " >ข่าวประชาสัมพันธ์</label>
           </div>
-          <div class=" flex flex-col  bg-purple-200 rounded-md shadow-md">
+          <div class=" flex flex-col bg-purple-200 rounded-md shadow-md">
              <label class=" font-bold py-2">  สวัสดี,วันที่ {{dayjs(new Date()).locale('th').format('D MMM BBBB HH:mm')}} น. </label>
             <!-- <label for="">วันนี้อากาศแจ่มใส </label> -->
             <label class="py-4">- ฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก</label>
             <label class="py-4">- ฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก</label>
-            <label class="py-4">- ฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก</label>
-            <label for="">-officer.endocrine,admin_med_stock.stockmed</label>
-           
+            <label class="py-4">- ฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก</label>
+            <label class="py-4">- officer.hemato,officer.chest,officer.endocrine</label>
+            <label class="py-4">- officer.id,officer.nephro,admin_med_stock.stockmed</label>
          
           </div>
        

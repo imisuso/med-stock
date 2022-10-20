@@ -47,6 +47,13 @@
                     <option v-for="(stock_item_types) in  stock_item_types" :key=stock_item_types.type_id :value="stock_item_types.type_id">{{stock_item_types.type_name}}</option>
                 </select>
 
+              
+
+                <div class="mt-3" >
+                    <label for="">ระบุรหัสใบสั่งซื้อ</label> 
+                </div>
+                <input type="text" name="" class="w-full  py-2 rounded-md "   v-model="form.stock_po">
+                
                 <!-- <div class="mt-3">
                     <label for="">วันที่ตรวจรับพัสดุ:</label>
                     <input type="date" name="" id=""
@@ -104,6 +111,7 @@ const form = useForm({
     file_stock_item: File,
     unit_id:0,
     stock_item_status:0,
+    stock_po:'',
   //  date_receive:0,
 })
 
