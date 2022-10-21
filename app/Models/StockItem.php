@@ -12,7 +12,7 @@ class StockItem extends Model
     use HasFactory;
 
     protected $table = 'stock_items';
-
+ 
     protected $fillable = [ 
         'id',
         'stock_id',
@@ -23,6 +23,10 @@ class StockItem extends Model
         'unit_count',
         'item_sum',
         'price',
+        'catalog_number',
+        'lot_number',
+        'po_number',
+        'business_name',
         'status' ,     // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
         'profile',
     ];
@@ -65,8 +69,8 @@ class StockItem extends Model
       //  \Log::info('FILENAME==>'.$fileName);
         //stocks_id,item_code,item_name,unit_count,item_receive,date_receive,date_expire,price,catalog_number,lot_number
         foreach($stock_items as $stock_item){
-         //   Log::info($stock_item['item_code']);
-         //   Log::info($stock_item['unit_count']);
+            Log::info($stock_item['po_number']);
+            Log::info($stock_item['business_name']);
            StockItem::create([
                                 'stock_id'=>$stock_item['stock_id'],
                                 'user_id'=>6,
@@ -75,6 +79,10 @@ class StockItem extends Model
                                 'unit_count'=>$stock_item['unit_count'],
                                 'item_sum'=>$stock_item['item_receive'],
                                 'price'=>$stock_item['price'],
+                                'catalog_number'=>$stock_item['catalog_number'],
+                                'lot_number'=>$stock_item['lot_number'],
+                                'po_number'=>$stock_item['po_number'],
+                                'business_name'=>$stock_item['business_name'],
                             ]);
 
             $stock_item_id = StockItem::select('id')->where('item_code',$stock_item['item_code'])->first();

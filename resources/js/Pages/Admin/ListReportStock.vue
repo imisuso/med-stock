@@ -40,6 +40,7 @@
         <!-- show order lists -->
          <h1 class="p-2 mt-3 text-center font-bold" >รายงานจำนวนคงเหลือในคลังพัสดุ </h1>
           <h1 class="p-2 mt-1 text-center font-bold" >{{form.stock_selected.text}}</h1>
+        <div class=" text-red-500">***เพิ่ม filter เช่น เลข PO , ปี-เดือน เป็นต้น</div>
          <!-- <button class=" mb-2 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
            Export EXCEL
         </button> -->
@@ -53,17 +54,23 @@
                 class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
                     
-                    <div class=" lg:w-3/12 w-  ">
+                    <div class=" lg:w-2/12  ">
                         SAP-ชื่อพัสดุ
                     </div>
                 
-                    <div class=" lg:w-2/12 ">
+                    <div class=" lg:w-1/12 ">
                         จำนวนคงเหลือ
                     </div>
-                    <div class=" lg:w-2/12 ">
+                    <div class=" lg:w-1/12 ">
+                        ราคา
+                    </div>
+                    <div class=" lg:w-3/12 ">
+                        PO/ชื่อบริษัท
+                    </div>
+                    <div class=" lg:w-1/12 ">
                         วันที่รับเข้า
                     </div>
-                    <div class=" lg:w-2/12 ">
+                    <div class=" lg:w-1/12 ">
                         วันที่หมดอายุ
                     </div>
                     <div class=" lg:w-2/12 ">
@@ -85,7 +92,7 @@
                 
                 <div class="flex flex-col  lg:flex-row   "  >
                     
-                    <div class=" bg-blue-100 lg:bg-transparent lg:w-3/12 lg:text-xs  ">
+                    <div class=" bg-blue-100 lg:bg-transparent lg:w-2/12 lg:text-xs  ">
                         <label for="" class="  lg:hidden">{{key+1}}.</label>
                         <label class=" font-bold">
                             {{key+1}}.
@@ -100,7 +107,7 @@
                        
                     </div>
                 
-                    <div class=" lg:w-2/12   ">
+                    <div class=" lg:w-1/12   ">
                         <label for="" class="   lg:hidden">จำนวนคงเหลือ:</label> 
                         <span 
                                 class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
@@ -111,14 +118,28 @@
                         </span>
                       
                     </div>
-                    <div class="   lg:w-2/12  ">
+                    <div class="   lg:w-1/12  ">
+                        <label for="" class="   lg:hidden">ราคา:</label>
+                  
+                        <label class=" ml-2 " >
+                            {{stock_item.price}}
+                        </label> 
+                    </div>
+                    <div class="   lg:w-3/12 lg:text-xs  ">
+                        <label for="" class="   lg:hidden">PO/ชื่อบริษัท:</label>
+                  
+                        <label class=" ml-2 " >
+                            {{stock_item.po_number}}-  {{stock_item.business_name}}
+                        </label> 
+                    </div>
+                    <div class="   lg:w-1/12 lg:text-xs  ">
                         <label for="" class="   lg:hidden">วันที่รับเข้า:</label>
                   
                         <label class=" ml-2 " >
                             {{dayjs(stock_item.checkin_last.date_action).locale('th').format('D MMM BBBB')}}
                         </label> 
                     </div>
-                    <div class=" lg:w-2/12  ">
+                    <div class=" lg:w-1/12 lg:text-xs  ">
                         <label for="" class="  lg:hidden">วันที่หมดอายุ:</label>
                         <label class=" ml-2 " >
                             {{dayjs(stock_item.checkin_last.date_expire).locale('th').format('D MMM BBBB')}}
