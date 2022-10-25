@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
             'officer.hypertension',
             'officer.endocrine',
             'super_officer.med',
-            'admin_division_stock.ambu',
+           //'admin_division_stock.ambu',
             'admin_med_stock.stockmed',
             'admin_it.itmed',
             'officer.id',
@@ -31,7 +31,7 @@ class UsersTableSeeder extends Seeder
             'officer.chest',
         ];
 
-        $password = Hash::make('11111111');
+      //  $password = Hash::make('11111111');
         $faker = Factory::create();
         foreach ($users as $user) {
             $division = explode('.',$user);
@@ -42,8 +42,8 @@ class UsersTableSeeder extends Seeder
                         'sap_id'=>$faker->numerify('100#####'),
                         'name' => $user,
                         'unitid' => $unit->unitid,
-                        'email' => $user.'@med.si',
-                        'password' => $password,
+                     //   'email' => $user.'@med.si',
+                      //  'password' => $password,
                         'profile'=> $profile
                     ]);
 

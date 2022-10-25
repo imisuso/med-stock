@@ -13,16 +13,16 @@ class TestUserAPI implements AuthUserAPI
     {
         $faker = Factory::create();
        // $user = array();
-       // $user_db = User::where('name',$login)->first();
+        $user_db = User::where('name',$login)->first();
 
        // dd($user_db);
        
             $user['reply_code'] = 0;
-            $user['org_id'] = $faker->numerify('100#####');
-            $user['name'] = $login;
+            $user['org_id'] = $user_db->sap_id;
+            $user['login'] = $login;
             $user['remark'] = 'เจ้าหน้าที่';
             $user['name_en'] = '';
-            $user['email'] = $faker->unique()->safeEmail;
+           // $user['email'] = $faker->unique()->safeEmail;
             return $user;
    
        
@@ -39,14 +39,16 @@ class TestUserAPI implements AuthUserAPI
 
     public function checkEmployeeStatus($sap)
     {
-        //$headers = ['app' => config('app.HAN_API_SERVICE_SECRET'), 'token' => config('app.HAN_API_SERVICE_TOKEN')];
+        $headers = ['app' => config('app.HAN_API_SERVICE_SECRET'), 'token' => config('app.HAN_API_SERVICE_TOKEN')];
         $options = ['timeout' => 8.0, 'verify' => false];
-        //$url = config('app.HAN_API_SERVICE_URL').'user-status-by-id';
-        $url = config('app.SI_SELFSERVICE_API_URL');
-        $response = Http::post($url, ['employeeID' => $sap]);
+        $url = config('app.HAN_API_SERVICE_URL').'user-status-by-id';
+       // $url = config('app.SI_SELFSERVICE_API_URL');
+        $response = Http::withHeaders($headers)->withOptions($options)
+                        ->post($url, ['org_id' => $sap]);
         
         $data = json_decode($response->getBody(),true);
        
+       // Logger($data);
         return $data;
 
     }
@@ -78,7 +80,7 @@ class TestUserAPI implements AuthUserAPI
         $data['remark'] = $data['remark'];
         $data['reply_code'] = 0;
      
-        Logger($data);
+       // Logger($data);
         return $data;
 
     }

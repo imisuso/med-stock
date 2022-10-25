@@ -19,10 +19,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'sap_id',
-        'name',
         'unitid',
-        'email',
-        'password',
+        'name',
+        'status',
         'profile'
     ];
 
@@ -32,9 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
         'remember_token',
-        'email',
     ];
 
 
@@ -44,7 +41,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'line_verified_at' => 'datetime',
         'profile' => 'array',
     ];
 
@@ -64,5 +61,10 @@ class User extends Authenticatable
     public function getAbilitiesAttribute()
     {
         return $this->roles->map->abilities->flatten()->pluck('name')->unique()->flatten();
+    }
+    
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class,'unitid','unitid');
     }
 }

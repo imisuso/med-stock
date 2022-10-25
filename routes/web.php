@@ -179,7 +179,8 @@ Route::post('/stockitem/checkin-to-stock',[StockItemImportController::class,'sto
 
 //Add User
 Route::get('/user/add',[UserController::class,'index'])->name('user-add')->middleware('auth');
-Route::get('/user/check-employee-status/{sap_id}',[UserController::class,'checkEmployeeStatus'])->name('check-employee-status')->middleware('auth');;
+Route::get('/user/check-employee-status/{sap_id}',[UserController::class,'checkEmployeeStatus'])->name('check-employee-status')->middleware('auth');
+Route::post('/user/add',[UserController::class,'store'])->name('add-user')->middleware('auth');
 
 //Add Stock
 Route::get('/stock/add',[StockController::class,'create'])->name('stock-add')->middleware('auth');

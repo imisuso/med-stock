@@ -31,8 +31,8 @@ class LoginController extends Controller
     {
         //******* Authenticate siriraj AD user
      
-        Logger('-------Login Controller----------');
-        Logger(request()->all());
+        //Logger('-------Login Controller----------');
+      
         $sirirajUser = $api->authenticate(request()->input('username'), request()->input('password'));
         //  \Log::info('-------Login Controller----------');
         Logger($sirirajUser);
@@ -42,7 +42,7 @@ class LoginController extends Controller
            // return Redirect::back()->with(['status' => $sirirajUser['reply_text']]);
         }
 
-        $user_check =  User::where('name',$sirirajUser['name'])->first();
+        $user_check =  User::where('sap_id',$sirirajUser['org_id'])->first();
         //Logger($user_check);
         if($user_check){
             Auth::login($user_check);
@@ -60,11 +60,13 @@ class LoginController extends Controller
             request()->session()->flash('mainMenuLinks', $main_menu_links);
            // request()->session()->flash('user', $user);
            return redirect()->intended(RouteServiceProvider::HOME);
-           return redirect()->route('annouce');
+           //return redirect()->route('annouce');
            // return Inertia::render('Annouce');
            
+        }else{
+            return Redirect::back()->with(['status' => '1', 'msg' => 'ไม่พบเจ้าหน้าที่คนนี้เป็นผู้ใช้งานระบบ กรุณาติดต่อเจ้าหน้าที่หน่วยพัสดุภาควิชาอายุรศาสตร์']);
         }
-
+        Logger('login success');
         return Redirect::route('welcome');
        
             // $current_year = date('Y');

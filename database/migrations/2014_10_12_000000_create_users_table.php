@@ -18,9 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('sap_id')->unique();
             $table->unsignedSmallInteger('unitid');
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->unsignedSmallInteger('status')->default(1); //1=active , 0=cancel
+          //  $table->string('email')->unique();
+            $table->timestamp('line_verified_at')->nullable();
+           // $table->string('password');
             $table->json('profile')->nullable();
             $table->rememberToken();
             $table->timestamps();
@@ -36,6 +37,7 @@ class CreateUsersTable extends Migration
             $table->smallIncrements('id');    
             $table->string('name')->uniqid();
             $table->string('label')->nullable();
+            $table->unsignedSmallInteger('status')->default(1);
             $table->timestamps();
         });
 

@@ -28,6 +28,7 @@ class AbilityRoleTableSeeder extends Seeder
             'manage_master_data',
             'view_master_data',
             'set_role_user',
+            'import_item_excel'
         ];
 
         foreach ($abilities as $ability) {
@@ -44,15 +45,15 @@ class AbilityRoleTableSeeder extends Seeder
         // ];
 
         $roles = array(
-            ['name' => 'officer', 'label' => 'เจ้าหน้าที่'],
-            // ['name' => 'super_officer', 'label' => 'หัวหน้างาน'],
+            ['name' => 'officer', 'label' => 'เจ้าหน้าที่', 'status'=>'1'],
+            ['name' => 'super_officer', 'label' => 'เลขาภาควิชาฯ' , 'status'=>'2'],
             // ['name' => 'admin_division_stock', 'label' => 'ผู้ดูแลคลังพัสดุสาขา'],
-            ['name' => 'admin_med_stock', 'label' => 'ผู้ดูแลคลังพัสดุทั้งหมดของภาควิชาฯ'],
-            ['name' => 'admin_it', 'label' => 'ผู้ดูแลระบบ'],
+            ['name' => 'admin_med_stock', 'label' => 'ผู้ดูแลคลังพัสดุทั้งหมดของภาควิชาฯ', 'status'=>'1'],
+            ['name' => 'admin_it', 'label' => 'ผู้ดูแลระบบ', 'status'=>'1'],
         );
 
         foreach ($roles as $role) {
-            Role::create(['name' => $role['name'],'label'=>$role['label']]);
+            Role::create(['name' => $role['name'],'label'=>$role['label'],'status'=>$role['status']]);
         }
 
 // *officer
@@ -90,11 +91,11 @@ class AbilityRoleTableSeeder extends Seeder
         $officer->allowTo('checkout_item');
         $officer->allowTo('view_report_item');
 
-        // $super_officer = Role::whereName('super_officer')->first();
-        // $super_officer->allowTo('view_item');
-        // $super_officer->allowTo('view_order');
-        // $super_officer->allowTo('view_master_data');
-        // $super_officer->allowTo('view_report_item');
+        $super_officer = Role::whereName('super_officer')->first();
+        $super_officer->allowTo('view_item');
+        $super_officer->allowTo('view_order');
+        $super_officer->allowTo('view_master_data');
+        $super_officer->allowTo('view_report_item');
        
         // $admin_division_stock = Role::whereName('admin_division_stock')->first();
         // $admin_division_stock->allowTo('view_item');
@@ -112,12 +113,14 @@ class AbilityRoleTableSeeder extends Seeder
         $admin_med_stock->allowTo('manage_master_data');
         $admin_med_stock->allowTo('view_master_data');
         $admin_med_stock->allowTo('set_role_user');
+        $admin_med_stock->allowTo('import_item_excel');
 
         $admin_it = Role::whereName('admin_it')->first();
         $admin_it->allowTo('view_item');
         $admin_it->allowTo('view_order');
         $admin_it->allowTo('view_master_data');
         $admin_it->allowTo('view_report_item');
-
+        $admin_it->allowTo('manage_master_data');
+        $admin_it->allowTo('set_role_user');
     }
 }

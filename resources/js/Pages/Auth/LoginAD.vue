@@ -22,7 +22,7 @@
             <label class="py-4">- ฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก</label>
             <label class="py-4">- ฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก</label>
             <label class="py-4">- officer.hemato,officer.chest,officer.endocrine</label>
-            <label class="py-4">- officer.id,officer.nephro,admin_med_stock.stockmed</label>
+            <label class="py-4">- officer.id,officer.nephro,admin_med_stock.stockmed,admin_it.itmed</label>
          
           </div>
        
