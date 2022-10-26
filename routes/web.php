@@ -181,6 +181,11 @@ Route::post('/stockitem/checkin-to-stock',[StockItemImportController::class,'sto
 Route::get('/user/add',[UserController::class,'index'])->name('user-add')->middleware('auth');
 Route::get('/user/check-employee-status/{sap_id}',[UserController::class,'checkEmployeeStatus'])->name('check-employee-status')->middleware('auth');
 Route::post('/user/add',[UserController::class,'store'])->name('add-user')->middleware('auth');
+//show detail user for edit
+Route::get('/user/show-detail-user/{slug}',[UserController::class,'edit'])->name('show-detail-user')->middleware('auth');
+//update stock 
+Route::post('/user/update-user/{user}',[UserController::class,'update'])->name('update-user')->middleware('auth');
+
 
 //Add Stock
 Route::get('/stock/add',[StockController::class,'create'])->name('stock-add')->middleware('auth');
@@ -191,7 +196,7 @@ Route::post('/stock/add',[StockController::class,'store'])->name('stock-add-conf
 Route::get('/stock/get-list-stock-unit/{unit_id}',[StockController::class,'getListStockUnit'])->name('get-list-stock-unit')->middleware('auth');
 //show detail stock for edit
 Route::get('/stock/show-detail-stock/{stock}',[StockController::class,'edit'])->name('show-detail-stock')->middleware('auth');
-//show detail stock for edit
+//update stock 
 Route::post('/stock/update-stock/{stock}',[StockController::class,'update'])->name('update-stock')->middleware('auth');
 
 

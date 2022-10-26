@@ -25,7 +25,9 @@ class UserController extends Controller
         $stocks = Stock::all();
         $units = Unit::all();
         $roles = Role::whereStatus(1)->get();
-        $users = User::all();
+        $users = User::select('slug','name','status','unitid')
+                        ->with('unit:id,unitid,unitname')
+                        ->get();
         //   Logger('StockItemImportController');
         return Inertia::render('Admin/AddUser',[
                                     'stocks'=>$stocks,
@@ -88,17 +90,6 @@ class UserController extends Controller
         return Redirect::route('user-add')
                         ->with(['status' => 'success', 'msg' => 'เพิ่มรหัสเจ้าหน้าที่นี้เป็นผู้ใช้งานระบบพัสดุแล้ว']);
 
-        //  [2022-10-25 13:37:31] local.DEBUG: array (
-        //     'sap_id' => '10035479',
-        //     'unit_id' => 33,
-        //     'role_id' => 4,
-        //     'employee_full_name' => 'น.ส. ศันสนีย์ สุ่มกล่ำ',
-        //     'employee_division_name' => 'ภ.อายุรศาสตร์',
-        //     'employee_division_id' => '50000143',
-        //     'employee_position_name' => 'นักวิชาการคอมพิวเตอร์',
-        //     'employee_account_name' => 'sansanee.sum',
-        //   )  
-
 
     }
 
@@ -119,9 +110,28 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+      //  Logger($slug);
+      //   dd('edit user');
+        $user_status_list = array(
+            ['id'=>'1','desc'=>'ปกติ'],
+            ['id'=>'2','desc'=>'ยกเลิก'],
+        );
+        //$stock->unit;
+        $user = User::whereSlug($slug)
+                    ->with('unit:unitid,unitname')
+                    ->first();
+    
+        $user->roles;
+        $units = Unit::all();
+        $roles = Role::whereStatus(1)->get();
+        return Inertia::render('Admin/EditUser',[
+                        'user'=> $user,
+                        'user_status_list'=>$user_status_list,
+                        'units'=> $units,
+                        'roles'=>$roles
+                        ]);
     }
 
     /**
@@ -131,9 +141,40 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(User $user)
     {
-        //
+        Logger(request()->all());
+        $original_val_user = $user->getOriginal(); //เก็บค่าเก่าไว้ก่อน
+        $original_val_role = $user->roles;
+        logger($original_val_role);
+        $old_changes =array();
+        $user->update([
+                        'unitid'=> request()->input('unit_id'),
+                        'status'=> request()->input('user_status'),
+                ]); // สัมพันธ์กับ protected fillable ใน Model
+        $changes = $user->getChanges(); //ได้เฉพาะคอลัมน์ที่มีการเปลี่ยนแปลงค่า + updated_at ถ้าตารางนี้มีการใช้ timestamp
+        
+      //  $role_update = Role
+       
+        dd($changes);
+
+
+        if(count($changes)){
+          
+            foreach($changes as $key=>$val){
+                $old_changes[] = [ 'column'=>$key , 'old'=>$original_val_user[$key] , 'new'=>$val];
+            }
+            array_pop($old_changes); //เอา updated_at  ออก
+           
+            /****************  insert log ****************/
+          //  logger($old_changes);
+            return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
+        }
+            /****************  insert log ****************/
+           // logger($old_changes);
+        return Redirect::back()->with(['status' => 'warning', 'msg' => 'ข้อมูลที่ระบุมาไม่มีการเปลี่ยนแปลง']);
+
+      
     }
 
     /**

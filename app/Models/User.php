@@ -3,10 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -45,6 +49,15 @@ class User extends Authenticatable
         'profile' => 'array',
     ];
 
+    protected $appends = ['status_name'];
+
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            $user->slug = Str::uuid()->toString();
+        });
+    }
+
     public function roles(){
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
@@ -66,5 +79,19 @@ class User extends Authenticatable
     public function unit()
     {
         return $this->belongsTo(Unit::class,'unitid','unitid');
+    }
+    protected function statusName(): Attribute
+    {
+       
+        return Attribute::make(
+            get:function () {
+                    if($this->status==1)
+                        return "ปกติ";
+                    else if($this->status==2)
+                        return "ยกเลิก";
+                    else
+                        return "status is invalid";
+        });      
+
     }
 }

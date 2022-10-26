@@ -34,7 +34,13 @@
                 </svg>
             </label>
         </div>
-        
+        sap test:  10032608 , โลหิต 10003133 ,หายใจ 10016895 ,พัสดุ 10019699 10030727
+        <div class=" w-full text-sm p-4 my-2  justify-center bg-red-100">
+            <p for="" class=" underline underline-offset-1 " >คำแนะนำการเพิ่มผู้ใช้งาน</p>
+            <p for="">1.ระบุรหัสเจ้าหน้าที่ แล้วกดปุ่มตรวจสอบสถานะ แล้วตรวจสอบข้อมูลว่าเป็นบุคคลที่ต้องการเพิ่มเป็นผู้ใช้งานระบบนี้หรือไม่</p>
+            <p for="">2.ระบุหน่วยงานภายในภาควิชาฯที่บุคคลนี้สังกัด ซึ่งหากสังกัดหน่วยงานใดก็จะมีสิทธิเข้าถึงคลังพัสดุของหน่วยงานนั้นเท่านั้น </p>
+            <p for="">3.ระบุสิทธิการใช้งานระบบ (หากเป็นเจ้าหน้าที่สาขาที่ทำหน้าที่บันทึกตัดสต๊อก ให้ระบุสิทธิเป็น เจ้าหน้าที่)</p>
+        </div> 
         <div class=" w-full p-4 flex-col justify-center bg-blue-100 rounded-md ">
             <div class=" text-center text-lg font-bold ">
                 <p class=" my-2 ">เพิ่ม/แก้ไข ผู้ใช้งาน</p> 
@@ -138,7 +144,7 @@
                     <div>
                         <button type="submit" 
                             class=" w-full p-3 text-md  bg-green-500 hover:bg-green-700 text-white py-1 px-6 border border-green-500 rounded shadow-md"
-                            @click="addUser()"
+                            @click="confirmAddUser()"
                             >
                             บันทึก
                         </button>
@@ -154,7 +160,7 @@
         <div 
                 class="w-full   text-sm   my-2 rounded-md"
                 >
-                <label for="">รายชื่อผู้ใช้งานทั้งหมด:</label>
+                <label class=" text-lg font-bold ">รายชื่อผู้ใช้งานทั้งหมด:</label>
                 <div v-for="(user,index_user) in  users" :key=index_user :value="user.id"
                     class=" bg-white p-2 my-2  lg:flex lg:justify-between border-b-2  border-gray-300 "
                 >
@@ -164,7 +170,7 @@
                         </div>
                         <div>
                             <label class=" p-2 text-blue-600">สถานะ:</label>
-                            <label class=" bg-red-100">{{user.status}}</label>
+                            <label class=" bg-red-100">{{user.status_name}}</label>
                             
                         </div>
                         <div class="">
@@ -179,12 +185,10 @@
                     </div>
                     <div class="flex  justify-center bg-yellow-200 px-2 rounded-md shadow-md " >
                         
-                        <a href=""  >
+                        <a :href="route('show-detail-user',user.slug)" >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                             </svg>
-
-                          
                         </a>
                      
                         <!-- <button type="submit" 
@@ -208,31 +212,31 @@
                     </button>
                 </div> -->
             </div>
-         sap test:  10032608 , โลหิต 10003133 ,หายใจ 10016895 ,พัสดุ 10019699 10030727
-        <div class=" w-full text-sm p-4 mt-2  justify-center bg-red-100">
-            <p for="" class=" underline underline-offset-1 " >คำแนะนำการเพิ่มผู้ใช้งาน</p>
-            <p for="">1.ระบุรหัสเจ้าหน้าที่ แล้วกดปุ่มตรวจสอบสถานะ หากสถานะเป็น Active ให้ตรวจสอบข้อมูลว่าเป็นบุคคลที่ต้องการเพิ่มเป็นผู้ใช้งานระบบนี้หรือไม่</p>
-            <p for="">2.ระบุหน่วยงานภายในภาควิชาฯที่บุคคลนี้สังกัด ซึ่งหากสังกัดหน่วยงานใดก็จะมีสิทธิเข้าถึงคลังพัสดุของหน่วยงานนั้นเท่านั้น </p>
-            <p for="">3.ระบุสิทธิการใช้งานระบบ (หากเป็นเจ้าหน้าที่สาขาทำหน้าที่บันทึกตัดสต๊อก ให้ระบุสิทธิเป็น เจ้าหน้าที่)</p>
-        </div> 
+      
 
-        <ModalUpToYou :isModalOpen="add_user_success" >
+        <ModalUpToYou :isModalOpen="confirm_add_user" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">เพิ่มผู้ใช้งาน</p> 
+                <p class="text-md font-bold text-red-600 ">คุณต้องการเพิ่มผู้ใช้งานนี้ใช่หรือไม่?</p> 
                                         
             </template>
 
             <template v-slot:body>
                 <div class="text-gray-900 text-md font-medium dark:text-white">
-                     <label for=""
-                     class="  flex  justify-start w-full text-sm "
+                     <label for="" class="  flex  justify-start w-full text-sm "
                      >
-                         เพิ่มผู้ใช้งานเรียบร้อยแล้ว
+                         รหัสเจ้าหน้าที่: {{form.sap_id}} 
                         </label>
                     <label 
                             class="  flex  justify-start w-full text-sm ">
-                        <!-- ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}} -->
-                        <!-- ชื่อคลัง: -->
+                            ชื่อเจ้าหน้าที่: {{form.employee_full_name}}
+                    </label>
+                    <label 
+                            class="  flex  justify-start w-full text-sm ">
+                            หน่วย/สาขา:{{getUnitname()}}
+                    </label>
+                    <label 
+                            class="  flex  justify-start w-full text-sm ">
+                            กำหนดสิทธิเป็น:{{getRolename()}}
                     </label>
                 </div>
             </template>
@@ -241,11 +245,16 @@
                 <div class=" w-full  text-center  md:block">
                     <button 
                         class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
-                        v-on:click="closeAddUserSuccess"
+                        v-on:click="addUser"
                         >
                         ตกลง
                     </button>
-                  
+                    <button 
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        v-on:click="cancelAddUser"
+                    >
+                        ยกเลิก
+                    </button>
                 </div>
             </template>
         </ModalUpToYou>
@@ -274,13 +283,12 @@ const props =defineProps({
     
 })
 
+
+
 const stocks_unit = ref('');
 const employeeStatus=ref('');
 const employeeAccountName=ref('');
-const add_user_success=ref(false);
-const  closeAddUserSuccess=()=>{
-    add_user_success.value = false;
-}
+const confirm_add_user=ref(false);
 
 const form = useForm({
     sap_id:'10035479',
@@ -292,6 +300,35 @@ const form = useForm({
     employee_position_name:'',
     employee_account_name:'',
 })
+
+const confirmAddUser=(()=>{
+  console.log('----------confirmAddUser------');
+
+  confirm_add_user.value = true;
+})
+
+const  cancelAddUser=()=>{
+    confirm_add_user.value = false;
+}
+
+const getRolename = () => {
+    console.log('getRolename')
+    let role = {}
+    role = props.roles.find( item => item.id === form.role_id) // เอาค่าแรกที่เจอค่าเดียว
+  //  console.log(unit)
+    return role.label
+}
+
+const getUnitname = () => {
+    console.log('getUnitname')
+    let unit = {}
+    unit = props.units.find( item => item.unitid === form.unit_id) // เอาค่าแรกที่เจอค่าเดียว
+  //  console.log(unit)
+    return unit.unitname
+}
+
+
+
 
 const getListStockUnit=(()=>{
     // console.log('----------getListStockUnit------')
@@ -345,7 +382,7 @@ const addUser=(()=>{
         preserveScroll: true,
         onSuccess: page => { 
             console.log('success');
-            add_user_success.value=true;
+           
         },
         onError: errors => { 
             console.log('error');

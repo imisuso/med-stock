@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->uuid('slug');
             $table->string('sap_id')->unique();
             $table->unsignedSmallInteger('unitid');
             $table->string('name');
