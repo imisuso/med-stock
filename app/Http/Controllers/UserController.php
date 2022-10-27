@@ -25,8 +25,9 @@ class UserController extends Controller
         $stocks = Stock::all();
         $units = Unit::all();
         $roles = Role::whereStatus(1)->get();
-        $users = User::select('slug','name','status','unitid')
+        $users = User::select('slug','name','status','unitid','updated_at')
                         ->with('unit:id,unitid,unitname')
+                        ->orderBy('unitid')
                         ->get();
         //   Logger('StockItemImportController');
         return Inertia::render('Admin/AddUser',[
@@ -64,7 +65,7 @@ class UserController extends Controller
         
          if($check_user)
          {
-            Logger('bbbbbbbbbb');
+           
            // return Redirect::back()->withErrors()
             return Redirect::route('user-add')
                             ->with(['status' => 'error', 'msg' => 'พบรหัสเจ้าหน้าที่นี้แล้ว']);
@@ -85,7 +86,7 @@ class UserController extends Controller
         $role = Role::find(request()->input('role_id'));
         $user->assignRole($role->name);
 
-        Logger('aaaaaaaaa');
+      
 
         return Redirect::route('user-add')
                         ->with(['status' => 'success', 'msg' => 'เพิ่มรหัสเจ้าหน้าที่นี้เป็นผู้ใช้งานระบบพัสดุแล้ว']);
@@ -154,12 +155,27 @@ class UserController extends Controller
                 ]); // สัมพันธ์กับ protected fillable ใน Model
         $changes = $user->getChanges(); //ได้เฉพาะคอลัมน์ที่มีการเปลี่ยนแปลงค่า + updated_at ถ้าตารางนี้มีการใช้ timestamp
         
-      //  $role_update = Role
+      //  update role user
+       $role_name = request()->input('role_name');
+       $role_change = 0;
+        try {
+            // ถ้า role ที่ update มาใหม่ ไม่ใช่ role เดิม ให้ทำการ remove role เก่าออกก่อน แล้วถึง assign role ใหม่ให้
+            if( ! $user->getUserRolesAttribute()->contains($role_name)) {
+                $user->revokeRole();
+                $user->assignRole($role_name);
+                $role_change = 1;
+            }
+
+          
+        } catch (\Exception  $e) {
+            return Redirect::back()->withErrors(['msg' => 'ไม่สามารถแก้ไขผู้ใช้งานระบบได้เนื่องจาก ' .$e->getMessage()]);
+        }
+
        
-        dd($changes);
+       // dd($changes);
 
 
-        if(count($changes)){
+        if(count($changes) || $role_change){
           
             foreach($changes as $key=>$val){
                 $old_changes[] = [ 'column'=>$key , 'old'=>$original_val_user[$key] , 'new'=>$val];

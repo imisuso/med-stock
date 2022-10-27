@@ -49,10 +49,10 @@
 
               
 
-                <div class="mt-3" >
+                <!-- <div class="mt-3" >
                     <label for="">ระบุรหัสใบสั่งซื้อ</label> 
                 </div>
-                <input type="text" name="" class="w-full  py-2 rounded-md "   v-model="form.stock_po">
+                <input type="text" name="" class="w-full  py-2 rounded-md "   v-model="form.stock_po"> -->
                 
                 <!-- <div class="mt-3">
                     <label for="">วันที่ตรวจรับพัสดุ:</label>

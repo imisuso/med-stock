@@ -93,6 +93,12 @@
                                 <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
                                 </svg>
                         </div>
+                        <div class="flex ml-2"> Pur.Order : 
+                            <p class=" ml-2 text-blue-600">{{stockItem.pur_order}}</p> 
+                        </div>
+                        <div class="flex ml-2"> ชื่อบริษัท : 
+                            <p class=" ml-2 text-blue-600">{{stockItem.business_name}}</p> 
+                        </div>
                         <div class="flex ml-2"> วันหมดอายุ : 
                             <p class=" ml-2 text-blue-600">
                                 {{dayjs(stockItem.checkin_last.date_expire).locale('th').format('D MMMM BBBB')}}
@@ -101,9 +107,10 @@
                         <div class="flex ml-2"> วันที่รับเข้า : 
                             <p class=" ml-2 text-blue-600">{{dayjs(stockItem.checkin_last.date_action).locale('th').format('D MMMM BBBB')}}</p> 
                         </div>
-                        <div class="flex ml-2"> Cat.No/Lot.No : 
+                       
+                        <!-- <div class="flex ml-2"> Cat.No/Lot.No : 
                             <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.profile['catalog_number']}} /{{stockItem.checkin_last.profile['lot_number']}}</p> 
-                        </div>
+                        </div> -->
                       
                     </div>
                 

@@ -26,6 +26,13 @@ class CreateItemTransactionsTable extends Migration
             $table->date('date_expire')->nullable();
             $table->integer('item_count');
             $table->string('status')->default('active');   //active , deleted
+            $table->float('price');
+            $table->string('catalog_number')->nullable();
+            $table->string('lot_number')->nullable();
+            $table->string('pur_order')->nullable();
+            $table->string('invoice_number')->nullable();
+            $table->string('business_name')->nullable();
+            $table->integer('order_type')->default(1);    // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
             $table->json('profile')->nullable();  //if action = checkin -> price ,catalog_no , lot_no
             $table->timestamps();
         });

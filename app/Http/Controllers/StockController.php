@@ -27,7 +27,7 @@ class StockController extends Controller
     
         Log::info('StockController index');
         $user = Auth::user();
-        $stocks = Stock::where('unit_id',$user->profile['division_id'])
+        $stocks = Stock::where('unit_id',$user->unitid)
                         ->where('status',1)
                         ->get();
 
@@ -41,7 +41,7 @@ class StockController extends Controller
                         ],
                 ]);
         }
-        $stock_items = StockItem::where('stock_id',$user->profile['division_id'])->get();
+        $stock_items = StockItem::where('stock_id',$user->unitid)->get();
       
         foreach($stock_items as $key=>$stock_item){
             $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
@@ -51,7 +51,7 @@ class StockController extends Controller
                                             ->first();
             $stock_items[$key]['checkin_last'] = $checkin_last;
         }
-        $unit = Unit::where('unitid',$user->profile['division_id'])->first();
+        $unit = Unit::where('unitid',$user->unitid)->first();
       
         $main_menu_links = [
             'is_admin_division_stock'=> $user->can('view_master_data'),

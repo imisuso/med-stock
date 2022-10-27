@@ -23,6 +23,13 @@ class ItemTransaction extends Model
         'date_expire',
         'item_count',
         'status',
+        'price',
+        'catalog_number',
+        'lot_number',
+        'pur_order',
+        'invoice_number',
+        'business_name',
+        'order_type',
         'profile',
     ];
 

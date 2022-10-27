@@ -51,7 +51,8 @@
                {{ $page.props.stocks }} -->
             <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                 <div class="mt-3 " >
-                    <label for="">ระบุรหัสเจ้าหน้าที่ 8 หลัก(SAP):</label> 
+                    <label class=" text-lg font-bold text-green-600" >เพิ่มผู้ใช้งาน:</label> 
+                    <label >ระบุรหัสเจ้าหน้าที่ 8 หลัก(SAP)</label> 
                     <button type="submit" 
                                 class="  inline-flex text-sm ml-3 bg-blue-500 hover:bg-blue-700 text-white py-1 px-6 border border-blue-500 rounded"
                                 @click="CheckEmployeeStatus()"
@@ -166,13 +167,18 @@
                 >
                     <div class=" flex flex-col lg:flex-row ">
                         <div>
-                            {{index_user+1}}. {{user.name}}
+                            {{index_user+1}}. {{user.name}} ({{user.unit.unitname}})
                         </div>
                         <div>
                             <label class=" p-2 text-blue-600">สถานะ:</label>
                             <label class=" bg-red-100">{{user.status_name}}</label>
                             
                         </div>
+                        <!-- <div>
+                            <label class=" p-2 text-blue-600">สิทธิ:</label>
+                            <label class=" bg-red-100">{{user.unit.unitname}}</label>
+                            
+                        </div> -->
                         <div class="">
                                 <label  class=" mx-2  text-xs ">
                                     แก้ไขล่าสุดเมื่อ: 
@@ -200,17 +206,7 @@
                     </div>
                    
                 </div>
-                <!-- <div class=" my-2 ">
-                    <button type="submit" 
-                        class=" w-full flex justify-center py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
-                        @click="showFormAddStock()"
-                        >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        เพิ่มคลังพัสดุ
-                    </button>
-                </div> -->
+  
             </div>
       
 

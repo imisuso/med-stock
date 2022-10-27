@@ -125,13 +125,11 @@ class BudgetController extends Controller
                                             ->get();
                 if( $stock_orders->count()!=0){
                     foreach($stock_orders as $order){
-                        // Log::info($order->timeline['approve_budget']);
                         $use_budget += $order->timeline['approve_budget'];
                     }
                 }else{
                     $use_budget = 0.0;
                 }
-              //  Log::info($budget_year->budget_add);
           
 
                 //*********ข้อมูลใบสั่งซื้อ

@@ -126,6 +126,8 @@ Route::post('/admin/add-budget',[BudgetController::class,'store'])->name('add-bu
 Route::post('/admin/edit-budget',[BudgetController::class,'edit'])->name('edit-budget')->middleware('auth','can:manage_master_data');
 //พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
 Route::get('/admin/print-budget-order/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrder'])->name('print-budget-order')->middleware('auth','can:manage_master_data');
+//แสดงงบประมาณในรายการสั่งซื้อแต่ละครั้ง
+Route::get('/admin/get-list-order/{stock_id}/{year}', [ItemTransactionController::class,'index'])->name('get-list-order')->middleware('auth','can:manage_master_data');
 
 
 Route::controller(AdminOrderPurchaseController::class)

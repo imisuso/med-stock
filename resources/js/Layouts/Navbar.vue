@@ -53,7 +53,7 @@
                       </svg>
                     </div>
                     <div>
-                         คุณ 
+                     
                          {{$page.props.auth.user.name}}
                     </div>
                 </div>

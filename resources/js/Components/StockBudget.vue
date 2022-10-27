@@ -84,13 +84,13 @@
                                 แก้ไข
                             </button>
                         </div>
-                        <div v-if="stockBudget.orders.length>0 || stockBudget.purchase_orders.length>0  " class="flex mr-2">
-                            <button
+                        <div  class="flex mr-2">
+                            <a :href="route('get-list-order',{stock_id:stockBudget.id,year:budgetYear})"
                                 class=" flex justify-center py-1 px-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
-                                v-on:click="viewAllOrder()"
+                              
                                 >
-                                ดูรายการเบิก
-                            </button>
+                                ดูรายการสั่งซื้อ
+                            </a>
                               <a :href="route('print-budget-order',{stock_id:stockBudget.id,year:budgetYear})"
                                 v-if="stockBudget.budget['budget_add'] !=0"
                                 target="blank" class=" ">
@@ -135,11 +135,11 @@
                    
           
                 </div>
-                <div v-if="stockBudget.budget['budget_add']!=0" class=" px-3">
+                <!-- <div v-if="stockBudget.budget['budget_add']!=0" class=" px-3">
                     <label class=" px-3 text-red-600 font-bold"> 
                         คงเหลือ  {{budget_balance}}บาท
                     </label>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -299,8 +299,28 @@ const budget_balance = computed(()=>{
 })
 
 const viewAllOrder=()=>{
-    view_order.value=!view_order.value;
+    form.get(route('get-list-order'), {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: page => { 
+                console.log('success');
+               // show_alert_msg.value = true;
+                console.log(form.budget_year);
+                },
+            onError: errors => { 
+                console.log('error');
+                //  show_alert_msg.value = true;
+            },
+            onFinish: visit => { 
+                console.log('finish');
+            },
+    })
 }
+    
+
+// const viewAllOrder=()=>{
+//     view_order.value=!view_order.value;
+// }
 
 const confirmAddBudget=(order)=>{
   //  console.log(order);

@@ -34,6 +34,12 @@
                     <div class="flex ml-2"> จำนวนคงเหลือ :
                         <p class=" ml-2 text-red-600">{{$page.props.stock_item.item_sum}}</p>     
                     </div>
+                    <div class="flex ml-2"> Pur.Order : 
+                            <p class=" ml-2 text-blue-600">{{$page.props.stock_item.pur_order}}</p> 
+                        </div>
+                        <div class="flex ml-2"> ชื่อบริษัท : 
+                            <p class=" ml-2 text-blue-600">{{$page.props.stock_item.business_name}}</p> 
+                        </div>
                     <div class="flex ml-2"> วันหมดอายุ : 
                         <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.date_expire}}</p> 
                     </div>
@@ -42,9 +48,9 @@
                          <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.date_action}}</p> 
                     </div>
                    
-                     <div class="flex ml-2"> Cat.No/Lot.No : 
+                     <!-- <div class="flex ml-2"> Cat.No/Lot.No : 
                          <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.profile['catalog_number']}}/{{$page.props.checkin_last.profile['lot_number']}}</p> 
-                     </div>
+                     </div> -->
                     
                 </div>
             </div> 
@@ -81,7 +87,8 @@
                         </svg>
                        
                     </span>
-                      {{item_tran.date_action}}
+                      <!-- {{item_tran.date_action}} -->
+                      {{dayjs(item_tran.date_action).locale('th').format('D MMM BBBB')}}
                 </td>
                 <td class="text-left  block md:table-cell  md:border-b-2 md:border-gray-300 ">
                     <span class="inline-block w-1/3 md:hidden font-bold">จำนวน</span>
@@ -116,44 +123,56 @@
     <!-- END table -->
      </AppLayout>
 </template>
-<script>
+<script setup>
 //import { ref } from 'vue';
 //import { usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
+import dayjs from 'dayjs';
+import 'dayjs/locale/th'
+import buddhistEra from 'dayjs/plugin/buddhistEra'
+dayjs.extend(buddhistEra)
 
-export default {
-    components: {
-        AppLayout,
-    },
-    props:{
-        stock_item:Array,
+const props =defineProps({
+    stock_item:Array,
         stock:Array,
         item_trans:Array,
         checkin_last:Array,
         count_name:String,
         can_abilities: { type: Object, required: true },
         can: { type: Object, required: true },
-     },
-    data(){
-        return{
-           
-        //    stocks:[
-		// 		{code:1,name:'aa' },
-		// 		{code:2,name:'bb' },	
-		// 		{code:3,name:'cc' },		
-		// 	],
-        }
-    },
-    methods:{
-        cancel_checkout(item_tran_id){
-            console.log('cancel checkout item='+item_tran_id);
-        }
-    }
-
-    // setup() {
+ 
+    //stock_item_import: {type:Array, default:[]},
     
-    //     return { };
-    // },
-}
+})
+
+// export default {
+//     components: {
+//         AppLayout,
+//     },
+//     props:{
+//         stock_item:Array,
+//         stock:Array,
+//         item_trans:Array,
+//         checkin_last:Array,
+//         count_name:String,
+//         can_abilities: { type: Object, required: true },
+//         can: { type: Object, required: true },
+//      },
+//     data(){
+//         return{
+
+//         }
+//     },
+//     methods:{
+//         cancel_checkout(item_tran_id){
+//           //  console.log('cancel checkout item='+item_tran_id);
+//         }
+//     }
+
+//     // setup() {
+    
+//     //     return { };
+//     // },
+// }
 
 </script>

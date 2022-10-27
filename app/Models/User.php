@@ -75,11 +75,22 @@ class User extends Authenticatable
     {
         return $this->roles->map->abilities->flatten()->pluck('name')->unique()->flatten();
     }
+
+    public function revokeRole()
+    {
+        $this->roles()->detach();
+    }
+
+    public function getUserRolesAttribute()
+    {
+        return $this->roles->map->name->flatten()->unique()->flatten();
+    }
     
     public function unit()
     {
         return $this->belongsTo(Unit::class,'unitid','unitid');
     }
+
     protected function statusName(): Attribute
     {
        
@@ -93,5 +104,13 @@ class User extends Authenticatable
                         return "status is invalid";
         });      
 
+    }
+
+    protected function roleName(): Attribute
+    {
+        return Attribute::make(
+            get:function(){
+
+            });
     }
 }

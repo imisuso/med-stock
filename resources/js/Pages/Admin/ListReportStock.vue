@@ -65,7 +65,13 @@
                         ราคา
                     </div>
                     <div class=" lg:w-3/12 ">
-                        PO/ชื่อบริษัท
+                        ชื่อบริษัท
+                    </div>
+                    <div class=" lg:w-1/12 ">
+                        Pur.Order
+                    </div>
+                    <div class=" lg:w-1/12 ">
+                        Invoice Number
                     </div>
                     <div class=" lg:w-1/12 ">
                         วันที่รับเข้า
@@ -73,9 +79,7 @@
                     <div class=" lg:w-1/12 ">
                         วันที่หมดอายุ
                     </div>
-                    <div class=" lg:w-2/12 ">
-                        Cat.No/Lot.No
-                    </div>
+                   
                     <div class=" lg:w-1/12 text-xs ">
                         ประวัติการรับเข้าและเบิกออก
                     </div>
@@ -126,11 +130,23 @@
                         </label> 
                     </div>
                     <div class="   lg:w-3/12 lg:text-xs  ">
-                        <label for="" class="   lg:hidden">PO/ชื่อบริษัท:</label>
+                        <label for="" class="   lg:hidden">ชื่อบริษัท:</label>
                   
                         <label class=" ml-2 " >
-                            {{stock_item.po_number}}-  {{stock_item.business_name}}
+                            {{stock_item.business_name}}
                         </label> 
+                    </div>
+                    <div class="   lg:w-1/12 lg:text-xs  ">
+                        <label for="" class="   lg:hidden">Pur.Order:</label>
+                  
+                        <label class=" ml-2 " >
+                            {{stock_item.pur_order}}
+                        </label> 
+                    </div>
+                    <div class="  lg:w-1/12 lg:text-xs ">
+                        <label for="" class="  lg:hidden">Invoice Number:</label>
+                        <label class=" ml-2 " >{{stock_item.invoice_number}}</label>
+                        <!-- <label class=" ml-2 " >{{stock_item.checkin_last.profile['catalog_number']}} /{{stock_item.checkin_last.profile['lot_number']}}</label>  -->
                     </div>
                     <div class="   lg:w-1/12 lg:text-xs  ">
                         <label for="" class="   lg:hidden">วันที่รับเข้า:</label>
@@ -145,10 +161,7 @@
                             {{dayjs(stock_item.checkin_last.date_expire).locale('th').format('D MMM BBBB')}}
                         </label>
                     </div>
-                    <div class="  lg:w-2/12 lg:text-xs ">
-                        <label for="" class="  lg:hidden">Cat.No/Lot.No:</label>
-                        <label class=" ml-2 " >{{stock_item.checkin_last.profile['catalog_number']}} /{{stock_item.checkin_last.profile['lot_number']}}</label> 
-                    </div>
+                  
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  hidden">::</label>
                         <!-- <label class=" font-bold">  {{item_tran.stock_item['item_sum']}}</label> -->

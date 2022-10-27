@@ -47,16 +47,17 @@ class StockItemImportController extends Controller
         //$rows = Excel::toCollection(new StockItemImportToCollection(),$request->file('file_stock_item'));
      
         //****rule validate excel import
-        $col_excel = 9;
-        $head_row = array(0 => 'item_code',
+        $col_excel = 10;
+        $head_row = array(0 => 'material_number',
                           1 => 'item_name',
-                          2 => 'unit_count',
-                          3 => 'date_receive',
-                          4 => 'item_receive',
-                          5 => 'date_expire',
-                          6 => 'price',
-                          7 => 'catalog_number',
-                          8 => 'lot_number'
+                          2 => 'item_receive',
+                          3 => 'unit_count',
+                          4 => 'price',
+                          5 => 'vendor',
+                          6 => 'pur_order',
+                          7 => 'invoice_number',
+                          8 => 'date_receive',
+                          9 => 'date_expire',
                          );
 
         $collect = array();
@@ -96,15 +97,16 @@ class StockItemImportController extends Controller
                 
                 /************ START Validation data row in excel ************/
   
-                $rules = ['0' => 'required|integer|digits:8', //item_code
+                $rules = ['0' => 'required|integer|digits:8', //Material Number
                           '1' => 'required|max:100',        //item_name
-                          '2' => 'required|max:20',         //unit_count
-                          '3' => 'required|date',           //date_receive
-                          '4' => 'required|integer|digits_between:1,3', //item_receive
-                          '5' => 'required|date',           //date_expire
-                          '6' => 'required|regex:/^(([0-9]*)(\.([0-9]+))?)$/|max:8',    //price
-                          '7' => 'required|max:20',        //catalog_number
-                          '8' => 'required|max:20',        //lot_number
+                          '2' => 'required|integer|digits_between:1,5', //item_receive
+                          '3' => 'required|max:20',         //unit_count
+                          '4' => 'required|regex:/^(([0-9]*)(\.([0-9]+))?)$/|max:8',    //price
+                          '5' => 'required|max:200',    //vendor
+                          '6' => 'required|max:50',    //Pur.Order
+                          '7' => 'required|max:50',    //Invoice Number
+                          '8' => 'required|date',           //date_receive
+                          '9' => 'required|date',           //date_expire
                 ];
  
                 $customMessages = [
@@ -113,22 +115,24 @@ class StockItemImportController extends Controller
                     '0.digits' => 'ข้อมูล item_code ต้องเป็นตัวเลข 8 หลัก เท่านั้น',
                     '1.required' => 'ต้องระบุชื่อพัสดุในคอลัมน์ item_name ',
                     '1.max' => 'ข้อมูลชื่อพัสดุในคอลัมน์ item_name ต้องไม่เกิน 100 ตัวอักษร ',
-                    '2.required' => 'ต้องใส่ข้อมูลหน่วยนับของพัสดุที่ตรวจรับในคอลัมน์ unit_count ', 
-                    '2.max' => 'ข้อมูลหน่วยนับในคอลัมน์ unit_count ต้องไม่เกิน 20 ตัวอักษร ',
-                    '3.required' => 'ต้องใส่ข้อมูลวันที่ตรวจรับพัสดุในคอลัมน์ date_receive ',
-                    '3.date'=>'ข้อมูล date_receive รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
-                    '4.required' => 'ต้องใส่ข้อมูลจำนวนพัสดุในคอลัมน์ item_receive ',
-                    '4.integer' => 'ข้อมูล item_receive ต้องเป็นตัวเลขเท่านั้น',
-                    '4.digits_between' => 'ข้อมูล item_receive ต้องเป็นตัวเลขไม่เกิน 3 หลักเท่านั้น',
-                    '5.required' => 'ต้องใส่ข้อมูลวันที่หมดอายุของพัสดุในคอลัมน์ date_expire ',
-                    '5.date'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
-                    '6.required' => 'ต้องใส่ข้อมูลราคาต่อหน่วยของพัสดุในคอลัมน์ price ',
-                    '6.regex' => 'ข้อมูล price ต้องเป็นตัวเลขเท่านั้น',
-                    '6.max' => 'ข้อมูลราคาพัสดุในคอลัมน์ price ต้องเป็นตัวเลขไม่เกิน 8 หลักเท่านั้น',
-                    '7.required' => 'ต้องใส่ข้อมูลในคอลัมน์ catalog_number',
-                    '7.max'=>'ข้อมูล catalog_number ต้องไม่เกิน 20 ตัวอักษร',
-                    '8.required' => 'ต้องใส่ข้อมูลในคอลัมน์ lot_number',
-                    '8.max'=>'ข้อมูล lot_number ต้องไม่เกิน 20 ตัวอักษร',
+                    '2.required' => 'ต้องใส่ข้อมูลจำนวนพัสดุในคอลัมน์ item_receive ',
+                    '2.integer' => 'ข้อมูล item_receive ต้องเป็นตัวเลขเท่านั้น',
+                    '2.digits_between' => 'ข้อมูล item_receive ต้องเป็นตัวเลขไม่เกิน 5 หลักเท่านั้น',
+                    '3.required' => 'ต้องใส่ข้อมูลหน่วยนับของพัสดุที่ตรวจรับในคอลัมน์ unit_count ', 
+                    '3.max' => 'ข้อมูลหน่วยนับในคอลัมน์ unit_count ต้องไม่เกิน 20 ตัวอักษร ',
+                    '4.required' => 'ต้องใส่ข้อมูลราคาต่อหน่วยของพัสดุในคอลัมน์ price ',
+                    '4.regex' => 'ข้อมูล price ต้องเป็นตัวเลขเท่านั้น',
+                    '4.max' => 'ข้อมูลราคาพัสดุในคอลัมน์ price ต้องเป็นตัวเลขไม่เกิน 8 หลักเท่านั้น',
+                    '5.required' => 'ต้องใส่ข้อมูลในคอลัมน์ vendor',
+                    '5.max'=>'ข้อมูล vendor ต้องไม่เกิน 200 ตัวอักษร',
+                    '6.required' => 'ต้องใส่ข้อมูลในคอลัมน์ Pur.Order',
+                    '6.max'=>'ข้อมูล Pur.Order ต้องไม่เกิน 50 ตัวอักษร',
+                    '7.required' => 'ต้องใส่ข้อมูลในคอลัมน์ Invoice Number',
+                    '7.max'=>'ข้อมูล Invoice Number ต้องไม่เกิน 50 ตัวอักษร',
+                    '8.required' => 'ต้องใส่ข้อมูลวันที่ตรวจรับพัสดุในคอลัมน์ date_receive ',
+                    '8.date'=>'ข้อมูล date_receive รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
+                    '9.required' => 'ต้องใส่ข้อมูลวันที่หมดอายุของพัสดุในคอลัมน์ date_expire ',
+                    '9.date'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
                    
                 ];
 
@@ -142,20 +146,23 @@ class StockItemImportController extends Controller
                if(count($tmp_error_validate)>0){
                      $error_validate[$key] = $tmp_error_validate;
                }else{
-                    $date_temp=date_create($row[3]);
+                    $date_temp=date_create($row[8]);
                     $date_format_receive = date_format($date_temp,"Y-m-d");
                 //  $row[3]->formatDates(true, 'Y-m-d');
                 // $reader->formatDates(true, 'Y-m-d');
+
+ 
                     $collect[]= array(
-                        'item_code' => $row[0],
+                        'material_number' => $row[0],
                         'item_name' => $row[1],
-                        'unit_count' => $row[2],
+                        'item_receive' => $row[2],
+                        'unit_count' => $row[3],
+                        'price' => $row[4],
+                        'vendor' => $row[5],
+                        'pur_order' => $row[6],
+                        'invoice_number' => $row[7],
                         'date_receive' => $date_format_receive,
-                        'item_receive' => $row[4],
-                        'date_expire' => $row[5],
-                        'price' => $row[6],
-                        'catalog_number' => $row[7],
-                        'lot_number' => $row[8],
+                        'date_expire' => $row[9],
                     );
                 }
             }
@@ -212,10 +219,28 @@ class StockItemImportController extends Controller
             // Logger($item['date_receive']);
             // Logger($item['date_expire']);
 
+           // dd($item);
+            // "material_number" => 12881203
+            // "item_name" => "test item1"
+            // "item_receive" => 20
+            // "unit_count" => "PACK"
+            // "price" => 5450
+            // "vendor" => "บจ.ไซโก โซลูชั่นส์ (ประเทศไทย) จำกัด"
+            // "pur_order" => "1300632418/2566"
+            // "invoice_number" => "AHGHED501"
+            // "date_receive" => "2022-10-05"
+            // "date_expire" => "2023-01-31"
+
             $date_split = explode('-',$item['date_receive']);
           
+            if((int)$date_split[1]>9){
+                $year_budget = (int)$date_split[0]+1;
+            }else{
+                $year_budget = $date_split[0];
+            }
+           
             $has_old_item = StockItem::where([
-                                        'item_code'=>$item['item_code'],
+                                        'item_code'=>$item['material_number'],
                                         'stock_id'=>$request->stock_id,
                                         'status'=>$request->stock_item_status
                                         ])->first();
@@ -228,16 +253,19 @@ class StockItemImportController extends Controller
                                             'stock_id'=>$request->stock_id ,
                                             'stock_item_id'=>$has_old_item->id ,
                                             'user_id'=>$user->id,
-                                            'year'=>$date_split[0],
+                                            'year'=>$year_budget,
                                             'month'=>$date_split[1],
                                             'date_action'=>$item['date_receive'],
                                             'action'=>'checkin',
                                             'date_expire'=>$item['date_expire'],
                                             'item_count'=>$item['item_receive'],
                                             'status'=>'active',
-                                            'profile'=>['catalog_number'=>$item['catalog_number'],
-                                                        'lot_number'=>$item['lot_number'],
-                                                        'price'=>$item['price'],
+                                            'price'=>$item['price'],
+                                            'pur_order'=>$item['pur_order'],
+                                            'invoice_number'=>$item['invoice_number'],
+                                            'business_name'=>$item['vendor'],
+                                            'order_type'=>$request->stock_item_status,
+                                            'profile'=>[
                                                         'import'=>true,
                                                         ],
                                         ]);
@@ -256,18 +284,33 @@ class StockItemImportController extends Controller
                // Logger('no item');
                 //******insert stock_item
                 try{
-                     $stock_item_add=StockItem::create([
+                    //  $stock_item_add=StockItem::create([
+                    //     'stock_id'=>$request->stock_id,
+                    //     'user_id'=>$user->id,
+                    //     'item_code'=>$item['material_number'],
+                    //     'item_name'=>$item['item_name'],
+                    //     'unit_count'=>$item['unit_count'],
+                    //     'item_sum'=>$item['item_receive'],
+                    //     'price'=>$item['price'],
+                    //     'status'=>$request->stock_item_status
+                    // ]);
+
+                    $stock_item_add=StockItem::create([
                         'stock_id'=>$request->stock_id,
                         'user_id'=>$user->id,
-                        'item_code'=>$item['item_code'],
+                        'item_code'=>$item['material_number'],
                         'item_name'=>$item['item_name'],
                         'unit_count'=>$item['unit_count'],
                         'item_sum'=>$item['item_receive'],
                         'price'=>$item['price'],
+                        // 'catalog_number'=>$item['catalog_number'],
+                        // 'lot_number'=>$item['lot_number'],
+                        'pur_order'=>$item['pur_order'],
+                        'invoice_number'=>$item['invoice_number'],
+                        'business_name'=>$item['vendor'],
                         'status'=>$request->stock_item_status
                     ]);
 
-               
             
                     }catch(\Illuminate\Database\QueryException $e){
                         //rollback
@@ -286,18 +329,22 @@ class StockItemImportController extends Controller
                                             'stock_id'=>$request->stock_id ,
                                             'stock_item_id'=>$stock_item_add->id ,
                                             'user_id'=>$user->id,
-                                            'year'=>$date_split[0],
+                                            'year'=>$year_budget,
                                             'month'=>$date_split[1],
                                             'date_action'=>$item['date_receive'],
                                             'action'=>'checkin',
                                             'date_expire'=>$item['date_expire'],
                                             'item_count'=>$item['item_receive'],
                                             'status'=>'active',
-                                            'profile'=>['catalog_number'=>$item['catalog_number'],
-                                                        'lot_number'=>$item['lot_number'],
-                                                        'price'=>$item['price'],
+                                            'price'=>$item['price'],
+                                            'pur_order'=>$item['pur_order'],
+                                            'invoice_number'=>$item['invoice_number'],
+                                            'business_name'=>$item['vendor'],
+                                            'order_type'=>$request->stock_item_status,
+                                            'profile'=>[
                                                         'import'=>true,
                                                         ],
+                                         
                                         ]);
             
                     }catch(\Illuminate\Database\QueryException $e){

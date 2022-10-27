@@ -25,12 +25,14 @@ class StockItem extends Model
         'price',
         'catalog_number',
         'lot_number',
-        'po_number',
+        'pur_order',
+        'invoice_number',
         'business_name',
         'status' ,     // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
         'profile',
     ];
 
+    
     protected $casts = [
         'profile' => 'array',
     ];
@@ -69,7 +71,7 @@ class StockItem extends Model
       //  \Log::info('FILENAME==>'.$fileName);
         //stocks_id,item_code,item_name,unit_count,item_receive,date_receive,date_expire,price,catalog_number,lot_number
         foreach($stock_items as $stock_item){
-            Log::info($stock_item['po_number']);
+            Log::info($stock_item['pur_order']);
             Log::info($stock_item['business_name']);
            StockItem::create([
                                 'stock_id'=>$stock_item['stock_id'],
@@ -81,12 +83,17 @@ class StockItem extends Model
                                 'price'=>$stock_item['price'],
                                 'catalog_number'=>$stock_item['catalog_number'],
                                 'lot_number'=>$stock_item['lot_number'],
-                                'po_number'=>$stock_item['po_number'],
+                                'pur_order'=>$stock_item['pur_order'],
+                                'invoice_number'=>$stock_item['invoice_number'],
                                 'business_name'=>$stock_item['business_name'],
                             ]);
 
             $stock_item_id = StockItem::select('id')->where('item_code',$stock_item['item_code'])->first();
-
+           
+            // $table->string('pur_order')->nullable();
+            // $table->string('invoice_number')->nullable();
+            // $table->string('business_name')->nullable();
+            // $table->integer('order_type')->default(1); 
             ItemTransaction::create([
                                 'stock_id' =>$stock_item['stock_id'],
                                 'stock_item_id'=>$stock_item_id->id,
@@ -98,10 +105,16 @@ class StockItem extends Model
                                 'date_expire'=>$stock_item['date_expire'],
                                 'item_count'=>$stock_item['item_receive'],
                                 'status'=>'active',
-                                'profile'=>['catalog_number'=>$stock_item['catalog_number'],
-                                            'lot_number'=>$stock_item['lot_number'],
-                                            'price'=>$stock_item['price'],
-                                            ],
+                                'price'=>$stock_item['price'],
+                                'catalog_number'=>$stock_item['catalog_number'],
+                                'lot_number'=>$stock_item['lot_number'],
+                                'pur_order'=>$stock_item['pur_order'],
+                                'invoice_number'=>$stock_item['invoice_number'],
+                                'business_name'=>$stock_item['business_name'],
+                                // 'profile'=>['catalog_number'=>$stock_item['catalog_number'],
+                                //             'lot_number'=>$stock_item['lot_number'],                                          
+                                //             'price'=>$stock_item['price'],
+                                //             ],
                             ]);
         }
     }

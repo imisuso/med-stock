@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\budget;
 use Inertia\Inertia;
 use App\Models\ItemTransaction;
 use App\Models\StockItem;
 use App\Models\Stock;
+use Database\Seeders\BudgetSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+
 
 class ItemTransactionController extends Controller
 {
@@ -19,9 +22,56 @@ class ItemTransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($stock_id,$year)
     {
-        //
+       // dd($year);
+        $stock_budget = budget::select('stock_id','budget_add')
+                        ->where(['stock_id'=>$stock_id,'year'=>$year,'status'=>'on'])
+                        ->with('stock:id,stockname,status')
+                        ->first();
+        $orders = ItemTransaction::select('pur_order')
+                                    ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])
+                                    ->groupBy('pur_order')
+                                    ->get();
+
+        /* รวมยอดเงินการสั่งซื้อทีละใบ */
+        if($orders)
+        {
+            $all_orders = array();
+            $budget_used = 0.0;
+            $budget_balance = 0.0;
+         
+            foreach($orders as $key=>$order){
+               // Logger($order->pur_order);
+                $sum_price = 0.0;
+                $order_items = ItemTransaction::select('id','item_count','price','date_action')
+                                                ->where(['stock_id'=>12,'year'=>2023,'action'=>'checkin','status'=>'active'])
+                                                ->where('pur_order',$order->pur_order)
+                                                ->get();
+
+                foreach($order_items as $key2=>$order_item){
+                 //   Logger($order_item);
+                    $sum_price += (float)$order_item->item_count*(float)$order_item->price;
+                  //  Logger((float)$sum_price);
+                }
+               $all_orders[$key]['pur_order'] = $order->pur_order;
+               $all_orders[$key]['date_action'] = $order_item->date_action;
+               $all_orders[$key]['sum_price'] = (float)$sum_price;
+
+               $budget_used += (float)$sum_price;
+              // Logger($all_orders);
+            }
+
+            $year_budget = (int)$year+543;
+            $budget_balance = (int)$stock_budget->budget_add - $budget_used;
+            return Inertia::render('Admin/ListBudgetStock',[
+                                    'all_orders'=>$all_orders,
+                                    'stock_budget'=>$stock_budget,
+                                    'year_budget'=>$year_budget,
+                                    'budget_used'=> $budget_used,
+                                    'budget_balance'=> $budget_balance,
+                                    ]);
+        }
     }
 
     /**
@@ -44,8 +94,8 @@ class ItemTransactionController extends Controller
     {
       
         $user = Auth::user();
-         Log::info('ItemTransactionController store');
-       //  Log::info($request->all());
+        // Log::info('ItemTransactionController store');
+       //  Logger($request->all());
        //  return "store";
         // Log::info($request->confirm_item_slug);
         // Log::info($request->confirm_item_date);
@@ -65,6 +115,7 @@ class ItemTransactionController extends Controller
                                                 ])
                                     ->orderBy('created_at','desc')
                                     ->first();
+       // dd($date_expire_last->date_expire);
         try{
                 ItemTransaction::create([
                                         'stock_id'=>$stock_item->stock_id ,
@@ -76,15 +127,18 @@ class ItemTransactionController extends Controller
                                         'action'=>'checkout',
                                         'date_expire'=> $date_expire_last->date_expire,
                                         'item_count'=>$request->confirm_item_count,
+                                        'price'=>$stock_item->price,
+                                        'order_type'=>$stock_item->status,
                                     ]);
 
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
-            return redirect()->back();
+          //  return redirect()->back();
+            return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
         }
 
         $balance = $stock_item->item_sum - $request->confirm_item_count;
-       // Log::info($balance);
+     //   Log::info($balance);
         try{
             StockItem::whereSlug($request->confirm_item_slug)->update(['item_sum'=>$balance]);
         }catch(\Illuminate\Database\QueryException $e){
@@ -112,7 +166,7 @@ class ItemTransactionController extends Controller
     public function show(StockItem $stock_item)
     {
         Log::info('---------show transaction------------');
-        Log::info($stock_item);
+      //  Log::info($stock_item);
       //  Log::info($stock_item->unitCount->countname);
         $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
                                 ->where('action','checkin')
