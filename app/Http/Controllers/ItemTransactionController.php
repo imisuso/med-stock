@@ -25,38 +25,50 @@ class ItemTransactionController extends Controller
     public function index($stock_id,$year)
     {
        // dd($year);
-        $stock_budget = budget::select('stock_id','budget_add')
+        $stock_budget = budget::select('stock_id','budget_add','year')
                         ->where(['stock_id'=>$stock_id,'year'=>$year,'status'=>'on'])
                         ->with('stock:id,stockname,status')
                         ->first();
+
+        if(!$stock_budget)
+        {
+          //  dd('not found');
+            return Redirect::back()->with(['status' => 'error', 'msg' => 'ไม่พบข้อมูลงบประมาณ']);
+        }
         $orders = ItemTransaction::select('pur_order')
                                     ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])
                                     ->groupBy('pur_order')
+                                    ->orderBy('date_action')
                                     ->get();
 
         /* รวมยอดเงินการสั่งซื้อทีละใบ */
-        if($orders)
+
+       // Logger($orders->count());
+        if($orders->count() > 0)
         {
+            //dd('has order');
             $all_orders = array();
             $budget_used = 0.0;
             $budget_balance = 0.0;
          
             foreach($orders as $key=>$order){
-               // Logger($order->pur_order);
+                //Logger($order->pur_order);
                 $sum_price = 0.0;
-                $order_items = ItemTransaction::select('id','item_count','price','date_action')
+                $order_items = ItemTransaction::select('id','item_count','price','date_action','order_type')
                                                 ->where(['stock_id'=>12,'year'=>2023,'action'=>'checkin','status'=>'active'])
                                                 ->where('pur_order',$order->pur_order)
                                                 ->get();
 
                 foreach($order_items as $key2=>$order_item){
-                 //   Logger($order_item);
+                  // Logger($order_item);
                     $sum_price += (float)$order_item->item_count*(float)$order_item->price;
                   //  Logger((float)$sum_price);
                 }
                $all_orders[$key]['pur_order'] = $order->pur_order;
+               $all_orders[$key]['order_type'] = $order_item->order_type;
+               $all_orders[$key]['order_type_name'] = $order_item->order_type_name;
                $all_orders[$key]['date_action'] = $order_item->date_action;
-               $all_orders[$key]['sum_price'] = (float)$sum_price;
+               $all_orders[$key]['sum_price'] = number_format((float)$sum_price,2);
 
                $budget_used += (float)$sum_price;
               // Logger($all_orders);
@@ -68,10 +80,13 @@ class ItemTransactionController extends Controller
                                     'all_orders'=>$all_orders,
                                     'stock_budget'=>$stock_budget,
                                     'year_budget'=>$year_budget,
-                                    'budget_used'=> $budget_used,
-                                    'budget_balance'=> $budget_balance,
+                                    'budget_used'=> number_format($budget_used,2),
+                                    'budget_balance'=> number_format($budget_balance,2),
+                                    'budget_receive'=>number_format($stock_budget->budget_add,2)
                                     ]);
         }
+      //  dd('not found import');
+        return Redirect::back()->with(['status' => 'error', 'msg' => 'ไม่พบรายการใบสั่งซื้อ']);
     }
 
     /**
@@ -209,9 +224,23 @@ class ItemTransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+     //  dd(request()->all());
+        //dd(request()->input('pur_order'));
+       // $order_item_trans =array();
+        $order_item_trans = ItemTransaction::with('stock:id,stockname')
+                                    ->with('User:id,name')
+                                    ->with('stockItem:id,item_code,item_name,unit_count')
+                                    ->where('pur_order',request()->input('pur_order'))
+                                    ->where('status','active')
+                                    ->orderBy('date_action')
+                                    ->get();
+        //dd($order_item_trans);
+        return Inertia::render('Admin/ListBudgetDetailPurOrder',[
+                            'order_item_trans'=>$order_item_trans,
+                            'order_budget_used'=> request()->input('order_budget_used'),
+                            ]);
     }
 
     /**

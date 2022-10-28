@@ -554,6 +554,199 @@ class PrintFormController extends Controller
         
         $pdf->Output('I');
     }
+    public function printBudgetOrderImport($stock_id,$year)
+    {
+        Logger('printBudgetOrderImport');
+        // Log::info($stock_id);
+        // Log::info($year);
+       // return "printBudgetOrder";
+
+        //$stock = Stock::whereId($stock_id)->get();
+        $use_budget=0;
+        $balance_budget=0.0;
+       
+        $budget_year = budget::where('stock_id',$stock_id)
+                                            ->where('year',$year)
+                                            ->where('status','on')          
+                                            ->first();
+     
+        
+        //$pdf = new FPDI('l'); //แนวนอน
+        $pdf = new FPDI();
+        $pdf->AddPage();
+        $pdf->AddFont('THSarabunNew','','THSarabunNew.php');
+        $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
+
+        // add  image watermark
+       $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),7,15,0,0,'png');
+        
+        //title
+        $pdf->SetFont('THSarabunNew','B');
+        $pdf->SetFontSize('18'); 
+        $unit = Unit::where('unitid',$stock_id)->first();
+        //Log::info($unit);
+        $division_name = $unit->unitname;
+        $head = 'รายงานการเบิกงบประมาณการสั่งซื้อวัสดุของ สาขา/หน่วยงาน';
+        $title = $head.'  '.$division_name;
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $title),0,0,'C');
+        
+        $pdf->SetXY(18, 15);
+        $year_print = $year+543;
+        $title2 = 'ปีงบประมาณ  '.$year_print.' ได้รับงบ '.number_format($budget_year->budget_add,2).'  บาท';
+        $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $title2),0,0,'C');
+ 
+        //head column
+        $pdf->SetFont('THSarabunNew','B');
+        $pdf->SetFontSize('16'); 
+        $pdf->SetXY(12, 27);
+        $pdf->SetLineWidth(1);
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ              ประเภท                      วันที่ตรวจรับ                     ใช้งบไป(บาท)'),'B');
+        
+       
+        //**************************order list
+        // $pdf->SetFont('THSarabunNew','U');
+        // $pdf->SetXY(13, 38);
+        // $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ใบสัญญาสั่งซื้อ'),0,0);
+
+        $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+        $y=45;
+        $x=15;
+        $pdf->SetFont('THSarabunNew');
+        $pdf->SetXY($y, $x);
+       // $pdf->SetLineWidth(0.1);
+        $pdf->SetLineWidth(0.1);
+
+        //--------------------------
+        $stock_budget = budget::select('stock_id','budget_add','year')
+                                ->where(['stock_id'=>$stock_id,'year'=>$year,'status'=>'on'])
+                                ->with('stock:id,stockname,status')
+                                ->first();
+            $orders = ItemTransaction::select('pur_order')
+                                    ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])
+                                    ->groupBy('pur_order')
+                                    ->orderBy('date_action')
+                                    ->get();
+
+            /* รวมยอดเงินการสั่งซื้อทีละใบ */
+            if($orders)
+            {
+                $stock_orders = array();
+                $budget_used = 0.0;
+                $budget_balance = 0.0;
+
+                foreach($orders as $key=>$order){
+                 // Logger($order->pur_order);
+                    $sum_price = 0.0;
+                    $order_items = ItemTransaction::select('id','item_count','price','date_action','order_type')
+                                        ->where(['stock_id'=>12,'year'=>2023,'action'=>'checkin','status'=>'active'])
+                                        ->where('pur_order',$order->pur_order)
+                                        ->get();
+
+                    foreach($order_items as $key2=>$order_item){
+                    // Logger($order_item);
+                    $sum_price += (float)$order_item->item_count*(float)$order_item->price;
+                    //  Logger((float)$sum_price);
+                    }
+                    $stock_orders[$key]['pur_order'] = $order->pur_order;
+                    $stock_orders[$key]['order_type'] = $order_item->order_type;
+                    $stock_orders[$key]['order_type_name'] = $order_item->order_type_name;
+                    $stock_orders[$key]['date_action'] = $order_item->date_action;
+                    $stock_orders[$key]['sum_price'] = (float)$sum_price;
+
+                    $budget_used += (float)$sum_price;
+                  //   Logger($stock_orders);
+                }
+            }
+
+            $year_budget = (int)$year+543;
+            $budget_balance = (int)$stock_budget->budget_add - $budget_used;
+
+        //-------------------------
+
+
+        // $stock_orders = OrderItem::where('unit_id',$stock_id)
+        //                             ->where('year',$year)
+        //                             ->whereIn('status',['approved','checkin'])
+        //                             ->orderBy('date_order')
+        //                             ->get();
+      //  if( $stock_orders->count()!=0){
+            $seq = 0;
+            foreach($stock_orders as $order){
+              //  Logger($order);
+                $seq++;
+             
+                $pdf->SetXY($x, $y);
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq),'B'); //print line buttom
+
+                $pdf->SetXY(30, $y);
+                $order_no = $order['pur_order'];
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $order_no));
+
+                $pdf->SetXY(75, $y);
+                $order_type_name = $order['order_type_name'];
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $order_type_name));
+
+                $pdf->SetXY(115, $y);
+                $split_date_order = explode('-', $order['date_action']);
+                $year_order = (int) $split_date_order[0] + 543;
+                $date_order_show = $split_date_order[2].'  '.$thaimonth[(int) $split_date_order[1]].' '.$year_order;
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_order_show));
+
+                $pdf->SetXY(160, $y);
+                $pdf->Cell(0,10, number_format($order['sum_price'],2));
+               
+                $y = $y+10;
+                $pdf->SetXY($x, $y);
+               
+            }
+
+           
+            $pdf->SetFont('THSarabunNew','U');
+            $pdf->SetXY(130, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'รวม '));
+            $pdf->SetXY(150, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($budget_used,2).'   บาท'));
+           
+             //$pdf->Line(10,0,20,0);
+        // }else{
+        //      $use_budget = 0.0;
+        // }
+
+     
+     
+       
+
+        $pdf->SetFont('THSarabunNew');
+        $y = $y+10;
+        $pdf->SetXY(125, $y);
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'งบคงเหลือ '));
+        $pdf->SetXY(150, $y);
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($budget_balance,2).'   บาท'));
+        $y = $y+8;
+        //$pdf->SetXY(145, $y);
+        $pdf->Line(125,$y,180,$y);
+        $y = $y+1;
+        //$pdf->SetXY(145, $y);
+        $pdf->Line(125,$y,180,$y);
+
+         // วันเวลาที่พิมพ์
+         $mutable = Carbon::now();
+         //\Log::info($mutable);
+         $tmp_date_now = explode(' ', $mutable);
+         $split_date_now = explode('-', $tmp_date_now[0]);
+         $year = (int) $split_date_now[0] + 543;
+         $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+         $date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year;
+ 
+         $pdf->SetFontSize('12');
+         $pdf->SetXY(190,3);
+         $date_print = 'ข้อมูล ณ วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
+         $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'R');
+ 
+        
+        
+        $pdf->Output('I');
+    }
     public function printPurchaseOrder($purchase_id)
     {
            // Log::info('printPurchaseOrder');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\budget;
+use App\Models\ItemTransaction;
 use App\Models\OrderItem;
 use App\Models\OrderPurchase;
 use App\Models\Stock;
@@ -115,6 +116,7 @@ class BudgetController extends Controller
                 $budget_year['budget_add']=0.00;
                 $budget_year['year']=0;
                 $balance_budget = 0.0;
+                $stocks[$key]['count_import'] = 0;
                // Log::info($budget_year);
             }else{
                 //*********ข้อมูลใบสัญญาสั่งซื้อ
@@ -148,12 +150,18 @@ class BudgetController extends Controller
 
                 $balance_budget = (float)$budget_year->budget_add - (float)$use_budget - (float)$purchase_use_budget; 
 
+               //*********ข้อมูล Import ใบสั่งซื้อ
+
+               $count_import = ItemTransaction::where(['stock_id'=>$stock->id,'year'=>$year,'action'=>'checkin','status'=>'active'])
+                                                ->count();
+
                // Log::info('purchase_use_budget=>'.$purchase_use_budget);
                 $stocks[$key]['orders'] = $stock_orders;
                 $stocks[$key]['purchase_orders'] = $purchase_orders;
                 $stocks[$key]['use_budget'] = $use_budget;
                 $stocks[$key]['purchase_use_budget'] = $purchase_use_budget;
                 $stocks[$key]['balance_budget'] = $balance_budget;
+                $stocks[$key]['count_import'] = $count_import;
             }
           
             $stocks[$key]['budget'] = $budget_year;
@@ -180,6 +188,9 @@ class BudgetController extends Controller
        // Log::info($request);
         //return 'test edit budget';
         $user = Auth::user();
+
+        /* Insert Log */
+        
   
         try{
           // budget::latest()->first();

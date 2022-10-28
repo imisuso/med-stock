@@ -67,6 +67,7 @@
                         </div>
                 </div>
                 <!-- {{stockBudget.budget['budget_add']}} -->
+                <!-- {{stockBudget.count_import}} -->
                 <div v-if="stockBudget.budget['budget_add']!=0"  
                     class="flex justify-between px-3 ">
                     <div>
@@ -75,7 +76,7 @@
                         </label>
                     </div>
                     <div class="flex px-2 ">
-                        <div v-if="stockBudget.budget['budget_add']!=0 && stockBudget.orders.length==0 &&  stockBudget.purchase_orders.length==0" 
+                        <div  
                             class="px-3 ">
                              <button
                                 class=" flex justify-center py-1 px-2 bg-yellow-200 text-yellow-900 rounded-md shadow-md hover:bg-yellow-300 focus:outline-none"
@@ -84,14 +85,14 @@
                                 แก้ไข
                             </button>
                         </div>
-                        <div  class="flex mr-2">
+                        <div v-if="stockBudget.count_import>0"  class="flex mr-2">
                             <a :href="route('get-list-order',{stock_id:stockBudget.id,year:budgetYear})"
                                 class=" flex justify-center py-1 px-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
                               
                                 >
-                                ดูรายการสั่งซื้อ
+                                ดูรายการสั่งซื้อที่นำเข้าจากExcel
                             </a>
-                              <a :href="route('print-budget-order',{stock_id:stockBudget.id,year:budgetYear})"
+                              <!-- <a :href="route('print-budget-order',{stock_id:stockBudget.id,year:budgetYear})"
                                 v-if="stockBudget.budget['budget_add'] !=0"
                                 target="blank" class=" ">
                                  <span
@@ -102,7 +103,7 @@
                                         </svg>
                                      พิมพ์
                                  </span>
-                              </a>
+                              </a> -->
                             <!-- <button
                                 class=" flex justify-center px-2 ml-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
                                 >

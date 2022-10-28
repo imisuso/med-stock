@@ -37,10 +37,10 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        Logger('IN HandleInertiaRequests');
+      //  Logger('IN HandleInertiaRequests');
       //  $user = Auth::user();
        // Logger($user);
-        Logger('-------------------------');
+        //Logger('-------------------------');
         return array_merge(parent::share($request), [
             'auth' => $request->user() ?[
                 'user' => $request->user(),
