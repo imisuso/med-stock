@@ -16,6 +16,9 @@ class TestUserAPI implements AuthUserAPI
         $user_db = User::where('name',$login)->first();
 
        // dd($user_db);
+       if(!$user_db){
+         return  ['reply_code' => 1, 'reply_text' => 'ไม่พบผู้ใช้งานชื่อนี้ในระบบ'] ;
+       }
        
             $user['reply_code'] = 0;
             $user['org_id'] = $user_db->sap_id;

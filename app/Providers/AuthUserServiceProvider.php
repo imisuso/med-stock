@@ -13,7 +13,7 @@ class AuthUserServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Logger('In AuthUserServiceProvider');
+       // Logger('In AuthUserServiceProvider');
         $this->app->bind('App\Contracts\AuthUserAPI', config('app.AUTH_USER_PROVIDER'));
     }
 

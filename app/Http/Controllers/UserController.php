@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\AuthUserAPI;
+use App\Models\LogActivity;
 use App\Models\Role;
 use App\Models\Stock;
 use App\Models\Unit;
@@ -74,7 +75,12 @@ class UserController extends Controller
          $profile = array();
          $profile['user_id_in'] = $use_in->id;
          $profile['user_name_in'] = $use_in->name;
-       
+
+        //  $detail_log = ['sap_id'=>request()->input('sap_id'),
+        //         'unitid'=>request()->input('unit_id'),
+        //     ];
+
+    
          $user = User::create([
             'sap_id'=>request()->input('sap_id'),
             'name' => request()->input('employee_full_name'),
@@ -86,8 +92,22 @@ class UserController extends Controller
         $role = Role::find(request()->input('role_id'));
         $user->assignRole($role->name);
 
-      
+        $detail_log =array();
+        $detail_log['sap_id'] =request()->input('sap_id');
+        $detail_log['unitid'] =request()->input('unit_id');
+        $detail_log['role_name'] =$role->name;
+         //  dd($detail_log);
 
+           $log_activity = LogActivity::create([
+               'user_id' => $use_in->id,
+               'sap_id' => $use_in->sap_id,
+               'function_name' => 'manage_user',
+               'action' => 'add_user',
+               'detail' => $detail_log,
+           ]);
+
+          // dd($log_activity);
+        
         return Redirect::route('user-add')
                         ->with(['status' => 'success', 'msg' => 'เพิ่มรหัสเจ้าหน้าที่นี้เป็นผู้ใช้งานระบบพัสดุแล้ว']);
 

@@ -97,6 +97,10 @@
                 <div class="flex flex-col  lg:flex-row   "  >
                     
                     <div class=" bg-blue-100 lg:bg-transparent lg:w-2/12 lg:text-xs  ">
+                        <div>
+                            <label for="" v-if="stock_item.status == 1" class=" text-xs text-blue-700 ">สัญญาซื้อ</label>
+                            <label for="" v-else  class=" text-xs ">ใบสั่งซื้อ</label>
+                        </div>
                         <label for="" class="  lg:hidden">{{key+1}}.</label>
                         <label class=" font-bold">
                             {{key+1}}.
@@ -104,10 +108,7 @@
                             <label for="" class="text-blue-600">-{{stock_item.item_name}}</label>
                             (หน่วย: {{stock_item.unit_count}})
                         </label>
-                        <div>
-                            <label for="" v-if="stock_item.status == 1" class=" text-xs ">สัญญาซื้อ</label>
-                            <label for="" v-else  class=" text-xs ">ใบสั่งซื้อ</label>
-                        </div>
+                       
                        
                     </div>
                 

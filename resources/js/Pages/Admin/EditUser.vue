@@ -89,6 +89,9 @@
                             <label for="one">{{status.desc}}</label>
                         </div>    
                 </div>
+                <div class="mt-3" >
+                        <label for="">ชื่อผู้เพิ่มข้อมูล:{{user.profile['user_name_in']}}</label> 
+                </div>
                 <div class="  ">
                     <button type="submit" 
                         class=" w-full flex justify-center py-2  text-md  bg-green-500 hover:bg-green-700 text-white  border border-green-500 rounded"
@@ -171,19 +174,19 @@ const confirm_edit_user=ref(false);
 
 
 const status_desc_selectd =(status)=>{
-    console.log(status)
+   // console.log(status)
     return  props.user_status_list[status-1].desc;
 };
 
 const role_desc_selectd =(role_id)=>{
-    console.log('role_id='+role_id)
-    console.log('role_desc='+props.roles[0].label)
-    console.log('==>'+props.roles[role_id].label)
+    // console.log('role_id='+role_id)
+    // console.log('role_desc='+props.roles[0].label)
+    // console.log('==>'+props.roles[role_id].label)
     return  props.roles[role_id].label;
 };
 
 const getRolename = () => {
-    console.log('getRolename')
+   // console.log('getRolename')
     let role = {}
     role = props.roles.find( item => item.id === form.role_id) // เอาค่าแรกที่เจอค่าเดียว
   //  console.log(unit)
@@ -210,7 +213,7 @@ const form = useForm({
 })
 
 const getUnitname = () => {
-    console.log('getUnitname')
+   // console.log('getUnitname')
     let unit = {}
     unit = props.units.find( item => item.unitid === form.unit_id) // เอาค่าแรกที่เจอค่าเดียว
   //  console.log(unit)
@@ -226,7 +229,7 @@ const confirmEditUser=(()=>{
 const okconfirmEditUser=()=>{
     confirm_edit_user.value = false;
     // console.log(form.order_id);
-       console.log('----------okconfirmEditUser------');
+     //  console.log('----------okconfirmEditUser------');
       form.post(route('update-user',form.user_id), {
         preserveState: false,
         preserveScroll: true,

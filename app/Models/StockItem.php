@@ -71,8 +71,8 @@ class StockItem extends Model
       //  \Log::info('FILENAME==>'.$fileName);
         //stocks_id,item_code,item_name,unit_count,item_receive,date_receive,date_expire,price,catalog_number,lot_number
         foreach($stock_items as $stock_item){
-            Log::info($stock_item['pur_order']);
-            Log::info($stock_item['business_name']);
+           // Log::info($stock_item['pur_order']);
+          //  Log::info($stock_item['business_name']);
            StockItem::create([
                                 'stock_id'=>$stock_item['stock_id'],
                                 'user_id'=>6,

@@ -52,15 +52,20 @@ class ItemTransactionController extends Controller
             $budget_balance = 0.0;
          
             foreach($orders as $key=>$order){
-                //Logger($order->pur_order);
+             // Logger($order);
+              // dd($order);
+             //   Logger($order->pur_order);
                 $sum_price = 0.0;
                 $order_items = ItemTransaction::select('id','item_count','price','date_action','order_type')
-                                                ->where(['stock_id'=>12,'year'=>2023,'action'=>'checkin','status'=>'active'])
+                                                ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])
                                                 ->where('pur_order',$order->pur_order)
                                                 ->get();
+              //  Logger($order_items);
+              //  dd($order_items);
 
                 foreach($order_items as $key2=>$order_item){
-                  // Logger($order_item);
+                   //Logger($order_item);
+                  // dd($order_item);
                     $sum_price += (float)$order_item->item_count*(float)$order_item->price;
                   //  Logger((float)$sum_price);
                 }

@@ -113,4 +113,27 @@ class User extends Authenticatable
 
             });
     }
+
+    public static function loadData($fileName){
+        //ใช้ครั้งแรกเมื่อติดตั้งระบบ เพื่อเพิ่ม user admin IT
+        //  Log::info('loadData');
+            $users = loadCSV($fileName);
+            $profile = array();
+            $profile['user_id_in'] = 0;
+            $profile['user_name_in'] ='admin server';
+            foreach($users as $user){
+                Logger($user['sap_id']);
+                Logger($user['unit_id']);
+                $user = User::create([
+                    'sap_id'=>$user['sap_id'],
+                    'unitid' => $user['unit_id'],
+                    'name' => $user['name'],
+                    'status' => '1',
+                    'profile'=> $profile
+                ]);
+    
+               $user->assignRole('admin_it');
+            }
+
+        }
 }

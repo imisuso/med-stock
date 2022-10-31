@@ -113,7 +113,7 @@
                         </label>
                     </div>
                 
-                    <div class=" lg:w-2/12   ">
+                    <div class=" lg:w-2/12  lg:text-xs ">
                         <label for="" class="   lg:hidden">ผู้เบิก:</label>
                         <label class=" font-bold">{{item_tran.user['name']}}</label>
                     </div>
