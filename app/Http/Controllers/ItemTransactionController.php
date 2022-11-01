@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\budget;
 use Inertia\Inertia;
 use App\Models\ItemTransaction;
+use App\Models\LogActivity;
 use App\Models\StockItem;
 use App\Models\Stock;
 use Database\Seeders\BudgetSeeder;
@@ -167,14 +168,25 @@ class ItemTransactionController extends Controller
             return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
         }
 
-        // $stock_items = StockItem::with('unitCount:id,countname')
-        //                             ->where('stock_id',$request->stock_id)->get();
+           /****************  insert log ****************/
+        
+        //   $detail_log =array();
+        //   $detail_log['sap_id'] =$user->sap_id;
+        //   $detail_log['unitid'] =request()->input('unit_id');
+        //   $detail_log['status']= request()->input('user_status');
+
+        //  //  dd($detail_log);
+        //    $log_activity = LogActivity::create([
+        //        'user_id' => $user->id,
+        //        'sap_id' => $user->sap_id,
+        //        'function_name' => 'manage_user',
+        //        'action' => 'edit_user',
+        //        'detail' => $detail_log,
+           
+        //    ]);
       
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกการเบิกพัสดุสำเร็จ']);
-        //return redirect()->back()->with(['msg'=>'save success']);
-       // return Inertia::location($url);
-        // return Redirect::route('stock',$request->stock_id);
-        // return back();
+       
     }
 
     /**

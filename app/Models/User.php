@@ -120,10 +120,10 @@ class User extends Authenticatable
             $users = loadCSV($fileName);
             $profile = array();
             $profile['user_id_in'] = 0;
-            $profile['user_name_in'] ='admin server';
+            $profile['user_name_in'] ='first load';
             foreach($users as $user){
-                Logger($user['sap_id']);
-                Logger($user['unit_id']);
+                // Logger($user['sap_id']);
+                // Logger($user['unit_id']);
                 $user = User::create([
                     'sap_id'=>$user['sap_id'],
                     'unitid' => $user['unit_id'],

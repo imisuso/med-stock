@@ -79,7 +79,9 @@ class AdminReportStockController extends Controller
       //  return "test";
         $stocks = Stock::where('slug',$stock_slug)->first();
        // Log::info($stocks);
-        $stock_items = StockItem::whereStockId($stocks->id)->get();
+        $stock_items = StockItem::whereStockId($stocks->id)
+                                ->where('status','!=',9)  //9=cancel
+                                ->get();
 
         
         foreach($stock_items as $key=>$stock_item){

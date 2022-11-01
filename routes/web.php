@@ -14,6 +14,7 @@ use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CheckInOrderController;
 use App\Http\Controllers\CheckInOrderPurchaseController;
 use App\Http\Controllers\ItemTransactionController;
+use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrintFormController;
 use App\Http\Controllers\PurchaseOrderController;
@@ -204,6 +205,8 @@ Route::get('/stock/show-detail-stock/{stock}',[StockController::class,'edit'])->
 //update stock 
 Route::post('/stock/update-stock/{stock}',[StockController::class,'update'])->name('update-stock')->middleware('auth');
 
+//Log
+Route::get('/stock/show-log/{slug}',[LogActivityController::class,'show'])->name('show-log')->middleware('auth','can:manage_master_data');
 
 Route::get('/nong', function () {
     return view('welcome');

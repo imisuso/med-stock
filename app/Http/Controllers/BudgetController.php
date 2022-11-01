@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\budget;
 use App\Models\ItemTransaction;
+use App\Models\LogActivity;
 use App\Models\OrderItem;
 use App\Models\OrderPurchase;
 use App\Models\Stock;
@@ -190,19 +191,51 @@ class BudgetController extends Controller
         $user = Auth::user();
 
         /* Insert Log */
-        
+        $budget = budget::where(['stock_id'=>$request->stock_id , 'year'=>$request->budget_year])
+                        ->first();
+        $original_val_budget = array();
+        $original_val_budget = $budget->getOriginal(); //เก็บค่าเก่าไว้ก่อน
   
         try{
           // budget::latest()->first();
-            budget::where(['stock_id'=>$request->stock_id , 'year'=>$request->budget_year])
-                    ->update(['budget_add'=>$request->budget_edit]);
+           
+             $budget->update(['budget_add'=>$request->budget_edit]);
             //Log::info($update_budget);
+            $budget_changes = $budget->getChanges();
+          //  logger($budget_changes);
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
             Log::info($e->getMessage());
             return redirect()->back()->with(['status' => 'error', 'msg' =>  'เกิดความผิดพลาดในการแก้ไขข้อมูลกรุณาติดต่อเจ้าหน้าที่ IT ภาคฯ']);
         }
-       
+
+        $old_changes =array();
+        if (count($budget_changes)) {
+            foreach ($budget_changes as $key=>$val) {
+                $old_changes[] = [ 'column'=>$key , 'old'=>$original_val_budget[$key] , 'new'=>$val];
+            }
+            array_pop($old_changes); //เอา updated_at  ออก
+        }
+         
+            /****************  insert log ****************/
+        
+          $use_in = Auth::user();
+
+          $detail_log =array();
+          $detail_log['table'] ='budget';
+          $detail_log['row_change'] =$budget->id;
+
+         //  dd($detail_log);
+
+           $log_activity = LogActivity::create([
+               'user_id' => $use_in->id,
+               'sap_id' => $budget->id,
+               'function_name' => 'manage_budget',
+               'action' => 'edit_budget',
+               'detail' => $detail_log,
+               'old_value'=> $old_changes,
+           ]);
+
         return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขงบประมาณสำเร็จ']);
     }
 

@@ -41,6 +41,7 @@
          <h1 class="p-2 mt-3 text-center font-bold" >รายงานจำนวนคงเหลือในคลังพัสดุ </h1>
           <h1 class="p-2 mt-1 text-center font-bold" >{{form.stock_selected.text}}</h1>
         <div class=" text-red-500">***เพิ่ม filter เช่น เลข PO , ปี-เดือน เป็นต้น</div>
+        <div class=" text-red-500">***เพิ่ม ปุ่มยกเลิกรายการพัสดุ สำหรับกรณี excel import มีบางรายการผิด</div>
          <!-- <button class=" mb-2 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
            Export EXCEL
         </button> -->

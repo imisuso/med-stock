@@ -9,6 +9,7 @@ use App\Models\Stock;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -60,7 +61,7 @@ class UserController extends Controller
         $use_in = Auth::user();
         //dd($use_in->id);
         // Logger(request()->all());
-         Logger(request()->input('sap_id'));
+       //  Logger(request()->input('sap_id'));
 
          $check_user = User::where('sap_id',request()->input('sap_id'))->first();
         
@@ -100,7 +101,7 @@ class UserController extends Controller
 
            $log_activity = LogActivity::create([
                'user_id' => $use_in->id,
-               'sap_id' => $use_in->sap_id,
+               'sap_id' => request()->input('sap_id'),
                'function_name' => 'manage_user',
                'action' => 'add_user',
                'detail' => $detail_log,
@@ -164,10 +165,15 @@ class UserController extends Controller
      */
     public function update(User $user)
     {
-        Logger(request()->all());
+      //  Logger(request()->all());
+        $original_val_user = array();
         $original_val_user = $user->getOriginal(); //เก็บค่าเก่าไว้ก่อน
         $original_val_role = $user->roles;
-        logger($original_val_role);
+        // logger($original_val_role);
+        // logger($original_val_role[0]['name']);
+
+        $original_val_user['role_name']=$original_val_role[0]['name'];
+       // logger($original_val_user);
         $old_changes =array();
         $user->update([
                         'unitid'=> request()->input('unit_id'),
@@ -181,9 +187,12 @@ class UserController extends Controller
         try {
             // ถ้า role ที่ update มาใหม่ ไม่ใช่ role เดิม ให้ทำการ remove role เก่าออกก่อน แล้วถึง assign role ใหม่ให้
             if( ! $user->getUserRolesAttribute()->contains($role_name)) {
+              //  Logger('Change Role');
                 $user->revokeRole();
                 $user->assignRole($role_name);
                 $role_change = 1;
+                $old_changes[] = ['column'=>'role_name','old'=>$original_val_user['role_name'],'new'=>$role_name];
+               // logger($old_changes);
             }
 
           
@@ -197,13 +206,34 @@ class UserController extends Controller
 
         if(count($changes) || $role_change){
           
-            foreach($changes as $key=>$val){
-                $old_changes[] = [ 'column'=>$key , 'old'=>$original_val_user[$key] , 'new'=>$val];
+            if (count($changes)) {
+                foreach ($changes as $key=>$val) {
+                    $old_changes[] = [ 'column'=>$key , 'old'=>$original_val_user[$key] , 'new'=>$val];
+                }
+                array_pop($old_changes); //เอา updated_at  ออก
             }
-            array_pop($old_changes); //เอา updated_at  ออก
            
             /****************  insert log ****************/
-          //  logger($old_changes);
+           // logger($old_changes);
+            $use_in = Auth::user();
+
+            // $detail_log =array();
+            // $detail_log['sap_id'] =$user->sap_id;
+            // $detail_log['unitid'] =request()->input('unit_id');
+            // $detail_log['status']= request()->input('user_status');
+            // $detail_log['new_role_name'] = $role_name;
+
+           
+           //  dd($detail_log);
+  
+             $log_activity = LogActivity::create([
+                 'user_id' => $use_in->id,
+                 'sap_id' => $user->sap_id,
+                 'function_name' => 'manage_user',
+                 'action' => 'edit_user',
+                 'old_value'=> $old_changes,
+             ]);
+
             return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
         }
             /****************  insert log ****************/
@@ -238,14 +268,28 @@ class UserController extends Controller
         }
 
         $check_status_emp = $api->checkEmployeeStatus($sap_id);
-         Logger($check_status_emp);
+       //  Logger($check_status_emp);
         // Logger($check_status_emp['Status']);
 
-        // 'login' => 'nongnapat.som',
-        // 'status' => 'withdrawn',
+   
+           /****************  insert log ****************/
+          //  logger($old_changes);
+          $use_in = Auth::user();
 
-        //   'found' => false,
-        //   'error' => false,
+        //   $detail_log =array();
+        //   $detail_log['sap_id'] =$sap_id;
+         //  dd($detail_log);
+
+           $log_activity = LogActivity::create([
+               'user_id' => $use_in->id,
+               'sap_id' => $sap_id,
+               'function_name' => 'manage_user',
+               'action' => 'check_status_sap',
+              // 'detail' => $detail_log,
+           ]);
+
+
+
         if(isset($check_status_emp['found']))
         {
             if(!$check_status_emp['found']){

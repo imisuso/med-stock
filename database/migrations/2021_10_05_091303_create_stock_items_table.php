@@ -31,7 +31,7 @@ class CreateStockItemsTable extends Migration
             $table->string('pur_order');
             $table->string('invoice_number');
             $table->string('business_name');
-            $table->integer('status')->default(1);    // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
+            $table->integer('status')->default(1);    // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ ,9=cancel
             $table->json('profile')->nullable();
             $table->timestamps();
         });

@@ -25,7 +25,7 @@ class StockController extends Controller
     {
      
     
-        Log::info('StockController index');
+       // Log::info('StockController index');
         $user = Auth::user();
         $stocks = Stock::where('unit_id',$user->unitid)
                         ->where('status',1)
@@ -41,7 +41,9 @@ class StockController extends Controller
                         ],
                 ]);
         }
-        $stock_items = StockItem::where('stock_id',$user->unitid)->get();
+        $stock_items = StockItem::where('stock_id',$user->unitid)
+                                ->where('status','!=',9)
+                                ->get();
       
         foreach($stock_items as $key=>$stock_item){
             $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
@@ -189,62 +191,6 @@ class StockController extends Controller
            // logger($old_changes);
         return Redirect::back()->with(['status' => 'warning', 'msg' => 'ข้อมูลที่ระบุมาไม่มีการเปลี่ยนแปลง']);
 
-      
-     
-       
-
-      //**********insert log before update
-    //   $stock_old = array(
-    //                  [ 'column'=>'stockname' , 'old'=>$stock->stockname],
-    //                  [ 'column'=>'stockengname' , 'old'=>$stock->stockengname],
-    //                  [ 'column'=>'status' , 'old'=>$stock->status],
-    //   );
-    //   Logger($stock_old);
-
-    //   dd($stock_old);
-    //   $stock->stockname = request()->input('stock_name_thai');
-    //   $stock->stockengname = request()->input('stock_name_en');
-    //   $stock->status = request()->input('stock_status');
-    //     if($stock->isDirty()){
-    //         $stock_dirtys = $stock->getDirty();
-    //        //dd($stock->getDirty());
-    //        $stock_change = [];
-    //        foreach($stock_dirtys as $x=>$val){
-            
-    //              $stock_change[] = [ 'column'=>$x , 'new'=>$val];
-    //        }
-    //        Logger($stock_change);
-       
-    //        $stock->save();
-    //         //******* update log stock_change
-
-    //         $units = Unit::all();
-    //         return Inertia::render('Admin/AddStock',[
-    //             'units'=> $units,
-    //             'status' => 'success', 
-    //             'msg' => 'แก้ไขข้อมูลสำเร็จ'
-    //             ]);
-
-    //         return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
-    //     }else{
-    //        // dd("unchange");
-    //         //******* update log 
-    //        return Redirect::back()->with(['status' => 'warning', 'msg' => 'ข้อมูลที่ระบุมาไม่มีการเปลี่ยนแปลง']);
-  
-    //     }
-
-       
-
-     // $user = Auth::user();
-    //   Stock::where('id',$request->stock_id)
-    //         ->update([
-    //                 'stockname'=>$request->stock_name_thai,
-    //                 'stockengname'=>$request->stock_name_en,
-    //                 'status'=>1,
-    //                 'unit_id'=>$request->unit,
-    //                 'user_id'=>$user->id
-    //                 ]);
-    //       return Redirect::back()->withErrors(['status' => 'success', 'msg' => $e->getMessage()]);
     }
 
     /**

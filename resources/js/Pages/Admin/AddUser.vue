@@ -171,7 +171,7 @@
                         </div>
                         <div>
                             <label class=" p-2 text-blue-600">สถานะ:</label>
-                            <label class=" bg-red-100">{{user.status_name}}</label>
+                            <label class=" underline underline-offset-2">{{user.status_name}}</label>
                             
                         </div>
                         <!-- <div>
@@ -189,14 +189,20 @@
                        
                         <!-- <label for="" v-if="stock.status==1" class=" ml-4 "> สถานะ:ใช้งาน</label> -->
                     </div>
-                    <div class="flex  justify-center bg-yellow-200 px-2 rounded-md shadow-md " >
+                    <div class="flex mx-2 justify-center   px-2  " >
                         
-                        <a :href="route('show-detail-user',user.slug)" >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <a :href="route('show-detail-user',user.slug)" class=" px-4 mx-2 rounded-md shadow-md bg-yellow-200" >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 bg-yellow-200">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                             </svg>
                         </a>
-                     
+                  
+                        <a :href="route('show-log',user.slug)" class=" px-4 mx-2 rounded-md shadow-md bg-cyan-200" >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6  bg-cyan-200">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+
+                        </a>
                         <!-- <button type="submit" 
                             class="   ml-4 px-2 text-md  bg-red-500 hover:bg-red-700 text-white  border border-red-500  rounded-md shadow-md"
                             @click="confirmDeleteStock()"
@@ -204,6 +210,17 @@
                             ลบ
                         </button> -->
                     </div>
+                    <!-- <div class="flex mx-2 justify-center bg-cyan-200 px-2 rounded-md shadow-md " >
+                        
+                  
+                        <a :href="route('show-log',user.slug)" >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+
+                        </a>
+                   
+                    </div> -->
                    
                 </div>
   
@@ -287,7 +304,7 @@ const employeeAccountName=ref('');
 const confirm_add_user=ref(false);
 
 const form = useForm({
-    sap_id:'10035479',
+    sap_id:'',
     unit_id:0,
     role_id:0,
     employee_full_name:'',
@@ -298,7 +315,7 @@ const form = useForm({
 })
 
 const confirmAddUser=(()=>{
-  console.log('----------confirmAddUser------');
+  //console.log('----------confirmAddUser------');
 
   confirm_add_user.value = true;
 })
@@ -308,7 +325,7 @@ const  cancelAddUser=()=>{
 }
 
 const getRolename = () => {
-    console.log('getRolename')
+   // console.log('getRolename')
     let role = {}
     role = props.roles.find( item => item.id === form.role_id) // เอาค่าแรกที่เจอค่าเดียว
   //  console.log(unit)
@@ -316,7 +333,7 @@ const getRolename = () => {
 }
 
 const getUnitname = () => {
-    console.log('getUnitname')
+  //  console.log('getUnitname')
     let unit = {}
     unit = props.units.find( item => item.unitid === form.unit_id) // เอาค่าแรกที่เจอค่าเดียว
   //  console.log(unit)
@@ -368,7 +385,7 @@ const CheckEmployeeStatus=(()=>{
 })
 
 const addUser=(()=>{
-    console.log('----------addUser------')
+   // console.log('----------addUser------')
     // console.log(form.sap_id);
     // console.log(form.employee_account_name);
     // console.log(form.unit_id);
