@@ -197,7 +197,7 @@ class ItemTransactionController extends Controller
      */
     public function show(StockItem $stock_item)
     {
-        Log::info('---------show transaction------------');
+        //Log::info('---------show transaction------------');
       //  Log::info($stock_item);
       //  Log::info($stock_item->unitCount->countname);
         $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
@@ -208,7 +208,7 @@ class ItemTransactionController extends Controller
 
         $item_trans = ItemTransaction::with('User:id,name')
                                             ->where('stock_item_id',$stock_item->id)
-                                            ->where('status','active')
+                                            ->whereIn('status',['active','canceled'])
                                             ->orderBy('date_action')
                                             ->get();
         //return "list checkout";
@@ -278,8 +278,47 @@ class ItemTransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy()
     {
-        //
+      $item_tran = ItemTransaction::whereId(Request()->input('item_tran_id'))->first();
+      $item_tran->status = 'canceled';
+      $item_tran->save();
+
+    
+
+      $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
+      $old_changes =array();
+      $old_changes['stock_item_id'] = $item_tran->stock_item_id;
+      $old_changes['item_sum_old'] = $stock_item->item_sum;
+
+      $new_item_balance = $stock_item->item_sum + $item_tran->item_count;
+      logger($new_item_balance);
+      $stock_item->item_sum = $new_item_balance;
+      $stock_item->save();
+
+    
+    
+
+      /****************  insert log ****************/
+        // logger($old_changes);
+        $use_in = Auth::user();
+
+        $detail_log =array();
+        $detail_log['table'] ='item_transactions';
+
+      //  dd($detail_log);
+
+        $log_activity = LogActivity::create([
+            'user_id' => $use_in->id,
+            'sap_id' => Request()->input('item_tran_id'),
+            'function_name' => 'checkout_item',
+            'action' => 'cancel_checkout',
+            'detail'=> $detail_log,
+            'old_value'=> $old_changes,
+        ]);
+
+      // logger($item_tran);
+      // logger($stock_item);
+        dd('canceled success');
     }
 }

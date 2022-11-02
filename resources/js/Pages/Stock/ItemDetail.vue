@@ -60,6 +60,7 @@
     <!-- END Item Detail -->
  <!-- {{$page.props.item_trans}}  -->
     <!-- start Table -->
+    <label for="" class=" text-red-600 text-sm" >  *ลบได้เฉพาะผู้ที่บันทึกรายการนี้เท่านั้น</label>  
     <table  class="min-w-full border-collapse block  md:table md:rounded-md">
 		<thead class="block  md:table-header-group">
 			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
@@ -106,15 +107,20 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                         </svg>
                     </button> -->
-                    <button v-if="item_tran.status != 'canceled' && item_tran.action != 'checkin' && can.checkout_item"
+                    <!-- {{item_tran.user_id}}->
+                    {{$page.props.auth.user.id}} -->
+                    <button v-if="item_tran.status != 'canceled' && 
+                                  item_tran.action != 'checkin' && 
+                                  can.checkout_item &&
+                                  item_tran.user_id == $page.props.auth.user.id
+                                "
                         v-on:click="cancel_checkout(item_tran.id)"
                         class=" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     </button>
-                    <label for="" class=" text-red-600 text-sm" >  *ลบได้ภายในวันนั้น</label>  
-
+                   
                 </td>
             </tr>
 			
@@ -125,7 +131,7 @@
 </template>
 <script setup>
 //import { ref } from 'vue';
-//import { usePage } from '@inertiajs/inertia-vue3'
+import { useForm } from '@inertiajs/inertia-vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
@@ -144,6 +150,29 @@ const props =defineProps({
     //stock_item_import: {type:Array, default:[]},
     
 })
+const form = useForm({
+    item_tran_id:0,
+
+})
+
+
+const cancel_checkout=(item_tran_id)=>{
+
+   console.log('cancel checkout item='+item_tran_id);
+   form.item_tran_id = item_tran_id;
+  form.post(route('cancel-checkout-stock-item'), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: page => { //console.log('success');
+        },
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { //console.log('finish');
+        },
+    })
+}
+
 
 // export default {
 //     components: {

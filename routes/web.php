@@ -73,6 +73,8 @@ Route::controller(ItemTransactionController::class)
             Route::get('/stock-item/{stock_item}','show')->name('list-stock-item'); 
             //เบิกพัสดุ
             Route::post('/checkout-stock-item','store')->name('checkout-stock-item');
+            //ยกเลิกรายการเบิกพัสดุ
+            Route::post('/cancel-checkout-stock-item','destroy')->name('cancel-checkout-stock-item');
         });
 //แสดงรายละเอียดการเบิก/ตรวจรับ พัสดุ
 //Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item')->middleware('auth');

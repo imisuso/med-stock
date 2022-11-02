@@ -15,12 +15,18 @@
             </svg>
             <label class=" my-2 " >ข่าวประชาสัมพันธ์</label>
           </div>
-          <div class=" flex flex-col bg-purple-200 rounded-md shadow-md">
+          <div class=" flex flex-col p-2 bg-purple-200 rounded-md shadow-md">
              <label class=" font-bold py-2">  สวัสดี,วันที่ {{dayjs(new Date()).locale('th').format('D MMM BBBB HH:mm')}} น. </label>
             <!-- <label for="">วันนี้อากาศแจ่มใส </label> -->
+            <p class="p-2"><label for="">ขอเชิญทดลองใช้ระบบพัสดุในการตัดสต๊อก</label></p>
+            <p class="  p-2 underline underline-offset-1">
+            <a href="{{storage_path('app/public/docs/poster_teacher_ios.pdf')}}">
+                1.คู่มือสำหรับเจ้าหน้าที่สาขาบันทึกตัดสต๊อกพัสดุ
+            </a>
+            </p>
+            <!-- <label class="py-4">- ทดสอบฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก</label>
             <label class="py-4">- ทดสอบฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก</label>
-            <label class="py-4">- ทดสอบฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก</label>
-            <label class="py-4">- ทดสอบฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก</label>
+            <label class="py-4">- ทดสอบฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก ขออภัยในความไม่สะดวก</label> -->
             <!-- <label class="py-4">- officer.hemato,officer.chest,officer.endocrine</label>
             <label class="py-4">- officer.id,officer.nephro,admin_med_stock.stockmed,admin_it.itmed</label> -->
          
@@ -40,7 +46,7 @@
             </div>
 
             <div class="my-4 text-md text-gray-800  ">
-              <p class="underline underline-offset-1"> Login ด้วย Siriraj AD  (ใช้ User ID และ Password เดี่ยวกับ SiIT Enterprise ปัจจุบัน)</p>
+              <p class="underline underline-offset-1"> Login ด้วย Siriraj AD  (ใช้ User ID และ Password เดี่ยวกับระบบ e-Document)</p>
             </div>
 
          
@@ -49,6 +55,7 @@
             <div class="mb-6">
               <input
                 type="text"
+                placeholder="ชื่อ.นามสกุล 3 ตัว (ภาษาอังกฤษ)"
                 class="form-control block w-full px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 v-model="form.username"
               />
@@ -106,15 +113,17 @@ const form = useForm({
 const authAD=()=>{
 
     // console.log(form.order_id);
-       console.log('----------authAD------');
+      // console.log('----------authAD------');
       form.post(route('login'), {
         preserveState: false,
         preserveScroll: true,
-        onSuccess: page => { console.log('success');},
+        onSuccess: page => { //console.log('success');
+        },
         onError: errors => { 
             console.log('error');
         },
-        onFinish: visit => { console.log('finish');},
+        onFinish: visit => { //console.log('finish');
+        },
     })
 }
 
