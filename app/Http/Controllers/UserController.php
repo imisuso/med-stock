@@ -108,6 +108,8 @@ class UserController extends Controller
            ]);
 
           // dd($log_activity);
+          $msg_notify_test = $use_in->name.'  เพิ่ม '.request()->input('employee_full_name').' เป็นผู้ใช้งานระบบสำเร็จ';
+          Logger($msg_notify_test);
         
         return Redirect::route('user-add')
                         ->with(['status' => 'success', 'msg' => 'เพิ่มรหัสเจ้าหน้าที่นี้เป็นผู้ใช้งานระบบพัสดุแล้ว']);
@@ -233,6 +235,9 @@ class UserController extends Controller
                  'action' => 'edit_user',
                  'old_value'=> $old_changes,
              ]);
+
+             $msg_notify_test = $use_in->name.'  แก้ไขข้อมูลผู้ใช้งาน '.$user->name.' สำเร็จ';
+             Logger($msg_notify_test);
 
             return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
         }

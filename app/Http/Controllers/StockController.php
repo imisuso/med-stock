@@ -43,7 +43,8 @@ class StockController extends Controller
         }
         $stock_items = StockItem::where('stock_id',$user->unitid)
                                 ->where('status','!=',9)
-                                ->get();
+                                ->paginate(10)->withQueryString();
+                             //   ->get();
       
         foreach($stock_items as $key=>$stock_item){
             $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)

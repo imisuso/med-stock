@@ -208,7 +208,7 @@ class StockItemImportController extends Controller
         
         $user = Auth::user();
         // Logger($request->stock_id);
-         Logger($request->stock_item_status);
+       //  Logger($request->stock_item_status);
         // Logger($request->date_receive);
      
         foreach($request->import_items as $key => $item )
@@ -323,7 +323,7 @@ class StockItemImportController extends Controller
                 //                                                 'stock_id'=>$request->stock_id,
                 //                                                 'status'=>$request->stock_item_status]
                 //                                         )->first();
-                Logger($stock_item_add);
+              //  Logger($stock_item_add);
                 try{
                     ItemTransaction::create([
                                             'stock_id'=>$request->stock_id ,
@@ -358,6 +358,9 @@ class StockItemImportController extends Controller
         }
         $cnt = $key+1;
         $msg = 'เพิ่มพัสดุจากไฟล์ excel จำนวน '.$cnt.' รายการ เรียบร้อย';
+
+        $msg_notify_test = $user->name.' '.$msg;
+        Logger($msg_notify_test);
 
         return Redirect::back()->with(['status' => 'success', 'msg' => $msg]);
     }

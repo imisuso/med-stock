@@ -44,12 +44,24 @@
 
 
             <div class="w-full  p-2  ">
+                <paginateMe :pagination="stock_items" />
         
-                <CheckoutItem v-for="(stock_item,key) in stock_items" :key=stock_item.id
+                <!-- <CheckoutItem v-for="(stock_item,key) in stock_items" :key=stock_item.id
                     :itemIndex="key"
                     :stockItem="stock_item"
                     :canAbility="can"
-                />
+                /> -->
+
+                <div v-for="(stock_item) in stock_items.data" :key="stock_item.id"
+                    class=" m-2 p-2"
+                    >
+                    <CheckoutItem 
+                        :stockItem="stock_item"
+                        :canAbility="can"
+                    />
+                
+                </div>
+           
             
             </div>
         </div>
@@ -58,6 +70,7 @@
 <script setup>
 import CheckoutItem from '@/Components/CheckoutItem.vue'
 import AppLayout from '@/Layouts/AppLayout.vue';
+import PaginateMe from '@/Components/PaginateMe.vue';
 import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
 import { onBeforeMount, onMounted, ref } from '@vue/runtime-core';
 const props = defineProps({

@@ -20,8 +20,11 @@
             <!-- <label for="">วันนี้อากาศแจ่มใส </label> -->
             <p class="p-2"><label for="">ขอเชิญทดลองใช้ระบบพัสดุในการตัดสต๊อก</label></p>
             <p class="  p-2 underline underline-offset-1">
-            <a href="{{storage_path('app/public/docs/poster_teacher_ios.pdf')}}">
-                1.คู่มือสำหรับเจ้าหน้าที่สาขาบันทึกตัดสต๊อกพัสดุ
+              <!-- {{doc_division_filename}}-- -->
+            <!-- <a :href=" '../../../../../storage/docs/'+doc_division_filename " target="_blank"> -->
+            <!-- <a href="../../../../docs/poster_teacher_ios.pdf" target="_blank">  -->
+            <a :href="doc_division_filename" target="_blank"> 
+              1.คู่มือสำหรับเจ้าหน้าที่สาขาบันทึกตัดสต๊อกพัสดุ
             </a>
             </p>
             <!-- <label class="py-4">- ทดสอบฝ่ายสารสนเทศคณะฯปิดปรับปรุงเครื่องแม่ข่ายวันที่ 31 ธันวาคม 2565 เวลา 23.59 ถึง 00.00 น. ส่งผลให้ไม่สามารถเข้าใช้งานระบบนี้ได้ในช่วงเวลาดังกล่าว ขออภัยในความไม่สะดวก</label>
@@ -101,7 +104,8 @@ import buddhistEra from 'dayjs/plugin/buddhistEra'
 dayjs.extend(buddhistEra)
 
 const props =defineProps({
-  status:{type:String}
+  status:{type:String},
+  doc_division_filename:{type:String}
 })
 
 const form = useForm({

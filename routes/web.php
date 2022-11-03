@@ -21,6 +21,7 @@ use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\StockItemImportController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +55,12 @@ Route::get('/login-test', function () {
 Route::get('/', function () {
     // return view('welcome');
     //return Inertia('Auth/Login');
-    return Inertia('Auth/LoginAD');
+  //  $doc_division_filename = 'poster_teacher_ios.pdf';
+
+    $doc_division_filename = Storage::url('docs/poster_teacher_ios.pdf');
+   // dd($doc_division);
+    return Inertia('Auth/LoginAD',compact('doc_division_filename'));
+
 })->name('welcome');
 
 Route::post('/login',[LoginController::class, 'authenticate'])->name('login')->middleware('guest');

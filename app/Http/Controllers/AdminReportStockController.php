@@ -24,7 +24,7 @@ class AdminReportStockController extends Controller
      */
     public function index($division_id)
     {
-        Log::info($division_id);
+        //Log::info($division_id);
         if($division_id != 27)
             $stocks = Stock::whereId($division_id)->get();
         else

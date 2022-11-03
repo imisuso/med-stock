@@ -56,7 +56,7 @@
                 <div class=" mb-2">
                 
                     <div class="p-2 text-md font-bold text-gray-900">
-                        {{itemIndex+1}}.
+                        <!-- {{itemIndex+1}}. -->
                         SAP:{{stockItem.item_code}} 
                         <label for="" class="text-blue-600">{{stockItem.item_name}}</label>
                         (หน่วย: {{stockItem.unit_count}})
@@ -73,16 +73,13 @@
                     <div class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
                         <div class=" flex ml-2"> จำนวนที่มี : 
                             <p class=" ml-2 text-red-600" >
-                             <span  
-                                class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                            </svg>
-                            {{stockItem.item_sum}}
-                            </span>
-                           
-                              
-                            
+                                <span  
+                                    class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                </svg>
+                                {{stockItem.item_sum}}
+                                </span>
                             </p> 
                             <svg v-if="stockItem.item_sum < 6"
                                 xmlns="http://www.w3.org/2000/svg" 
@@ -92,6 +89,9 @@
                                 >
                                 <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
                                 </svg>
+                        </div>
+                        <div class="flex ml-2"> ราคาต่อหน่วย : 
+                            <p class=" ml-2 text-blue-600">{{stockItem.price}}</p> 
                         </div>
                         <div class="flex ml-2"> Pur.Order : 
                             <p class=" ml-2 text-blue-600">{{stockItem.pur_order}}</p> 
@@ -216,7 +216,7 @@ import buddhistEra from 'dayjs/plugin/buddhistEra'
 dayjs.extend(buddhistEra)
 
 const props = defineProps({
-    itemIndex:{type:Number,required:true},
+ //   itemIndex:{type:Number,required:true},
     stockItem:{type:Object,required:true},
     canAbility:{type:Object,required:true},
 })

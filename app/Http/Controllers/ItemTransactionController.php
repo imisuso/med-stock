@@ -184,6 +184,9 @@ class ItemTransactionController extends Controller
         //        'detail' => $detail_log,
            
         //    ]);
+
+        $msg_notify_test = $user->name.'  บันทึกการเบิกพัสดุสำเร็จ';
+        Logger($msg_notify_test);
       
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกการเบิกพัสดุสำเร็จ']);
        
@@ -292,7 +295,7 @@ class ItemTransactionController extends Controller
       $old_changes['item_sum_old'] = $stock_item->item_sum;
 
       $new_item_balance = $stock_item->item_sum + $item_tran->item_count;
-      logger($new_item_balance);
+     // logger($new_item_balance);
       $stock_item->item_sum = $new_item_balance;
       $stock_item->save();
 
@@ -317,8 +320,9 @@ class ItemTransactionController extends Controller
             'old_value'=> $old_changes,
         ]);
 
-      // logger($item_tran);
-      // logger($stock_item);
-        dd('canceled success');
+        $msg_notify_test = $use_in->name.'  ยกเลิกการเบิกพัสดุสำเร็จ';
+        Logger($msg_notify_test);
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการเบิกพัสดุสำเร็จ']);
+       
     }
 }

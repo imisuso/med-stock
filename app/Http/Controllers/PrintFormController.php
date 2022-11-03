@@ -556,7 +556,7 @@ class PrintFormController extends Controller
     }
     public function printBudgetOrderImport($stock_id,$year)
     {
-        Logger('printBudgetOrderImport');
+       // Logger('printBudgetOrderImport');
         // Log::info($stock_id);
         // Log::info($year);
        // return "printBudgetOrder";
@@ -1055,7 +1055,7 @@ class PrintFormController extends Controller
             $tmp_item_code = '0';
         foreach ($stock_item_checkouts as $item) {
             $seq++;
-            Log::info($item);
+            //Log::info($item);
             $pdf->SetFontSize('16'); 
           
             // $pdf->SetXY($x, $y);

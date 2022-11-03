@@ -48,16 +48,16 @@
 
 
         <!-- <div v-if="show_purchase_orders.length !=0" class=" w-full  py-4"> -->
-            <div v-if="purchase_orders" class=" w-full  py-4">
+        <div v-if="purchase_orders" class=" w-full  py-4">
               <paginateMe :pagination="purchase_orders" />
-            <!-- <div v-for="(purchase_order) in show_purchase_orders.data" :key="purchase_order.id"
-                class=" m-2 p-2 bg-pink-50 border-b-2 border-pink-600 rounded-md shadow-md"
-                >
-                <ShowPurchaseOrder 
-                    :purchase-order="purchase_order"
-                />
-               
-            </div> -->
+                <!-- <div v-for="(purchase_order) in show_purchase_orders.data" :key="purchase_order.id"
+                    class=" m-2 p-2 bg-pink-50 border-b-2 border-pink-600 rounded-md shadow-md"
+                    >
+                    <ShowPurchaseOrder 
+                        :purchase-order="purchase_order"
+                    />
+                
+                </div> -->
             <div v-for="(purchase_order) in purchase_orders.data" :key="purchase_order.id"
                 class=" m-2 p-2 bg-pink-50 border-b-2 border-pink-600 rounded-md shadow-md"
                 >

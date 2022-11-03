@@ -4,7 +4,7 @@
     <div class="overflow-y-auto w-2/3 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 h-screen lg:block bg-gray-100 border-r z-30" :class="sideBarOpen ? '' : 'hidden'" id="main1-nav">
 
       <div class=" flex justify-center ">
-            <img src="../../../public/storage/images/logo_med_tranparent.gif" class=" w-2/3">
+            <img src="../../images/logo_med_tranparent.gif" class=" w-2/3">
              <!-- <p class="font-semibold text-2xl text-blue-400 pl-4">
           ระบบพัสดุ
         </p> -->

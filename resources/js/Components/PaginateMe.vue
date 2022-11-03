@@ -1,5 +1,5 @@
 <template>
-  <div class="inline-flex justify-center md:justify-end items-center mb-2">
+  <div class="inline-flex text_sm justify-center md:justify-end items-center mb-2">
 
     <div class="flex space-x-1 items-top" v-if="pagination.last_page > 1">
       <button

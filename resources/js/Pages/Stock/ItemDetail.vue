@@ -1,62 +1,73 @@
 <template>
      <AppLayout>
+        <div v-if="$page.props.flash.status=='success'" 
+                class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
+                <input type="checkbox" class="hidden" id="banneralert">
+                
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                 {{ $page.props.flash.msg }}
+                   <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </label>
+        </div>
   
-    <div class="bg-blue-800 text-white text-xl text-center ">
-            {{$page.props.stock.stockname}}
-    </div>
+        <div class="bg-blue-800 text-white text-xl text-center ">
+                {{$page.props.stock.stockname}}
+        </div>
 
     <!-- Item Detail -->
      <!-- {{$page.props.checkin_last}} -->
-     <div class="w-full mt-3 p-2  ">
-  
-      <div 
-            class="w-full bg-purple-100  mt-3 border-2 border-purple-300 rounded-lg lg:max-w-full lg:flex">
-        <div
-          class="flex flex-col  items-center overflow-hidden text-center  bg-cover rounded-t lg:h-auto lg:w-36 lg:rounded-t-none lg:rounded-l"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-        </div>
-       
-        <div class="w-full  leading-normal  border-b border-l border-r border-gray-200 rounded-b lg:border-l-0 lg:border-t lg:border-gray-200 lg:rounded-b-none lg:rounded-r"
-        >
-            <div class=" mb-2">
-                <div class="p-2 text-md font-bold text-gray-900">
-                    SAP:{{$page.props.stock_item.item_code}}
-                    <label for="" class="text-blue-600">{{$page.props.stock_item.item_name}}</label>
-                    (หน่วย: {{$page.props.count_name}})
-                   
+        <div class="w-full mt-3 p-2  ">
+    
+            <div 
+                    class="w-full bg-purple-100  mt-3 border-2 border-purple-300 rounded-lg lg:max-w-full lg:flex">
+                <div
+                class="flex flex-col  items-center overflow-hidden text-center  bg-cover rounded-t lg:h-auto lg:w-36 lg:rounded-t-none lg:rounded-l"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
                 </div>
-               
             
-                <div class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
-                    <div class="flex ml-2"> จำนวนคงเหลือ :
-                        <p class=" ml-2 text-red-600">{{$page.props.stock_item.item_sum}}</p>     
-                    </div>
-                    <div class="flex ml-2"> Pur.Order : 
-                            <p class=" ml-2 text-blue-600">{{$page.props.stock_item.pur_order}}</p> 
+                <div class="w-full  leading-normal  border-b border-l border-r border-gray-200 rounded-b lg:border-l-0 lg:border-t lg:border-gray-200 lg:rounded-b-none lg:rounded-r"
+                >
+                    <div class=" mb-2">
+                        <div class="p-2 text-md font-bold text-gray-900">
+                            SAP:{{$page.props.stock_item.item_code}}
+                            <label for="" class="text-blue-600">{{$page.props.stock_item.item_name}}</label>
+                            (หน่วย: {{$page.props.count_name}})
+                        
                         </div>
-                        <div class="flex ml-2"> ชื่อบริษัท : 
-                            <p class=" ml-2 text-blue-600">{{$page.props.stock_item.business_name}}</p> 
+                    
+                    
+                        <div class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
+                            <div class="flex ml-2"> จำนวนคงเหลือ :
+                                <p class=" ml-2 text-red-600">{{$page.props.stock_item.item_sum}}</p>     
+                            </div>
+                            <div class="flex ml-2"> Pur.Order : 
+                                    <p class=" ml-2 text-blue-600">{{$page.props.stock_item.pur_order}}</p> 
+                                </div>
+                                <div class="flex ml-2"> ชื่อบริษัท : 
+                                    <p class=" ml-2 text-blue-600">{{$page.props.stock_item.business_name}}</p> 
+                                </div>
+                            <div class="flex ml-2"> วันหมดอายุ : 
+                                <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.date_expire}}</p> 
+                            </div>
+                            
+                            <div class="flex ml-2"> วันที่รับเข้า : 
+                                <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.date_action}}</p> 
+                            </div>
+                        
+                            <!-- <div class="flex ml-2"> Cat.No/Lot.No : 
+                                <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.profile['catalog_number']}}/{{$page.props.checkin_last.profile['lot_number']}}</p> 
+                            </div> -->
+                            
                         </div>
-                    <div class="flex ml-2"> วันหมดอายุ : 
-                        <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.date_expire}}</p> 
-                    </div>
-                    
-                    <div class="flex ml-2"> วันที่รับเข้า : 
-                         <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.date_action}}</p> 
-                    </div>
-                   
-                     <!-- <div class="flex ml-2"> Cat.No/Lot.No : 
-                         <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.profile['catalog_number']}}/{{$page.props.checkin_last.profile['lot_number']}}</p> 
-                     </div> -->
-                    
+                    </div> 
                 </div>
-            </div> 
+            </div>
         </div>
-      </div>
-    </div>
     <!-- END Item Detail -->
  <!-- {{$page.props.item_trans}}  -->
     <!-- start Table -->
@@ -67,7 +78,7 @@
                 <th class=" bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่</th>
                 <th class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">จำนวน</th>
                 <th class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ผู้ปฎิบัติ</th>
-                 <th v-if="can.checkout_item" class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">::</th>
+                 <th  class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">::</th>
 			</tr>
 		</thead>
 		<tbody class="block md:table-row-group">
@@ -96,11 +107,14 @@
                     {{item_tran.item_count}}
                 </td>
                 <td class="text-left  block md:table-cell  md:border-b-2 md:border-gray-300 "><span class="inline-block w-1/3 md:hidden font-bold">ผู้ปฎิบัติ</span>{{item_tran.user.name}}</td>
-                <td v-if="can.checkout_item"
-                    class="text-left  block md:table-cell  md:border-b-2 md:border-gray-300 ">
+                <td 
+                    class="text-left text-sm  block md:table-cell  md:border-b-2 md:border-gray-300 ">
                     <span class="inline-block w-1/3 md:hidden font-bold">::</span>
                     <!-- {{ $page.props.can }} -->
-                    <label for=""  v-if="item_tran.status != 'active'">{{item_tran.status}}</label>
+                    <label for=""  v-if="item_tran.status != 'active'">
+                        <!-- {{item_tran.status}} -->ยกเลิกเมื่อ
+                        {{ dayjs(item_tran.updated_at).locale('th').format('D MMM BBBB HH:mm')}} น.
+                    </label>
                     <!-- <button v-if="item_tran.status != 'canceled'"
                         class="  bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">
                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,7 +125,6 @@
                     {{$page.props.auth.user.id}} -->
                     <button v-if="item_tran.status != 'canceled' && 
                                   item_tran.action != 'checkin' && 
-                                  can.checkout_item &&
                                   item_tran.user_id == $page.props.auth.user.id
                                 "
                         v-on:click="cancel_checkout(item_tran.id)"

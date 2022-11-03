@@ -71,6 +71,8 @@ class LoginController extends Controller
             $log_activity->action = 'login_success';
             $log_activity->save();
 
+            $msg_notify_test = $user->name.'  เข้าระบบสำเร็จ';
+            Logger($msg_notify_test);
            return redirect()->intended(RouteServiceProvider::HOME);
            
            
