@@ -24,9 +24,6 @@ class Budget extends Model
         'profile' => 'array',
     ];
 
-    // protected $hidden = [
-    //     'slug',
-    // ];
 
     protected static function booted()
     {
