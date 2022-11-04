@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
+
 class StockController extends Controller
 {
     /**
@@ -23,8 +24,7 @@ class StockController extends Controller
      */
     public function index()
     {
-     
-    
+
        // Log::info('StockController index');
         $user = Auth::user();
         $stocks = Stock::where('unit_id',$user->unitid)
@@ -41,9 +41,16 @@ class StockController extends Controller
                         ],
                 ]);
         }
-        $stock_items = StockItem::where('stock_id',$user->unitid)
+        $stock_items = StockItem::query()
+                                ->when(request()->input('search'), function ($query, $search) {
+                                    $query->where('item_name', 'like', "%{$search}%")
+                                    ->orWhere('business_name','like',"%{$search}%");
+                                })
+                                ->where('stock_id',$user->unitid)
                                 ->where('status','!=',9)
-                                ->paginate(10)->withQueryString();
+                                ->orderBy('item_name')
+                                ->paginate(10)
+                                ->withQueryString();
                              //   ->get();
       
         foreach($stock_items as $key=>$stock_item){
@@ -63,6 +70,7 @@ class StockController extends Controller
   
         request()->session()->flash('mainMenuLinks', $main_menu_links);
         // request()->session()->flash('user', $user);
+        //logger($stock_items);
         return Inertia::render('Stock/index',[
                                 'stocks'=>$stocks,
                                 'stock_items'=>$stock_items,
@@ -71,8 +79,13 @@ class StockController extends Controller
                                 'can'=>[
                                         'checkout_item'=>$user->can('checkout_item')
                                         ],
+                                'filters' => request()->only(['search'])        
                                 ]);
     }
+    // public function filter()
+    // {
+    //     dd(Request()->all());
+    // }
 
     /**
      * Show the form for creating a new resource.

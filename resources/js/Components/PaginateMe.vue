@@ -57,7 +57,7 @@
         </svg>
       </button>
     </div>
-    <div class="ml-2 text-md text-gray-800  border-b-2 border-gray-400 place-self-center hidden md:block">รวมทั้งหมด {{ pagination.total }} รายการ</div>
+    <div class="ml-2  text-sm text-gray-800  border-b-2 border-gray-400 place-self-center hidden md:block">รวมทั้งหมด {{ pagination.total }} รายการ</div>
   </div>
 </template>
  

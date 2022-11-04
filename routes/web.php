@@ -57,7 +57,7 @@ Route::get('/', function () {
     //return Inertia('Auth/Login');
   //  $doc_division_filename = 'poster_teacher_ios.pdf';
 
-    $doc_division_filename = Storage::url('docs/poster_teacher_ios.pdf');
+    $doc_division_filename = Storage::url('docs/poster_division_med_stock.pdf');
    // dd($doc_division);
     return Inertia('Auth/LoginAD',compact('doc_division_filename'));
 
@@ -71,6 +71,7 @@ Route::get('/annouce',function () {
 })->name('annouce')->middleware('auth');
 //แสดงหน้าเบิกพัสดุ
 Route::get('/stock', [StockController::class,'index'])->name('stock')->middleware('auth','can:checkout_item');
+//Route::post('/stock/item-filter', [StockController::class,'filter'])->name('stock-item-filter')->middleware('auth','can:checkout_item');
 
 Route::controller(ItemTransactionController::class)
         ->middleware('auth')

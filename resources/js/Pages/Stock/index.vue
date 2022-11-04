@@ -35,13 +35,29 @@
                 </select>
             
             </div>
-            <div class=" w-full flex mt-2   p-2 rounded-md ">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-red-500 ">
-                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
-                    </svg>
-            <label for="">เตือนเมื่อพัสดุมีน้อยกว่า 6 ชิ้น </label> 
+          
+            <!-- <div >
+                <input type="text" placeholder="พิมพ์ชื่อพัสดุหรือชื่อบริษัทที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
+                    @keyup="purchase_filter" v-model="search" 
+                    class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
+                    >
+            </div> -->
+            <div class="w-full">
+                            <input type="text" placeholder="พิมพ์ชื่อพัสดุหรือชื่อบริษัทที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
+                                @keyup="purchase_filter" v-model="search" 
+                                class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
+                            >
             </div>
-
+            <div class=" w-full flex mt-2  text-sm   rounded-md ">
+                        <div class=" w-full flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-red-500 ">
+                                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                                </svg>
+                            <label for="">เตือนเมื่อพัสดุมีน้อยกว่า 6 ชิ้น </label> 
+                            </div>
+                       
+                  
+            </div>
 
             <div class="w-full  p-2  ">
                 <paginateMe :pagination="stock_items" />
@@ -51,11 +67,12 @@
                     :stockItem="stock_item"
                     :canAbility="can"
                 /> -->
-
-                <div v-for="(stock_item) in stock_items.data" :key="stock_item.id"
+                 
+                <div v-for="(stock_item,key) in stock_items.data" :key="stock_item.id"
                     class=" m-2 p-2"
                     >
                     <CheckoutItem 
+                        :itemIndex="key"
                         :stockItem="stock_item"
                         :canAbility="can"
                     />
@@ -71,18 +88,42 @@
 import CheckoutItem from '@/Components/CheckoutItem.vue'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
+import { Inertia } from '@inertiajs/inertia'
 import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
-import { onBeforeMount, onMounted, ref } from '@vue/runtime-core';
+import { ref ,watch} from 'vue';
+//import { onBeforeMount, onMounted, ref,watch } from '@vue/runtime-core';
 const props = defineProps({
     stocks:Array,
-    stock_items:Array,
+    stock_items:Object,
     unit:Object,
     errors: Object,
     can: { type: Object, required: true },
-    stock_status:{type:String}
+    stock_status:{type:String},
+    filters: { type: Object },
 })
 
 
+let search = ref(props.filters.search)
+
+const form = useForm({
+    filter_key:'',
+})
+
+watch( search, value => {
+   
+    if(value.length >= 3){
+        console.log('changed ' + value)
+        Inertia.get(route('stock'), { search: value }, {
+            preserveState: true,
+            replace: true
+        })
+    }
+})
+
+// const purchase_filter = () => {
+//   console.log(filter_key.value)
+
+// }
 
 </script>
  

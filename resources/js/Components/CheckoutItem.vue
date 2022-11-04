@@ -56,7 +56,7 @@
                 <div class=" mb-2">
                 
                     <div class="p-2 text-md font-bold text-gray-900">
-                        <!-- {{itemIndex+1}}. -->
+                        {{itemIndex+1}}.
                         SAP:{{stockItem.item_code}} 
                         <label for="" class="text-blue-600">{{stockItem.item_name}}</label>
                         (หน่วย: {{stockItem.unit_count}})
@@ -216,7 +216,7 @@ import buddhistEra from 'dayjs/plugin/buddhistEra'
 dayjs.extend(buddhistEra)
 
 const props = defineProps({
- //   itemIndex:{type:Number,required:true},
+   itemIndex:{type:Number},
     stockItem:{type:Object,required:true},
     canAbility:{type:Object,required:true},
 })
