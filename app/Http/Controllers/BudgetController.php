@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\budget;
+use App\Models\Budget;
 use App\Models\ItemTransaction;
 use App\Models\LogActivity;
 use App\Models\OrderItem;

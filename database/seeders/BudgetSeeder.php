@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\budget;
+use App\Models\Budget;
 use Illuminate\Database\Seeder;
 
 class BudgetSeeder extends Seeder

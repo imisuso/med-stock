@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\budget;
+use App\Models\Budget;
 use Inertia\Inertia;
 use App\Models\ItemTransaction;
 use App\Models\LogActivity;
