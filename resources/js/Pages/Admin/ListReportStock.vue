@@ -102,9 +102,9 @@
                             <label for="" v-if="stock_item.status == 1" class=" text-xs text-blue-700 ">สัญญาซื้อ</label>
                             <label for="" v-else  class=" text-xs ">ใบสั่งซื้อ</label>
                         </div>
-                        <label for="" class="  lg:hidden">{{key+1}}.</label>
+                        <label for="" class="  ">{{key+1}}.</label>
                         <label class=" font-bold">
-                            {{key+1}}.
+                            <!-- {{key+1}}. -->
                             {{stock_item.item_code}}
                             <label for="" class="text-blue-600">-{{stock_item.item_name}}</label>
                             (หน่วย: {{stock_item.unit_count}})
