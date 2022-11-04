@@ -23,7 +23,8 @@
               <!-- {{doc_division_filename}}-- -->
             <!-- <a :href=" '../../../../../storage/docs/'+doc_division_filename " target="_blank"> -->
             <!-- <a href="../../../../docs/poster_teacher_ios.pdf" target="_blank">  -->
-            <a :href="doc_division_filename" target="_blank"> 
+            <!-- <a :href="doc_division_filename" target="_blank">  -->
+              <a href="../../../../docs/poster_division_med_stock.pdf" target="_blank">
               1.คู่มือสำหรับเจ้าหน้าที่สาขาบันทึกตัดสต๊อกพัสดุ
             </a>
             </p>
@@ -105,7 +106,7 @@ dayjs.extend(buddhistEra)
 
 const props =defineProps({
   status:{type:String},
-  doc_division_filename:{type:String}
+  //doc_division_filename:{type:String}
 })
 
 const form = useForm({
