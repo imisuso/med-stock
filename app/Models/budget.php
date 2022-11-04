@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class budget extends Model
+class Budget extends Model
 {
     use HasFactory;
     protected $table = 'budgets';

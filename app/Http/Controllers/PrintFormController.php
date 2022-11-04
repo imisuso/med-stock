@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\budget;
+use App\Models\Budget;
 use App\Models\ItemTransaction;
 use App\Models\OrderItem;
 use App\Models\OrderPurchase;
