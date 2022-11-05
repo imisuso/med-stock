@@ -338,7 +338,7 @@ const  cancelAddBudget=()=>{
 }
 
 const  closeAlert=()=>{
-     console.log('close alert='+form.budget_year);
+   //  console.log('close alert='+form.budget_year);
     show_alert_msg.value = false;
     Inertia.visit(route('budget-list'));
 //    Inertia.visit(route('get-list-budget',{year:form.budget_year}),{
