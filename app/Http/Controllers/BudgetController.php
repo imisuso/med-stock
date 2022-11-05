@@ -28,6 +28,20 @@ class BudgetController extends Controller
         $year_send= array();
       
         $year_start = budget::select('year')->orderBy('year','asc')->first();
+       
+        if(!$year_start){
+           // dd('not found budget');
+            $year_now = date('Y');
+            array_push($year_send,(int)$year_now);
+            $year_end = $year_now + 1;
+            array_push($year_send,$year_end);
+            //dd($year_send);
+            return Inertia::render('Admin/ListBudget',[
+                'years'=>$year_send,
+               
+            ]);
+        }
+
         $year_start = $year_start->year - 1;
       
         array_push($year_send,$year_start);
