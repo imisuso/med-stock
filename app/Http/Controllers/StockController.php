@@ -41,6 +41,7 @@ class StockController extends Controller
                         ],
                 ]);
         }
+        Logger(request()->input('search'));
         $stock_items = StockItem::query()
                                 ->when(request()->input('search'), function ($query, $search) {
                                     $query->where('item_name', 'like', "%{$search}%")

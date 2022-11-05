@@ -112,7 +112,7 @@ const form = useForm({
 watch( search, value => {
    
     if(value.length >= 3){
-        console.log('changed ' + value)
+       // console.log('changed ' + value)
         Inertia.get(route('stock'), { search: value }, {
             preserveState: true,
             replace: true
