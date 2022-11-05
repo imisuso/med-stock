@@ -159,13 +159,13 @@
 
         <!-- show all users-->
         <div 
-                class="w-full   text-sm   my-2 rounded-md"
+                class="w-full  text-sm   my-2 rounded-md"
                 >
                 <label class=" text-lg font-bold ">รายชื่อผู้ใช้งานทั้งหมด:</label>
                 <div v-for="(user,index_user) in  users" :key=index_user :value="user.id"
                     class=" bg-white p-2 my-2  lg:flex lg:justify-between border-b-2  border-gray-300 "
                 >
-                    <div class=" flex flex-col lg:flex-row ">
+                    <div class=" flex flex-col lg:flex-row  lg:justify-between">
                         <div>
                             {{index_user+1}}. {{user.name}} ({{user.unit.unitname}})
                         </div>
@@ -197,12 +197,12 @@
                             </svg>
                         </a>
                   
-                        <a :href="route('show-log',user.slug)" class=" px-4 mx-2 rounded-md shadow-md bg-cyan-200" >
+                        <!-- <a :href="route('show-log',user.slug)" class=" px-4 mx-2 rounded-md shadow-md bg-cyan-200" >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6  bg-cyan-200">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
 
-                        </a>
+                        </a> -->
                         <!-- <button type="submit" 
                             class="   ml-4 px-2 text-md  bg-red-500 hover:bg-red-700 text-white  border border-red-500  rounded-md shadow-md"
                             @click="confirmDeleteStock()"
