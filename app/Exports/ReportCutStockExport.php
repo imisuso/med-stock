@@ -33,9 +33,9 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
     public function map($TransactionCheckout): array
     {
     
-        Log::info("In Map");
+      //  Log::info("In Map");
        // Log::info($TransactionCheckout);
-         Log::info($TransactionCheckout->id);
+       //  Log::info($TransactionCheckout->id);
         // Log::info($TransactionCheckout->date_expire);
         // Log::info($TransactionCheckout->date_expire_last);
         // Log::info($TransactionCheckout->user->name);
@@ -88,7 +88,7 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
                                 ->orderBy('stock_item_id');
                                 // ->get();
 
-            Log::info('In Query');
+          //  Log::info('In Query');
    
        
       
