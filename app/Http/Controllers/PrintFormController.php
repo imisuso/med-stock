@@ -12,6 +12,7 @@ use App\Models\StockItem;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
@@ -77,7 +78,7 @@ class PrintFormController extends Controller
           // add  image watermark
          // $pdf->Image('https://a7sas.net/wp-content/uploads/2019/07/4060.jpeg',60,30,90,0);
         // $pdf->Image(storage_path('images/logo_med_tranparent.gif'),60,30,90,0,'GIF');
-         $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
+         //$pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
           
           //title
           $pdf->SetFont('THSarabunNew','B');
@@ -237,7 +238,7 @@ class PrintFormController extends Controller
         $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
 
         // add  image watermark
-       $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
+       //$pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
         
         //title
         $pdf->SetFont('THSarabunNew','B');
@@ -388,7 +389,7 @@ class PrintFormController extends Controller
         $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
 
         // add  image watermark
-       $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),7,15,0,0,'png');
+      // $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),7,15,0,0,'png');
         
         //title
         $pdf->SetFont('THSarabunNew','B');
@@ -578,7 +579,7 @@ class PrintFormController extends Controller
         $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
 
         // add  image watermark
-       $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),7,15,0,0,'png');
+       //$pdf->Image(storage_path('app/public/images/watermark_medstock.png'),7,15,0,0,'png');
         
         //title
         $pdf->SetFont('THSarabunNew','B');
@@ -743,9 +744,11 @@ class PrintFormController extends Controller
          $date_print = 'ข้อมูล ณ วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
          $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'R');
  
-        
-        
+         $use_in = Auth::user();
+         $msg_notify_test = $use_in->name.'  พิมพ์รายงานสรุปใบสั่งซื้อสำเร็จ ';
+         Logger($msg_notify_test);
         $pdf->Output('I');
+
     }
     public function printPurchaseOrder($purchase_id)
     {
