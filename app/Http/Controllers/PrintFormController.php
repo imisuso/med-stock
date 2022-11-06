@@ -639,7 +639,7 @@ class PrintFormController extends Controller
                  // Logger($order->pur_order);
                     $sum_price = 0.0;
                     $order_items = ItemTransaction::select('id','item_count','price','date_action','order_type')
-                                        ->where(['stock_id'=>12,'year'=>2023,'action'=>'checkin','status'=>'active'])
+                                        ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])
                                         ->where('pur_order',$order->pur_order)
                                         ->get();
 
@@ -1134,7 +1134,9 @@ class PrintFormController extends Controller
         $pdf->SetXY($x, $y);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', ''),'B'); //print line buttom
 
-        
+        $use_in = Auth::user();
+        $msg_notify_test = $use_in->name.'  พิมพ์รายงานการตัดสต๊อก '.$stock->stockname.' สำเร็จ';
+        Logger($msg_notify_test);
 
         $pdf->Output('I');
        
