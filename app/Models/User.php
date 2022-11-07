@@ -122,17 +122,29 @@ class User extends Authenticatable
             $profile['user_id_in'] = 0;
             $profile['user_name_in'] ='first load';
             foreach($users as $user){
-                // Logger($user['sap_id']);
-                // Logger($user['unit_id']);
-                $user = User::create([
+               // Logger($user['sap_id']);
+                //Logger($user['unit_id']);
+                $user_new = User::create([
                     'sap_id'=>$user['sap_id'],
                     'unitid' => $user['unit_id'],
                     'name' => $user['name'],
                     'status' => '1',
                     'profile'=> $profile
                 ]);
+
+                // Logger($user['unit_id']);
     
-               $user->assignRole('admin_it');
+                if(strcmp($user['unit_id'],'27')==0){
+                //    Logger('admin_med_stock');
+                 //   Logger($user['unit_id']);
+                    $user_new->assignRole('admin_med_stock');
+                }else{
+                 //   Logger('officer');
+                 //   Logger($user['unit_id']);
+                    $user_new->assignRole('officer');
+                }
+               
+               
             }
 
         }
