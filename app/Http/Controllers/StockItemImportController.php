@@ -40,10 +40,41 @@ class StockItemImportController extends Controller
     public function show(Request $request)
     {
        // Logger($request->all());
+        //dd($request->all());
+        // "unit_id" => "1"
+        // "stock_item_status" => "1"
+        // "file_stock_item" =>
         //$file = $request->file('file_stock_item');
+        $input_rules = [
+                        'unit_id' => 'required|numeric|min:1', 
+                        'stock_item_status' => 'required|numeric|min:1',       
+                        'file_stock_item' => 'required', 
+        ];
+
+        $input_customMessages = [
+            'unit_id.required' => 'ต้องเลือกคลังสาขา ',
+            'unit_id.numeric' => 'คลังสาขาตัวเลขเท่านั้น',
+            'unit_id.min' => 'ต้องเลือกคลังสาขา',
+            'stock_item_status.required' => 'ต้องเลือกประเภทการจัดซื้อ',
+            'stock_item_status.numeric' => 'ประเภทการจัดซื้อต้องเป็นตัวเลขเท่านั้น',
+            'stock_item_status.min' => 'ต้องเลือกประเภทการจัดซื้อ',
+            'file_stock_item.required' => 'ต้องระบุไฟล์ excel รายการพัสดุที่ต้องการนำเข้า ',
+            // 'file_stock_item.file' => 'ไฟล์ excel รายการพัสดุที่ต้องการนำเข้า',
+        ];
+
+        $input_validate = Validator::make($request->all(),$input_rules,$input_customMessages)->errors();
+       // dd($input_validate);
+      //  logger(count($input_validate));
+        if(count($input_validate)>0){
+            return Inertia::render('Admin/StockItemImportShow',[
+                'validate_input'=>false,
+                'msg_validate_row'=> $input_validate,
+            ]);
+         }
+
         $stock = Stock::where('unit_id',$request->unit_id)->first();
        
-         $rows = Excel::toArray(new StockItemImportToCollection(),$request->file('file_stock_item'));
+        $rows = Excel::toArray(new StockItemImportToCollection(),$request->file('file_stock_item'));
         //$rows = Excel::toCollection(new StockItemImportToCollection(),$request->file('file_stock_item'));
      
         //****rule validate excel import
@@ -76,6 +107,7 @@ class StockItemImportController extends Controller
                     return Inertia::render('Admin/StockItemImportShow',[
                         'validate_excel'=>false,
                         'msg_validate_excel'=> $error_validate_excel,
+                        'validate_input'=>true,
                     ]);
                 }
                   
@@ -90,6 +122,7 @@ class StockItemImportController extends Controller
                         'validate_excel'=>false,
                         'msg_validate_excel'=> $error_validate_excel,
                         'header_diff'=>$result,
+                        'validate_input'=>true,
                     ]);
                 }         
             }
@@ -173,6 +206,7 @@ class StockItemImportController extends Controller
             return Inertia::render('Admin/StockItemImportShow',[
                 'validate_row_excel'=>false,
                 'msg_validate_row'=> $error_validate,
+                'validate_input'=>true,
             ]);
          }
       //  Logger($collect);
@@ -185,9 +219,10 @@ class StockItemImportController extends Controller
                         'validate_excel'=>false,
                         'msg_validate_excel'=> $error_validate_excel,
                         'stock_item_import_count'=>count($collect),
+                        'validate_input'=>true,
                     ]);
         }
-     
+      //  Logger('aaaa');
         return Inertia::render('Admin/StockItemImportShow',[
                                 'stock_id'=>$stock->id,
                                 'stock_name'=>$stock->stockname,
@@ -196,7 +231,8 @@ class StockItemImportController extends Controller
                                 'stock_item_import_count'=> count($collect),
                                 'stock_item_import'=> $collect,
                                 'validate_excel'=>true,
-                                'validate_row_excel'=>true
+                                'validate_row_excel'=>true,
+                                'validate_input'=>true,
         ]);
      
 

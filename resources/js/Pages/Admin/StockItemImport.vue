@@ -70,10 +70,11 @@
                     @endif -->
                     <!-- <form action="" method="post" enctype="multipart/form-data"> -->
                         <div class="">
+                            เลือกไฟล์ excel รายการพัสดุที่ต้องการนำเข้าคลังสาขา
                             <input type="file" name="file" id="" @change="onChangeFile">
                            
                         </div>
-                        <div>
+                        <div class="p-2">
                             <button type="submit" 
                                 class="  inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-6 border border-green-500 rounded"
                                 @click="ImportStockItem()"
@@ -111,7 +112,7 @@ const form = useForm({
     file_stock_item: File,
     unit_id:0,
     stock_item_status:0,
-    stock_po:'',
+   // stock_po:'',
   //  date_receive:0,
 })
 
