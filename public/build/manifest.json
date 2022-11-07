@@ -450,12 +450,12 @@
     "src": "resources/css/app.css",
     "isEntry": true
   },
-  "resources/js/Pages/Welcome.css": {
-    "file": "assets/Welcome.0042fda4.css",
-    "src": "resources/js/Pages/Welcome.css"
-  },
   "AppLayout.css": {
     "file": "assets/AppLayout.f9816935.css",
     "src": "AppLayout.css"
+  },
+  "resources/js/Pages/Welcome.css": {
+    "file": "assets/Welcome.0042fda4.css",
+    "src": "resources/js/Pages/Welcome.css"
   }
 }
