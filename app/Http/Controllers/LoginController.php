@@ -80,6 +80,8 @@ class LoginController extends Controller
            
         }else{
            /* Log to Slack */
+           $msg_notify_test = $sirirajUser['name'].'  เข้าระบบไม่สำเร็จ เพราะไม่พบเจ้าหน้าที่คนนี้เป็นผู้ใช้งานระบบ';
+           Logger($msg_notify_test);
             return Redirect::back()->with(['status' => '1', 'msg' => 'ไม่พบเจ้าหน้าที่คนนี้เป็นผู้ใช้งานระบบ กรุณาติดต่อเจ้าหน้าที่หน่วยพัสดุภาควิชาอายุรศาสตร์']);
         }
        // Logger('login success');
