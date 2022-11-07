@@ -45,10 +45,12 @@ class LoginController extends Controller
 
         $user_check =  User::where('sap_id',$sirirajUser['org_id'])->first();
         //Logger($user_check);
-        if($user_check->status !=1){
-            return Redirect::back()->with(['status' => '1', 'msg' => 'เจ้าหน้าที่คนนี้ถูกยกเลิกใช้งานระบบ กรุณาติดต่อเจ้าหน้าที่หน่วยพัสดุภาควิชาอายุรศาสตร์']);
-        }
+       
         if($user_check){
+
+            if($user_check->status !=1){
+                return Redirect::back()->with(['status' => '1', 'msg' => 'เจ้าหน้าที่คนนี้ถูกยกเลิกใช้งานระบบ กรุณาติดต่อเจ้าหน้าที่หน่วยพัสดุภาควิชาอายุรศาสตร์']);
+            }
 
             Auth::login($user_check);
            
