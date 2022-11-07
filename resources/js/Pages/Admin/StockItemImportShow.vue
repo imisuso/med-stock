@@ -1,5 +1,17 @@
 <template>
     <AppLayout>
+     
+        <div v-if="!validate_input"
+            class=" w-full p-4   text-lg font-bold bg-red-200 rounded-md "
+        >
+      
+            <!-- {{msg_validate_row}} -->
+            <li v-for="(msg_validate,index) in msg_validate_row" :key="index">
+                {{msg_validate}} 
+              
+         
+            </li>
+        </div>
       
         <div v-if="!validate_row_excel"
             class=" w-full p-4   text-lg font-bold bg-red-200 rounded-md "
@@ -27,7 +39,7 @@
             <!-- {{header_diff}} -->
         </div>
        
-        <div v-if="validate_excel && validate_row_excel"
+        <div v-if="validate_excel && validate_row_excel && validate_input"
             class=" w-full p-4   text-lg font-bold bg-blue-100 rounded-md "
             >
             <div class=" ">
@@ -93,7 +105,7 @@
             </div> -->
             
         </div> 
-        <div v-if="validate_excel && validate_row_excel" class=" mt-2">
+        <div v-if="validate_excel && validate_row_excel && validate_input" class=" mt-2">
             <button
             class="  w-full flex justify-center py-2  text-md   font-bold bg-green-300 hover:bg-green-200 focus:outline-none"
             @click="CheckInToStockItem()"
@@ -160,6 +172,7 @@ const props =defineProps({
     msg_validate_excel:{type:String},
     header_diff:{type:Array},
     validate_row_excel:{type:Boolean,default:true},
+    validate_input:{type:Boolean,default:true},
     msg_validate_row:{type:Array}
    // date_receive:{type:String},
     
@@ -183,10 +196,10 @@ const form = useForm({
 
 
 const CheckInToStockItem=(()=>{
-    console.log('----------CheckInToStockItem------')
-    console.log(form.stock_id);
-    console.log(form.stock_item_status);
-    console.log(form.import_items);
+   // console.log('----------CheckInToStockItem------')
+   // console.log(form.stock_id);
+   // console.log(form.stock_item_status);
+   // console.log(form.import_items);
    // console.log(form.date_receive);
     form.post(route('import-checkin-to-stock'), {
         preserveState: true,
