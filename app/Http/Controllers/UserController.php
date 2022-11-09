@@ -27,10 +27,21 @@ class UserController extends Controller
         $stocks = Stock::all();
         $units = Unit::all();
         $roles = Role::whereStatus(1)->get();
-        $users = User::select('slug','name','status','unitid','updated_at')
+        // $users = User::select('slug','name','status','unitid','updated_at')
+        //                 ->with('unit:id,unitid,unitname')
+        //                 ->orderBy('unitid')
+        //                 ->get();
+                     
+
+          $users = User::select('slug','name','status','unitid','updated_at')
                         ->with('unit:id,unitid,unitname')
                         ->orderBy('unitid')
-                        ->get();
+                        ->paginate(10);
+                        //->withQueryString();
+                        // ->paginate(10);
+
+                        // ->paginate(10)
+                       
         //   Logger('StockItemImportController');
         return Inertia::render('Admin/AddUser',[
                                     'stocks'=>$stocks,

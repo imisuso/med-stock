@@ -68,7 +68,7 @@
                     <div class=" lg:w-3/12 ">
                         ชื่อบริษัท
                     </div>
-                    <div class=" lg:w-1/12 ">
+                    <div class=" lg:w-2/12 ">
                         Pur.Order
                     </div>
                     <div class=" lg:w-1/12 ">
@@ -77,9 +77,9 @@
                     <div class=" lg:w-1/12 ">
                         วันที่รับเข้า
                     </div>
-                    <div class=" lg:w-1/12 ">
+                    <!-- <div class=" lg:w-1/12 ">
                         วันที่หมดอายุ
-                    </div>
+                    </div> -->
                    
                     <div class=" lg:w-1/12 text-xs ">
                         ประวัติการรับเข้าและเบิกออก
@@ -98,16 +98,13 @@
                 <div class="flex flex-col  lg:flex-row   "  >
                     
                     <div class=" bg-blue-100 lg:bg-transparent lg:w-2/12 lg:text-xs  ">
-                        <div>
-                            <label for="" v-if="stock_item.status == 1" class=" text-xs text-blue-700 ">สัญญาซื้อ</label>
-                            <label for="" v-else  class=" text-xs ">ใบสั่งซื้อ</label>
-                        </div>
+                     
                         <label for="" class="  ">{{key+1}}.</label>
                         <label class=" font-bold">
                             <!-- {{key+1}}. -->
                             {{stock_item.item_code}}
                             <label for="" class="text-blue-600">-{{stock_item.item_name}}</label>
-                            (หน่วย: {{stock_item.unit_count}})
+                            <!-- (หน่วย: {{stock_item.unit_count}}) -->
                         </label>
                        
                        
@@ -138,9 +135,13 @@
                             {{stock_item.business_name}}
                         </label> 
                     </div>
-                    <div class="   lg:w-1/12 lg:text-xs  ">
+                    <div class="   lg:w-2/12 lg:text-xs  ">
+                       
                         <label for="" class="   lg:hidden">Pur.Order:</label>
                   
+                        <label for="" v-if="stock_item.status == 1" class=" text-xs text-green-700 ">สัญญาซื้อ</label>
+                            <label for="" v-else  class=" text-xs text-yellow-600 ">ใบสั่งซื้อ</label>
+                        
                         <label class=" ml-2 " >
                             {{stock_item.pur_order}}
                         </label> 
@@ -157,12 +158,12 @@
                             {{dayjs(stock_item.checkin_last.date_action).locale('th').format('D MMM BBBB')}}
                         </label> 
                     </div>
-                    <div class=" lg:w-1/12 lg:text-xs  ">
+                    <!-- <div class=" lg:w-1/12 lg:text-xs  ">
                         <label for="" class="  lg:hidden">วันที่หมดอายุ:</label>
                         <label class=" ml-2 " >
                             {{dayjs(stock_item.checkin_last.date_expire).locale('th').format('D MMM BBBB')}}
                         </label>
-                    </div>
+                    </div> -->
                   
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  hidden">::</label>
