@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\LogActivity;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class LogActivityController extends Controller
 {
@@ -49,8 +51,22 @@ class LogActivityController extends Controller
     {
      //   dd($slug);
         $user = User::select('sap_id','name')->where('slug',$slug)->first();
-        $logs = LogActivity::where('sap_id',$user->sap_id)->get();
-        dd($logs);
+        $logs = LogActivity::where('sap_id',$user->sap_id)
+                            ->where('function_name','manage_user')
+                            ->whereIn('action',['add_user','edit_user'])
+                            ->orderBy('created_at','desc')
+                            ->get();
+        logger($logs);
+
+        return Inertia::render('Admin/ShowLogsUser',[
+                            'user_change_logs'=> $logs,
+                        ]);
+        // return Redirect::back()
+        //                  ->with(['status' => 'success', 
+        //                             'msg' => 'ประวัติการแก้ไข',
+        //                             'user_change_logs'=> $logs,
+        //                     ]);
+        //dd($logs);
     }
 
     /**
