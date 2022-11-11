@@ -72,7 +72,7 @@ class AdminReportStockController extends Controller
      */
     public function show($stock_slug)
     {
-      //  Log::info('AdminReportStockController show');
+        Log::info('AdminReportStockController show');
        // Log::info($stock_slug);
         // Log::info($year);
         // Log::info($month);
@@ -81,7 +81,8 @@ class AdminReportStockController extends Controller
        // Log::info($stocks);
         $stock_items = StockItem::whereStockId($stocks->id)
                                 ->where('status','!=',9)  //9=cancel
-                                ->get();
+                                ->paginate(3);
+                               // ->get();
 
         
         foreach($stock_items as $key=>$stock_item){

@@ -54,12 +54,15 @@ class LogActivityController extends Controller
         $logs = LogActivity::where('sap_id',$user->sap_id)
                             ->where('function_name','manage_user')
                             ->whereIn('action',['add_user','edit_user'])
-                            ->orderBy('created_at','desc')
+                            ->with('user:id,name')
+                            ->orderBy('created_at','asc')
                             ->get();
-        logger($logs);
-
+        
+       
+       // logger($logs);
         return Inertia::render('Admin/ShowLogsUser',[
                             'user_change_logs'=> $logs,
+                            'user_name'=> $user->name,
                         ]);
         // return Redirect::back()
         //                  ->with(['status' => 'success', 

@@ -44,6 +44,7 @@ class StockController extends Controller
         $stock_items = StockItem::query()
                                 ->when(request()->input('search'), function ($query, $search) {
                                     $query->where('item_name', 'like', "%{$search}%")
+                                    ->orWhere('item_code','like',"%{$search}%")
                                     ->orWhere('business_name','like',"%{$search}%");
                                 })
                                 ->where('stock_id',$user->unitid)

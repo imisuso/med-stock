@@ -57,7 +57,7 @@
                 
                     <div class="p-2 text-md font-bold text-gray-900">
                         {{itemIndex+1}}.
-                        SAP:{{stockItem.item_code}} 
+                        รหัสวัสดุ:{{stockItem.item_code}} 
                         <label for="" class="text-blue-600">{{stockItem.item_name}}</label>
                         (หน่วย: {{stockItem.unit_count}})
                         <Link :href="route('list-stock-item',stockItem)">

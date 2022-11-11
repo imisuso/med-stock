@@ -24,4 +24,9 @@ class LogActivity extends Model
         'detail' => 'array',
         'old_value' => 'array',
     ];
+
+    public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

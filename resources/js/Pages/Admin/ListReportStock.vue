@@ -51,6 +51,7 @@
     <div  class="w-full  p-2  ">
 
         <div>
+            <paginateMe :pagination="stock_items" />
             <div 
                 class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
@@ -89,10 +90,11 @@
         </div>
 
         <!--re-design-->
+        <!-- {{stock_items.data}} -->
 
         <div  class="w-full mt-3  ">
-            
-            <div v-for="(stock_item,key) in stock_items" :key=stock_item.index
+           
+            <div v-for="(stock_item,key) in stock_items.data" :key=stock_item.index
                 class="w-full border-b-2   border-gray-500 shadow-sm ">
                 
                 <div class="flex flex-col  lg:flex-row   "  >
@@ -101,10 +103,10 @@
                      
                         <label for="" class="  ">{{key+1}}.</label>
                         <label class=" font-bold">
-                            <!-- {{key+1}}. -->
+                        
                             {{stock_item.item_code}}
                             <label for="" class="text-blue-600">-{{stock_item.item_name}}</label>
-                            <!-- (หน่วย: {{stock_item.unit_count}}) -->
+                         
                         </label>
                        
                        
@@ -149,7 +151,7 @@
                     <div class="  lg:w-1/12 lg:text-xs ">
                         <label for="" class="  lg:hidden">Invoice Number:</label>
                         <label class=" ml-2 " >{{stock_item.invoice_number}}</label>
-                        <!-- <label class=" ml-2 " >{{stock_item.checkin_last.profile['catalog_number']}} /{{stock_item.checkin_last.profile['lot_number']}}</label>  -->
+                     
                     </div>
                     <div class="   lg:w-1/12 lg:text-xs  ">
                         <label for="" class="   lg:hidden">วันที่รับเข้า:</label>
@@ -158,101 +160,27 @@
                             {{dayjs(stock_item.checkin_last.date_action).locale('th').format('D MMM BBBB')}}
                         </label> 
                     </div>
-                    <!-- <div class=" lg:w-1/12 lg:text-xs  ">
-                        <label for="" class="  lg:hidden">วันที่หมดอายุ:</label>
-                        <label class=" ml-2 " >
-                            {{dayjs(stock_item.checkin_last.date_expire).locale('th').format('D MMM BBBB')}}
-                        </label>
-                    </div> -->
+              
                   
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  hidden">::</label>
-                        <!-- <label class=" font-bold">  {{item_tran.stock_item['item_sum']}}</label> -->
+                       
                         <Link :href="route('list-stock-item',stock_item)">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-700">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
 
-                        <!-- <span
-                            class="inline-flex text-md font-semibold underline leading-5 text-green-800 bg-green-200 rounded-lg"
-                        >
-                            ประวัติการรับเข้าและเบิกออก
-                        </span> -->
+                      
                         </Link>
                     </div>
                 </div>     
             </div>
-            </div>
+        </div>
 
         <!--end re-design-->
   
-        <!-- <div v-for="(stock_item,key) in stock_items" :key=stock_item.index
-            class="w-full mt-3 border-2 border-red-300 rounded-lg "
-            >
-          
-            <div v-if="stock_item.status == 1"
-                class="flex flex-col p-2 bg-pink-200 items-center overflow-hidden text-center  bg-cover rounded-t "
-            >
-              
-                <label for="">สัญญาซื้อ</label>
-            </div>
-            <div v-else
-                class="flex flex-col p-2 bg-blue-200 items-center overflow-hidden text-center  bg-cover rounded-t "
-            >
-              
-                    <label for="">ใบสั่งซื้อ</label>
-            </div>
-
-            <div
-            class="w-full  leading-normal  border-b border-l border-r border-gray-200 rounded-b lg:border-l-0 lg:border-t lg:border-gray-200 lg:rounded-b-none lg:rounded-r"
-            >   
-                <div class=" mb-2  ">
-                
-                    <div class="p-2 text-md font-bold text-gray-900">
-                        {{key+1}}.
-                        SAP:{{stock_item.item_code}}
-                        <label for="" class="">{{stock_item.item_name}}</label>
-                        (หน่วย: {{stock_item.unit_count}})
-                        <Link :href="route('list-stock-item',stock_item)">
-                        <span
-                            class="inline-flex text-md font-semibold underline leading-5 text-green-800 bg-green-200 rounded-lg"
-                        >
-                            ประวัติการรับเข้าและเบิกออก
-                        </span>
-                        </Link>
-                    </div>
-                
-                
-                    <div class="flex flex-col mb-2 text-md font-bold text-gray-900">
-                        <div class=" flex ml-2"> จำนวนคงเหลือ : 
-                            <span  
-                                class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                            </svg>
-                            {{stock_item.item_sum}}
-                            </span>
-                        </div>
-                        
-                        <div class="flex ml-2"> วันหมดอายุ : 
-                            <p class=" ml-2 text-blue-600" >
-                            {{stock_item.checkin_last.date_expire}}
-                            </p>
-                        </div>
-                      
-                        <div class="flex ml-2"> วันที่รับเข้า : 
-                            <p class=" ml-2 text-blue-600" >{{stock_item.checkin_last.date_action}}</p> 
-                        </div>
-                        
-                        <div class="flex ml-2"> Cat.No/Lot.No : 
-                            <p class=" ml-2 text-blue-600" >{{stock_item.checkin_last.profile['catalog_number']}} /{{stock_item.checkin_last.profile['lot_number']}}</p> 
-                        </div>
-                       
-                    </div>  
-                </div>
-            </div>
-        </div> -->
+   
     </div>
 
     <!-- end display card -->
@@ -271,6 +199,7 @@
 //import { ref } from 'vue';
 //import { usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
+import PaginateMe from '@/Components/PaginateMe.vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 import { ref } from '@vue/reactivity';
