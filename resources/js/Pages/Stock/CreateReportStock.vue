@@ -7,6 +7,7 @@
             
             <div class="mt-3 font-bold" >
                 <label for="">เลือกคลังพัสดุ</label> 
+                <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกคลังพัสดุ</label>
             </div>
             <select name="" id="" v-model="form.unit_selected"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
@@ -23,6 +24,7 @@
         <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
             <div class=" m-2">
                 <label for="">ปี พ.ศ.</label>
+                <label v-if="msg_validate_year" class=" text-red-600">   !กรุณาเลือกปี พ.ศ.</label>
                 <select name="" id="" v-model="form.year_selected"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                     <option v-for="(year,index) in  years" :key=index v-bind:value="year">{{year+543}}</option>
@@ -30,6 +32,7 @@
             </div>
             <div  class=" m-2">
                 <label for="">เดือน</label>
+                <label v-if="msg_validate_month" class=" text-red-600">   !กรุณาเลือกเดือน</label>
                 <select name="" id="" v-model="form.month_selected"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                     <option v-for="(month) in  months" :key=month.id v-bind:value="month.id">{{month.name}}</option>
@@ -223,13 +226,22 @@ const months=ref([
         {id:12,name:'ธันวาคม' },
 ])
 
-const   years=ref([2022,2021,2020,2019,2018])
+const   years=ref([2023,2022,2021,2020,2019,2018])
 const item_trans=ref('')
 //const stock_all=ref(Object);
 const stock_id=ref(0);
 
+const msg_validate_stock=ref(false);
+const msg_validate_year=ref(false);
+const msg_validate_month=ref(false);
+
 const year_thai = (year_select)=>{
-    return year_select+543;
+   // console.log('year_select=')
+   // console.log(year_select)
+    if(year_select.length==0)
+         return '';
+    else
+         return year_select+543;
 }
 
 const form = useForm({
@@ -247,10 +259,28 @@ const setStockID=()=>{
 
 const  getReportStock=(stock_id,year,month)=>{
            console.log('getReportStock');
-    // console.log(stock_id);
-    // console.log(year);
-    // console.log(month);
+     console.log(stock_id);
+     console.log(year);
+    console.log(month);
    // demo_show_stock_items.value=true;
+   msg_validate_stock.value = false
+   msg_validate_year.value = false
+   msg_validate_month.value = false
+   if(stock_id.length==0){
+     msg_validate_stock.value = true
+     return false;
+   }
+
+   if(year.length==0){
+     msg_validate_year.value = true
+     return false;
+   }
+
+   if(month.length==0){
+     msg_validate_month.value = true
+     return false;
+   }
+   
 
     axios.get(route('get-checkout-item',
                          {stock_id:form.unit_selected , year:form.year_selected , month:form.month_selected}

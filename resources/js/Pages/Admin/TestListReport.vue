@@ -1,60 +1,12 @@
 <template>
     <AppLayout>
-       <h4   class=" mt-3 text-center text-red-600">ระบุชื่อคลังพัสดุที่ต้องการดูรายงาน</h4>
-        <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
-             <div class="m-2" >
-                <label for="">ชื่อคลังพัสดุ</label> 
-                <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกคลังพัสดุ</label>
-                <select name="" id="" v-model="form.stock_selected"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                    <option v-for="(stock) in  stocks" :key=stock.id :value=stock.id >{{stock.stockname}}</option>
-                </select>
-            </div>
-         
-            
-        </div>
-          <div class="flex flex-col  ">
-            <!-- <button
-                class="px-3 py-1  text-sm text-gray-700 bg-gray-400 rounded-md hover:bg-gray-300 focus:outline-none"
-            >
-                Cancel
-            </button> -->
-             <!-- <Link :href="route('admin-report-stock',{stock_slug:stock_selected,year:year_selected,month:month_selected})"> -->
-                <button 
-                    class=" w-full flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
-                    @click="getStockReport()"
-                >
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg> -->
-                    ค้นหา
-                </button>
-            <!-- </Link> -->
-        </div>
-        <!-- {{$page.props.//}} -->
+        ---->   {{stock_items.data.length}}
       
-        <!-- show order lists -->
-         <h1 class="p-2 mt-3 text-center font-bold" >รายงานจำนวนคงเหลือในคลังพัสดุ </h1>
-          <h1 class="p-2 mt-1 text-center font-bold" >{{form.stock_selected.text}}</h1>
-       
-        <div class=" text-red-500">***เพิ่ม ปุ่มยกเลิกรายการพัสดุ สำหรับกรณี excel import มีบางรายการผิด</div>
-         <!-- <button class=" mb-2 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
-           Export EXCEL
-        </button> -->
 
-        <div class="w-full">
-            <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อพัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
-                    v-model="search" 
-                class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
-            >
-        </div>
-    <div  class="w-full  p-2  ">
-        
+        <div  class="w-full  p-2  ">
+      
         <div>
-            <div v-if="stock_items">
-                <paginateMe :pagination="stock_items" />
-            </div>
-            
+            <paginateMe :pagination="stock_items" />
             <div 
                 class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
@@ -94,8 +46,7 @@
 
         <!--re-design-->
         <!-- ##{{stocks}} -->
-      
-
+    
  
 
         <div  class="w-full mt-3  ">
@@ -107,7 +58,7 @@
                     
                     <div class=" bg-blue-100 lg:bg-transparent lg:w-2/12 lg:text-xs  ">
                      
-                        <label for="" class="  ">  {{stock_items.from + key}}. </label>
+                        <label for="" class="  ">{{key+1}}.</label>
                         <label class=" font-bold">
                         
                             {{stock_item.item_code}}
@@ -188,88 +139,19 @@
   
    
     </div>
-
-    <!-- end display card -->
-
-        
-    <!-- test display report table -->
-
-   
-
-      
-        
-
     </AppLayout>
 </template>
 <script setup>
-//import { ref } from 'vue';
-import { usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
-import { Link, useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from '@inertiajs/inertia';
-import { ref } from '@vue/reactivity';
-import {watch} from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 dayjs.extend(buddhistEra)
-
- const props=defineProps({
+defineProps({
     stocks:{type:Object,required:true},
-    stock_items:Object,
-  //  item_trans:Object,
-    stock_selected:{type:String},
-    filters: { type: Object },
+
+    stock_items:{type:Array},
+    item_trans:{type:Object},
 })
-
-let search = ref(props.filters.search)
-const msg_validate_stock=ref(false);
-
-const form = useForm({
-            stock_selected:props.stock_selected ? props.stock_selected :[],
-            // year_selected:'',
-            // month_selected:'',
-            unitid:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid :0,
-        //    unitid:props.auth.user.unitid ? props.auth.user.unitid :0 ,
-})
-
-watch( search, value => {
-   
-   if(value.length >= 3){
-     //  console.log('key search=' + value)
-       Inertia.get(route('report-list',form.unitid), { search: value ,stock_selected: form.stock_selected}, {
-           preserveState: true,
-           replace: true
-       })
-   }
-})
-const getStockReport=()=>{
-    //console.log('aaaaaaaaaa');
-  
-    //console.log(usePage().props.value.auth.user.unitid);
-   
-    msg_validate_stock.value = false
-
-   if(form.stock_selected.length==0){
-     msg_validate_stock.value = true
-     return false;
-   }
-    form.get(route('report-list',form.unitid),{
-        preserveState: true,
-        preserveScroll: true,
-        onSuccess: page => { 
-            //console.log('success');
-        },
-        onError: errors => { 
-           // console.log('error');
-        },
-        onFinish: visit => { console.log('finish');},
-    })
-
-    
-}
-
-
-
 </script>

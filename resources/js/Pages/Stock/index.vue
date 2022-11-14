@@ -43,7 +43,7 @@
                     >
             </div> -->
             <div class="w-full">
-                            <input type="text" placeholder="พิมพ์ชื่อพัสดุหรือชื่อบริษัทที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
+                            <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อพัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
                                  v-model="search" 
                                 class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
                             >

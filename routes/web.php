@@ -118,8 +118,9 @@ Route::get('/create-order/print-checkin/{order}', [PrintFormController::class,'c
 //ดูจำนวนคงเหลือหลังตรวจรับ
 Route::get('/order-list/show/{order_id}', [CheckInOrderController::class,'show'])->name('view-checkin-order')->middleware('auth');
 
-Route::get('/admin/report-list/{division_id}', [AdminReportStockController::class,'index'])->name('report-list')->middleware('auth');
-Route::get('/admin/report-stock/{stock_slug}', [AdminReportStockController::class,'show'])->name('admin-report-stock')->middleware('auth');
+//Route::get('/admin/report-list/{division_id}', [AdminReportStockController::class,'index'])->name('report-list')->middleware('auth');
+Route::match(['get', 'post'],'/admin/report-list/{division_id}',[AdminReportStockController::class,'index'])->name('report-list')->middleware('auth');
+Route::post('/admin/report-stock', [AdminReportStockController::class,'show'])->name('admin-report-stock')->middleware('auth');
 
 //แสดงรายการใบสั่งซื้อแบบสัญญา
 Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list')->middleware('auth');
