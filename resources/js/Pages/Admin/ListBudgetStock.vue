@@ -33,11 +33,16 @@
             <label for="">  ปีงบประมาณ {{year_budget}}</label>
             <label for=""> ได้รับการจัดสรรงบ {{budget_receive}} บาท</label>
         </div>
-        <div class="w-full flex flex-col  bg-yellow-200">
+        <div class="w-full mb-2 flex flex-col  bg-yellow-200">
             <label for="">  รายการใบสั่งซื้อมีดังนี้</label>
         </div>
+        <div>
+            <paginateMe :pagination="all_orders" />
+        </div>
+      
         <div 
             class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
+           
                 <div class="flex flex-col font-bold text-lg  lg:flex-row lg:justify-between  mx-2"  >
                     
                     <div class=" lg:w-3/12  ">
@@ -65,7 +70,7 @@
       
     <div  class="w-full mt-3  ">
 
-        <div v-for="(order,key) in all_orders" :key=order.id
+        <div v-for="(order,key) in all_orders.data" :key=order.id
             class="w-full p-2 border-b-2   border-gray-500 shadow-sm ">
             
             <div class="flex flex-col text-sm  lg:flex-row   "  >
@@ -144,7 +149,7 @@
 //import { ref } from 'vue';
 //import { usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
-
+import PaginateMe from '@/Components/PaginateMe.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
@@ -185,20 +190,7 @@ const getOrderDetail=(pur_order,sum_price)=>{
         },
     })
 
-
-    // Inertia.post('/admin/get-list-budget-detail/',  {
-    //     pur_order: pur_order,
-    //     // email: 'john.doe@example.com',
-    //     // preserveScroll: (page) => Object.keys(page.props.errors).length,
-    // })
 }
 
-// const sumPrice = () => {
-//     console.log('sumPrice')
-//     let unit = {}
-//     unit = props.units.find( item => item.unitid === form.unit_id) // เอาค่าแรกที่เจอค่าเดียว
-//   //  console.log(unit)
-//     return unit.unitname
-// }
 
 </script>

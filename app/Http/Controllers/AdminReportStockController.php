@@ -27,10 +27,10 @@ class AdminReportStockController extends Controller
     public function index($division_id)
     {
         //Log::info($division_id);
-        logger('AdminReportStockController index');
-        logger(request()->all());
-        logger($division_id);
-        logger('----------');
+       // logger('AdminReportStockController index');
+        // logger(request()->all());
+        // logger($division_id);
+        // logger('----------');
         if($division_id != 27){
             $stocks = Stock::whereId($division_id)->get();
         }
@@ -43,7 +43,7 @@ class AdminReportStockController extends Controller
      //   $stock = request()->input('stock_selected');
       // dd($stock);
       //  dd(request()->input('stock_slug'));
-       Log::info(request()->input('stock_selected'));
+    //   Log::info(request()->input('stock_selected'));
     //    $stock_selected = Stock::where('id',request()->input('stock_selected'))->first();
     //    logger($stock_selected->id);
        $stock_selected_id = request()->input('stock_selected');

@@ -987,7 +987,7 @@ class PrintFormController extends Controller
 
     public function printCutStock(int $stock_id,int $year,int $month)
     {
-        //Log::info('printCutStock');
+      //  logger('printCutStock');
          $pdf = new FPDI('l'); //แนวนอน
         
         $pdf->AddPage();
@@ -1005,6 +1005,7 @@ class PrintFormController extends Controller
         $split_date_now = explode('-', $tmp_date_now[0]);
         $year_print = (int) $split_date_now[0] + 543;
         $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+        $thaimonth_short = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
         $date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year_print;
 
         $pdf->SetFontSize('14');
@@ -1016,7 +1017,7 @@ class PrintFormController extends Controller
          $stock = Stock::find($stock_id);
       
         $pdf->SetXY(14, 13);
-        $head = 'รายงานบันทึกการตัดสต๊อกพัสดุ ';
+        $head = 'รายงานบันทึกการตัดสต๊อกวัสดุ ';
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $head),0,0,'C');
 
         $pdf->SetXY(14, 20);
@@ -1032,9 +1033,9 @@ class PrintFormController extends Controller
         $pdf->SetFontSize('16'); 
         $pdf->SetXY(12, 37);
         $pdf->SetLineWidth(1);
-        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      SAP                         ชื่อพัสดุ                          วันที่หมดอายุ          วันที่เบิกจ่าย            จำนวน                ผู้เบิก              คงเหลือ ณ ปัจจุบัน            '),'B');
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ                         ชื่อวัสดุ                          วันที่หมดอายุ          วันที่เบิกจ่าย            จำนวน                ผู้เบิก              คงเหลือ ณ ปัจจุบัน            '),'B');
        
-    //     //body  list item
+        //     //body  list item
 
         $stock_item_checkouts = ItemTransaction::where(
                                                         [   'stock_id'=>$stock_id,
@@ -1056,6 +1057,12 @@ class PrintFormController extends Controller
 
             $seq = 0;
             $tmp_item_code = '0';
+            $line_per_page = 13;
+          //  logger(count($stock_item_checkouts));
+            $page_all = ceil(count($stock_item_checkouts)/$line_per_page);
+            $count_page = 1;
+           
+            $count_line = 0;
         foreach ($stock_item_checkouts as $item) {
             $seq++;
             //Log::info($item);
@@ -1077,17 +1084,6 @@ class PrintFormController extends Controller
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_name']));
             }
  
-
-          
-            // $date_expire_last = ItemTransaction::select('date_expire')->where(['stock_item_id'=>$item->stock_item_id,
-            //                                             'action'=>'checkin',
-            //                                             'status'=>'active'    
-            //                                     ])
-            //                                     ->orderBy('created_at','desc')
-            //                                     ->first();
-            // $split_date_expire = explode('-', $date_expire_last->date_expire);
-            // $year_print = (int) $split_date_expire[0] + 543;
-            // $date_expire_show = $split_date_expire[2].'  '.$thaimonth[(int) $split_date_expire[1]].' '.$year_print;       
             if(strlen($item->date_expire)==0){
                 $date_expire_show= "-";
                 $pdf->SetXY(125, $y);
@@ -1095,7 +1091,7 @@ class PrintFormController extends Controller
             }else{
                 $split_date_expire = explode('-', $item->date_expire);
                 $year_print = (int) $split_date_expire[0] + 543;
-                $date_expire_show = $split_date_expire[2].'  '.$thaimonth[(int) $split_date_expire[1]].' '.$year_print;       
+                $date_expire_show = $split_date_expire[2].'  '.$thaimonth_short[(int) $split_date_expire[1]].' '.$year_print;       
                 $pdf->SetXY(112, $y);
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_expire_show));
             }
@@ -1105,7 +1101,7 @@ class PrintFormController extends Controller
             $pdf->SetXY(147, $y);
             $split_date_action = explode('-', $item->date_action);
             $year_print = (int) $split_date_action[0] + 543;
-            $date_action_show = $split_date_action[2].'  '.$thaimonth[(int) $split_date_action[1]].' '.$year_print;
+            $date_action_show = $split_date_action[2].'  '.$thaimonth_short[(int) $split_date_action[1]].' '.$year_print;
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_action_show));
 
             $pdf->SetXY(186, $y);
@@ -1114,25 +1110,56 @@ class PrintFormController extends Controller
             $pdf->SetXY(199, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->user['name']));
 
-           
-
             if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) {
                 $pdf->SetXY(255, $y);
                 $pdf->SetFontSize('14');
-                $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $item->stockItem['item_sum']));
+                $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item->stockItem['item_sum'],0) ));
             }
-
+          
             $tmp_item_code = $item->stockItem['item_code'];
 
             // $total_budget += $item[0]['total'];
-             $y = $y+10;
-             $pdf->SetXY($x, $y);
-        
+            $y = $y+10;
+            $count_line++;
+           // logger('count line=>');
+           // logger($count_line);
+            //addNewPage
+            if( $count_line==$line_per_page ){
+                $count_line =0;
+                $count_page++;
+                $pdf->SetXY(255, $y);
+                $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/'.$page_all,0,0,'C');
+                $pdf->AddPage();
+                 //head column
+                $pdf->SetFont('THSarabunNew','B');
+                $pdf->SetFontSize('16'); 
+                $pdf->SetXY(12, 17);
+                $pdf->SetLineWidth(1);
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ                         ชื่อวัสดุ                          วันที่หมดอายุ          วันที่เบิกจ่าย            จำนวน                ผู้เบิก              คงเหลือ ณ ปัจจุบัน            '),'B');
+                $y=28;
+                $x=15;
+                $pdf->SetFont('THSarabunNew');
+                $pdf->SetXY($x, $y);
+               // $pdf->SetLineWidth(0.1);
+                $pdf->SetLineWidth(0.1);
+            }
+
+
+              
+            
+          
+          //  $pdf->SetXY($x, $y);
           
         }
+
+      
         $y=$y-5;
         $pdf->SetXY($x, $y);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', ''),'B'); //print line buttom
+
+        $pdf->SetXY(255, 175);
+        $pdf->SetFontSize('14'); 
+        $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/'.$page_all,0,0,'C');
 
         $use_in = Auth::user();
         $msg_notify_test = $use_in->name.'  พิมพ์รายงานการตัดสต๊อก '.$stock->stockname.' สำเร็จ';
@@ -1140,6 +1167,42 @@ class PrintFormController extends Controller
 
         $pdf->Output('I');
        
+    }
+
+    function Header()
+    {
+        // Logo
+        $this->Image('logo.png',10,6,30);
+        // Arial bold 15
+        $this->SetFont('Arial','B',15);
+        // Move to the right
+        $this->Cell(80);
+        // Title
+        $this->Cell(30,10,'Title',1,0,'C');
+        // Line break
+        $this->Ln(20);
+    }
+
+// Page footer
+    function Footer()
+    {
+        // Position at 1.5 cm from bottom
+        $this->SetY(-15);
+        // Arial italic 8
+        $this->SetFont('Arial','I',8);
+        // Page number
+        $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+    }
+    public function printCutStockTest(int $stock_id,int $year,int $month)
+    {
+        $pdf = new FPDI('l'); //แนวนอน
+       // $pdf = new PDF();
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->SetFont('Times','',12);
+        for($i=1;$i<=40;$i++)
+            $pdf->Cell(0,10,'Printing line number '.$i,0,1);
+        $pdf->Output();
     }
     /**
      * Update the specified resource in storage.

@@ -21,13 +21,14 @@
         <!-- {{unit}} -->
         <!-- {{stock_items}} -->
         <!-- <h4  class=" mt-3 text-center text-lg">ระบุปีและเดือน ที่ต้องการดูรายงานการเบิกใช้พัสดุ</h4> -->
+       <!-- {{year_has}} -->
         <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
             <div class=" m-2">
                 <label for="">ปี พ.ศ.</label>
                 <label v-if="msg_validate_year" class=" text-red-600">   !กรุณาเลือกปี พ.ศ.</label>
                 <select name="" id="" v-model="form.year_selected"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                    <option v-for="(year,index) in  years" :key=index v-bind:value="year">{{year+543}}</option>
+                    <option v-for="(year,index) in  year_has" :key=index v-bind:value="year.year">{{year.year+543}}</option>
                 </select>
             </div>
             <div  class=" m-2">
@@ -57,7 +58,7 @@
             </button>
         </div>
 
-    <!-- {{item_trans}} -->
+ 
     <!-- {{stocks}}-->
         <!-- {{stock_id}} -->
         <div  class=" w-full py-3 text-center font-bold text-lg ">
@@ -66,7 +67,7 @@
         <div v-if="stock_id !=0"  class=" w-full text-center font-bold text-lg">
             <label for="">  {{stocks[stock_id-1].stockname}} </label>
         </div>    
-        <div  class=" w-full py-3 text-center font-bold text-lg border-b-4 border-gray-300">
+        <div  class=" w-full py-3 text-center font-bold text-lg ">
             <label for=""> {{month_thai[form.month_selected]}} ปี {{year_thai(form.year_selected)}}</label>
         </div>    
         <div v-if="item_trans.length==0" class=" w-full text-center">
@@ -74,6 +75,7 @@
         </div> 
         
         <div>
+            <paginateMe :pagination="item_trans" />
             <div 
                 class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
@@ -100,16 +102,17 @@
                 </div>     
             </div>
         </div>
-      
+   
         <div  class="w-full mt-3  ">
   
-            <div v-for="(item_tran,key) in item_trans" :key=item_tran.id
+            <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
                 class="w-full border-b-2   border-gray-500 shadow-sm ">
               
                 <div class="flex flex-col  lg:flex-row   "  >
                     
                     <div class=" bg-blue-100 lg:bg-transparent lg:w-2/12  ">
-                        <label for="" class="  lg:hidden">{{key+1}}.วันที่เบิก:</label>
+                        <label for="" class="  ">  {{item_trans.from + key}}. </label>
+                        <label for="" class="  lg:hidden">วันที่เบิก:</label>
                         <label class=" font-bold">
                             <!-- {{date_action_thai(item_tran.date_action)}} -->
                             {{dayjs(item_tran.date_action).locale('th').format('D MMM BBBB')}}
@@ -181,6 +184,7 @@
 //import { usePage } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import PaginateMe from '@/Components/PaginateMe.vue';
 import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
 import { ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
@@ -189,12 +193,22 @@ import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 dayjs.extend(buddhistEra)
 
-defineProps({
+const props=defineProps({
     stocks:Object,
-   // stock_items:Object,
     unit:Object, 
+    item_trans:{type:Object},
+    unit_selected:{type:String},
+    year_selected:{type:String},
+    month_selected:{type:String},
+    year_has:{type:Object},
 })
-
+const form = useForm({
+    unit_selected:props.unit_selected ? props.unit_selected :[],
+    year_selected:props.year_selected ? props.year_selected :[],
+    month_selected:props.month_selected ? props.month_selected :[],
+    unitid:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid :0,
+    
+})
 //const  demo_show_stock_items=ref(false);
 const month_thai=ref([
         '',
@@ -227,7 +241,7 @@ const months=ref([
 ])
 
 const   years=ref([2023,2022,2021,2020,2019,2018])
-const item_trans=ref('')
+//const item_trans=ref('')
 //const stock_all=ref(Object);
 const stock_id=ref(0);
 
@@ -244,12 +258,7 @@ const year_thai = (year_select)=>{
          return year_select+543;
 }
 
-const form = useForm({
-    unit_selected:'',
-    year_selected:'',
-    month_selected:'',
-   // item_trans:{type:Object},
-})
+
 
 const setStockID=()=>{
   //  console.log('set stock ID');
@@ -280,15 +289,27 @@ const  getReportStock=(stock_id,year,month)=>{
      msg_validate_month.value = true
      return false;
    }
-   
+   //report-checkout-item
 
-    axios.get(route('get-checkout-item',
-                         {stock_id:form.unit_selected , year:form.year_selected , month:form.month_selected}
-                    )).then(res => {
-        // console.log(res.data);
-        item_trans.value = res.data.item_trans;
+   form.get(route('report-checkout-item',form.unitid),{
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: page => { 
+            //console.log('success');
+        },
+        onError: errors => { 
+           // console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
 
-    });
+    // axios.get(route('get-checkout-item',
+    //                      {stock_id:form.unit_selected , year:form.year_selected , month:form.month_selected}
+    //                 )).then(res => {
+    //     // console.log(res.data);
+    //     item_trans.value = res.data.item_trans;
+
+    // });
   
 }
 

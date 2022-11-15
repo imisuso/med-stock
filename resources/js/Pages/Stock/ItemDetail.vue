@@ -140,6 +140,18 @@
 		</tbody>
 	</table>
     <!-- END table -->
+    <div v-if="$page.props.auth.abilities.includes('manage_master_data')"  
+        class=" w-full flex">
+        <button 
+            v-on:click="cancel_stock_item(stock_item.id)"
+             class=" w-full flex justify-center mt-3 bg-red-700 hover:bg-red-500 text-white text-center font-bold py-1 px-2 border border-red-500 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            ลบพัสดุนี้ออกจากคลัง
+        </button>
+    </div>
+        
      </AppLayout>
 </template>
 <script setup>
@@ -185,36 +197,5 @@ const cancel_checkout=(item_tran_id)=>{
         },
     })
 }
-
-
-// export default {
-//     components: {
-//         AppLayout,
-//     },
-//     props:{
-//         stock_item:Array,
-//         stock:Array,
-//         item_trans:Array,
-//         checkin_last:Array,
-//         count_name:String,
-//         can_abilities: { type: Object, required: true },
-//         can: { type: Object, required: true },
-//      },
-//     data(){
-//         return{
-
-//         }
-//     },
-//     methods:{
-//         cancel_checkout(item_tran_id){
-//           //  console.log('cancel checkout item='+item_tran_id);
-//         }
-//     }
-
-//     // setup() {
-    
-//     //     return { };
-//     // },
-// }
 
 </script>

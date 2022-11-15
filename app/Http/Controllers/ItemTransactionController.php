@@ -26,6 +26,8 @@ class ItemTransactionController extends Controller
     public function index($stock_id,$year)
     {
        // dd($year);
+        //logger('ItemTransactionController index');
+        // logger(request()->all());
         $stock_budget = budget::select('stock_id','budget_add','year')
                         ->where(['stock_id'=>$stock_id,'year'=>$year,'status'=>'on'])
                         ->with('stock:id,stockname,status')
@@ -36,23 +38,25 @@ class ItemTransactionController extends Controller
           //  dd('not found');
             return Redirect::back()->with(['status' => 'error', 'msg' => 'ไม่พบข้อมูลงบประมาณ']);
         }
-        $orders = ItemTransaction::select('pur_order')
+        $all_orders = ItemTransaction::select('pur_order')
                                     ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])
                                     ->groupBy('pur_order')
                                     ->orderBy('date_action')
-                                    ->get();
+                                    ->paginate(10)
+                                    ->withQueryString();
+                                    //->get();
 
         /* รวมยอดเงินการสั่งซื้อทีละใบ */
 
        // Logger($orders->count());
-        if($orders->count() > 0)
+        if($all_orders->count() > 0)
         {
             //dd('has order');
-            $all_orders = array();
+           // $all_orders = array();
             $budget_used = 0.0;
             $budget_balance = 0.0;
          
-            foreach($orders as $key=>$order){
+            foreach($all_orders as $key=>$order){
              // Logger($order);
               // dd($order);
              //   Logger($order->pur_order);
@@ -200,7 +204,7 @@ class ItemTransactionController extends Controller
      */
     public function show(StockItem $stock_item)
     {
-        //Log::info('---------show transaction------------');
+      Log::info('---------ItemTransactionController show ------------');
       //  Log::info($stock_item);
       //  Log::info($stock_item->unitCount->countname);
         $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)

@@ -86,7 +86,7 @@
                     </div> -->
                    
                     <div class=" lg:w-1/12 text-xs ">
-                        ประวัติการรับเข้าและเบิกออก
+                        ::
                     </div>
                 </div>     
             </div>
@@ -179,6 +179,21 @@
 
                       
                         </Link>
+                        <!-- <Link :href="route('list-stock-item',stock_item)">
+                            <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 text-red-700">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+
+                      
+                        </Link> -->
+
+                        <!-- <button 
+                            v-on:click="cancel_stock_item(stock_item.id)"
+                            class=" ml-3 bg-red-700 hover:bg-red-500 text-white font-bold py-1 px-2 border border-red-500 rounded">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button> -->
                     </div>
                 </div>     
             </div>
@@ -269,6 +284,24 @@ const getStockReport=()=>{
 
     
 }
+
+const cancel_stock_item=(stock_item_id)=>{
+
+console.log('cancel stock_item_id='+item_tran_id);
+//form.item_tran_id = item_tran_id;
+// form.post(route('cancel-checkout-stock-item'), {
+//      preserveState: false,
+//      preserveScroll: true,
+//      onSuccess: page => { //console.log('success');
+//      },
+//      onError: errors => { 
+//          console.log('error');
+//      },
+//      onFinish: visit => { //console.log('finish');
+//      },
+//  })
+}
+
 
 
 
