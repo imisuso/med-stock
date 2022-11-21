@@ -1,7 +1,9 @@
 <template>
     <AppLayout>
-       <h4   class=" mt-3 text-center text-red-600">ระบุชื่อคลังพัสดุที่ต้องการดูรายงาน</h4>
-        <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
+       <h4   v-if="$page.props.auth.abilities.includes('manage_master_data')"
+            class=" mt-3 text-center text-red-600">ระบุชื่อคลังพัสดุที่ต้องการดูรายงาน</h4>
+        <div v-if="$page.props.auth.abilities.includes('manage_master_data')" 
+            class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
              <div class="m-2" >
                 <label for="">ชื่อคลังพัสดุ</label> 
                 <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกคลังพัสดุ</label>
@@ -13,7 +15,8 @@
          
             
         </div>
-          <div class="flex flex-col  ">
+        <div v-if="$page.props.auth.abilities.includes('manage_master_data')"
+            class="flex flex-col  ">
             <!-- <button
                 class="px-3 py-1  text-sm text-gray-700 bg-gray-400 rounded-md hover:bg-gray-300 focus:outline-none"
             >
@@ -36,8 +39,8 @@
         <!-- show order lists -->
          <h1 class="p-2 mt-3 text-center font-bold" >รายงานจำนวนคงเหลือในคลังพัสดุ </h1>
           <h1 class="p-2 mt-1 text-center font-bold" >{{form.stock_selected.text}}</h1>
-       
-        <div class=" text-red-500">***เพิ่ม ปุ่มยกเลิกรายการพัสดุ สำหรับกรณี excel import มีบางรายการผิด</div>
+          <h1  class="p-2  text-center font-bold" >{{stock_selected_name.stockname}}</h1>
+        <!-- <div class=" text-red-500">***เพิ่ม ปุ่มยกเลิกรายการพัสดุ สำหรับกรณี excel import มีบางรายการผิด</div> -->
          <!-- <button class=" mb-2 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
            Export EXCEL
         </button> -->
@@ -148,7 +151,7 @@
                         <label for="" class="   lg:hidden">Pur.Order:</label>
                   
                         <label for="" v-if="stock_item.status == 1" class=" text-xs text-green-700 ">สัญญาซื้อ</label>
-                            <label for="" v-else  class=" text-xs text-yellow-600 ">ใบสั่งซื้อ</label>
+                        <label for="" v-else  class=" text-xs text-yellow-600 ">ใบสั่งซื้อ</label>
                         
                         <label class=" ml-2 " >
                             {{stock_item.pur_order}}
@@ -231,10 +234,11 @@ import buddhistEra from 'dayjs/plugin/buddhistEra'
 dayjs.extend(buddhistEra)
 
  const props=defineProps({
-    stocks:{type:Object,required:true},
+    stocks:{type:Object,required:false},
     stock_items:Object,
   //  item_trans:Object,
     stock_selected:{type:String},
+    stock_selected_name:{type:Object},
     filters: { type: Object },
 })
 

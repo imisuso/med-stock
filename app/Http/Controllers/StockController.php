@@ -41,26 +41,43 @@ class StockController extends Controller
                         ],
                 ]);
         }
-        $stock_items = StockItem::query()
-                                ->when(request()->input('search'), function ($query, $search) {
-                                    $query->where('item_name', 'like', "%{$search}%")
-                                    ->orWhere('item_code','like',"%{$search}%")
-                                    ->orWhere('business_name','like',"%{$search}%");
-                                })
-                                ->where('stock_id',$user->unitid)
-                                ->where('status','!=',9)
-                                ->orderBy('item_name')
-                                ->paginate(10)
-                                ->withQueryString();
+        // logger($user->unitid);
+        // logger(request()->input('search'));
+
+        $query = StockItem::query()->where('stock_id',$user->unitid)
+                                    ->where('status','!=',9)
+                                    ->filterBySearch(request()->search);
+        // $stock_items = StockItem::query()
+        //                         ->when(request()->input('search'), function ($query, $search,$user) {
+        //                             $query->where('stock_id',$user->unitid)
+        //                             ->where('status','!=',9)
+        //                             ->where('item_name', 'like', "%{$search}%")
+        //                             ->orWhere('item_code','like',"%{$search}%")
+        //                             ->orWhere('business_name','like',"%{$search}%");
+        //                         })
+        //                         ->where('stock_id',$user->unitid)
+        //                         ->where('status','!=',9)
+        //                         ->orderBy('item_name')
+        //                         ->paginate(10)
+        //                         ->withQueryString();
                              //   ->get();
+
+             $stock_items = $query->orderBy('item_name')
+                                    ->paginate(10)
+                                    ->withQueryString();
+         
       
         foreach($stock_items as $key=>$stock_item){
+           
             $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
                                             ->where('action','checkin')
                                             ->where('status','active')
                                             ->latest()
                                             ->first();
+            // logger('checkin_last==>');
+            // logger($checkin_last);
             $stock_items[$key]['checkin_last'] = $checkin_last;
+          
         }
         $unit = Unit::where('unitid',$user->unitid)->first();
       
@@ -71,7 +88,8 @@ class StockController extends Controller
   
         request()->session()->flash('mainMenuLinks', $main_menu_links);
         // request()->session()->flash('user', $user);
-        //logger($stock_items);
+        // logger('stock_items==>');
+        // logger($stock_items);
         return Inertia::render('Stock/index',[
                                 'stocks'=>$stocks,
                                 'stock_items'=>$stock_items,

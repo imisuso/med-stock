@@ -140,10 +140,10 @@
 		</tbody>
 	</table>
     <!-- END table -->
-    <div v-if="$page.props.auth.abilities.includes('manage_master_data')"  
+    <div   
         class=" w-full flex">
         <button 
-            v-on:click="cancel_stock_item(stock_item.id)"
+            v-on:click="confirm_cancel_stock_item(stock_item.id,$page.props.stock_item.item_name)"
              class=" w-full flex justify-center mt-3 bg-red-700 hover:bg-red-500 text-white text-center font-bold py-1 px-2 border border-red-500 rounded">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -151,6 +151,44 @@
             ลบพัสดุนี้ออกจากคลัง
         </button>
     </div>
+
+    <ModalUpToYou :isModalOpen="confirm_delete_item" >
+            <template v-slot:header>
+                <p class="text-md font-bold text-blue-700 ">คุณต้องการลบวัสดุนี้ออกจากข้อมูลคลังพัสดุใช่หรือไม่?</p> 
+                                        
+            </template>
+
+            <template v-slot:body>
+                <div class="text-gray-900 text-md font-medium dark:text-white">
+                  
+                    <label  class="  flex  justify-start w-full text-md ">
+                        ชื่อวัสดุ:{{confirm_delete_item_name}}
+                    </label>
+                    <label  class="flex mt-4 text-red-600  justify-start w-full text-sm ">
+                        ***คำเตือน:หากลบรายการวัสดุนี้ ข้อมูลการตัดสต๊อกของวัสดุนี้จะถูกลบไปโดยอัตโนมัติด้วย
+                    </label>
+                  
+                  
+                </div>
+            </template>
+
+            <template v-slot:footer>
+                <div class=" w-full  text-center  md:block">
+                    <button 
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        v-on:click="okconfirmDeleteItem"
+                        >
+                        ตกลง
+                    </button>
+                    <button 
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        v-on:click="cancelDeleteItem"
+                    >
+                        ยกเลิก
+                    </button>
+                </div>
+            </template>
+    </ModalUpToYou>
         
      </AppLayout>
 </template>
@@ -158,16 +196,19 @@
 //import { ref } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import ModalUpToYou from '@/Components/ModalUpToYou.vue'
+import { ref} from 'vue';
+
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 dayjs.extend(buddhistEra)
 
 const props =defineProps({
-    stock_item:Array,
-        stock:Array,
+        stock_item:{ type: Object, required: true },
+        stock:{ type: Object, required: true },
         item_trans:Array,
-        checkin_last:Array,
+        checkin_last:{ type: Object },
         count_name:String,
         can_abilities: { type: Object, required: true },
         can: { type: Object, required: true },
@@ -177,9 +218,10 @@ const props =defineProps({
 })
 const form = useForm({
     item_tran_id:0,
-
+    delete_stock_item_id:0,
 })
-
+const confirm_delete_item=ref(false);
+const confirm_delete_item_name=ref('');
 
 const cancel_checkout=(item_tran_id)=>{
 
@@ -197,5 +239,25 @@ const cancel_checkout=(item_tran_id)=>{
         },
     })
 }
+
+const confirm_cancel_stock_item=(stock_item_id,item_name)=>{
+    console.log('cancel_stock_item='+stock_item_id);
+    console.log('cancel_stock_item='+item_name);
+    confirm_delete_item.value = true;
+    confirm_delete_item_name.value = item_name;
+    form.delete_stock_item_id = stock_item_id;
+}
+
+const okconfirmDeleteItem=()=>{
+    console.log('okconfirmDeleteItem');
+    confirm_delete_item.value = false;
+    console.log(form.delete_stock_item_id);
+}
+
+const  cancelDeleteItem=()=>{
+    console.log('cancelDeleteItem');
+    confirm_delete_item.value= false;
+}
+
 
 </script>

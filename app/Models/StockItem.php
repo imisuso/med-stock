@@ -28,7 +28,7 @@ class StockItem extends Model
         'pur_order',
         'invoice_number',
         'business_name',
-        'status' ,     // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
+        'status' ,     // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ,9=cancel
         'profile',
     ];
 
@@ -62,6 +62,16 @@ class StockItem extends Model
         return ItemTransaction::where('stock_item_id',$this->id)->where('status','active')->latest()->first();
     }
 
+    public function scopeFilterbySearch($query, $search)
+    {
+
+        $query->where(function ($query) use ($search) {
+            $query->where('item_name', 'like', "%{$search}%")
+                ->orWhere('item_code', 'like', "%{$search}%")
+                ->orWhere('business_name', 'like', "%{$search}%");
+        });
+    }
+
 
     public static function loadData($fileName){
         
@@ -71,8 +81,9 @@ class StockItem extends Model
       //  \Log::info('FILENAME==>'.$fileName);
         //stocks_id,item_code,item_name,unit_count,item_receive,date_receive,date_expire,price,catalog_number,lot_number
         foreach($stock_items as $stock_item){
-           // Log::info($stock_item['pur_order']);
-          //  Log::info($stock_item['business_name']);
+        //     Log::info($stock_item);
+        //     Log::info($stock_item['stock_id']);
+        //    Log::info($stock_item['material_number']);
            StockItem::create([
                                 'stock_id'=>$stock_item['stock_id'],
                                 'user_id'=>6,
@@ -81,19 +92,18 @@ class StockItem extends Model
                                 'unit_count'=>$stock_item['unit_count'],
                                 'item_sum'=>$stock_item['item_receive'],
                                 'price'=>$stock_item['price'],
-                                'vendor'=>$stock_item['vendor'],
-                               // 'lot_number'=>$stock_item['lot_number'],
                                 'pur_order'=>$stock_item['pur_order'],
                                 'invoice_number'=>$stock_item['invoice_number'],
-                                'business_name'=>$stock_item['business_name'],
+                                'business_name'=>$stock_item['vendor'],
+                                'status'=>$stock_item['order_type'],
                             ]);
 
-            $stock_item_id = StockItem::select('id')->where('item_code',$stock_item['item_code'])->first();
+            $stock_item_id = StockItem::select('id')
+                                        ->where('item_code',$stock_item['material_number'])
+                                        ->where('status','!=',9)
+                                        ->first();
            
-            // $table->string('pur_order')->nullable();
-            // $table->string('invoice_number')->nullable();
-            // $table->string('business_name')->nullable();
-            // $table->integer('order_type')->default(1); 
+      
             ItemTransaction::create([
                                 'stock_id' =>$stock_item['stock_id'],
                                 'stock_item_id'=>$stock_item_id->id,
@@ -106,15 +116,14 @@ class StockItem extends Model
                                 'item_count'=>$stock_item['item_receive'],
                                 'status'=>'active',
                                 'price'=>$stock_item['price'],
-                               // 'catalog_number'=>$stock_item['catalog_number'],
-                               // 'lot_number'=>$stock_item['lot_number'],
                                 'pur_order'=>$stock_item['pur_order'],
                                 'invoice_number'=>$stock_item['invoice_number'],
-                                'business_name'=>$stock_item['business_name'],
-                                // 'profile'=>['catalog_number'=>$stock_item['catalog_number'],
-                                //             'lot_number'=>$stock_item['lot_number'],                                          
-                                //             'price'=>$stock_item['price'],
-                                //             ],
+                                'business_name'=>$stock_item['vendor'],
+                                'order_type'=>$stock_item['order_type'],
+                                'profile'=>[
+                                        'import'=>false,
+                                        'admin_load_data'=>true,
+                                    ],
                             ]);
         }
     }

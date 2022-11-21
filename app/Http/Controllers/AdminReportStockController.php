@@ -27,12 +27,13 @@ class AdminReportStockController extends Controller
     public function index($division_id)
     {
         //Log::info($division_id);
-       // logger('AdminReportStockController index');
-        // logger(request()->all());
-        // logger($division_id);
+        logger('AdminReportStockController index');
+       //  logger(request()->all());
+       //  logger($division_id);
         // logger('----------');
         if($division_id != 27){
             $stocks = Stock::whereId($division_id)->get();
+            $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();
         }
         else{
             $stocks = Stock::all();
@@ -40,6 +41,7 @@ class AdminReportStockController extends Controller
     
       
     if(request()->input('stock_selected')){
+       // $stocks = Stock::all();
      //   $stock = request()->input('stock_selected');
       // dd($stock);
       //  dd(request()->input('stock_slug'));
@@ -47,6 +49,7 @@ class AdminReportStockController extends Controller
     //    $stock_selected = Stock::where('id',request()->input('stock_selected'))->first();
     //    logger($stock_selected->id);
        $stock_selected_id = request()->input('stock_selected');
+       $stock_selected_name = Stock::select('stockname')->where('unit_id',$stock_selected_id)->first();
         // Log::info($year);
         // Log::info($month);
         //  return "test";
@@ -57,16 +60,24 @@ class AdminReportStockController extends Controller
         // }
 
        // Log::info($stocks);
-        $stock_items = StockItem::query()
-                                ->when(request()->input('search'), function ($query, $search) {
-                                    $query->where('item_name', 'like', "%{$search}%")
-                                    ->orWhere('item_code','like',"%{$search}%")
-                                    ->orWhere('business_name','like',"%{$search}%");
-                                })
-                                ->whereStockId(request()->input('stock_selected'))
-                                ->where('status','!=',9)  //9=cancel
-                                ->paginate(10)
-                                ->withQueryString();
+        $query = StockItem::query()->where('stock_id',request()->input('stock_selected'))
+                            ->where('status','!=',9)
+                            ->filterBySearch(request()->search);
+
+        $stock_items = $query->orderBy('item_name')
+                            ->paginate(10)
+                            ->withQueryString();
+ 
+        // $stock_items = StockItem::query()
+        //                         ->when(request()->input('search'), function ($query, $search) {
+        //                             $query->where('item_name', 'like', "%{$search}%")
+        //                             ->orWhere('item_code','like',"%{$search}%")
+        //                             ->orWhere('business_name','like',"%{$search}%");
+        //                         })
+        //                         ->whereStockId(request()->input('stock_selected'))
+        //                         ->where('status','!=',9)  //9=cancel
+        //                         ->paginate(10)
+        //                         ->withQueryString();
                                 
                                // ->get();
 
@@ -80,34 +91,75 @@ class AdminReportStockController extends Controller
             $stock_items[$key]['checkin_last'] = $checkin_last;
         }
 
-        $stock_item_checkouts = ItemTransaction::with('User:id,name')
-                                                ->where('stock_id','=',request()->input('stock_selected'))
-                                                ->orderBy('stock_item_id')
-                                                ->orderBy('date_action')
-                                                ->get();
-                                              //  ->where(['year'=>$year,'month'=>$month,'action'=>'checkout'])
+        // $stock_item_checkouts = ItemTransaction::with('User:id,name')
+        //                                         ->where('stock_id','=',request()->input('stock_selected'))
+        //                                         ->orderBy('stock_item_id')
+        //                                         ->orderBy('date_action')
+        //                                         ->get();
+                                            
 
       //  Log::info($stock_items);
       //  Log::info($stock_item_checkouts);
     }else{
-        $stock_items = [];
-        $stock_item_checkouts = '';
-        $stock_selected_id='';
+        if($division_id != 27){
+          //  $stocks = [];
+            $stock_selected_id = $division_id;
+
+            $query = StockItem::query()->where('stock_id',$division_id)
+                            ->where('status','!=',9)
+                            ->filterBySearch(request()->search);
+
+            $stock_items = $query->orderBy('item_name')
+                        ->paginate(10)
+                        ->withQueryString();
+         
+            // $stock_items = StockItem::query()
+            //                         ->when(request()->input('search'), function ($query, $search) {
+            //                             $query->where('item_name', 'like', "%{$search}%")
+            //                             ->orWhere('item_code','like',"%{$search}%")
+            //                             ->orWhere('business_name','like',"%{$search}%");
+            //                         })
+            //                         ->whereStockId($division_id)
+            //                         ->where('status','!=',9)  //9=cancel
+            //                         ->paginate(10)
+            //                         ->withQueryString();
+            
+           // ->get();
+
+
+            foreach($stock_items as $key=>$stock_item){
+                $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+                                        ->where('action','checkin')
+                                        ->where('status','active')
+                                        ->latest()
+                                        ->first();
+                $stock_items[$key]['checkin_last'] = $checkin_last;
+            }
+            $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();
+
+        }else{
+                $stock_items = [];
+            // $stock_item_checkouts = '';
+                $stock_selected_id='';
+                $stock_selected_name='';
+        }
     }
 
         
-        $user = Auth::user();
-        $main_menu_links = [
-                'is_admin_division_stock'=> $user->can('view_master_data'),
-            // 'user_abilities'=>$user->abilities,
-        ];
+    //     $user = Auth::user();
+    //    // logger($user->unit);
+    //     $main_menu_links = [
+    //             'is_admin_division_stock'=> $user->can('view_master_data'),
+    //         // 'user_abilities'=>$user->abilities,
+    //     ];
   
-        request()->session()->flash('mainMenuLinks', $main_menu_links);
+    //     request()->session()->flash('mainMenuLinks', $main_menu_links);
         return Inertia::render('Admin/ListReportStock',[
                             'stocks'=>$stocks,
                             'stock_items'=> $stock_items,
                            // 'item_trans' => $stock_item_checkouts,
                             'stock_selected' => $stock_selected_id,
+                            'stock_selected_name' => $stock_selected_name,
                             'filters' => request()->only(['search'])        
                         ]);
     }

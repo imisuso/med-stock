@@ -23,10 +23,16 @@ class StockItemImportController extends Controller
     public function index()
     { 
  
-    // logger($stock_item_import);
+    logger('StockItemImportController index');
 
     $user = Auth::user();
-    $stocks = Stock::where('status',1)->get();
+    logger($user->unitid);
+    if($user->unitid != 27){  //หน่วยพัสดุ
+        $stocks = Stock::where(['unit_id'=>$user->unitid,'status'=>1])->get();
+    }else{
+        $stocks = Stock::where('status',1)->get();
+    }
+   
     $unit = Unit::where('unitid',$user->unitid)->first();
      //   Logger('StockItemImportController');
        return Inertia::render('Admin/StockItemImport',[
