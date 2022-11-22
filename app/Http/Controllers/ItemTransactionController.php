@@ -329,4 +329,51 @@ class ItemTransactionController extends Controller
         return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการเบิกพัสดุสำเร็จ']);
        
     }
+
+    public function cancelCheckin()
+    {
+
+      //dd(Request()->input('item_tran_id'));
+      $item_tran = ItemTransaction::whereId(Request()->input('item_tran_id'))->first();
+      $item_tran->status = 'canceled';
+      $item_tran->save();
+
+    
+
+      $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
+      $old_changes =array();
+      $old_changes['stock_item_id'] = $item_tran->stock_item_id;
+      $old_changes['item_sum_old'] = $stock_item->item_sum;
+
+      $new_item_balance = $stock_item->item_sum - $item_tran->item_count;
+     // logger($new_item_balance);
+      $stock_item->item_sum = $new_item_balance;
+      $stock_item->save();
+
+    
+    
+
+      /****************  insert log ****************/
+        // logger($old_changes);
+        $use_in = Auth::user();
+
+        $detail_log =array();
+        $detail_log['table'] ='item_transactions';
+
+      //  dd($detail_log);
+
+        $log_activity = LogActivity::create([
+            'user_id' => $use_in->id,
+            'sap_id' => Request()->input('item_tran_id'),
+            'function_name' => 'checkin_item',
+            'action' => 'cancel_checkin',
+            'detail'=> $detail_log,
+            'old_value'=> $old_changes,
+        ]);
+
+        $msg_notify_test = $use_in->name.'  ยกเลิกการนำเข้าพัสดุสำเร็จ';
+        Logger($msg_notify_test);
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการนำเข้าพัสดุสำเร็จ']);
+       
+    }
 }

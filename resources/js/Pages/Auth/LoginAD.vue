@@ -15,9 +15,8 @@
             </svg>
             <label class=" my-2 " >ข่าวประชาสัมพันธ์</label>
           </div>
-          <div class=" flex flex-col my-2 p-2 bg-red-200 rounded-md shadow-md">
-            <p>ข่าวที่ 1 เนื่องจากฝ่ายสารสนเทศคณะฯ จะทำการปิดปรับปรุงเครื่อง server แม่ข่าย ในวันเสาร์ที่ 19 พฤศจิกายน 2565 เวลา 22.00-23.00 น. ซึ่งจะไม่สามารถใช้งานระบบได้เป็นการชั่วคราว ขออภัยในความไม่สะดวก</p>
-          </div>
+       
+    
           <div class=" flex flex-col p-2 bg-purple-200 rounded-md shadow-md">
              <label class=" font-bold py-2">  สวัสดี,วันที่ {{dayjs(new Date()).locale('th').format('D MMM BBBB HH:mm')}} น. </label>
             <!-- <label for="">วันนี้อากาศแจ่มใส </label> -->
@@ -37,6 +36,13 @@
             <!-- <label class="py-4">- officer.hemato,officer.chest,officer.endocrine</label>
             <label class="py-4">- officer.id,officer.nephro,admin_med_stock.stockmed,admin_it.itmed</label> -->
          
+          </div>
+          <div v-for="(annouce,key) in annouces" :key="annouce.id" 
+                class="flex flex-col my-2 p-2 bg-red-200 rounded-md shadow-md  "
+                    >
+                    <p class=" underline underline-offset-2 ">  ข่าวที่ {{key+1}}.</p>
+                    <p class=" ">   {{annouce.message}}</p>
+                    <p class=" mt-6 text-sm text-red-800">  [วันที่ประกาศ: {{ dayjs(annouce.updated_at).locale('th').format('D MMM BBBB HH:mm')}} น.]</p>
           </div>
        
         
@@ -109,6 +115,7 @@ dayjs.extend(buddhistEra)
 
 const props =defineProps({
   status:{type:String},
+  annouces:{type:Object},
   //doc_division_filename:{type:String}
 })
 

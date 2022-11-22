@@ -10,6 +10,7 @@ use App\Http\Controllers\CreateOrderController;
 use App\Http\Controllers\AdminReportStockController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminOrderPurchaseController;
+use App\Http\Controllers\AnnouceController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CheckInOrderController;
 use App\Http\Controllers\CheckInOrderPurchaseController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\StockItemImportController;
 use App\Http\Controllers\UserController;
+use App\Models\Annouce;
 use Illuminate\Support\Facades\Storage;
 
 /*
@@ -58,17 +60,27 @@ Route::get('/', function () {
   //  $doc_division_filename = 'poster_teacher_ios.pdf';
 
     $doc_division_filename = Storage::url('docs/poster_division_med_stock.pdf');
+    $annouces = Annouce::where(['status'=>'on','show_on_page'=>'login'])
+                         ->get();
+    //logger($annouces);
    // dd($doc_division);
-    return Inertia('Auth/LoginAD',compact('doc_division_filename'));
+    return Inertia::render('Auth/LoginAD',[
+                             'annouces'=>$annouces,
+                         ],
+                         compact('doc_division_filename')
+                    );
+
+                //     return Inertia::render('Annouce',[
+                //         'annouces'=>$annouces,
+           
+                //   ]);
 
 })->name('welcome');
 
 Route::post('/login',[LoginController::class, 'authenticate'])->name('login')->middleware('guest');
     
 Route::get('/logout', [LoginController::class,'logout'])->name('logout')->middleware('auth');
-Route::get('/annouce',function () {
-    return Inertia('Annouce');
-})->name('annouce')->middleware('auth');
+
 //แสดงหน้าเบิกพัสดุ
 Route::get('/stock', [StockController::class,'index'])->name('stock')->middleware('auth','can:checkout_item');
 //Route::post('/stock/item-filter', [StockController::class,'filter'])->name('stock-item-filter')->middleware('auth','can:checkout_item');
@@ -82,6 +94,8 @@ Route::controller(ItemTransactionController::class)
             Route::post('/checkout-stock-item','store')->name('checkout-stock-item');
             //ยกเลิกรายการเบิกพัสดุ
             Route::post('/cancel-checkout-stock-item','destroy')->name('cancel-checkout-stock-item');
+            //ยกเลิกรายการนำเข้าพัสดุ
+            Route::post('/cancel-checkin-stock-item','cancelCheckin')->name('cancel-checkin-stock-item');
         });
 //แสดงรายละเอียดการเบิก/ตรวจรับ พัสดุ
 //Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item')->middleware('auth');
@@ -217,6 +231,14 @@ Route::post('/stock/update-stock/{stock}',[StockController::class,'update'])->na
 
 //Log
 Route::get('/stock/show-log/{slug}',[LogActivityController::class,'show'])->name('show-log')->middleware('auth','can:manage_master_data');
+
+//annouce
+Route::get('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce')->middleware('auth','can:manage_master_data');
+Route::post('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce-new')->middleware('auth','can:manage_master_data');
+Route::get('/annouce',[AnnouceController::class,'show'])->name('annouce')->middleware('auth');
+Route::post('/close-annouce',[AnnouceController::class,'update'])->name('close-annouce')->middleware('auth');
+Route::post('/open-annouce',[AnnouceController::class,'update'])->name('open-annouce')->middleware('auth');
+
 
 Route::get('/nong', function () {
     return view('welcome');

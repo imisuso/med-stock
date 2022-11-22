@@ -7,6 +7,7 @@ use App\Models\Stock;
 use App\Models\Unit;
 use App\Models\StockItem;
 use App\Models\ItemTransaction;
+use App\Models\LogActivity;
 use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
@@ -399,6 +400,28 @@ class StockItemImportController extends Controller
           
         }
         $cnt = $key+1;
+
+
+          /****************  insert log ****************/
+        // logger($old_changes);
+        $use_in = Auth::user();
+
+        $detail_log =array();
+        $detail_log['rows'] =$cnt;
+        $detail_log['stock_id'] =$request->stock_id;
+        $detail_log['pur_order'] =$item['pur_order'];
+  
+
+      //  dd($detail_log);
+
+        $log_activity = LogActivity::create([
+            'user_id' => $use_in->id,
+            'sap_id' => $use_in->sap_id,
+            'function_name' => 'import_excel',
+            'action' => 'import_excel',
+            'detail'=> $detail_log,
+        ]);
+
         $msg = 'เพิ่มพัสดุจากไฟล์ excel จำนวน '.$cnt.' รายการ เรียบร้อย';
 
         $msg_notify_test = $user->name.' '.$msg;
