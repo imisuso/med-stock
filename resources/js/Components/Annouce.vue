@@ -6,10 +6,20 @@
           class=" mb-4  py-2 border-b-2 bg-blue-50 border-blue-700 rounded-md"
           >
             <div class="flex-col justify-between">
-                <div class="">
+                <div class=" flex justify-between">
                         <label class=" underline underline-offset-2 text-green-900 text-lg"> 
                             ข่าวที่ {{annouceFrom+annouceIndex}} 
                         </label>   
+                        <button 
+                            class=" flex justify-center   text-red-700  rounded-md hover:bg-red-300 focus:outline-2"
+                            v-on:click="deleteAnnouce"
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
+                                class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <!-- ลบข่าว -->
+                        </button>
                 </div>
                 <div class="">
                         <label class=" text-green-900 text-lg">   
@@ -17,20 +27,18 @@
                         </label>   
                 </div>
                 <div class="flex">
-                    <label class=" font-bold"> สถานะ:   {{annouce.status}}  </label>   
-                    
-                        <!-- บันทึก -->
-                            <button v-if="annouce.status=='on'"
+                    <label class=" font-bold"> สถานะ:   {{annouce.status}}  </label>    
+                        <button v-if="annouce.status=='on'"
                             class=" flex justify-center mx-2 px-2 bg-red-200 text-red-900 border-2  border-red-400 rounded-md shadow-md hover:bg-red-300 focus:outline-none"
                             v-on:click="closeAnnouce"
                             >
-                            กดเมื่อต้องการปิดการแสดงผล
+                            ปิดการแสดงผล
                         </button>
                         <button v-else
                             class=" flex justify-center mx-2 px-2 bg-green-200 text-green-900 border-2  border-green-400  rounded-md shadow-md hover:bg-green-300 focus:outline-none"
                             v-on:click="openAnnouce()"
                             >
-                            กดเมื่อต้องการเปิดการแสดงผล
+                            เปิดการแสดงผล
                         </button>
                     
                 </div>
@@ -117,6 +125,27 @@ const closeAnnouce=()=>{
     // console.log(form.annouce_id);
     form.annouce_status = 'off';
     form.post(route('close-annouce'), {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: page => { 
+            console.log('success');
+            // show_alert_msg.value = true;
+            },
+        onError: errors => { 
+            console.log('error');
+            //  show_alert_msg.value = true;
+        },
+        onFinish: visit => { 
+            console.log('finish');
+        },
+    })
+     
+}
+const deleteAnnouce=()=>{
+    // console.log('closeAnnouce');
+    // console.log(form.annouce_id);
+    form.annouce_status = 'canceled';
+    form.post(route('delete-annouce'), {
         preserveState: true,
         preserveScroll: true,
         onSuccess: page => { 

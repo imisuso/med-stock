@@ -26,7 +26,7 @@ class ReportStockController extends Controller
     public function index($division_id)
     {
        
-        // logger('ReportStockController index');
+      //   logger('ReportStockController index');
         // logger(request()->all());
         $user = Auth::user();
             $main_menu_links = [
@@ -41,10 +41,10 @@ class ReportStockController extends Controller
                                     ->orderBy('year')
                                     ->get();
        // logger($year_has);
-        if($division_id == 27){  //หน่วยพัสดุ
+        if($division_id == 27 || $division_id == 33){  //หน่วยพัสดุ
             $stocks = Stock::all();
             $stock_items = StockItem::where('stock_id','1')->get();
-            $unit = Unit::where('unitid',$division_id)->first();
+            $unit = Unit::where('unitid',$user->unitid)->first();
 
             //เช็คว่าถ้ายังไม่ได้ระบุเงื่อนไขการค้นหา เพราะเข้ามาครั้งแรก
             if(request()->input('unit_selected')){

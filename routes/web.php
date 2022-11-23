@@ -231,14 +231,14 @@ Route::post('/stock/update-stock/{stock}',[StockController::class,'update'])->na
 
 //Log
 Route::get('/stock/show-log/{slug}',[LogActivityController::class,'show'])->name('show-log')->middleware('auth','can:manage_master_data');
-
+Route::get('/stock/index-get-log/',[LogActivityController::class,'index'])->name('index-get-log')->middleware('auth','can:manage_master_data');
 //annouce
 Route::get('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce')->middleware('auth','can:manage_master_data');
 Route::post('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce-new')->middleware('auth','can:manage_master_data');
 Route::get('/annouce',[AnnouceController::class,'show'])->name('annouce')->middleware('auth');
 Route::post('/close-annouce',[AnnouceController::class,'update'])->name('close-annouce')->middleware('auth');
 Route::post('/open-annouce',[AnnouceController::class,'update'])->name('open-annouce')->middleware('auth');
-
+Route::post('/delete-annouce',[AnnouceController::class,'update'])->name('delete-annouce')->middleware('auth');
 
 Route::get('/nong', function () {
     return view('welcome');

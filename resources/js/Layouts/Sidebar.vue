@@ -174,8 +174,6 @@
             <span class="text-gray-700 ml-2">เพิ่มพัสดุลงคลังหลังจากตรวจรับ</span>
           </div>
         </Link>
-      
-      
 
         <Link :href="route('report-list','27')">
         <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
@@ -238,7 +236,18 @@
             <span class="text-gray-700 ml-2">ลงข่าวประชาสัมพันธ์</span>
           </div>
         </Link>
-     
+
+       
+        <Link :href="route('index-get-log')" v-if="$page.props.auth.user.roles[0].name=='admin_it'">
+          <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+
+            <span class="text-gray-700 ml-2">ดูการใช้งานระบบ</span>
+          </div>
+        </Link>
 
 
       </div>

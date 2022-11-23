@@ -205,41 +205,60 @@ class ItemTransactionController extends Controller
     public function show(StockItem $stock_item)
     {
       Log::info('---------ItemTransactionController show ------------');
-      //  Log::info($stock_item);
+     //  Log::info($stock_item);
       //  Log::info($stock_item->unitCount->countname);
         $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
                                 ->where('action','checkin')
                                 ->where('status','active')
                                 ->latest()
                                 ->first();
-
-        $item_trans = ItemTransaction::with('User:id,name')
-                                            ->where('stock_item_id',$stock_item->id)
-                                            ->whereIn('status',['active','canceled'])
-                                            ->orderBy('date_action')
-                                            ->get();
-        //return "list checkout";
-       // $stock_item = StockItem::where('id',$stock_item->id)->first();
-        $stock = Stock::where('id',$stock_item->stock_id)->first();
+      //  logger('checkin_last-->');
+      //  logger($checkin_last);
         $user = Auth::user();
         $main_menu_links = [
             'is_admin_division_stock'=> $user->can('view_master_data'),
-           // 'user_abilities'=>$user->abilities,
+          // 'user_abilities'=>$user->abilities,
           ];
-  
-        request()->session()->flash('mainMenuLinks', $main_menu_links);
-       
-        return Inertia::render('Stock/ItemDetail',[
-                                'stock_item'=>$stock_item,
-                                'stock' => $stock,
-                                'item_trans' => $item_trans,
-                                'checkin_last'=>$checkin_last,
-                                'count_name'=>$stock_item->unit_count,
-                                'can_abilities'=>$user->abilities,
-                                'can'=>[
-                                        'checkout_item'=>$user->can('checkout_item')
-                                        ],
-                                ]);
+        if(!$checkin_last){
+            //dd('notfound');
+            $stock ='';
+            $item_trans='';
+            return Inertia::render('Stock/ItemDetail',[
+                                              'stock_item'=>$stock_item,
+                                              'stock' => $stock,
+                                              'item_trans' => $item_trans,
+                                              'checkin_last'=>$checkin_last,
+                                              'count_name'=>$stock_item->unit_count,
+                                              'can_abilities'=>$user->abilities,
+                                              'can'=>[
+                                                      'checkout_item'=>$user->can('checkout_item')
+                                                      ],
+                                              ]);
+        }else{
+            $item_trans = ItemTransaction::with('User:id,name')
+                                                ->where('stock_item_id',$stock_item->id)
+                                                ->whereIn('status',['active','canceled'])
+                                                ->orderBy('date_action')
+                                                ->get();
+            //return "list checkout";
+          // $stock_item = StockItem::where('id',$stock_item->id)->first();
+            $stock = Stock::where('id',$stock_item->stock_id)->first();
+          
+      
+            request()->session()->flash('mainMenuLinks', $main_menu_links);
+          
+            return Inertia::render('Stock/ItemDetail',[
+                                    'stock_item'=>$stock_item,
+                                    'stock' => $stock,
+                                    'item_trans' => $item_trans,
+                                    'checkin_last'=>$checkin_last,
+                                    'count_name'=>$stock_item->unit_count,
+                                    'can_abilities'=>$user->abilities,
+                                    'can'=>[
+                                            'checkout_item'=>$user->can('checkout_item')
+                                            ],
+                                    ]);
+        }
     }
 
     /**
@@ -346,13 +365,16 @@ class ItemTransactionController extends Controller
       $old_changes['item_sum_old'] = $stock_item->item_sum;
 
       $new_item_balance = $stock_item->item_sum - $item_tran->item_count;
-     // logger($new_item_balance);
-      $stock_item->item_sum = $new_item_balance;
-      $stock_item->save();
-
+      if($new_item_balance==0){  //ต้องไป cancel พัสดุนี้ที่ stock_items ด้วย
+          $stock_item->item_sum = $new_item_balance;
+          $stock_item->status = 9;
+          $stock_item->save();
+      }else{
+           // logger($new_item_balance);
+          $stock_item->item_sum = $new_item_balance;
+          $stock_item->save();
+      }
     
-    
-
       /****************  insert log ****************/
         // logger($old_changes);
         $use_in = Auth::user();

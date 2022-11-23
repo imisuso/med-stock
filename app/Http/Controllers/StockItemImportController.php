@@ -27,7 +27,7 @@ class StockItemImportController extends Controller
     logger('StockItemImportController index');
 
     $user = Auth::user();
-    logger($user->unitid);
+   // logger($user->unitid);
     if($user->unitid != 27){  //หน่วยพัสดุ
         $stocks = Stock::where(['unit_id'=>$user->unitid,'status'=>1])->get();
     }else{

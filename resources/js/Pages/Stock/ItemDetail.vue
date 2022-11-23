@@ -12,7 +12,7 @@
                 </label>
         </div>
   
-        <div class="bg-blue-800 text-white text-xl text-center ">
+        <div  v-if="checkin_last" class="bg-blue-800 text-white text-xl text-center ">
                 {{$page.props.stock.stockname}}
         </div>
 
@@ -34,29 +34,33 @@
                 >
                     <div class=" mb-2">
                         <div class="p-2 text-md font-bold text-gray-900">
-                            SAP:{{$page.props.stock_item.item_code}}
-                            <label for="" class="text-blue-600">{{$page.props.stock_item.item_name}}</label>
-                            (หน่วย: {{$page.props.count_name}})
+                            SAP:{{stock_item.item_code}}
+                            <label for="" class="text-blue-600">{{stock_item.item_name}}</label>
+                            (หน่วย: {{count_name}})
                         
                         </div>
                     
                     
                         <div class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
                             <div class="flex ml-2"> จำนวนคงเหลือ :
-                                <p class=" ml-2 text-red-600">{{$page.props.stock_item.item_sum}}</p>     
+                                <p class=" ml-2 text-red-600">{{stock_item.item_sum}}</p>     
                             </div>
                             <div class="flex ml-2"> Pur.Order : 
-                                    <p class=" ml-2 text-blue-600">{{$page.props.stock_item.pur_order}}</p> 
+                                    <p class=" ml-2 text-blue-600">{{stock_item.pur_order}}</p> 
                                 </div>
                                 <div class="flex ml-2"> ชื่อบริษัท : 
-                                    <p class=" ml-2 text-blue-600">{{$page.props.stock_item.business_name}}</p> 
+                                    <p class=" ml-2 text-blue-600">{{stock_item.business_name}}</p> 
                                 </div>
-                            <div class="flex ml-2"> วันหมดอายุ : 
-                                <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.date_expire}}</p> 
+                            <div class="flex ml-2" v-if="checkin_last"> วันหมดอายุ : 
+                                <p class=" ml-2 text-blue-600">
+                                        {{checkin_last.date_expire}}
+                                    </p> 
                             </div>
                             
-                            <div class="flex ml-2"> วันที่รับเข้า : 
-                                <p class=" ml-2 text-blue-600">{{$page.props.checkin_last.date_action}}</p> 
+                            <div class="flex ml-2"  v-if="checkin_last"> วันที่รับเข้า : 
+                                <p class=" ml-2 text-blue-600">
+                                    {{checkin_last.date_action}}
+                                </p> 
                             </div>
                         
                             <!-- <div class="flex ml-2"> Cat.No/Lot.No : 

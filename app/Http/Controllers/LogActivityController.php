@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\LogActivity;
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -17,7 +19,29 @@ class LogActivityController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $unit = Unit::where('unitid',$user->unitid)->first();
+        $log_activites = LogActivity::with('user:id,name')
+                                    ->orderBy('created_at','desc')
+                                    ->paginate(20);
+
+        return Inertia::render('Admin/LogActivity',[
+                                        'unit'=> $unit,
+                                        'item_trans' => $log_activites,
+                                        // 'user_change_logs'=> $logs,
+                                        // 'user_name'=> $user->name,
+                                    ]);
+
+        // return Inertia::render('Stock/CreateReportStock',[
+        //     'stocks'=>$stocks,
+        //     'stock_items'=>$stock_items,
+        //     'unit'=> $unit,
+        //     'item_trans' => $stock_item_checkouts,
+        //     'unit_selected' => $unit_selected,
+        //     'year_selected' => $year_selected,
+        //     'month_selected' => $month_selected,
+        //     'year_has' => $year_has,
+        // ]);
     }
 
     /**

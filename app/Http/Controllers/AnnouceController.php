@@ -20,18 +20,19 @@ class AnnouceController extends Controller
     {
        // logger('AnnouceController index');
        // logger(request()->all());
-
+       $user = Auth::user();
+        if($user->roles[0]['name']=='admin_med_stock'){
+            $show_page = 'annouce';
+        }else{
+            $show_page = 'login';
+        }
         if(request()->input('message'))
         {
-            $user = Auth::user();
+          
             //   logger($user);
           //  logger($user->roles[0]['name']);
 
-            if($user->roles[0]['name']=='admin_med_stock'){
-                $show_page = 'annouce';
-            }else{
-                $show_page = 'login';
-            }
+          
 
              $annouce =   Annouce::create([
                         'user_id'=>$user->id,
@@ -60,6 +61,8 @@ class AnnouceController extends Controller
 
 
         $annouces = Annouce::with('User:id,name')
+                            ->where('show_on_page',$show_page)
+                            ->whereIn('status',['on','off'])
                             ->orderBy('updated_at','desc')
                             ->paginate(5);
        

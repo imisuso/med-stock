@@ -54,18 +54,6 @@ class HandleInertiaRequests extends Middleware
             ],
         ]);
 
-        //    return array_merge(parent::share($request), [
-        //     'auth' => $user?[
-        //         'user' => fn () => $request->session()->pull('user'),
-        //         'abilities'=> fn () => $request->session()->pull('abilities'),
-        //     ]:null,
-        //     'flash' => [
-        //         'status' => fn () => $request->session()->pull('status'),
-        //         'msg' => fn () => $request->session()->pull('msg'),
-        //         'mainMenuLinks' => fn () => $request->session()->pull('mainMenuLinks',[]),
-        //         // 'user'=> fn () => $request->session()->pull('user',[])
-        //         // 'actionMenu' => fn () => $request->session()->pull('action-menu', []),
-        //     ],
-        // ]);
+      
     }
 }
