@@ -232,6 +232,7 @@ Route::post('/stock/update-stock/{stock}',[StockController::class,'update'])->na
 //Log
 Route::get('/stock/show-log/{slug}',[LogActivityController::class,'show'])->name('show-log')->middleware('auth','can:manage_master_data');
 Route::get('/stock/index-get-log/',[LogActivityController::class,'index'])->name('index-get-log')->middleware('auth','can:manage_master_data');
+Route::post('/stock/get-log/',[LogActivityController::class,'index'])->name('get-log')->middleware('auth','can:manage_master_data');
 //annouce
 Route::get('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce')->middleware('auth','can:manage_master_data');
 Route::post('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce-new')->middleware('auth','can:manage_master_data');

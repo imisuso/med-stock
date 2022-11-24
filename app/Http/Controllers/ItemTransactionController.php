@@ -59,7 +59,7 @@ class ItemTransactionController extends Controller
             foreach($all_orders as $key=>$order){
              // Logger($order);
               // dd($order);
-                Logger($order->pur_order);
+               // Logger($order->pur_order);
                 $sum_price = 0.0;
                 $order_items = ItemTransaction::select('id','item_count','price','date_action','order_type')
                                                 ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])

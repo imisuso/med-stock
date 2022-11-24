@@ -19,17 +19,41 @@ class LogActivityController extends Controller
      */
     public function index()
     {
+        logger('LogActivityController index');
         $user = Auth::user();
+        
+        logger(request()->all());
+      
+        $function_name_all = LogActivity::distinct()->get(['function_name'])->toArray();
+       // logger( $function_name_all);
         $unit = Unit::where('unitid',$user->unitid)->first();
-        $log_activites = LogActivity::with('user:id,name')
-                                    ->orderBy('created_at','desc')
-                                    ->paginate(20);
+
+        $year_send= array();
+      
+        $year_now = date('Y');
+        array_push($year_send,(int)$year_now);
+        for($i=1;$i<5;$i++){
+            array_push($year_send,(int)$year_now-$i);
+        }
+     
+        //logger($year_send);
+        if(request()->input('function_selected')){
+            logger(request()->input('function_selected'));
+            $log_activites = LogActivity::with('user:id,name')
+                                        ->where('function_name',request()->input('function_selected'))
+                                        ->orderBy('created_at','desc')
+                                        ->paginate(20);
+        }else{
+            $log_activites = '';
+        }
+      
 
         return Inertia::render('Admin/LogActivity',[
                                         'unit'=> $unit,
                                         'item_trans' => $log_activites,
-                                        // 'user_change_logs'=> $logs,
-                                        // 'user_name'=> $user->name,
+                                        'function_name_all'=> $function_name_all,
+                                        'years' => $year_send,
+                                      
                                     ]);
 
         // return Inertia::render('Stock/CreateReportStock',[

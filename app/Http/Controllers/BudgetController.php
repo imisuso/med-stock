@@ -27,7 +27,7 @@ class BudgetController extends Controller
     {
         $year_send= array();
       
-        $year_start = budget::select('year')->orderBy('year','asc')->first();
+        $year_start = budget::select('year')->distinct('year')->orderBy('year','asc')->first();
        
         if(!$year_start){
            // dd('not found budget');
@@ -54,7 +54,7 @@ class BudgetController extends Controller
           // Log::info($year_send);
         }
 
-        $year_end = budget::select('year')->orderBy('year','desc')->first();
+        $year_end = budget::select('year')->distinct('year')->orderBy('year','desc')->first();
         $year_end = $year_end->year + 1;
         array_push($year_send,$year_end);
         //Log::info($year_send);

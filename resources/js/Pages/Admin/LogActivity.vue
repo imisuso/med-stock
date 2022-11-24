@@ -1,24 +1,23 @@
 <template>
     <AppLayout>
         <div class=" my-3 bg-blue-800 text-white text-xl text-center ">
-                <!-- {{$page.props.unit.unitname}} --> xxxxxx
+            {{$page.props.unit.unitname}}
         </div>
         <div class=" w-full   p-2 rounded-md ">
-            
             <div class="mt-3 font-bold" >
                 <label for="">เลือกหัวข้อ</label> 
                 <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกหัวข้อ</label>
             </div>
-            <select name="" id="" v-model="form.unit_selected"
+            <select name="" id="" v-model="form.function_selected"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
-                v-on:change="setAction"
+                v-on:change="setFunctionName"
                 >
-                <option v-for="(stock) in  stocks" v-bind:key=stock.id v-bind:value="stock.id">{{stock.stockname}}</option>
+                <option v-for="(function_name) in  function_name_all" v-bind:key=function_name.id v-bind:value="function_name.function_name">{{function_name.function_name}}</option>
             </select>
            
         <!-- {{$page.props.stock_items}} -->
         </div>
-        <!-- {{unit}} -->
+        <!-- {{//}} -->
         <!-- {{stock_items}} -->
         <!-- <h4  class=" mt-3 text-center text-lg">ระบุปีและเดือน ที่ต้องการดูรายงานการเบิกใช้พัสดุ</h4> -->
        <!-- {{year_has}} -->
@@ -28,7 +27,7 @@
                 <label v-if="msg_validate_year" class=" text-red-600">   !กรุณาเลือกปี พ.ศ.</label>
                 <select name="" id="" v-model="form.year_selected"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                    <option v-for="(year,index) in  year_has" :key=index v-bind:value="year.year">{{year.year+543}}</option>
+                    <option v-for="(year,index) in  years" :key=index v-bind:value="year">{{year+543}}</option>
                 </select>
             </div>
             <div  class=" m-2">
@@ -48,7 +47,7 @@
             >
                 Cancel
             </button> -->
-            <button v-on:click="getReportLogActivity(form.action_selected,form.year_selected,form.month_selected)"
+            <button v-on:click="getReportLogActivity()"
                 class=" flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
             >
                 <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -60,24 +59,24 @@
 
  
     <!-- {{stocks}}-->
-        <!-- {{stock_id}} -->
+    
         <div  class=" w-full py-3 text-center font-bold text-lg ">
-            <label for="">รายงาน</label>
+            <label for="">ข้อมูลการใช้งานระบบ</label>
         </div>  
-        <div v-if="stock_id !=0"  class=" w-full text-center font-bold text-lg">
+        <div   class=" w-full text-center font-bold text-lg">
             <label for="">  
-                <!-- {{stocks[stock_id-1].stockname}}  -->
+                ฟังก์ชัน:{{form.function_selected}}
             </label>
         </div>    
         <div  class=" w-full py-3 text-center font-bold text-lg ">
-            <label for=""> {{month_thai[form.month_selected]}} ปี {{year_thai(form.year_selected)}}</label>
+            <label for=""> เดือน {{month_thai[form.month_selected]}} ปี {{year_thai(form.year_selected)}}</label>
         </div>    
         <!-- <div v-if="item_trans.length==0" class=" w-full text-center">
             <label for="">ไม่พบข้อมูล</label>
         </div>  -->
         
         <div>
-            <paginateMe :pagination="item_trans" />
+           
             <!-- <div 
                 class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
@@ -105,11 +104,18 @@
             </div> -->
         </div>
         <!-- body table -->
-
-        <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
-                class="w-full border-b-2   border-gray-500 shadow-sm ">
-                {{item_trans.from + key}}. {{item_tran}}
-        </div>  
+        <div v-if="item_trans">
+            <paginateMe :pagination="item_trans" />
+            <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
+                    class="w-full border-b-2   border-gray-500 shadow-sm ">
+                    {{item_trans.from + key}}. {{item_tran}}
+            </div>  
+        </div>
+        <div v-else
+            class=" flex justify-center content-center "
+            >
+                <label for="">ไม่พบข้อมูล</label>
+        </div>
         <!-- <div  class="w-full mt-3  ">
   
             <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
@@ -176,19 +182,20 @@ import buddhistEra from 'dayjs/plugin/buddhistEra'
 dayjs.extend(buddhistEra)
 
 const props=defineProps({
-    actions:{type:Object},
-    unit:Object, 
+    function_name_all:{type:Object},
+    years:{type:Array},
+  
     item_trans:{type:Object},
-    action_selected:{type:String},
+    function_name_selected:{type:String},
     year_selected:{type:String},
     month_selected:{type:String},
-    year_has:{type:Object},
+   
 })
 const form = useForm({
-    action_selected:props.action_selected ? props.action_selected :[],
-    year_selected:props.year_selected ? props.year_selected :[],
-    month_selected:props.month_selected ? props.month_selected :[],
-    unitid:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid :0,
+    function_selected:props.function_name_selected ? props.function_name_selected :'',
+    year_selected:props.year_selected ? props.year_selected :'',
+    month_selected:props.month_selected ? props.month_selected :'',
+    //id:usePage().props.value.auth.user.//id ? usePage().props.value.auth.user.//id :0,
     
 })
 //const  demo_show_stock_items=ref(false);
@@ -225,7 +232,7 @@ const months=ref([
 //const   years=ref([2023,2022,2021,2020,2019,2018])
 //const item_trans=ref('')
 //const stock_all=ref(Object);
-const action=ref(0);
+const function_name=ref(0);
 
 const msg_validate_stock=ref(false);
 const msg_validate_year=ref(false);
@@ -242,48 +249,56 @@ const year_thai = (year_select)=>{
 
 
 
-const setAction=()=>{
-  //  console.log('set stock ID');
-  action.value =form.action_selected;
-  //   console.log(stock_id);
+const setFunctionName=()=>{
+  console.log('setFunctionName');
+  //function_name.value =form.function_name_selected;
+     console.log(form.function_selected);
 }
 
-const  getReportLogActivity=(stock_id,year,month)=>{
-    //        console.log('getReportStock');
-    //  console.log(stock_id);
-    //  console.log(year);
-    // console.log(month);
+const  getReportLogActivity=()=>{
+           console.log('getReportLogActivity');
+   
    // demo_show_stock_items.value=true;
-   msg_validate_stock.value = false
-   msg_validate_year.value = false
-   msg_validate_month.value = false
-   if(action.length==0){
+//    msg_validate_stock.value = false
+//    msg_validate_year.value = false
+//    msg_validate_month.value = false
+    if(form.function_selected.length==0){
      msg_validate_stock.value = true
      return false;
-   }
+    }else{
+        msg_validate_stock.value = false;
+    }
 
-   if(year.length==0){
-     msg_validate_year.value = true
-     return false;
-   }
+    if(form.year_selected.length==0){
+        msg_validate_year.value = true
+        return false;
+    }else{
+        msg_validate_year.value = false
+    }
 
-   if(month.length==0){
-     msg_validate_month.value = true
-     return false;
-   }
+    if(form.month_selected.length==0){
+        msg_validate_month.value = true
+        return false;
+    }else{
+        msg_validate_month.value = false
+    }
+
+    console.log(form.function_selected);
+     console.log(form.year_selected);
+    console.log(form.month_selected);
    //report-checkout-item
 
-//    form.get(route('report-checkout-item',form.unitid),{
-//         preserveState: true,
-//         preserveScroll: true,
-//         onSuccess: page => { 
-//             //console.log('success');
-//         },
-//         onError: errors => { 
-//            // console.log('error');
-//         },
-//         onFinish: visit => { console.log('finish');},
-//     })
+   form.post(route('get-log'),{
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: page => { 
+            //console.log('success');
+        },
+        onError: errors => { 
+           // console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
 
   
 }
