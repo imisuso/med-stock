@@ -87,18 +87,38 @@ class BudgetController extends Controller
       //  return ' BudgetController store';
         try{
            // budget::latest()->first();
-            budget::create([
-                    'stock_id'=>$request->stock_id,
-                    'year'=>$request->budget_year,
-                    'budget_add'=>$request->budget_input,
-                    'status'=>'on',
-                    'user_id'=> $user->id
+            $budget=  budget::create([
+                        'stock_id'=>$request->stock_id,
+                        'year'=>$request->budget_year,
+                        'budget_add'=>$request->budget_input,
+                        'status'=>'on',
+                        'user_id'=> $user->id
             ]);
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
             Log::info($e->getMessage());
             return redirect()->back()->with(['status' => 'error', 'msg' =>  'เกิดความผิดพลาดในการบันทึกข้อมูลกรุณาติดต่อเจ้าหน้าที่ IT ภาคฯ']);
         }
+
+          /****************  insert log ****************/
+        
+         
+
+          $detail_log =array();
+          $detail_log['table'] ='budget';
+          $detail_log['stock_id'] =$request->stock_id;
+          $detail_log['budget'] =$request->budget_input;
+
+         //  dd($detail_log);
+
+           $log_activity = LogActivity::create([
+               'user_id' => $user->id,
+               'sap_id' => $budget->id,
+               'function_name' => 'manage_budget',
+               'action' => 'add_budget',
+               'detail' => $detail_log,
+             
+           ]);
        
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกงบประมาณสำเร็จ']);
     }

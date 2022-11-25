@@ -230,8 +230,8 @@ class UserController extends Controller
            // logger($old_changes);
             $use_in = Auth::user();
 
-            // $detail_log =array();
-            // $detail_log['sap_id'] =$user->sap_id;
+            $detail_log =array();
+            $detail_log['user_name'] =$user->name;
             // $detail_log['unitid'] =request()->input('unit_id');
             // $detail_log['status']= request()->input('user_status');
             // $detail_log['new_role_name'] = $role_name;
@@ -244,6 +244,7 @@ class UserController extends Controller
                  'sap_id' => $user->sap_id,
                  'function_name' => 'manage_user',
                  'action' => 'edit_user',
+                 'detail'=> $detail_log,
                  'old_value'=> $old_changes,
              ]);
 
@@ -292,8 +293,8 @@ class UserController extends Controller
           //  logger($old_changes);
           $use_in = Auth::user();
 
-        //   $detail_log =array();
-        //   $detail_log['sap_id'] =$sap_id;
+           $detail_log =array();
+           $detail_log['sap_id'] =$sap_id;
          //  dd($detail_log);
 
            $log_activity = LogActivity::create([
@@ -301,7 +302,7 @@ class UserController extends Controller
                'sap_id' => $sap_id,
                'function_name' => 'manage_user',
                'action' => 'check_status_sap',
-              // 'detail' => $detail_log,
+               'detail' => $detail_log,
            ]);
 
 

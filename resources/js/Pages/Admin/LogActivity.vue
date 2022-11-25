@@ -76,39 +76,44 @@
         </div>  -->
         
         <div>
-           
-            <!-- <div 
+            <paginateMe :pagination="item_trans" />
+            <div 
                 class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
                     
                     <div class=" lg:w-2/12  ">
-                        วันที่เบิก:
+                        ผู้ปฎิบัติงาน:
                     </div>
                 
                     <div class=" lg:w-2/12 ">
-                        ผู้เบิก:
+                        action:
                     </div>
-                    <div class=" lg:w-4/12 ">
-                        SAP-ชื่อพัสดุ:
+                    <div class=" lg:w-6/12 ">
+                        รายละเอียด:
                     </div>
                     <div class=" lg:w-2/12 ">
-                        วันที่หมดอายุ:
-                    </div>
-                    <div class=" lg:w-1/12 ">
-                        จำนวนที่เบิก:
-                    </div>
-                    <div class=" lg:w-1/12 ">
-                        จำนวนคงเหลือปัจจุบัน:
+                        วันที่:
                     </div>
                 </div>     
-            </div> -->
+            </div>
         </div>
         <!-- body table -->
         <div v-if="item_trans">
-            <paginateMe :pagination="item_trans" />
+            
             <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
-                    class="w-full border-b-2   border-gray-500 shadow-sm ">
-                    {{item_trans.from + key}}. {{item_tran}}
+                    class="w-full lg:flex lg:flex-row     text-sm  border-b-2   border-gray-500 shadow-sm "
+                >
+                    {{item_trans.from + key}}.
+                     <!-- {{item_tran}} -->
+                    <div class=" lg:w-2/12">{{item_tran.user.name}}</div>
+                    <div class=" lg:w-2/12">{{item_tran.action}}</div>
+                    <div class=" lg:w-6/12">
+                        <p>{{item_tran.detail}}</p>
+                        <p v-if="item_tran.old_value">{{item_tran.old_value}}</p>
+                    </div>
+                    <div class=" lg:w-2/12">
+                        {{ dayjs(item_tran.created_at).locale('th').format('D MMM BBBB HH:mm')}} น.
+                    </div>
             </div>  
         </div>
         <div v-else
@@ -256,7 +261,7 @@ const setFunctionName=()=>{
 }
 
 const  getReportLogActivity=()=>{
-           console.log('getReportLogActivity');
+        //   console.log('getReportLogActivity');
    
    // demo_show_stock_items.value=true;
 //    msg_validate_stock.value = false
@@ -283,12 +288,12 @@ const  getReportLogActivity=()=>{
         msg_validate_month.value = false
     }
 
-    console.log(form.function_selected);
-     console.log(form.year_selected);
-    console.log(form.month_selected);
+    // console.log(form.function_selected);
+    //  console.log(form.year_selected);
+    // console.log(form.month_selected);
    //report-checkout-item
 
-   form.post(route('get-log'),{
+   form.get(route('get-log'),{
         preserveState: true,
         preserveScroll: true,
         onSuccess: page => { 

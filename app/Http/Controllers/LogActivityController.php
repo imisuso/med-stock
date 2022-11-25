@@ -22,7 +22,7 @@ class LogActivityController extends Controller
         logger('LogActivityController index');
         $user = Auth::user();
         
-        logger(request()->all());
+      //  logger(request()->all());
       
         $function_name_all = LogActivity::distinct()->get(['function_name'])->toArray();
        // logger( $function_name_all);
@@ -37,14 +37,19 @@ class LogActivityController extends Controller
         }
      
         //logger($year_send);
-        if(request()->input('function_selected')){
-            logger(request()->input('function_selected'));
+        if(request()->input('function_selected') ){
+            // logger(request()->input('function_selected'));
+          //  logger(request()->all());
+      
             $log_activites = LogActivity::with('user:id,name')
                                         ->where('function_name',request()->input('function_selected'))
+                                        ->whereYear('created_at', request()->input('year_selected'))
+                                        ->whereMonth('created_at', request()->input('month_selected'))
                                         ->orderBy('created_at','desc')
-                                        ->paginate(20);
+                                        ->paginate(10)
+                                        ->withQueryString();
         }else{
-            $log_activites = '';
+            $log_activites = [];
         }
       
 
@@ -56,16 +61,7 @@ class LogActivityController extends Controller
                                       
                                     ]);
 
-        // return Inertia::render('Stock/CreateReportStock',[
-        //     'stocks'=>$stocks,
-        //     'stock_items'=>$stock_items,
-        //     'unit'=> $unit,
-        //     'item_trans' => $stock_item_checkouts,
-        //     'unit_selected' => $unit_selected,
-        //     'year_selected' => $year_selected,
-        //     'month_selected' => $month_selected,
-        //     'year_has' => $year_has,
-        // ]);
+      
     }
 
     /**
