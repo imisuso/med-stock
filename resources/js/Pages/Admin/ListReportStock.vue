@@ -39,7 +39,7 @@
         <!-- show order lists -->
          <h1 class="p-2 mt-3 text-center font-bold" >รายงานจำนวนคงเหลือในคลังพัสดุ </h1>
           <h1 class="p-2 mt-1 text-center font-bold" >{{form.stock_selected.text}}</h1>
-          <h1  class="p-2  text-center font-bold" >{{stock_selected_name.stockname}}</h1>
+          <h1 v-if="stock_selected_name" class="p-2  text-center font-bold" >{{stock_selected_name.stockname}}</h1>
         <!-- <div class=" text-red-500">***เพิ่ม ปุ่มยกเลิกรายการพัสดุ สำหรับกรณี excel import มีบางรายการผิด</div> -->
          <!-- <button class=" mb-2 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
            Export EXCEL
@@ -136,7 +136,8 @@
                         <label for="" class="   lg:hidden">ราคา:</label>
                   
                         <label class=" ml-2 " >
-                            {{stock_item.price}}
+                            <!-- {{stock_item.price}} -->
+                            {{price_format(stock_item.price)}}
                         </label> 
                     </div>
                     <div class="   lg:w-3/12 lg:text-xs  ">
@@ -227,7 +228,7 @@ import PaginateMe from '@/Components/PaginateMe.vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 import { ref } from '@vue/reactivity';
-import {watch} from 'vue';
+import {computed, watch} from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
@@ -252,6 +253,13 @@ const form = useForm({
             unitid:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid :0,
         //    unitid:props.auth.user.unitid ? props.auth.user.unitid :0 ,
 })
+
+const price_format=(price)=>{
+   // console.log(price)
+   let  price_show = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return price_show;
+  // return '1,200.5';
+}
 
 watch( search, value => {
    

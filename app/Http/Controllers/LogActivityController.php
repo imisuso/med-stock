@@ -19,7 +19,7 @@ class LogActivityController extends Controller
      */
     public function index()
     {
-        logger('LogActivityController index');
+      //  logger('LogActivityController index');
         $user = Auth::user();
         
       //  logger(request()->all());

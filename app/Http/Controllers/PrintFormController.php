@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Budget;
 use App\Models\ItemTransaction;
+use App\Models\LogActivity;
 use App\Models\OrderItem;
 use App\Models\OrderPurchase;
 use App\Models\Stock;
@@ -587,11 +588,16 @@ class PrintFormController extends Controller
         $unit = Unit::where('unitid',$stock_id)->first();
         //Log::info($unit);
         $division_name = $unit->unitname;
-        $head = 'รายงานการเบิกงบประมาณการสั่งซื้อวัสดุของ สาขา/หน่วยงาน';
-        $title = $head.'  '.$division_name;
+        $head = 'รายงานการเบิกงบประมาณการสั่งซื้อวัสดุ';
+        $title = $head;
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $title),0,0,'C');
+
+        $pdf->SetXY(18, 18);
+        $head2 = 'ของ สาขา/หน่วยงาน';
+        $title2 = $head2.'  '.$division_name;
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $title2),0,0,'C');
         
-        $pdf->SetXY(18, 15);
+        $pdf->SetXY(18, 23);
         $year_print = $year+543;
         $title2 = 'ปีงบประมาณ  '.$year_print.' ได้รับงบ '.number_format($budget_year->budget_add,2).'  บาท';
         $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $title2),0,0,'C');
@@ -599,7 +605,7 @@ class PrintFormController extends Controller
         //head column
         $pdf->SetFont('THSarabunNew','B');
         $pdf->SetFontSize('16'); 
-        $pdf->SetXY(12, 27);
+        $pdf->SetXY(12, 32);
         $pdf->SetLineWidth(1);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ              ประเภท                      วันที่ตรวจรับ                     ใช้งบไป(บาท)'),'B');
         
@@ -747,6 +753,23 @@ class PrintFormController extends Controller
          $use_in = Auth::user();
          $msg_notify_test = $use_in->name.'  พิมพ์รายงานสรุปใบสั่งซื้อสำเร็จ ';
          Logger($msg_notify_test);
+        /****************  insert log ****************/
+           // logger($old_changes);
+           // $use_in = Auth::user();
+
+           $detail_log =array();
+           $detail_log['year_budget'] = $year_print;
+ 
+   
+
+           $log_activity = LogActivity::create([
+               'user_id' => $use_in->id,
+               'sap_id' => $use_in->sap_id,
+               'function_name' => 'print_report_order',
+               'action' => 'print_report_order',
+               'detail'=> $detail_log,
+           ]);
+
         $pdf->Output('I');
 
     }
@@ -1164,6 +1187,26 @@ class PrintFormController extends Controller
         $use_in = Auth::user();
         $msg_notify_test = $use_in->name.'  พิมพ์รายงานการตัดสต๊อก '.$stock->stockname.' สำเร็จ';
         Logger($msg_notify_test);
+
+         /****************  insert log ****************/
+           // logger($old_changes);
+           // $use_in = Auth::user();
+
+           $detail_log =array();
+           $detail_log['stock_id'] = $stock->stockname;
+           $detail_log['year'] = $year;
+           $detail_log['month'] = $month;
+   
+
+       //  dd($detail_log);
+
+           $log_activity = LogActivity::create([
+               'user_id' => $use_in->id,
+               'sap_id' => $use_in->sap_id,
+               'function_name' => 'print_report_cut_stock',
+               'action' => 'print_report_cut_stock',
+               'detail'=> $detail_log,
+           ]);
 
         $pdf->Output('I');
        

@@ -6,6 +6,7 @@ use App\Exports\ReportCutStockExport;
 use App\Exports\ReportCutStockExportTest;
 use App\Http\Controllers\Controller;
 use App\Models\ItemTransaction;
+use App\Models\LogActivity;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Stock;
@@ -26,7 +27,7 @@ class ReportStockController extends Controller
     public function index($division_id)
     {
        
-      //   logger('ReportStockController index');
+      //  logger('ReportStockController index');
         // logger(request()->all());
         $user = Auth::user();
             $main_menu_links = [
@@ -41,7 +42,10 @@ class ReportStockController extends Controller
                                     ->orderBy('year')
                                     ->get();
        // logger($year_has);
-        if($division_id == 27 || $division_id == 33){  //หน่วยพัสดุ
+       $role_admin = array('admin_it','admin_med_stock','super_officer');
+
+    //   if(!in_array($user->roles[0]['name'] , $role_admin)){
+        if(in_array($user->roles[0]['name'] , $role_admin)){  //หน่วยพัสดุ
             $stocks = Stock::all();
             $stock_items = StockItem::where('stock_id','1')->get();
             $unit = Unit::where('unitid',$user->unitid)->first();
@@ -50,7 +54,7 @@ class ReportStockController extends Controller
             if(request()->input('unit_selected')){
                 $unit_selected = request()->input('unit_selected');
                 $year_selected = request()->input('year_selected');
-                $month_selected = request()->input('year_selected');
+                $month_selected = request()->input('month_selected');
                 $stock_item_checkouts = ItemTransaction::where(
                                                             [   'stock_id'=>request()->input('unit_selected'),
                                                                 'year'=>request()->input('year_selected'),
@@ -59,6 +63,7 @@ class ReportStockController extends Controller
                                                                 'status'=>'active'
                                                             ])
                                                             ->with('stockItem:id,item_name,item_code,item_sum')
+                                                            ->with('stock:id,stockname')
                                                             ->with('user:id,name')
                                                             ->orderBy('stock_item_id')
                                                             ->paginate(10)
@@ -80,6 +85,54 @@ class ReportStockController extends Controller
                         $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
 
                     }
+                   // logger(count($stock_item_checkouts));
+                if(count($stock_item_checkouts)>0){
+                    $msg_notify_test = $user->name.' ดูข้อมูลการตัดสต๊อก '.$stock_item_checkouts[0]->stock['stockname'].' เดือน '.$month_selected.' ปี '.$year_selected;
+                 
+                    /****************  insert log ****************/
+                    $detail_log =array();
+                    $detail_log['stock_id'] = $stock_item_checkouts[0]->stock['stockname'];
+                    $detail_log['year'] = $year_selected;
+                    $detail_log['month'] = $month_selected;
+                    $detail_log['result'] = count($stock_item_checkouts);
+            
+    
+                //  dd($detail_log);
+    
+                    $log_activity = LogActivity::create([
+                        'user_id' => $user->id,
+                        'sap_id' => $user->sap_id,
+                        'function_name' => 'report_cut_stock',
+                        'action' => 'get_report',
+                        'detail'=> $detail_log,
+                    ]);
+                    
+                }else{
+                    $stock_selected_name = Stock::select('stockname')->where('unit_id',$unit_selected)->first();
+                    $msg_notify_test = $user->name.' ดูข้อมูลการตัดสต๊อก '.$stock_selected_name->stockname.' เดือน '.$month_selected.' ปี '.$year_selected.' ไม่พบข้อมูลการตัดสต๊อก';
+                    
+                         /****************  insert log ****************/
+                         $detail_log =array();
+                         $detail_log['stock_id'] = $stock_selected_name->stockname;
+                         $detail_log['year'] = $year_selected;
+                         $detail_log['month'] = $month_selected;
+                         $detail_log['result'] = 'ไม่พบข้อมูลการตัดสต๊อก';
+                 
+         
+                     //  dd($detail_log);
+         
+                         $log_activity = LogActivity::create([
+                             'user_id' => $user->id,
+                             'sap_id' => $user->sap_id,
+                             'function_name' => 'report_cut_stock',
+                             'action' => 'get_report',
+                             'detail'=> $detail_log,
+                         ]);
+               
+                }
+              
+                Logger($msg_notify_test);
+
             }else{
                 $stock_item_checkouts = [];
                 $unit_selected = 0;
@@ -89,6 +142,8 @@ class ReportStockController extends Controller
 
             // logger('count =>');
             // logger(count($stock_item_checkouts));
+
+           
             return Inertia::render('Stock/CreateReportStock',[
                                 'stocks'=>$stocks,
                                 'stock_items'=>$stock_items,

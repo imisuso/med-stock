@@ -262,17 +262,6 @@ class StockItemImportController extends Controller
             // Logger($item['date_receive']);
             // Logger($item['date_expire']);
 
-           // dd($item);
-            // "material_number" => 12881203
-            // "item_name" => "test item1"
-            // "item_receive" => 20
-            // "unit_count" => "PACK"
-            // "price" => 5450
-            // "vendor" => "บจ.ไซโก โซลูชั่นส์ (ประเทศไทย) จำกัด"
-            // "pur_order" => "1300632418/2566"
-            // "invoice_number" => "AHGHED501"
-            // "date_receive" => "2022-10-05"
-            // "date_expire" => "2023-01-31"
 
             $date_split = explode('-',$item['date_receive']);
           
@@ -327,16 +316,7 @@ class StockItemImportController extends Controller
                // Logger('no item');
                 //******insert stock_item
                 try{
-                    //  $stock_item_add=StockItem::create([
-                    //     'stock_id'=>$request->stock_id,
-                    //     'user_id'=>$user->id,
-                    //     'item_code'=>$item['material_number'],
-                    //     'item_name'=>$item['item_name'],
-                    //     'unit_count'=>$item['unit_count'],
-                    //     'item_sum'=>$item['item_receive'],
-                    //     'price'=>$item['price'],
-                    //     'status'=>$request->stock_item_status
-                    // ]);
+                   
 
                     $stock_item_add=StockItem::create([
                         'stock_id'=>$request->stock_id,
@@ -362,11 +342,7 @@ class StockItemImportController extends Controller
                     }
                 //****insert item_transactions
 
-                // $stock_item_id = StockItem::select('id')->where(['item_code'=>$item['item_code'],
-                //                                                 'stock_id'=>$request->stock_id,
-                //                                                 'status'=>$request->stock_item_status]
-                //                                         )->first();
-              //  Logger($stock_item_add);
+           
                 try{
                     ItemTransaction::create([
                                             'stock_id'=>$request->stock_id ,

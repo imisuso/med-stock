@@ -60,8 +60,8 @@ const form=useForm({
 
 
 const addAnnouce=()=>{
-    console.log('addAnnouce');
-    console.log(form.message);
+ //  console.log('addAnnouce');
+   
      form.post(route('add-annouce-new'), {
             preserveState: false,
             preserveScroll: true,

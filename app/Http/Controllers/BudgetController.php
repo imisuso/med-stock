@@ -94,6 +94,9 @@ class BudgetController extends Controller
                         'status'=>'on',
                         'user_id'=> $user->id
             ]);
+
+            $msg_notify_test = $user->name.' บันทึกงบประมาณสำเร็จ ';
+            Logger($msg_notify_test);
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
             Log::info($e->getMessage());
@@ -203,6 +206,24 @@ class BudgetController extends Controller
           //   Log::info($stocks);
 
         }
+         /****************  insert log ****************/
+        
+         
+         $user = Auth::user();
+         $detail_log =array();
+         $detail_log['year'] = $year;
+        
+
+        //  dd($detail_log);
+
+          $log_activity = LogActivity::create([
+              'user_id' => $user->id,
+              'sap_id' => $user->sap_id,
+              'function_name' => 'manage_budget',
+              'action' => 'get_budget',
+              'detail' => $detail_log,
+            
+          ]);
         return response()->json([
             'stocks' => $stocks
         ]);
@@ -237,6 +258,8 @@ class BudgetController extends Controller
             //Log::info($update_budget);
             $budget_changes = $budget->getChanges();
           //  logger($budget_changes);
+          $msg_notify_test = $user->name.' แก้ไขงบประมาณสำเร็จ ';
+          Logger($msg_notify_test);
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
             Log::info($e->getMessage());
@@ -258,6 +281,7 @@ class BudgetController extends Controller
           $detail_log =array();
           $detail_log['table'] ='budget';
           $detail_log['row_change'] =$budget->id;
+          $detail_log['stock_id'] = $request->stock_id;
 
          //  dd($detail_log);
 

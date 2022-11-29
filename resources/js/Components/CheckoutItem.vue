@@ -91,7 +91,10 @@
                                 </svg>
                         </div>
                         <div class="flex ml-2"> ราคาต่อหน่วย : 
-                            <p class=" ml-2 text-blue-600">{{stockItem.price}}</p> 
+                            <p class=" ml-2 text-blue-600">
+                                <!-- {{stockItem.price}} -->
+                                {{price_format(stockItem.price)}} บาท
+                            </p> 
                         </div>
                         <div class="flex ml-2"> Pur.Order : 
                             <p class=" ml-2 text-blue-600">{{stockItem.pur_order}}</p> 
@@ -236,8 +239,15 @@ const form = useForm({
     confirm_item_count:'',
    // stock_item_sum:[], //เอาตัวแปร จาก props มาใช้
 })
+
+const price_format=(price)=>{
+   // console.log(price)
+   let  price_show = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return price_show;
+  // return '1,200.5';
+}
 const confirmCheckout=(stock_item)=>{
-    console.log('confirmCheckout');
+   // console.log('confirmCheckout');
    // console.log(form.date_checkout[index]);
     if(form.date_checkout.length==0){
         date_alert.value=true

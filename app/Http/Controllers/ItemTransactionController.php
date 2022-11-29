@@ -26,7 +26,7 @@ class ItemTransactionController extends Controller
     public function index($stock_id,$year)
     {
        // dd($year);
-        logger('ItemTransactionController index');
+        //logger('ItemTransactionController index');
         // logger(request()->all());
         $stock_budget = budget::select('stock_id','budget_add','year')
                         ->where(['stock_id'=>$stock_id,'year'=>$year,'status'=>'on'])
@@ -204,7 +204,7 @@ class ItemTransactionController extends Controller
      */
     public function show(StockItem $stock_item)
     {
-      Log::info('---------ItemTransactionController show ------------');
+      //Log::info('---------ItemTransactionController show ------------');
      //  Log::info($stock_item);
       //  Log::info($stock_item->unitCount->countname);
         $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)

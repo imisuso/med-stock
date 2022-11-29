@@ -112,7 +112,7 @@
                         <p v-if="item_tran.old_value">{{item_tran.old_value}}</p>
                     </div>
                     <div class=" lg:w-2/12">
-                        {{ dayjs(item_tran.created_at).locale('th').format('D MMM BBBB HH:mm')}} น.
+                        {{ dayjs(item_tran.created_at).locale('th').format('D MMM BBBB HH:mm:ss')}} น.
                     </div>
             </div>  
         </div>
