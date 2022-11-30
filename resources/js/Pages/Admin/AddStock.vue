@@ -105,6 +105,7 @@
                 </div>
                 <div class=" my-2 ">
                     <button type="submit" 
+                         v-if="$page.props.auth.user.roles[0].name=='admin_med_stock'"
                         class=" w-full flex justify-center py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
                         @click="showFormAddStock()"
                         >
