@@ -106,7 +106,7 @@ Route::controller(ItemTransactionController::class)
 //ไม่แน่ใจว่าจะใช้ หน้าแสดงข้อมูลปีเดือน ที่มีการเบิกพัสดุ
 //Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock')->middleware('auth');
 //ไม่แน่ใจว่าจะใช้ หน้าแสดงรายละเอียดการเบิกพัสดุ
-Route::get('/report-checkout-item/{division_id}', [ReportStockController::class,'index'])->name('report-checkout-item')->middleware('auth','can:manage_master_data');
+Route::get('/report-checkout-item/{division_id}', [ReportStockController::class,'index'])->name('report-checkout-item')->middleware('auth','can:view_master_data');
 Route::get('/get-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'show'])->name('get-checkout-item')->middleware('auth');
 Route::get('/export-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'export'])->name('export-checkout-item')->middleware('auth');
 Route::get('/export-checkout-item-test/{checkout_items}', [ReportStockController::class,'export_test'])->name('export-checkout-item-test')->middleware('auth');
@@ -134,7 +134,7 @@ Route::get('/order-list/show/{order_id}', [CheckInOrderController::class,'show']
 
 //Route::get('/admin/report-list/{division_id}', [AdminReportStockController::class,'index'])->name('report-list')->middleware('auth');
 Route::match(['get', 'post'],'/admin/report-list/{division_id}',[AdminReportStockController::class,'index'])->name('report-list')->middleware('auth');
-Route::post('/admin/report-stock', [AdminReportStockController::class,'show'])->name('admin-report-stock')->middleware('auth','can:manage_master_data');
+Route::post('/admin/report-stock', [AdminReportStockController::class,'show'])->name('admin-report-stock')->middleware('auth','can:view_master_data');
 
 //แสดงรายการใบสั่งซื้อแบบสัญญา
 Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list')->middleware('auth','can:manage_master_data');
@@ -142,21 +142,21 @@ Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('c
 Route::post('/admin/order-list/update', [AdminOrderController::class,'update'])->name('approve-order')->middleware('auth','can:manage_master_data');
 
 //แสดงหน้าแรก ค้นหาข้อมูลงบประมาณในแต่ละปี
-Route::get('/admin/budget-list/', [BudgetController::class,'index'])->name('budget-list')->middleware('auth','can:manage_master_data');
+Route::get('/admin/budget-list/', [BudgetController::class,'index'])->name('budget-list')->middleware('auth','can:view_master_data');
 //ดึงรายการงบประมาณตั้งต้นแต่ละสาขา ตามปีที่ระบุ
-Route::get('/admin/get-list-budget/{year}', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:manage_master_data');
+Route::get('/admin/get-list-budget/{year}', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:view_master_data');
 //บันทึกงบประมาณสาขา
 Route::post('/admin/add-budget',[BudgetController::class,'store'])->name('add-budget')->middleware('auth','can:manage_master_data');
 //แก้ไขข้อมูลงบ
 Route::post('/admin/edit-budget',[BudgetController::class,'edit'])->name('edit-budget')->middleware('auth','can:manage_master_data');
 //พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
-Route::get('/admin/print-budget-order/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrder'])->name('print-budget-order')->middleware('auth','can:manage_master_data');
+Route::get('/admin/print-budget-order/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrder'])->name('print-budget-order')->middleware('auth','can:view_master_data');
 //แสดงงบประมาณในรายการสั่งซื้อแต่ละครั้ง
-Route::get('/admin/get-list-order/{stock_id}/{year}', [ItemTransactionController::class,'index'])->name('get-list-order')->middleware('auth','can:manage_master_data');
+Route::get('/admin/get-list-order/{stock_id}/{year}', [ItemTransactionController::class,'index'])->name('get-list-order')->middleware('auth','can:view_master_data');
 //พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
-Route::get('/admin/print-budget-order-import/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrderImport'])->name('print-budget-order-import')->middleware('auth','can:manage_master_data');
+Route::get('/admin/print-budget-order-import/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrderImport'])->name('print-budget-order-import')->middleware('auth','can:view_master_data');
 //ดึงรายรายละเอียดการสั่งซื้อ ตามเลข Pur.Order
-Route::post('/admin/get-list-budget-detail', [ItemTransactionController::class,'edit'])->name('get-list-budget-detail')->middleware('auth','can:manage_master_data');
+Route::post('/admin/get-list-budget-detail', [ItemTransactionController::class,'edit'])->name('get-list-budget-detail')->middleware('auth','can:view_master_data');
 
 Route::controller(AdminOrderPurchaseController::class)
         ->middleware('auth','can:manage_master_data')

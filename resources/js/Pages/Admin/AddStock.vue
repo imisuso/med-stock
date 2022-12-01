@@ -267,7 +267,7 @@ const form = useForm({
 })
 
 const getUnitname = () => {
-    console.log('getUnitname')
+   // console.log('getUnitname')
     let unit = {}
     unit = props.units.find( item => item.unitid === form.unit) // เอาค่าแรกที่เจอค่าเดียว
   //  console.log(unit)
@@ -278,7 +278,7 @@ const getListStockUnit=(()=>{
     // console.log('----------getListStockUnit------')
     //console.log(unit);
     axios.get(route('get-list-stock-unit',{unit_id:form.unit})).then(res => {
-        console.log(res.data.list_stock_unit.length);
+     //   console.log(res.data.list_stock_unit.length);
        stocks_unit.value = res.data.list_stock_unit;   
        stocks_unit_count.value = res.data.list_stock_unit.length;
        show_form_add_stock.value=false
@@ -300,7 +300,7 @@ const confirmAddStock=(()=>{
 const okconfirmAddStock=()=>{
     confirm_add_stock.value = false;
     // console.log(form.order_id);
-       console.log('----------okconfirmAddStock------');
+   //    console.log('----------okconfirmAddStock------');
  
     
       form.post(route('stock-add-confirm'), {

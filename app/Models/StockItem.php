@@ -80,13 +80,19 @@ class StockItem extends Model
        //$stock_items = loadCSV('business_load_utf8');
       //  \Log::info('FILENAME==>'.$fileName);
         //stocks_id,item_code,item_name,unit_count,item_receive,date_receive,date_expire,price,catalog_number,lot_number
+        $user_add = User::where('sap_id',10030727)->first();
+
+        if(!$user_add){
+            return "not found user admin_med_stock";
+        }
+        
         foreach($stock_items as $stock_item){
         //     Log::info($stock_item);
         //     Log::info($stock_item['stock_id']);
         //    Log::info($stock_item['material_number']);
            StockItem::create([
                                 'stock_id'=>$stock_item['stock_id'],
-                                'user_id'=>6,
+                                'user_id'=>$user_add->id,
                                 'item_code'=>$stock_item['material_number'],
                                 'item_name'=>$stock_item['item_name'],
                                 'unit_count'=>$stock_item['unit_count'],
@@ -107,9 +113,9 @@ class StockItem extends Model
             ItemTransaction::create([
                                 'stock_id' =>$stock_item['stock_id'],
                                 'stock_item_id'=>$stock_item_id->id,
-                                'user_id'=>6,
+                                'user_id'=>$user_add->id,
                                 'year'=> 2022,
-                                'month'=>12,
+                                'month'=>1,
                                 'date_action'=>$stock_item['date_receive'],
                                 'action'=>'checkin',
                                 'date_expire'=>$stock_item['date_expire'],

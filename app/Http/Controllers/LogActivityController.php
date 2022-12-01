@@ -24,7 +24,10 @@ class LogActivityController extends Controller
         
       //  logger(request()->all());
       
-        $function_name_all = LogActivity::distinct()->get(['function_name'])->toArray();
+        $function_name_all = LogActivity::distinct()
+                                        ->orderBy('function_name','asc')
+                                        ->get(['function_name'])
+                                        ->toArray();
        // logger( $function_name_all);
         $unit = Unit::where('unitid',$user->unitid)->first();
 

@@ -1,8 +1,8 @@
 <template>
     <AppLayout>
-       <h4   v-if="$page.props.auth.abilities.includes('manage_master_data')"
+       <h4   v-if="$page.props.auth.abilities.includes('view_master_data')"
             class=" mt-3 text-center text-red-600">ระบุชื่อคลังพัสดุที่ต้องการดูรายงาน</h4>
-        <div v-if="$page.props.auth.abilities.includes('manage_master_data')" 
+        <div v-if="$page.props.auth.abilities.includes('view_master_data')" 
             class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
              <div class="m-2" >
                 <label for="">ชื่อคลังพัสดุ</label> 
@@ -15,7 +15,7 @@
          
             
         </div>
-        <div v-if="$page.props.auth.abilities.includes('manage_master_data')"
+        <div v-if="$page.props.auth.abilities.includes('view_master_data')"
             class="flex flex-col  ">
             <!-- <button
                 class="px-3 py-1  text-sm text-gray-700 bg-gray-400 rounded-md hover:bg-gray-300 focus:outline-none"

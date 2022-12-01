@@ -52,6 +52,14 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
+        Gate::define('view_master_data',function(User $user){
+            //   Log::info('gate checkout_item');
+               //Log::info($user->abilities);
+               if($user->abilities->contains('view_master_data')){
+                   return true;
+               }
+           });
+
         // Gate::define('can_owner_stock',function(User $user){
         //     if()
         // });

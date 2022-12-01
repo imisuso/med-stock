@@ -42,7 +42,7 @@ class AdminReportStockController extends Controller
             $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();
         }
         else{
-            $stocks = Stock::all();
+            $stocks = Stock::where('status',1)->get();
         }
     
       

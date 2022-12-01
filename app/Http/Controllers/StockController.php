@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ItemTransaction;
+use App\Models\LogActivity;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Stock;
@@ -47,20 +48,7 @@ class StockController extends Controller
         $query = StockItem::query()->where('stock_id',$user->unitid)
                                     ->where('status','!=',9)
                                     ->filterBySearch(request()->search);
-        // $stock_items = StockItem::query()
-        //                         ->when(request()->input('search'), function ($query, $search,$user) {
-        //                             $query->where('stock_id',$user->unitid)
-        //                             ->where('status','!=',9)
-        //                             ->where('item_name', 'like', "%{$search}%")
-        //                             ->orWhere('item_code','like',"%{$search}%")
-        //                             ->orWhere('business_name','like',"%{$search}%");
-        //                         })
-        //                         ->where('stock_id',$user->unitid)
-        //                         ->where('status','!=',9)
-        //                         ->orderBy('item_name')
-        //                         ->paginate(10)
-        //                         ->withQueryString();
-                             //   ->get();
+     
 
              $stock_items = $query->orderBy('item_name')
                                     ->paginate(10)
@@ -143,8 +131,26 @@ class StockController extends Controller
             'unit_id'=>$request->unit,
             'user_id'=>$user->id
             ]);
+
+            $detail_log =array();
+            $detail_log['stockname'] =$request->stock_name_thai;
+
+            //  dd($detail_log);
+
+            $log_activity = LogActivity::create([
+                'user_id' => $user->id,
+                'sap_id' => $user->sap_id,
+                'function_name' => 'manage_stock',
+                'action' => 'add_stock',
+                'detail' => $detail_log,
+            ]);
+
+            // dd($log_activity);
+            $msg_notify_test = $user->name.'  เพิ่มคลังใหม่ชื่อ '.$request->stock_name_thai.' สำเร็จ';
+            Logger($msg_notify_test);
+
         return Redirect::route('stock-add')
-            ->with(['status' => 'success', 'msg' => 'บันทึกเรียบร้อยแล้ว']);
+                        ->with(['status' => 'success', 'msg' => 'บันทึกเรียบร้อยแล้ว']);
     }
 
     /**
@@ -218,6 +224,25 @@ class StockController extends Controller
            
             /****************  insert log ****************/
           //  logger($old_changes);
+
+          $detail_log =array();
+          $detail_log['stockname'] =$stock->stockname;
+
+          $user = Auth::user();
+
+          $log_activity = LogActivity::create([
+              'user_id' => $user->id,
+              'sap_id' => $user->sap_id,
+              'function_name' => 'manage_stock',
+              'action' => 'edit_stock',
+              'detail' => $detail_log,
+              'old_value' => $old_changes,
+          ]);
+
+          // dd($log_activity);
+          $msg_notify_test = $user->name.'  แก้ไขข้อมูลคลัง '.$stock->stockname.' สำเร็จ';
+          Logger($msg_notify_test);
+
             return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
         }
             /****************  insert log ****************/

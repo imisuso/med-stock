@@ -15,7 +15,8 @@
         </p> -->
       </div>
   <!-- {{$page.props.auth}} -->
-      <div v-if="!$page.props.auth.abilities.includes('manage_master_data')" class="mb-4 px-4 text-sm">
+<!-- {{$page.props.auth.user.roles[0].name}} -->
+      <div v-if="(!$page.props.auth.abilities.includes('manage_master_data') && $page.props.auth.user.roles[0].name != 'super_officer')" class="mb-4 px-4 text-sm">
         <p class="pl-4  font-semibold mb-1">เมนูหลักของสาขา</p>
         <Link :href="route('stock')">
           <div class="w-full flex items-center text-blue-600 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
@@ -42,65 +43,15 @@
         </div>
         </Link>
 
-      
-        
-            <!-- <Link :href="route('report-list',1)">
-            <div class="w-full flex items-center text-blue-600 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <span class="text-gray-700 ml-2">รายงานการเบิกใช้พัสดุ</span>
-            </div>
-            </Link> -->
 
-            <!-- <Link :href="route('report-stock',1)">
-              <div class="w-full flex items-center text-yellow-500 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
-              </svg>
-              <span class="text-gray-700 ml-2">รายงานการเบิกใช้พัสดุ</span>
-            </div>
-            </Link> -->
-<!-- {{$page.props.auth.user.id}} -->
-        <!-- <Link :href="route('create-order')">
-          <div class="w-full flex items-center text-blue-600 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span class="text-gray-700 ml-2">สร้างเอกสารสัญญาซื้อพัสดุ</span>
-          </div>
-        </Link>
-        <Link :href="route('order-list')">
-          <div class="w-full flex items-center text-blue-600 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
-            </svg>
-            <span class="text-gray-700 ml-2">ดูเอกสารสัญญาซื้อพัสดุ</span>
-          </div>
-        </Link>
-          <Link :href="route('create-order-purchase')">
-          <div class="w-full flex items-center text-yellow-500 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span class="text-gray-700 ml-2">สร้างเอกสารใบสั่งซื้อพัสดุ</span>
-          </div>
-        </Link>
-        <Link :href="route('purchase-order-list')" :data="{'remember':'forget'}">
-          <div class="w-full flex items-center text-yellow-500 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
-            </svg>
-            <span class="text-gray-700 ml-2">ดูเอกสารใบสั่งซื้อพัสดุ</span>
-          </div>
-        </Link> -->
       </div>
 <!-- v-if="$page.props.flash.mainMenuLinks.is_admin_division_stock" -->
 <!-- {{$page.props.auth.abilities.includes("manage_master_data")}} -->
-      <div v-if="$page.props.auth.abilities.includes('manage_master_data')" class="mb-4 px-4 text-sm">
-        <p class="pl-4  font-semibold mb-1">เมนูหลักของหน่วยพัสดุภาคฯ</p>
+      <div v-if="$page.props.auth.abilities.includes('manage_master_data') || $page.props.auth.user.roles[0].name == 'super_officer'" class="mb-4 px-4 text-sm">
+        <p class="pl-4  font-semibold mb-1">เมนูหลัก</p>
 
-        <div class="w-full flex items-center justify-between text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" @click="managementMenuOpen = !managementMenuOpen">
+        <div v-if="$page.props.auth.abilities.includes('import_item_excel')"
+          class="w-full flex items-center justify-between text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" @click="managementMenuOpen = !managementMenuOpen">
           <div class="flex flex-row">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
               <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z" />
@@ -125,7 +76,7 @@
               <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>หน่วยนับ</div>
             </div>
           </Link> -->
-            <Link :href="route('user-add')">
+            <Link :href="route('user-add')" >
               <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
               
                 <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>เพิ่ม/แก้ไข ผู้ใช้งาน</div>
@@ -133,39 +84,7 @@
               </div>
             </link>
           </div>
-        
 
-        <!-- budget menu group -->
-        
-        <!-- <div class="w-full flex items-center justify-between text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" @click="budgetMenuOpen = !budgetMenuOpen">
-          <div class="flex flex-row">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span class="text-gray-700 ml-2">การจัดการงบประมาณ</span> 
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-          </svg>
-          </div>
-          <i :class="budgetMenuOpen ? iconExplandBudget : iconCollapseBudget" class="ml-2" style="fontSize: 0.7rem"></i>
-        </div >
-    
-        <div :class="budgetMenuOpen ? '' : 'hidden'">
-          <Link href="#">
-            <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
-              <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>บันทึกงบประมาณประจำปี</div>
-            </div>
-          </Link>
-          <Link :href="route('budget-list')">
-            <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
-              <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>รายงานการใช้งบประมาณ</div>
-            </div>
-          </Link>
-         
-        </div> -->
-
-            
-       
         <Link :href="route('stock-item-import')" v-if="$page.props.auth.abilities.includes('import_item_excel')">
           <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
@@ -228,7 +147,9 @@
           </div>
         </Link> -->
 
-        <Link :href="route('add-annouce')">
+        <Link :href="route('add-annouce')"
+          v-if="$page.props.auth.abilities.includes('import_item_excel')"
+          >
           <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />

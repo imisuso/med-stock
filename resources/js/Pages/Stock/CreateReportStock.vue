@@ -24,7 +24,7 @@
        <!-- {{year_has}} -->
         <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
             <div class=" m-2">
-                <label for="">ปี พ.ศ.</label>
+                <label for="">ปี พ.ศ. (ปีปฏิทิน ตามที่มีการบันทึกตัดสต๊อก)</label>
                 <label v-if="msg_validate_year" class=" text-red-600">   !กรุณาเลือกปี พ.ศ.</label>
                 <select name="" id="" v-model="form.year_selected"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
@@ -144,7 +144,10 @@
                     </div>
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  lg:hidden">จำนวนคงเหลือปัจจุบัน:</label>
-                        <label class=" font-bold">  {{item_tran.stock_item['item_sum']}}</label>
+                        <label class=" font-bold"> 
+                            {{item_sum_format(item_tran.stock_item['item_sum'])}}
+                        
+                        </label>
                     </div>
                 </div>     
             </div>
@@ -209,7 +212,7 @@ const form = useForm({
     year_selected:props.year_selected ? props.year_selected :[],
     month_selected:props.month_selected ? props.month_selected :[],
     unitid:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid :0,
-    
+    stock_id_selected:{type:Number},
 })
 //const  demo_show_stock_items=ref(false);
 const month_thai=ref([
@@ -251,6 +254,12 @@ const msg_validate_stock=ref(false);
 const msg_validate_year=ref(false);
 const msg_validate_month=ref(false);
 
+const item_sum_format=(item_balance)=>{
+   // console.log(item_balance)
+   let  item_format = item_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return item_format;
+}
+
 const year_thai = (year_select)=>{
    // console.log('year_select=')
    // console.log(year_select)
@@ -265,7 +274,8 @@ const year_thai = (year_select)=>{
 const setStockID=()=>{
   //  console.log('set stock ID');
     stock_id.value =form.unit_selected;
-  //   console.log(stock_id);
+    form.stock_id_selected = stock_id.value
+  // console.log(form.stock_id_selected);
 }
 
 const  getReportStock=(stock_id,year,month)=>{

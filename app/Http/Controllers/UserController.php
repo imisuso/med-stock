@@ -26,7 +26,17 @@ class UserController extends Controller
        // $user = Auth::user();
         $stocks = Stock::all();
         $units = Unit::all();
-        $roles = Role::whereStatus(1)->get();
+
+        $user = Auth::user();
+        //$role_admin = array('admin_it','admin_med_stock','super_officer');
+        $roles = array('admin_med_stock');
+
+        if(in_array($user->roles[0]['name'] , $roles)){
+            $roles = Role::whereStatus(1)->get();
+        }else{
+            $roles = Role::all();
+        }
+      
         // $users = User::select('slug','name','status','unitid','updated_at')
         //                 ->with('unit:id,unitid,unitname')
         //                 ->orderBy('unitid')
@@ -160,7 +170,16 @@ class UserController extends Controller
     
         $user->roles;
         $units = Unit::all();
-        $roles = Role::whereStatus(1)->get();
+        $user = Auth::user();
+        //$role_admin = array('admin_it','admin_med_stock','super_officer');
+        $roles = array('admin_med_stock');
+
+        if(in_array($user->roles[0]['name'] , $roles)){
+            $roles = Role::whereStatus(1)->get();
+        }else{
+            $roles = Role::all();
+        }
+       // $roles = Role::whereStatus(1)->get();
         return Inertia::render('Admin/EditUser',[
                         'user'=> $user,
                         'user_status_list'=>$user_status_list,

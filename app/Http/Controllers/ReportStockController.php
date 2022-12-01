@@ -27,8 +27,8 @@ class ReportStockController extends Controller
     public function index($division_id)
     {
        
-      //  logger('ReportStockController index');
-        // logger(request()->all());
+       // logger('ReportStockController index');
+       //  logger(request()->all());
         $user = Auth::user();
             $main_menu_links = [
                     'is_admin_division_stock'=> $user->can('view_master_data'),
@@ -46,7 +46,7 @@ class ReportStockController extends Controller
 
     //   if(!in_array($user->roles[0]['name'] , $role_admin)){
         if(in_array($user->roles[0]['name'] , $role_admin)){  //หน่วยพัสดุ
-            $stocks = Stock::all();
+            $stocks = Stock::where('status',1)->get();
             $stock_items = StockItem::where('stock_id','1')->get();
             $unit = Unit::where('unitid',$user->unitid)->first();
 
@@ -108,7 +108,7 @@ class ReportStockController extends Controller
                     ]);
                     
                 }else{
-                    $stock_selected_name = Stock::select('stockname')->where('unit_id',$unit_selected)->first();
+                    $stock_selected_name = Stock::select('stockname')->where('id',$unit_selected)->first();
                     $msg_notify_test = $user->name.' ดูข้อมูลการตัดสต๊อก '.$stock_selected_name->stockname.' เดือน '.$month_selected.' ปี '.$year_selected.' ไม่พบข้อมูลการตัดสต๊อก';
                     
                          /****************  insert log ****************/
@@ -254,35 +254,29 @@ class ReportStockController extends Controller
     public function export($stock_id,$year,$month) 
     {
         $format_month = sprintf("%02d",$month);
-        $stock_name = Stock::select('stockengname')->whereId($stock_id)->first();
-
-        // $stock_item_checkouts = ItemTransaction::where(
-        //                             [   'stock_id'=>$stock_id,
-        //                                 'year'=>$year,
-        //                                 'month'=>$month,
-        //                                 'action'=>'checkout',
-        //                                 'status'=>'active'
-        //                             ])
-        //                             ->with('stockItem:id,item_name,item_code,item_sum')
-        //                             ->with('user:id,name')
-        //                             ->orderBy('stock_item_id')->get();
-
-        //     // Log::info($stock_item_checkouts);
-
-        // foreach($stock_item_checkouts as $key=>$tran_checkout){
-        //     Log::info($tran_checkout->stock_item_id);
-        //     $date_expire_last = ItemTransaction::select('date_expire')
-        //                                     ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
-        //                                                         'action'=>'checkin',
-        //                                                         'status'=>'active'    
-        //                                                 ])
-        //                                     ->orderBy('created_at','desc')
-        //                                     ->first();
-        //     $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
-        // }
-
+        $stock_name = Stock::select('stockengname','stockname')->whereId($stock_id)->first();
+        // logger($stock_name);
         $filename_xls = 'ReportCutStock'."_".$stock_name->stockengname."_".$format_month.$year.'.xlsx';
         //return (new ReportCutStockExportTest($stock_item_checkouts))->download($filename_xls);
+           /****************  insert log ****************/
+           // logger($old_changes);
+            $user = Auth::user();
+
+           $detail_log =array();
+           $detail_log['stock'] = $stock_name->stockname;
+           $detail_log['year'] = $year;
+           $detail_log['month'] = $month;
+   
+
+       //  dd($detail_log);
+
+           $log_activity = LogActivity::create([
+               'user_id' => $user->id,
+               'sap_id' => $user->sap_id,
+               'function_name' => 'export_excel',
+               'action' => 'report_cut_stock',
+               'detail'=> $detail_log,
+           ]);
         return (new ReportCutStockExport($stock_id,$year,$month,$stock_name->stockengname))->download($filename_xls);
     }
 
