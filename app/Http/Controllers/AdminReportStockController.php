@@ -69,8 +69,8 @@ class AdminReportStockController extends Controller
                                             ->first();
             $stock_items[$key]['checkin_last'] = $checkin_last;
         }
-        $msg_notify_test = $user->name.' ดูจำนวนคงเหลือ '.$stock_selected_name->stockname;
-        Logger($msg_notify_test);
+        // $msg_notify_test = $user->name.' ดูจำนวนคงเหลือ '.$stock_selected_name->stockname;
+        // Logger($msg_notify_test);
             
         /****************  insert log ****************/
            // logger($old_changes);
