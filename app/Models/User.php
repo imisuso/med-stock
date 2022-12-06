@@ -91,6 +91,27 @@ class User extends Authenticatable
         return $this->belongsTo(Unit::class,'unitid','unitid');
     }
 
+       /*
+     Feature  Agreements Users
+    */
+    public function agreements()
+    {
+        return $this->belongsToMany(Agreement::class)->withTimestamps();
+    }
+
+    public function needAcceptAgreement()
+    {
+        $lastestAgreement = Agreement::OrderByDesc('date_effected')->first();
+
+        if(!$lastestAgreement ||
+            $this->agreements()->where('id',$lastestAgreement->id)->count())
+        {
+            return false;
+        }
+            return true;
+
+    }
+
     protected function statusName(): Attribute
     {
        

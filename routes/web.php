@@ -10,6 +10,7 @@ use App\Http\Controllers\CreateOrderController;
 use App\Http\Controllers\AdminReportStockController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminOrderPurchaseController;
+use App\Http\Controllers\AgreementController;
 use App\Http\Controllers\AnnouceController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CheckInOrderController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\StockItemImportController;
 use App\Http\Controllers\UserController;
+use App\Models\Agreement;
 use App\Models\Annouce;
 use Illuminate\Support\Facades\Storage;
 
@@ -240,6 +242,21 @@ Route::get('/annouce',[AnnouceController::class,'show'])->name('annouce')->middl
 Route::post('/close-annouce',[AnnouceController::class,'update'])->name('close-annouce')->middleware('auth');
 Route::post('/open-annouce',[AnnouceController::class,'update'])->name('open-annouce')->middleware('auth');
 Route::post('/delete-annouce',[AnnouceController::class,'update'])->name('delete-annouce')->middleware('auth');
+
+
+/* Feature Agreements Users */
+Route::get('/agreement',function(){
+    return Inertia('Agreement',[
+                    'agreements'=> Agreement::OrderByDesc('date_effected')->first()
+    ]);
+
+    // return view('user.agreement',[
+    //     'agreement'=> Agreement::OrderByDesc('date_effected')->first()
+    // ]);
+
+})->middleware('auth')->name('agreement');
+
+Route::post('accept-agreement', [AgreementController::class, 'store'])->middleware('auth')->name('accept-agreement');
 
 Route::get('/nong', function () {
     return view('welcome');
