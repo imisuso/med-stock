@@ -85,7 +85,7 @@ class LoginController extends Controller
             return Redirect::back()->with(['status' => '1', 'msg' => 'ไม่พบเจ้าหน้าที่คนนี้เป็นผู้ใช้งานระบบ กรุณาติดต่อเจ้าหน้าที่หน่วยพัสดุภาควิชาอายุรศาสตร์']);
         }
        // Logger('login success');
-        return Redirect::route('welcome');
+     //   return Redirect::route('welcome');
        
         
         

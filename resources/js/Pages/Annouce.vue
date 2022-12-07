@@ -2,6 +2,10 @@
    <AppLayout>
     <!-- {{user}} -->
        <div class=" flex-col w-full justify-center  ">
+            <div class=" flex justify-end text-sm underline">
+                <!-- <a href="http://">อ่านข้อตกลงและนโยบายการคุ้มครองข้อมูลส่วนบุคคล</a> -->
+                <Link :href="route('agreement')">อ่านข้อตกลงและนโยบายการคุ้มครองข้อมูลส่วนบุคคล</Link>
+            </div>
             <div>
                 <p class=" my-2 text-center font-bold text-lg text-blue-800 ">ข่าวประชาสัมพันธ์</p> 
             </div>
@@ -21,6 +25,7 @@
 <script setup>
 //import { ref } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
+import { Link } from '@inertiajs/inertia-vue3'
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'

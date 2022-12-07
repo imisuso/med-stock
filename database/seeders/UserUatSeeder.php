@@ -17,18 +17,7 @@ class UserUatSeeder extends Seeder
      */
     public function run()
     {
-        $users = [
-            'super_officer.med',
-            'admin_med_stock.stockmed',
-            'admin_it.itmed',
-            'officer.ambu',
-            'officer.hypertension',
-            'officer.endocrine',
-            'officer.id',
-            'officer.nephro',
-            'officer.hemato',
-            'officer.chest',
-        ];
+        
 
         $users = array(
             ['name' => 'sukanya.par', 'unitid' => '99','role'=>'super_officer'],
@@ -43,6 +32,7 @@ class UserUatSeeder extends Seeder
             ['name' => 'officer.id', 'unitid' => '5','role'=>'officer'],
             ['name' => 'officer.chest', 'unitid' => '10','role'=>'officer'],
             ['name' => 'officer.hemato', 'unitid' => '12','role'=>'officer'],
+            ['name' => 'officer.nephro', 'unitid' => '13','role'=>'officer'],
         );
 
         $profile['user_id_in'] = 0;

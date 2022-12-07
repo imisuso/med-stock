@@ -72,11 +72,6 @@ Route::get('/', function () {
                          compact('doc_division_filename')
                     );
 
-                //     return Inertia::render('Annouce',[
-                //         'annouces'=>$annouces,
-           
-                //   ]);
-
 })->name('welcome');
 
 Route::post('/login',[LoginController::class, 'authenticate'])->name('login')->middleware('guest');
@@ -245,16 +240,13 @@ Route::post('/delete-annouce',[AnnouceController::class,'update'])->name('delete
 
 
 /* Feature Agreements Users */
-Route::get('/agreement',function(){
-    return Inertia('Agreement',[
-                    'agreements'=> Agreement::OrderByDesc('date_effected')->first()
-    ]);
+// Route::get('/agreement',function(){
+//     return Inertia('Agreement',[
+//                     'agreements'=> Agreement::OrderByDesc('date_effected')->first()
+//     ]);
 
-    // return view('user.agreement',[
-    //     'agreement'=> Agreement::OrderByDesc('date_effected')->first()
-    // ]);
-
-})->middleware('auth')->name('agreement');
+// })->middleware('auth')->name('agreement');
+Route::get('/agreement',[AgreementController::class, 'index'])->middleware('auth')->name('agreement');
 
 Route::post('accept-agreement', [AgreementController::class, 'store'])->middleware('auth')->name('accept-agreement');
 

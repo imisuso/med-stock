@@ -101,11 +101,13 @@ class AnnouceController extends Controller
      */
     public function show()
     {
-
+      
+       //Logger($user->agreements());
+       // Logger($user->needAcceptAgreement());
         $annouces = Annouce::where(['status'=>'on','show_on_page'=>'annouce'])
                             ->get();
         return Inertia::render('Annouce',[
-             'annouces'=>$annouces,
+                             'annouces'=>$annouces,
 
        ]);
     }

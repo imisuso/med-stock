@@ -15,18 +15,21 @@
                      <p class=" mt-6 text-sm text-green-700">  [วันที่ประกาศ: {{ dayjs(agreements.date_effected).locale('th').format('D MMM BBBB HH:mm')}} น.]</p> -->
             </p>
         </div>
-        <div class="w-full flex justify-center my-2 mx-10  text-red-600 ">
-                <label for="">ท่านรับทราบและตกลงตามนโยบายการคุ้มครองข้อมูลส่วนบุคคลข้างต้น</label>
-        </div>
-        <div  class="flex flex-col lg:flex-row px-2 py-2  ">
-                      
-                      <button
-                          class=" w-full flex justify-center px-4 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
-                          v-on:click="AcceptAgreement()"
-                      >
-                   
-                          รับทราบ
-                      </button>
+ 
+        <div v-if="user_agreement">
+            <div class="w-full flex justify-center my-2 mx-10  text-red-600 ">
+                    <label for="">ท่านรับทราบและตกลงตามนโยบายการคุ้มครองข้อมูลส่วนบุคคลข้างต้น</label>
+            </div>
+            <div  class="flex flex-col lg:flex-row px-2 py-2  ">
+                        
+                        <button
+                            class=" w-full flex justify-center px-4 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
+                            v-on:click="AcceptAgreement()"
+                        >
+                    
+                            รับทราบ
+                        </button>
+            </div>
         </div>
     </AppLayout>
  </template>
@@ -43,6 +46,7 @@ import { useForm } from '@inertiajs/inertia-vue3';
  const props=defineProps({
    //years:{type:Object,required:true},
    agreements:{type:Object,required:true},
+   user_agreement:{type:Boolean}
  })
 
  const form = useForm({
