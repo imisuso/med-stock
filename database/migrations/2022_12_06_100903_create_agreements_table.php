@@ -24,7 +24,7 @@ return new class extends Migration
 
         $agreement = new Agreement();
         $agreement->date_effected = now();
-        $agreement->title = 'นโยบายการคุ้มครองข้อมูลส่วนบุคคล';
+        $agreement->title = 'ข้อตกลงและนโยบายการคุ้มครองข้อมูลส่วนบุคคล';
         //$agreement->contents = 'test agreement PDPA';
         $agreement->contents = [
             'detail' => ['หน่วยเวชสารสนเทศ ภาควิชาอายุรศาสตร์ คณะแพทยศาสตร์ศิริราชพยาบาล มหาวิทยาลัยมหิดล มีการจัดเก็บรวบรวมข้อมูลส่วนบุคคลของท่าน โดยมีรายละเอียด ดังนี้',
