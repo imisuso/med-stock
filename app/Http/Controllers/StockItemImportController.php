@@ -7,6 +7,7 @@ use App\Models\Stock;
 use App\Models\Unit;
 use App\Models\StockItem;
 use App\Models\ItemTransaction;
+use App\Models\LogActivity;
 use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
@@ -23,10 +24,16 @@ class StockItemImportController extends Controller
     public function index()
     { 
  
-    // logger($stock_item_import);
+    logger('StockItemImportController index');
 
     $user = Auth::user();
-    $stocks = Stock::where('status',1)->get();
+   // logger($user->unitid);
+    if($user->unitid != 27){  //หน่วยพัสดุ
+        $stocks = Stock::where(['unit_id'=>$user->unitid,'status'=>1])->get();
+    }else{
+        $stocks = Stock::where('status',1)->get();
+    }
+   
     $unit = Unit::where('unitid',$user->unitid)->first();
      //   Logger('StockItemImportController');
        return Inertia::render('Admin/StockItemImport',[
@@ -255,17 +262,6 @@ class StockItemImportController extends Controller
             // Logger($item['date_receive']);
             // Logger($item['date_expire']);
 
-           // dd($item);
-            // "material_number" => 12881203
-            // "item_name" => "test item1"
-            // "item_receive" => 20
-            // "unit_count" => "PACK"
-            // "price" => 5450
-            // "vendor" => "บจ.ไซโก โซลูชั่นส์ (ประเทศไทย) จำกัด"
-            // "pur_order" => "1300632418/2566"
-            // "invoice_number" => "AHGHED501"
-            // "date_receive" => "2022-10-05"
-            // "date_expire" => "2023-01-31"
 
             $date_split = explode('-',$item['date_receive']);
           
@@ -311,25 +307,16 @@ class StockItemImportController extends Controller
                        // return redirect()->back();
                         return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
                     }
-                //*****update stock_item
-                $item_add = (int)$has_old_item->item_sum + (int)$item['item_receive'];
-                $has_old_item->item_sum = $item_add;
-                $has_old_item->save();
+                //*****update stock_item  ไม่ใช้แล้ว
+                // $item_add = (int)$has_old_item->item_sum + (int)$item['item_receive'];
+                // $has_old_item->item_sum = $item_add;
+                // $has_old_item->save();
 
             }else{
                // Logger('no item');
                 //******insert stock_item
                 try{
-                    //  $stock_item_add=StockItem::create([
-                    //     'stock_id'=>$request->stock_id,
-                    //     'user_id'=>$user->id,
-                    //     'item_code'=>$item['material_number'],
-                    //     'item_name'=>$item['item_name'],
-                    //     'unit_count'=>$item['unit_count'],
-                    //     'item_sum'=>$item['item_receive'],
-                    //     'price'=>$item['price'],
-                    //     'status'=>$request->stock_item_status
-                    // ]);
+                   
 
                     $stock_item_add=StockItem::create([
                         'stock_id'=>$request->stock_id,
@@ -355,11 +342,7 @@ class StockItemImportController extends Controller
                     }
                 //****insert item_transactions
 
-                // $stock_item_id = StockItem::select('id')->where(['item_code'=>$item['item_code'],
-                //                                                 'stock_id'=>$request->stock_id,
-                //                                                 'status'=>$request->stock_item_status]
-                //                                         )->first();
-              //  Logger($stock_item_add);
+           
                 try{
                     ItemTransaction::create([
                                             'stock_id'=>$request->stock_id ,
@@ -393,6 +376,28 @@ class StockItemImportController extends Controller
           
         }
         $cnt = $key+1;
+
+
+          /****************  insert log ****************/
+        // logger($old_changes);
+        $use_in = Auth::user();
+
+        $detail_log =array();
+        $detail_log['rows'] =$cnt;
+        $detail_log['stock_id'] =$request->stock_id;
+        $detail_log['pur_order'] =$item['pur_order'];
+  
+
+      //  dd($detail_log);
+
+        $log_activity = LogActivity::create([
+            'user_id' => $use_in->id,
+            'sap_id' => $use_in->sap_id,
+            'function_name' => 'import_excel',
+            'action' => 'import_excel',
+            'detail'=> $detail_log,
+        ]);
+
         $msg = 'เพิ่มพัสดุจากไฟล์ excel จำนวน '.$cnt.' รายการ เรียบร้อย';
 
         $msg_notify_test = $user->name.' '.$msg;

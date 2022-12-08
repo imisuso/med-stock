@@ -15,6 +15,16 @@
         <div class=" w-full p-4 mt-2  justify-center bg-red-100">
             <p class=" flex font-bold underline">กรุณาอ่าน:คำแนะนำการนำเข้าพัสดุจากไฟล์ excel</p>
             <p >1.ตรวจสอบชื่อคอลัมน์และจำนวนคอลัมน์ให้ถูกต้องตามตัวอย่างไฟล์ excel</p>
+            <div class=" flex">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15M9 12l3 3m0 0l3-3m-3 3V2.25" />
+                </svg>
+                <a href="../../../../docs/ตัวอย่างข้อมูลพัสดุที่จะนำเข้าระบบพัสดุ_UAT.xlsx" class=" underline underline-offset-2 font-extrabold text-green-700"> 
+                    download ตัวอย่างไฟล์รายการพัสดุ
+                </a>
+            </div>
+          
+           
             <p >2.ตรวจสอบจำนวนรายการพัสดุต้องไม่เกิน 50 รายการต่อ 1 ไฟล์ excel</p>
             <p >3.ตรวจสอบ Format Cell ให้ตรงกับตัวอย่างไฟล์ excel ทุกคอลัมน์</p>
         </div> 

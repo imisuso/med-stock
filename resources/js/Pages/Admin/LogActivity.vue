@@ -1,34 +1,33 @@
 <template>
     <AppLayout>
         <div class=" my-3 bg-blue-800 text-white text-xl text-center ">
-                {{$page.props.unit.unitname}}
+            {{$page.props.unit.unitname}}
         </div>
         <div class=" w-full   p-2 rounded-md ">
-            
             <div class="mt-3 font-bold" >
-                <label for="">เลือกคลังพัสดุ</label> 
-                <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกคลังพัสดุ</label>
+                <label for="">เลือกหัวข้อ</label> 
+                <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกหัวข้อ</label>
             </div>
-            <select name="" id="" v-model="form.unit_selected"
+            <select name="" id="" v-model="form.function_selected"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
-                v-on:change="setStockID"
+                v-on:change="setFunctionName"
                 >
-                <option v-for="(stock) in  stocks" v-bind:key=stock.id v-bind:value="stock.id">{{stock.stockname}}</option>
+                <option v-for="(function_name) in  function_name_all" v-bind:key=function_name.id v-bind:value="function_name.function_name">{{function_name.function_name}}</option>
             </select>
            
         <!-- {{$page.props.stock_items}} -->
         </div>
-        <!-- {{unit}} -->
+        <!-- {{//}} -->
         <!-- {{stock_items}} -->
         <!-- <h4  class=" mt-3 text-center text-lg">ระบุปีและเดือน ที่ต้องการดูรายงานการเบิกใช้พัสดุ</h4> -->
        <!-- {{year_has}} -->
         <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
             <div class=" m-2">
-                <label for="">ปี พ.ศ. (ปีปฏิทิน ตามที่มีการบันทึกตัดสต๊อก)</label>
+                <label for="">ปี พ.ศ.</label>
                 <label v-if="msg_validate_year" class=" text-red-600">   !กรุณาเลือกปี พ.ศ.</label>
                 <select name="" id="" v-model="form.year_selected"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                    <option v-for="(year,index) in  year_has" :key=index v-bind:value="year.year">{{year.year+543}}</option>
+                    <option v-for="(year,index) in  years" :key=index v-bind:value="year">{{year+543}}</option>
                 </select>
             </div>
             <div  class=" m-2">
@@ -48,33 +47,33 @@
             >
                 Cancel
             </button> -->
-            <button v-on:click="getReportStock(form.unit_selected,form.year_selected,form.month_selected)"
+            <button v-on:click="getReportLogActivity()"
                 class=" flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
             >
                 <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg> -->
-                ดูข้อมูลการเบิก
+                ดูข้อมูล
             </button>
         </div>
 
  
     <!-- {{stocks}}-->
-        <!-- {{stock_id}} -->
+    
         <div  class=" w-full py-3 text-center font-bold text-lg ">
-            <label for="">รายงานบันทึกตัดสต๊อก</label>
+            <label for="">ข้อมูลการใช้งานระบบ</label>
         </div>  
-        <div v-if="stock_id !=0"  class=" w-full text-center font-bold text-lg">
+        <div   class=" w-full text-center font-bold text-lg">
             <label for="">  
-                <!-- {{stocks[stock_id-1].stockname}}  -->
+                ฟังก์ชัน:{{form.function_selected}}
             </label>
         </div>    
         <div  class=" w-full py-3 text-center font-bold text-lg ">
-            <label for=""> {{month_thai[form.month_selected]}} ปี {{year_thai(form.year_selected)}}</label>
+            <label for=""> เดือน {{month_thai[form.month_selected]}} ปี {{year_thai(form.year_selected)}}</label>
         </div>    
-        <div v-if="item_trans.length==0" class=" w-full text-center">
+        <!-- <div v-if="item_trans.length==0" class=" w-full text-center">
             <label for="">ไม่พบข้อมูล</label>
-        </div> 
+        </div>  -->
         
         <div>
             <paginateMe :pagination="item_trans" />
@@ -83,29 +82,46 @@
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
                     
                     <div class=" lg:w-2/12  ">
-                        วันที่เบิก:
+                        ผู้ปฎิบัติงาน:
                     </div>
                 
                     <div class=" lg:w-2/12 ">
-                        ผู้เบิก:
+                        action:
                     </div>
-                    <div class=" lg:w-4/12 ">
-                        SAP-ชื่อพัสดุ:
+                    <div class=" lg:w-6/12 ">
+                        รายละเอียด:
                     </div>
                     <div class=" lg:w-2/12 ">
-                        วันที่หมดอายุ:
-                    </div>
-                    <div class=" lg:w-1/12 ">
-                        จำนวนที่เบิก:
-                    </div>
-                    <div class=" lg:w-1/12 ">
-                        จำนวนคงเหลือปัจจุบัน:
+                        วันที่:
                     </div>
                 </div>     
             </div>
         </div>
-   
-        <div  class="w-full mt-3  ">
+        <!-- body table -->
+        <div v-if="item_trans">
+            
+            <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
+                    class="w-full lg:flex lg:flex-row     text-sm  border-b-2   border-gray-500 shadow-sm "
+                >
+                    {{item_trans.from + key}}.
+                     <!-- {{item_tran}} -->
+                    <div class=" lg:w-2/12">{{item_tran.user.name}}</div>
+                    <div class=" lg:w-2/12">{{item_tran.action}}</div>
+                    <div class=" lg:w-6/12">
+                        <p>{{item_tran.detail}}</p>
+                        <p v-if="item_tran.old_value">{{item_tran.old_value}}</p>
+                    </div>
+                    <div class=" lg:w-2/12">
+                        {{ dayjs(item_tran.created_at).locale('th').format('D MMM BBBB HH:mm:ss')}} น.
+                    </div>
+            </div>  
+        </div>
+        <div v-else
+            class=" flex justify-center content-center "
+            >
+                <label for="">ไม่พบข้อมูล</label>
+        </div>
+        <!-- <div  class="w-full mt-3  ">
   
             <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
                 class="w-full border-b-2   border-gray-500 shadow-sm ">
@@ -116,7 +132,7 @@
                         <label for="" class="  ">  {{item_trans.from + key}}. </label>
                         <label for="" class="  lg:hidden">วันที่เบิก:</label>
                         <label class=" font-bold">
-                            <!-- {{date_action_thai(item_tran.date_action)}} -->
+                         
                             {{dayjs(item_tran.date_action).locale('th').format('D MMM BBBB')}}
                         </label>
                     </div>
@@ -144,42 +160,14 @@
                     </div>
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  lg:hidden">จำนวนคงเหลือปัจจุบัน:</label>
-                        <label class=" font-bold"> 
-                            {{item_sum_format(item_tran.item_balance)}}
-                        <!-- {{item_tran.item_balance}} -->
-                        </label>
+                        <label class=" font-bold">  {{item_tran.stock_item['item_sum']}}</label>
                     </div>
                 </div>     
             </div>
-        </div>
+        </div> -->
    
 
-    <div v-if="item_trans.length !=0"   class=" mt-6 flex flex-col  ">
- 
-        <!-- {{item_trans}} -->
-         <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-blue-700 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none" 
-            :href="route('export-checkout-item', {stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })">
-            Export Excel
-        </a>
-
-        <!-- <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-yellow-600 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none" 
-            :href="route('export-checkout-item-test', {checkout_items:item_trans })">
-            Export Excel Test
-        </a> -->
-
-        <!-- <a :href="route('print-purchase-order-item',purchaseOrder.id)"  target="blank" -->
-            <a :href="route('print-cutstock-pdf',{stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })"  target="blank"
-                class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-purple-500 rounded-sm shadow-md hover:bg-purple-200 focus:outline-none"
-                >
-                <div class="flex items-center" >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
-                    </svg>
-                        พิมพ์รายงานตัดสต๊อกพัสดุ
-                </div>
-            </a>
-    </div>
-
+   
      
 
     </AppLayout>
@@ -199,20 +187,21 @@ import buddhistEra from 'dayjs/plugin/buddhistEra'
 dayjs.extend(buddhistEra)
 
 const props=defineProps({
-    stocks:Object,
-    unit:Object, 
+    function_name_all:{type:Object},
+    years:{type:Array},
+  
     item_trans:{type:Object},
-    unit_selected:{type:String},
+    function_name_selected:{type:String},
     year_selected:{type:String},
     month_selected:{type:String},
-    year_has:{type:Object},
+   
 })
 const form = useForm({
-    unit_selected:props.unit_selected ? props.unit_selected :[],
-    year_selected:props.year_selected ? props.year_selected :[],
-    month_selected:props.month_selected ? props.month_selected :[],
-    unitid:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid :0,
-    stock_id_selected:{type:Number},
+    function_selected:props.function_name_selected ? props.function_name_selected :'',
+    year_selected:props.year_selected ? props.year_selected :'',
+    month_selected:props.month_selected ? props.month_selected :'',
+    //id:usePage().props.value.auth.user.//id ? usePage().props.value.auth.user.//id :0,
+    
 })
 //const  demo_show_stock_items=ref(false);
 const month_thai=ref([
@@ -245,20 +234,14 @@ const months=ref([
         {id:12,name:'ธันวาคม' },
 ])
 
-const   years=ref([2023,2022,2021,2020,2019,2018])
+//const   years=ref([2023,2022,2021,2020,2019,2018])
 //const item_trans=ref('')
 //const stock_all=ref(Object);
-const stock_id=ref(0);
+const function_name=ref(0);
 
 const msg_validate_stock=ref(false);
 const msg_validate_year=ref(false);
 const msg_validate_month=ref(false);
-
-const item_sum_format=(item_balance)=>{
-   // console.log(item_balance)
-   let  item_format = item_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    return item_format;
-}
 
 const year_thai = (year_select)=>{
    // console.log('year_select=')
@@ -271,39 +254,46 @@ const year_thai = (year_select)=>{
 
 
 
-const setStockID=()=>{
-  //  console.log('set stock ID');
-    stock_id.value =form.unit_selected;
-    form.stock_id_selected = stock_id.value
-  // console.log(form.stock_id_selected);
+const setFunctionName=()=>{
+  console.log('setFunctionName');
+  //function_name.value =form.function_name_selected;
+     console.log(form.function_selected);
 }
 
-const  getReportStock=(stock_id,year,month)=>{
-    //        console.log('getReportStock');
-    //  console.log(stock_id);
-    //  console.log(year);
-    // console.log(month);
+const  getReportLogActivity=()=>{
+        //   console.log('getReportLogActivity');
+   
    // demo_show_stock_items.value=true;
-   msg_validate_stock.value = false
-   msg_validate_year.value = false
-   msg_validate_month.value = false
-   if(stock_id.length==0){
+//    msg_validate_stock.value = false
+//    msg_validate_year.value = false
+//    msg_validate_month.value = false
+    if(form.function_selected.length==0){
      msg_validate_stock.value = true
      return false;
-   }
+    }else{
+        msg_validate_stock.value = false;
+    }
 
-   if(year.length==0){
-     msg_validate_year.value = true
-     return false;
-   }
+    if(form.year_selected.length==0){
+        msg_validate_year.value = true
+        return false;
+    }else{
+        msg_validate_year.value = false
+    }
 
-   if(month.length==0){
-     msg_validate_month.value = true
-     return false;
-   }
+    if(form.month_selected.length==0){
+        msg_validate_month.value = true
+        return false;
+    }else{
+        msg_validate_month.value = false
+    }
+
+    // console.log(form.function_selected);
+    //  console.log(form.year_selected);
+    // console.log(form.month_selected);
    //report-checkout-item
 
-   form.get(route('report-checkout-item',form.unitid),{
+   form.get(route('get-log'),{
         preserveState: true,
         preserveScroll: true,
         onSuccess: page => { 
@@ -315,13 +305,6 @@ const  getReportStock=(stock_id,year,month)=>{
         onFinish: visit => { console.log('finish');},
     })
 
-    // axios.get(route('get-checkout-item',
-    //                      {stock_id:form.unit_selected , year:form.year_selected , month:form.month_selected}
-    //                 )).then(res => {
-    //     // console.log(res.data);
-    //     item_trans.value = res.data.item_trans;
-
-    // });
   
 }
 

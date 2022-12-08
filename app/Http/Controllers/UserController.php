@@ -26,11 +26,32 @@ class UserController extends Controller
        // $user = Auth::user();
         $stocks = Stock::all();
         $units = Unit::all();
-        $roles = Role::whereStatus(1)->get();
-        $users = User::select('slug','name','status','unitid','updated_at')
+
+        $user = Auth::user();
+        //$role_admin = array('admin_it','admin_med_stock','super_officer');
+        $roles = array('admin_med_stock');
+
+        if(in_array($user->roles[0]['name'] , $roles)){
+            $roles = Role::whereStatus(1)->get();
+        }else{
+            $roles = Role::all();
+        }
+      
+        // $users = User::select('slug','name','status','unitid','updated_at')
+        //                 ->with('unit:id,unitid,unitname')
+        //                 ->orderBy('unitid')
+        //                 ->get();
+                     
+
+          $users = User::select('slug','name','status','unitid','updated_at')
                         ->with('unit:id,unitid,unitname')
                         ->orderBy('unitid')
-                        ->get();
+                        ->paginate(10);
+                        //->withQueryString();
+                        // ->paginate(10);
+
+                        // ->paginate(10)
+                       
         //   Logger('StockItemImportController');
         return Inertia::render('Admin/AddUser',[
                                     'stocks'=>$stocks,
@@ -149,7 +170,16 @@ class UserController extends Controller
     
         $user->roles;
         $units = Unit::all();
-        $roles = Role::whereStatus(1)->get();
+        $user = Auth::user();
+        //$role_admin = array('admin_it','admin_med_stock','super_officer');
+        $roles = array('admin_med_stock');
+
+        if(in_array($user->roles[0]['name'] , $roles)){
+            $roles = Role::whereStatus(1)->get();
+        }else{
+            $roles = Role::all();
+        }
+       // $roles = Role::whereStatus(1)->get();
         return Inertia::render('Admin/EditUser',[
                         'user'=> $user,
                         'user_status_list'=>$user_status_list,
@@ -219,8 +249,8 @@ class UserController extends Controller
            // logger($old_changes);
             $use_in = Auth::user();
 
-            // $detail_log =array();
-            // $detail_log['sap_id'] =$user->sap_id;
+            $detail_log =array();
+            $detail_log['user_name'] =$user->name;
             // $detail_log['unitid'] =request()->input('unit_id');
             // $detail_log['status']= request()->input('user_status');
             // $detail_log['new_role_name'] = $role_name;
@@ -233,6 +263,7 @@ class UserController extends Controller
                  'sap_id' => $user->sap_id,
                  'function_name' => 'manage_user',
                  'action' => 'edit_user',
+                 'detail'=> $detail_log,
                  'old_value'=> $old_changes,
              ]);
 
@@ -281,8 +312,8 @@ class UserController extends Controller
           //  logger($old_changes);
           $use_in = Auth::user();
 
-        //   $detail_log =array();
-        //   $detail_log['sap_id'] =$sap_id;
+           $detail_log =array();
+           $detail_log['sap_id'] =$sap_id;
          //  dd($detail_log);
 
            $log_activity = LogActivity::create([
@@ -290,7 +321,7 @@ class UserController extends Controller
                'sap_id' => $sap_id,
                'function_name' => 'manage_user',
                'action' => 'check_status_sap',
-              // 'detail' => $detail_log,
+               'detail' => $detail_log,
            ]);
 
 

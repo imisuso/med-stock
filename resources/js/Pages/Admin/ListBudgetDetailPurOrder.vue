@@ -75,7 +75,10 @@
                     </div>
                     <div class=" lg:w-1/12   ">
                         <label for="" class="   lg:hidden">ราคา:</label>
-                        <label class=" font-bold">  {{order.price}}</label>
+                        <label class=" font-bold">  
+                            <!-- {{order.price}} -->
+                        {{price_format(order.price)}}
+                        </label>
                     </div>
                     <div class=" lg:w-2/12   ">
                         <label for="" class="   lg:hidden">Invoice Number:</label>
@@ -111,4 +114,10 @@ defineProps({
     order_item_trans:{type:Array},
     order_budget_used:{type:String}
 })
+
+const price_format=(price)=>{
+   // console.log(price)
+   let  price_show = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return price_show;
+}
 </script>

@@ -7,7 +7,7 @@
       >
      
         <div 
-          class="w-full md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12 mt-8 md:mt-0 mb-12 md:mb-0 "
+          class="w-full md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12 mt-8 md:mt-0 mb-6 md:mb-0 "
         >
           <div class=" flex justify-center text-xl ">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -15,16 +15,18 @@
             </svg>
             <label class=" my-2 " >ข่าวประชาสัมพันธ์</label>
           </div>
+       
+    
           <div class=" flex flex-col p-2 bg-purple-200 rounded-md shadow-md">
              <label class=" font-bold py-2">  สวัสดี,วันที่ {{dayjs(new Date()).locale('th').format('D MMM BBBB HH:mm')}} น. </label>
             <!-- <label for="">วันนี้อากาศแจ่มใส </label> -->
-            <p class="p-2"><label for="">ขอเชิญทดลองใช้ระบบพัสดุในการตัดสต๊อก</label></p>
+            <p class="p-2"><label for="">ขอเชิญเจ้าหน้าที่สาขาวิชาฯต่างๆทดลองใช้ระบบพัสดุในการตัดสต๊อก ตั้งแต่วันที่ 8-11 พฤศจิกายน 2565</label></p>
             <p class="  p-2 underline underline-offset-1">
               <!-- {{doc_division_filename}}-- -->
             <!-- <a :href=" '../../../../../storage/docs/'+doc_division_filename " target="_blank"> -->
             <!-- <a href="../../../../docs/poster_teacher_ios.pdf" target="_blank">  -->
             <!-- <a :href="doc_division_filename" target="_blank">  -->
-              <a href="../../../../docs/poster_division_med_stock.pdf" target="_blank">
+            <a href="../../../../docs/poster_division_med_stock.pdf" target="_blank">
               1.คู่มือสำหรับเจ้าหน้าที่สาขาบันทึกตัดสต๊อกพัสดุ
             </a>
             </p>
@@ -34,6 +36,13 @@
             <!-- <label class="py-4">- officer.hemato,officer.chest,officer.endocrine</label>
             <label class="py-4">- officer.id,officer.nephro,admin_med_stock.stockmed,admin_it.itmed</label> -->
          
+          </div>
+          <div v-for="(annouce,key) in annouces" :key="annouce.id" 
+                class="flex flex-col my-2 p-2 bg-red-200 rounded-md shadow-md  "
+                    >
+                    <p class=" underline underline-offset-2 ">  ข่าวที่ {{key+1}}.</p>
+                    <p class=" ">   {{annouce.message}}</p>
+                    <p class=" mt-6 text-sm text-red-800">  [วันที่ประกาศ: {{ dayjs(annouce.updated_at).locale('th').format('D MMM BBBB HH:mm')}} น.]</p>
           </div>
        
         
@@ -50,7 +59,7 @@
             </div>
 
             <div class="my-4 text-md text-gray-800  ">
-              <p class="underline underline-offset-1"> Login ด้วย Siriraj AD  (ใช้ User ID และ Password เดี่ยวกับระบบ e-Document)</p>
+              <p class=" text-red-700"> Login ด้วย Siriraj AD  (ใช้ User ID และ Password เดี่ยวกับระบบ e-Document)</p>
             </div>
 
          
@@ -106,6 +115,7 @@ dayjs.extend(buddhistEra)
 
 const props =defineProps({
   status:{type:String},
+  annouces:{type:Object},
   //doc_division_filename:{type:String}
 })
 

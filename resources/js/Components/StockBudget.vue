@@ -58,7 +58,7 @@
                         </div>
                         <div  class=" p-2 mr-2 ">
                             <!-- บันทึก -->
-                              <button
+                              <button v-if="$page.props.auth.user.roles[0].name=='admin_med_stock'"
                                 class=" flex justify-center py-1 px-2 bg-green-200 text-green-900 rounded-md shadow-md hover:bg-green-300 focus:outline-none"
                                 v-on:click="confirmAddBudget"
                                 >
@@ -78,7 +78,7 @@
                     <div class="flex px-2 ">
                         <div  
                             class="px-3 ">
-                             <button
+                             <button v-if="$page.props.auth.user.roles[0].name=='admin_med_stock'"
                                 class=" flex justify-center py-1 px-2 bg-yellow-200 text-yellow-900 rounded-md shadow-md hover:bg-yellow-300 focus:outline-none"
                                 v-on:click="editBudget"
                                 >

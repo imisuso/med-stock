@@ -158,75 +158,106 @@
         </div>
 
         <!-- show all users-->
-        <div 
-                class="w-full  text-sm   my-2 rounded-md"
+
+        <div>
+            <div class="w-full   my-2 text-center">
+                <label class=" text-lg font-bold  text-blue-700 ">รายชื่อผู้ใช้งานทั้งหมด </label>
+            </div>
+            <paginateMe :pagination="users" />
+            <div 
+                class="w-full   border-b-4 border-gray-500 shadow-sm hidden lg:block ">
+                <div class="flex flex-col  lg:flex-row"  >
+                    
+                    <div class=" lg:w-3/12  ">
+                       ชื่อ
+                    </div>
+                
+                    <div class=" lg:w-3/12 ">
+                        หน่วยงาน/สาขา
+                    </div>
+                    <div class=" lg:w-1/12 ">
+                        สถานะ
+                    </div>
+                    <div class=" lg:w-3/12 ">
+                        วันที่แก้ไขข้อมูลล่าสุด
+                    </div>
+                    <div class=" lg:w-2/12 ">
+                        ::
+                    </div>
+                   
+                </div>     
+            </div>
+        </div>
+        <!-- end head table -->
+
+        <div class=" " >
+         
+                <div v-for="(user,index_user) in  users.data" :key=index_user :value="user.id"
+                    class="w-full border-b-2 my-2  border-gray-500 shadow-sm "
                 >
-                <label class=" text-lg font-bold ">รายชื่อผู้ใช้งานทั้งหมด:</label>
-                <div v-for="(user,index_user) in  users" :key=index_user :value="user.id"
-                    class=" bg-white p-2 my-2  lg:flex lg:justify-between border-b-2  border-gray-300 "
-                >
-                    <div class=" flex flex-col lg:flex-row  lg:justify-between">
-                        <div>
-                            {{index_user+1}}. {{user.name}} ({{user.unit.unitname}})
-                        </div>
-                        <div>
-                            <label class=" p-2 text-blue-600">สถานะ:</label>
-                            <label class=" underline underline-offset-2">{{user.status_name}}</label>
+
+                    <div class="flex flex-col  lg:flex-row   "  >
+                    
+                        <div class=" bg-green-50 lg:bg-transparent lg:w-3/12 ">
                             
+                            <div >
+                                <!-- {{row_start(users.from,index_user)}}.  -->
+                                {{users.from+index_user}}.
+                               {{user.name}} 
+                            </div>
+                           
                         </div>
-                        <!-- <div>
-                            <label class=" p-2 text-blue-600">สิทธิ:</label>
-                            <label class=" bg-red-100">{{user.unit.unitname}}</label>
-                            
-                        </div> -->
-                        <div class="">
-                                <label  class=" mx-2  text-xs ">
-                                    แก้ไขล่าสุดเมื่อ: 
-                                    {{dayjs(user.updated_at).locale('th').format('D MMM BBBB H:mm')}}
+
+                        <div class=" bg-green-50 lg:bg-transparent lg:w-3/12 lg:text-xs">
+                            <label class="">{{user.unit.unitname}}</label>
+                        </div>
+
+                        <div class=" bg-green-50 lg:bg-transparent lg:w-1/12 ">
+                            <label for="" class="   lg:hidden">สถานะ:</label> 
+                            <label class="">{{user.status_name}}</label>
+                        </div>
+
+                        <div class=" bg-green-50 lg:bg-transparent lg:w-3/12 lg:text-xs">
+                            <label for="" class="   lg:hidden">วันที่แก้ไขข้อมูลล่าสุด:</label> 
+                            <label  class=" mx-2  text-xs ">
+                                {{dayjs(user.updated_at).locale('th').format('D MMM BBBB H:mm')}}
                                     น.
-                                </label>
+                            </label>
+                        </div>
+                        <div class=" flex  bg-green-50 lg:bg-transparent lg:w-2/12 " >
+                            
+                            <a :href="route('show-detail-user',user.slug)" class="  rounded-md shadow-md bg-yellow-200" >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 bg-yellow-200">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                </svg>
+                            </a>
+
+                            <a :href="route('show-log',user.slug)" class=" mx-2  rounded-md shadow-md bg-blue-300" >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+
+                            </a>
+                    
+                            <!-- <a :href="route('show-log',user.slug)" class=" px-4 mx-2 rounded-md shadow-md bg-cyan-200" >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6  bg-cyan-200">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+
+                            </a> -->
+                            <!-- <button type="submit" 
+                                class="   ml-4 px-2 text-md  bg-red-500 hover:bg-red-700 text-white  border border-red-500  rounded-md shadow-md"
+                                @click="confirmDeleteStock()"
+                                >
+                                ลบ
+                            </button> -->
                         </div>
                        
-                        <!-- <label for="" v-if="stock.status==1" class=" ml-4 "> สถานะ:ใช้งาน</label> -->
                     </div>
-                    <div class="flex mx-2 justify-center   px-2  " >
-                        
-                        <a :href="route('show-detail-user',user.slug)" class=" px-4 mx-2 rounded-md shadow-md bg-yellow-200" >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 bg-yellow-200">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                        </a>
-                  
-                        <!-- <a :href="route('show-log',user.slug)" class=" px-4 mx-2 rounded-md shadow-md bg-cyan-200" >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6  bg-cyan-200">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-
-                        </a> -->
-                        <!-- <button type="submit" 
-                            class="   ml-4 px-2 text-md  bg-red-500 hover:bg-red-700 text-white  border border-red-500  rounded-md shadow-md"
-                            @click="confirmDeleteStock()"
-                            >
-                            ลบ
-                        </button> -->
-                    </div>
-                    <!-- <div class="flex mx-2 justify-center bg-cyan-200 px-2 rounded-md shadow-md " >
-                        
-                  
-                        <a :href="route('show-log',user.slug)" >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-
-                        </a>
-                   
-                    </div> -->
-                   
                 </div>
   
             </div>
-      
-
+     
         <ModalUpToYou :isModalOpen="confirm_add_user" >
             <template v-slot:header>
                 <p class="text-md font-bold text-red-600 ">คุณต้องการเพิ่มผู้ใช้งานนี้ใช่หรือไม่?</p> 
@@ -280,6 +311,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { useForm } from '@inertiajs/inertia-vue3';
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
+import PaginateMe from '@/Components/PaginateMe.vue';
 import { ref } from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
@@ -291,12 +323,11 @@ const props =defineProps({
     units:Object,
     roles:Object,
     users:Object,
+    user_change_logs:{type:Array},
  
     //stock_item_import: {type:Array, default:[]},
     
 })
-
-
 
 const stocks_unit = ref('');
 const employeeStatus=ref('');

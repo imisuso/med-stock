@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ItemTransaction;
+use App\Models\LogActivity;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Stock;
@@ -41,25 +42,34 @@ class StockController extends Controller
                         ],
                 ]);
         }
-        $stock_items = StockItem::query()
-                                ->when(request()->input('search'), function ($query, $search) {
-                                    $query->where('item_name', 'like', "%{$search}%")
-                                    ->orWhere('business_name','like',"%{$search}%");
-                                })
-                                ->where('stock_id',$user->unitid)
-                                ->where('status','!=',9)
-                                ->orderBy('item_name')
-                                ->paginate(10)
-                                ->withQueryString();
-                             //   ->get();
+        // logger($user->unitid);
+        // logger(request()->input('search'));
+
+        $query = StockItem::query()->where('stock_id',$user->unitid)
+                                    ->where('status','!=',9)
+                                    ->filterBySearch(request()->search);
+     
+
+             $stock_items = $query->orderBy('item_name')
+                                    ->paginate(10)
+                                    ->withQueryString();
+         
       
         foreach($stock_items as $key=>$stock_item){
-            $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
-                                            ->where('action','checkin')
-                                            ->where('status','active')
-                                            ->latest()
-                                            ->first();
+           
+            // $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+            //                                 ->where('action','checkin')
+            //                                 ->where('status','active')
+            //                                 ->latest()
+            //                                 ->first();
+
+            $checkin_last = $stock_item->itemTransactionCheckinLatest();
+            $item_balance = $stock_item->itemBalance();
+            //  logger('checkin_last==>');
+            //  logger($checkin_last->date_action);
             $stock_items[$key]['checkin_last'] = $checkin_last;
+            $stock_items[$key]['item_balance'] = $item_balance;
+          
         }
         $unit = Unit::where('unitid',$user->unitid)->first();
       
@@ -70,7 +80,8 @@ class StockController extends Controller
   
         request()->session()->flash('mainMenuLinks', $main_menu_links);
         // request()->session()->flash('user', $user);
-        //logger($stock_items);
+        // logger('stock_items==>');
+        // logger($stock_items);
         return Inertia::render('Stock/index',[
                                 'stocks'=>$stocks,
                                 'stock_items'=>$stock_items,
@@ -124,8 +135,26 @@ class StockController extends Controller
             'unit_id'=>$request->unit,
             'user_id'=>$user->id
             ]);
+
+            $detail_log =array();
+            $detail_log['stockname'] =$request->stock_name_thai;
+
+            //  dd($detail_log);
+
+            $log_activity = LogActivity::create([
+                'user_id' => $user->id,
+                'sap_id' => $user->sap_id,
+                'function_name' => 'manage_stock',
+                'action' => 'add_stock',
+                'detail' => $detail_log,
+            ]);
+
+            // dd($log_activity);
+            $msg_notify_test = $user->name.'  เพิ่มคลังใหม่ชื่อ '.$request->stock_name_thai.' สำเร็จ';
+            Logger($msg_notify_test);
+
         return Redirect::route('stock-add')
-            ->with(['status' => 'success', 'msg' => 'บันทึกเรียบร้อยแล้ว']);
+                        ->with(['status' => 'success', 'msg' => 'บันทึกเรียบร้อยแล้ว']);
     }
 
     /**
@@ -199,6 +228,25 @@ class StockController extends Controller
            
             /****************  insert log ****************/
           //  logger($old_changes);
+
+          $detail_log =array();
+          $detail_log['stockname'] =$stock->stockname;
+
+          $user = Auth::user();
+
+          $log_activity = LogActivity::create([
+              'user_id' => $user->id,
+              'sap_id' => $user->sap_id,
+              'function_name' => 'manage_stock',
+              'action' => 'edit_stock',
+              'detail' => $detail_log,
+              'old_value' => $old_changes,
+          ]);
+
+          // dd($log_activity);
+          $msg_notify_test = $user->name.'  แก้ไขข้อมูลคลัง '.$stock->stockname.' สำเร็จ';
+          Logger($msg_notify_test);
+
             return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
         }
             /****************  insert log ****************/

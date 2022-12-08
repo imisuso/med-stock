@@ -26,6 +26,8 @@ class ItemTransactionController extends Controller
     public function index($stock_id,$year)
     {
        // dd($year);
+        //logger('ItemTransactionController index');
+        // logger(request()->all());
         $stock_budget = budget::select('stock_id','budget_add','year')
                         ->where(['stock_id'=>$stock_id,'year'=>$year,'status'=>'on'])
                         ->with('stock:id,stockname,status')
@@ -36,26 +38,28 @@ class ItemTransactionController extends Controller
           //  dd('not found');
             return Redirect::back()->with(['status' => 'error', 'msg' => 'ไม่พบข้อมูลงบประมาณ']);
         }
-        $orders = ItemTransaction::select('pur_order')
+        $all_orders = ItemTransaction::select('pur_order')
                                     ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])
                                     ->groupBy('pur_order')
                                     ->orderBy('date_action')
-                                    ->get();
+                                    ->paginate(10)
+                                    ->withQueryString();
+                                    //->get();
 
         /* รวมยอดเงินการสั่งซื้อทีละใบ */
 
        // Logger($orders->count());
-        if($orders->count() > 0)
+        if($all_orders->count() > 0)
         {
             //dd('has order');
-            $all_orders = array();
+           // $all_orders = array();
             $budget_used = 0.0;
             $budget_balance = 0.0;
          
-            foreach($orders as $key=>$order){
+            foreach($all_orders as $key=>$order){
              // Logger($order);
               // dd($order);
-             //   Logger($order->pur_order);
+               // Logger($order->pur_order);
                 $sum_price = 0.0;
                 $order_items = ItemTransaction::select('id','item_count','price','date_action','order_type')
                                                 ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])
@@ -158,15 +162,15 @@ class ItemTransactionController extends Controller
             return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
         }
 
-        $balance = $stock_item->item_sum - $request->confirm_item_count;
-     //   Log::info($balance);
-        try{
-            StockItem::whereSlug($request->confirm_item_slug)->update(['item_sum'=>$balance]);
-        }catch(\Illuminate\Database\QueryException $e){
-             //rollback
-            //return redirect()->back();
-            return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
-        }
+        // $balance = $stock_item->item_sum - $request->confirm_item_count;
+        //     //   Log::info($balance);
+        // try{
+        //     StockItem::whereSlug($request->confirm_item_slug)->update(['item_sum'=>$balance]);
+        // }catch(\Illuminate\Database\QueryException $e){
+        //      //rollback
+        //     //return redirect()->back();
+        //     return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
+        // }
 
            /****************  insert log ****************/
         
@@ -200,42 +204,65 @@ class ItemTransactionController extends Controller
      */
     public function show(StockItem $stock_item)
     {
-        //Log::info('---------show transaction------------');
-      //  Log::info($stock_item);
+      //Log::info('---------ItemTransactionController show ------------');
+     //  Log::info($stock_item);
       //  Log::info($stock_item->unitCount->countname);
-        $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
-                                ->where('action','checkin')
-                                ->where('status','active')
-                                ->latest()
-                                ->first();
-
-        $item_trans = ItemTransaction::with('User:id,name')
-                                            ->where('stock_item_id',$stock_item->id)
-                                            ->whereIn('status',['active','canceled'])
-                                            ->orderBy('date_action')
-                                            ->get();
-        //return "list checkout";
-       // $stock_item = StockItem::where('id',$stock_item->id)->first();
-        $stock = Stock::where('id',$stock_item->stock_id)->first();
+        // $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+        //                         ->where('action','checkin')
+        //                         ->where('status','active')
+        //                         ->latest()
+        //                         ->first();
+        $checkin_last = $stock_item->itemTransactionCheckinLatest();
+        $item_balance = $stock_item->itemBalance();
+      //  logger('checkin_last-->');
+      //  logger($checkin_last);
         $user = Auth::user();
         $main_menu_links = [
             'is_admin_division_stock'=> $user->can('view_master_data'),
-           // 'user_abilities'=>$user->abilities,
+          // 'user_abilities'=>$user->abilities,
           ];
-  
-        request()->session()->flash('mainMenuLinks', $main_menu_links);
-       
-        return Inertia::render('Stock/ItemDetail',[
-                                'stock_item'=>$stock_item,
-                                'stock' => $stock,
-                                'item_trans' => $item_trans,
-                                'checkin_last'=>$checkin_last,
-                                'count_name'=>$stock_item->unit_count,
-                                'can_abilities'=>$user->abilities,
-                                'can'=>[
-                                        'checkout_item'=>$user->can('checkout_item')
-                                        ],
-                                ]);
+        if(!$checkin_last){
+            //dd('notfound');
+            $stock ='';
+            $item_trans='';
+            return Inertia::render('Stock/ItemDetail',[
+                                              'stock_item'=>$stock_item,
+                                              'stock' => $stock,
+                                              'item_trans' => $item_trans,
+                                              'checkin_last'=>$checkin_last,
+                                              'item_balance'=>$item_balance,
+                                              'count_name'=>$stock_item->unit_count,
+                                              'can_abilities'=>$user->abilities,
+                                              'can'=>[
+                                                      'checkout_item'=>$user->can('checkout_item')
+                                                      ],
+                                              ]);
+        }else{
+            $item_trans = ItemTransaction::with('User:id,name')
+                                                ->where('stock_item_id',$stock_item->id)
+                                                ->whereIn('status',['active','canceled'])
+                                                ->orderBy('date_action')
+                                                ->get();
+            //return "list checkout";
+          // $stock_item = StockItem::where('id',$stock_item->id)->first();
+            $stock = Stock::where('id',$stock_item->stock_id)->first();
+          
+      
+            request()->session()->flash('mainMenuLinks', $main_menu_links);
+          
+            return Inertia::render('Stock/ItemDetail',[
+                                    'stock_item'=>$stock_item,
+                                    'stock' => $stock,
+                                    'item_trans' => $item_trans,
+                                    'checkin_last'=>$checkin_last,
+                                    'item_balance'=>$item_balance,
+                                    'count_name'=>$stock_item->unit_count,
+                                    'can_abilities'=>$user->abilities,
+                                    'can'=>[
+                                            'checkout_item'=>$user->can('checkout_item')
+                                            ],
+                                    ]);
+        }
     }
 
     /**
@@ -289,15 +316,15 @@ class ItemTransactionController extends Controller
 
     
 
-      $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
-      $old_changes =array();
-      $old_changes['stock_item_id'] = $item_tran->stock_item_id;
-      $old_changes['item_sum_old'] = $stock_item->item_sum;
+    //   $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
+    //   $old_changes =array();
+    //   $old_changes['stock_item_id'] = $item_tran->stock_item_id;
+    //   $old_changes['item_sum_old'] = $stock_item->item_sum;
 
-      $new_item_balance = $stock_item->item_sum + $item_tran->item_count;
-     // logger($new_item_balance);
-      $stock_item->item_sum = $new_item_balance;
-      $stock_item->save();
+    //   $new_item_balance = $stock_item->item_sum + $item_tran->item_count;
+    //  // logger($new_item_balance);
+    //   $stock_item->item_sum = $new_item_balance;
+    //   $stock_item->save();
 
     
     
@@ -317,12 +344,65 @@ class ItemTransactionController extends Controller
             'function_name' => 'checkout_item',
             'action' => 'cancel_checkout',
             'detail'=> $detail_log,
-            'old_value'=> $old_changes,
+            //'old_value'=> $old_changes,
         ]);
 
         $msg_notify_test = $use_in->name.'  ยกเลิกการเบิกพัสดุสำเร็จ';
         Logger($msg_notify_test);
         return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการเบิกพัสดุสำเร็จ']);
+       
+    }
+
+    public function cancelCheckin()
+    {
+
+      //dd(Request()->input('item_tran_id'));
+      $item_tran = ItemTransaction::whereId(Request()->input('item_tran_id'))->first();
+      $item_tran->status = 'canceled';
+      $item_tran->save();
+
+    
+
+      $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
+      $old_changes =array();
+      $old_changes['stock_item_id'] = $item_tran->stock_item_id;
+      // $old_changes['item_sum_old'] = $stock_item->item_sum;
+
+      //$new_item_balance = $stock_item->item_sum - $item_tran->item_count;
+
+      $new_item_balance = $stock_item->itemBalance();
+
+      if($new_item_balance==0){  //ต้องไป cancel พัสดุนี้ที่ stock_items ด้วย
+        //  $stock_item->item_sum = $new_item_balance;
+          $stock_item->status = 9;
+          $stock_item->save();
+      }else{
+           // logger($new_item_balance);
+         // $stock_item->item_sum = $new_item_balance;
+          $stock_item->save();
+      }
+    
+      /****************  insert log ****************/
+        // logger($old_changes);
+        $use_in = Auth::user();
+
+        $detail_log =array();
+        $detail_log['table'] ='item_transactions';
+
+      //  dd($detail_log);
+
+        $log_activity = LogActivity::create([
+            'user_id' => $use_in->id,
+            'sap_id' => Request()->input('item_tran_id'),
+            'function_name' => 'checkin_item',
+            'action' => 'cancel_checkin',
+            'detail'=> $detail_log,
+            'old_value'=> $old_changes,
+        ]);
+
+        $msg_notify_test = $use_in->name.'  ยกเลิกการนำเข้าพัสดุสำเร็จ';
+        Logger($msg_notify_test);
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการนำเข้าพัสดุสำเร็จ']);
        
     }
 }

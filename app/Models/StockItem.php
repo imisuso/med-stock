@@ -28,7 +28,7 @@ class StockItem extends Model
         'pur_order',
         'invoice_number',
         'business_name',
-        'status' ,     // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
+        'status' ,     // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ,9=cancel
         'profile',
     ];
 
@@ -59,7 +59,33 @@ class StockItem extends Model
 
     public function itemTransactionCheckinLatest()
     {
-        return ItemTransaction::where('stock_item_id',$this->id)->where('status','active')->latest()->first();
+        return ItemTransaction::where('stock_item_id',$this->id)
+                                ->whereStatus('active')
+                                ->whereAction('checkin')
+                                ->orderBy('date_action','desc')
+                                ->first();
+    }
+    public function itemBalance()
+    {
+        $checkin = ItemTransaction::where('stock_item_id',$this->id)
+                                    ->whereStatus('active')
+                                    ->whereAction('checkin')
+                                    ->sum('item_count');
+        $checkout = ItemTransaction::where('stock_item_id',$this->id)
+                                    ->whereStatus('active')
+                                    ->whereAction('checkout')
+                                    ->sum('item_count');
+        return $checkin - $checkout;
+    }
+
+    public function scopeFilterbySearch($query, $search)
+    {
+
+        $query->where(function ($query) use ($search) {
+            $query->where('item_name', 'like', "%{$search}%")
+                ->orWhere('item_code', 'like', "%{$search}%")
+                ->orWhere('business_name', 'like', "%{$search}%");
+        });
     }
 
 
@@ -70,51 +96,60 @@ class StockItem extends Model
        //$stock_items = loadCSV('business_load_utf8');
       //  \Log::info('FILENAME==>'.$fileName);
         //stocks_id,item_code,item_name,unit_count,item_receive,date_receive,date_expire,price,catalog_number,lot_number
+
+        if(app()->isProduction())
+            $user_add = User::where('sap_id',10030727)->first();
+        else
+             $user_add = User::where('name','raksak.lek')->first();
+
+        if(!$user_add){
+            return "not found user admin_med_stock";
+        }
+        
         foreach($stock_items as $stock_item){
-           // Log::info($stock_item['pur_order']);
-          //  Log::info($stock_item['business_name']);
+        //     Log::info($stock_item);
+        //     Log::info($stock_item['stock_id']);
+        //    Log::info($stock_item['material_number']);
            StockItem::create([
                                 'stock_id'=>$stock_item['stock_id'],
-                                'user_id'=>6,
-                                'item_code'=>$stock_item['item_code'],
+                                'user_id'=>$user_add->id,
+                                'item_code'=>$stock_item['material_number'],
                                 'item_name'=>$stock_item['item_name'],
                                 'unit_count'=>$stock_item['unit_count'],
-                                'item_sum'=>$stock_item['item_receive'],
+                                'item_sum'=>0,
                                 'price'=>$stock_item['price'],
-                                'catalog_number'=>$stock_item['catalog_number'],
-                                'lot_number'=>$stock_item['lot_number'],
                                 'pur_order'=>$stock_item['pur_order'],
                                 'invoice_number'=>$stock_item['invoice_number'],
-                                'business_name'=>$stock_item['business_name'],
+                                'business_name'=>$stock_item['vendor'],
+                                'status'=>$stock_item['order_type'],
                             ]);
 
-            $stock_item_id = StockItem::select('id')->where('item_code',$stock_item['item_code'])->first();
+            $stock_item_id = StockItem::select('id')
+                                        ->where('item_code',$stock_item['material_number'])
+                                        ->where('status','!=',9)
+                                        ->first();
            
-            // $table->string('pur_order')->nullable();
-            // $table->string('invoice_number')->nullable();
-            // $table->string('business_name')->nullable();
-            // $table->integer('order_type')->default(1); 
+      
             ItemTransaction::create([
                                 'stock_id' =>$stock_item['stock_id'],
                                 'stock_item_id'=>$stock_item_id->id,
-                                'user_id'=>6,
-                                'year'=> 2021,
-                                'month'=>10,
+                                'user_id'=>$user_add->id,
+                                'year'=> 2022,
+                                'month'=>1,
                                 'date_action'=>$stock_item['date_receive'],
                                 'action'=>'checkin',
                                 'date_expire'=>$stock_item['date_expire'],
                                 'item_count'=>$stock_item['item_receive'],
                                 'status'=>'active',
                                 'price'=>$stock_item['price'],
-                                'catalog_number'=>$stock_item['catalog_number'],
-                                'lot_number'=>$stock_item['lot_number'],
                                 'pur_order'=>$stock_item['pur_order'],
                                 'invoice_number'=>$stock_item['invoice_number'],
-                                'business_name'=>$stock_item['business_name'],
-                                // 'profile'=>['catalog_number'=>$stock_item['catalog_number'],
-                                //             'lot_number'=>$stock_item['lot_number'],                                          
-                                //             'price'=>$stock_item['price'],
-                                //             ],
+                                'business_name'=>$stock_item['vendor'],
+                                'order_type'=>$stock_item['order_type'],
+                                'profile'=>[
+                                        'import'=>false,
+                                        'admin_load_data'=>true,
+                                    ],
                             ]);
         }
     }

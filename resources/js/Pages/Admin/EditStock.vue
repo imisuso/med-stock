@@ -92,6 +92,7 @@
             
                 <div class="  ">
                     <button type="submit" 
+                        v-if="$page.props.auth.user.roles[0].name=='admin_med_stock'"
                         class=" w-full flex justify-center py-2  text-md  bg-green-500 hover:bg-green-700 text-white  border border-green-500 rounded"
                         @click="confirmEditStock()"
                         >

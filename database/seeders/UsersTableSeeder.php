@@ -17,37 +17,24 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $users = [
-            'officer.ambu',
-            'officer.hypertension',
-            'officer.endocrine',
-            'super_officer.med',
-           //'admin_division_stock.ambu',
-            'admin_med_stock.stockmed',
-            'admin_it.itmed',
-            'officer.id',
-            'officer.nephro',
-            'officer.hemato',
-            'officer.chest',
-        ];
-
-      //  $password = Hash::make('11111111');
-        $faker = Factory::create();
+    
+        $users = array(
+            ['sap_id' => '10022743', 'unitid' => '33','name'=> 'นาง ปนัดดา เที่ยงรอด'],
+            ['sap_id' => '10035479', 'unitid' => '33','name'=> 'นางสาว ศันสนีย์ สุ่มกล่ำ'],
+        );
+        $profile['user_id_in'] = 0;
+        $profile['user_name_in'] ='first load';
         foreach ($users as $user) {
-            $division = explode('.',$user);
-            $unit = Unit::select('unitid','unitname')->where('shortname',$division[1])->first();
-            $profile['division_name'] = $unit->unitname;
-            $profile['division_id'] =$unit->unitid;
-            $user = User::create([
-                        'sap_id'=>$faker->numerify('100#####'),
-                        'name' => $user,
-                        'unitid' => $unit->unitid,
-                     //   'email' => $user.'@med.si',
-                      //  'password' => $password,
-                        'profile'=> $profile
-                    ]);
+           
+            $user_new = User::create([
+                'sap_id'=>$user['sap_id'],
+                'unitid' => $user['unitid'],
+                'name' => $user['name'],
+                'status' => '1',
+                'profile'=> $profile
+            ]);
 
-           $user->assignRole($division[0]);
+            $user_new->assignRole('admin_it');
         }
     }
 }

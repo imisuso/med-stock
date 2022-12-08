@@ -57,7 +57,7 @@
                 
                     <div class="p-2 text-md font-bold text-gray-900">
                         {{itemIndex+1}}.
-                        SAP:{{stockItem.item_code}} 
+                        รหัสวัสดุ:{{stockItem.item_code}} 
                         <label for="" class="text-blue-600">{{stockItem.item_name}}</label>
                         (หน่วย: {{stockItem.unit_count}})
                         <Link :href="route('list-stock-item',stockItem)">
@@ -78,10 +78,11 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                                 </svg>
-                                {{stockItem.item_sum}}
+                                <!-- {{stockItem.item_sum}} -->
+                                {{price_format(stockItem.item_balance)}}
                                 </span>
                             </p> 
-                            <svg v-if="stockItem.item_sum < 6"
+                            <svg v-if="stockItem.item_balance < 6"
                                 xmlns="http://www.w3.org/2000/svg" 
                                 viewBox="0 0 24 24" fill="currentColor" 
                                 class="w-6 h-6 text-red-500 "
@@ -91,7 +92,10 @@
                                 </svg>
                         </div>
                         <div class="flex ml-2"> ราคาต่อหน่วย : 
-                            <p class=" ml-2 text-blue-600">{{stockItem.price}}</p> 
+                            <p class=" ml-2 text-blue-600">
+                                <!-- {{stockItem.price}} -->
+                                {{price_format(stockItem.price)}} บาท
+                            </p> 
                         </div>
                         <div class="flex ml-2"> Pur.Order : 
                             <p class=" ml-2 text-blue-600">{{stockItem.pur_order}}</p> 
@@ -115,7 +119,7 @@
                     </div>
                 
                 
-                    <div v-if="canAbility.checkout_item && stockItem.item_sum!=0" class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
+                    <div v-if="canAbility.checkout_item && stockItem.item_balance!=0" class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
                         <div class=" m-2">
                              <div  class="flex justify-start " >
                                 <svg xmlns="http://www.w3.org/2000/svg" v-if="date_alert" class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
@@ -145,6 +149,7 @@
                                     class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
                                     :class="[unitcheckout_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
                                 >
+                                <label v-if="msg_alert_checkout">{{msg_alert}}</label>
                             </div>
                           
                         </div>
@@ -152,7 +157,7 @@
                         
                     </div>
 
-                    <div v-if="canAbility.checkout_item && stockItem.item_sum!=0" class="flex flex-col lg:flex-row px-2 py-2  ">
+                    <div v-if="canAbility.checkout_item && stockItem.item_balance!=0" class="flex flex-col lg:flex-row px-2 py-2  ">
                       
                         <button
                             class=" flex justify-center px-4 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
@@ -224,6 +229,7 @@ const confirm_checkout=ref(false);
 const date_alert=ref(false);
 const unitcheckout_alert=ref(false);
 const msg_alert=ref('');
+const msg_alert_checkout=ref(false);
 
 const form = useForm({
     unit_checkout:0,
@@ -236,8 +242,15 @@ const form = useForm({
     confirm_item_count:'',
    // stock_item_sum:[], //เอาตัวแปร จาก props มาใช้
 })
+
+const price_format=(price)=>{
+   // console.log(price)
+   let  price_show = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return price_show;
+  // return '1,200.5';
+}
 const confirmCheckout=(stock_item)=>{
-    console.log('confirmCheckout');
+   // console.log('confirmCheckout');
    // console.log(form.date_checkout[index]);
     if(form.date_checkout.length==0){
         date_alert.value=true
@@ -257,6 +270,16 @@ const confirmCheckout=(stock_item)=>{
         return false;
     }else{
         unitcheckout_alert.value=false;
+    }
+
+    if(form.unit_checkout > stock_item.item_balance){
+        unitcheckout_alert.value=true
+        msg_alert_checkout.value=true
+        msg_alert.value="จำนวนที่เบิกต้องไม่มากกว่าจำนวนที่มี";
+        return false;
+    }else{
+        unitcheckout_alert.value=false
+        msg_alert_checkout.value=false
     }
     
     confirm_checkout.value = true;
