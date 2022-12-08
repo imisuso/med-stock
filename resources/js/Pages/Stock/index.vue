@@ -67,7 +67,7 @@
                     :stockItem="stock_item"
                     :canAbility="can"
                 /> -->
-                 
+            
                 <div v-for="(stock_item,key) in stock_items.data" :key="stock_item.id"
                     class=" m-2 p-2"
                     >

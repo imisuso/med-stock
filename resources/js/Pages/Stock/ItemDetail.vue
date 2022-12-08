@@ -43,7 +43,7 @@
                     
                         <div class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
                             <div class="flex ml-2"> จำนวนคงเหลือ :
-                                <p class=" ml-2 text-red-600">{{stock_item.item_sum}}</p>     
+                                <p class=" ml-2 text-red-600">{{item_balance}}</p>     
                             </div>
                             <div class="flex ml-2"> Pur.Order : 
                                     <p class=" ml-2 text-blue-600">{{stock_item.pur_order}}</p> 
@@ -53,13 +53,15 @@
                                 </div>
                             <div class="flex ml-2" v-if="checkin_last"> วันหมดอายุ : 
                                 <p class=" ml-2 text-blue-600">
-                                        {{checkin_last.date_expire}}
+                                        <!-- {{checkin_last.date_expire}} -->
+                                        {{dayjs(checkin_last.date_expire).locale('th').format('D MMMM BBBB')}}
                                     </p> 
                             </div>
                             
                             <div class="flex ml-2"  v-if="checkin_last"> วันที่รับเข้า : 
                                 <p class=" ml-2 text-blue-600">
-                                    {{checkin_last.date_action}}
+                                    <!-- {{checkin_last.date_action}} -->
+                                    {{dayjs(checkin_last.date_action).locale('th').format('D MMMM BBBB')}}
                                 </p> 
                             </div>
                         
@@ -228,6 +230,7 @@ const props =defineProps({
         stock:{ type: Object, required: true },
         item_trans:Array,
         checkin_last:{ type: Object },
+        item_balance:{ type: Number },
         count_name:String,
         can_abilities: { type: Object, required: true },
         can: { type: Object, required: true },

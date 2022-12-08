@@ -50,7 +50,7 @@
       <div v-if="$page.props.auth.abilities.includes('manage_master_data') || $page.props.auth.user.roles[0].name == 'super_officer'" class="mb-4 px-4 text-sm">
         <p class="pl-4  font-semibold mb-1">เมนูหลัก</p>
 
-        <div v-if="$page.props.auth.abilities.includes('import_item_excel')"
+        <div 
           class="w-full flex items-center justify-between text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" @click="managementMenuOpen = !managementMenuOpen">
           <div class="flex flex-row">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">

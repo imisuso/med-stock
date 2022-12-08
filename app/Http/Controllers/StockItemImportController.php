@@ -307,10 +307,10 @@ class StockItemImportController extends Controller
                        // return redirect()->back();
                         return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
                     }
-                //*****update stock_item
-                $item_add = (int)$has_old_item->item_sum + (int)$item['item_receive'];
-                $has_old_item->item_sum = $item_add;
-                $has_old_item->save();
+                //*****update stock_item  ไม่ใช้แล้ว
+                // $item_add = (int)$has_old_item->item_sum + (int)$item['item_receive'];
+                // $has_old_item->item_sum = $item_add;
+                // $has_old_item->save();
 
             }else{
                // Logger('no item');

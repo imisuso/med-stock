@@ -1104,6 +1104,22 @@ class PrintFormController extends Controller
                                                         ->with('stockItem:id,item_name,item_code,item_sum')
                                                         ->with('user:id,name')
                                                         ->orderBy('stock_item_id')->get();
+
+        foreach($stock_item_checkouts as $key=>$tran_checkout){
+            //  Log::info($tran_checkout->stock_item_id);
+          
+
+                $checkin = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
+                                        ->whereStatus('active')
+                                        ->whereAction('checkin')
+                                        ->sum('item_count');
+                $checkout = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
+                                        ->whereStatus('active')
+                                        ->whereAction('checkout')
+                                        ->sum('item_count');
+                $stock_item_checkouts[$key]['item_balance'] = $checkin - $checkout;
+                
+        }
         $y=48;
         $x=15;
         $pdf->SetFont('THSarabunNew');
@@ -1170,7 +1186,7 @@ class PrintFormController extends Controller
             if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) {
                 $pdf->SetXY(255, $y);
                 $pdf->SetFontSize('14');
-                $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item->stockItem['item_sum'],0) ));
+                $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item->item_balance,0) ));
             }
           
             $tmp_item_code = $item->stockItem['item_code'];

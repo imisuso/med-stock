@@ -59,7 +59,23 @@ class StockItem extends Model
 
     public function itemTransactionCheckinLatest()
     {
-        return ItemTransaction::where('stock_item_id',$this->id)->where('status','active')->latest()->first();
+        return ItemTransaction::where('stock_item_id',$this->id)
+                                ->whereStatus('active')
+                                ->whereAction('checkin')
+                                ->orderBy('date_action','desc')
+                                ->first();
+    }
+    public function itemBalance()
+    {
+        $checkin = ItemTransaction::where('stock_item_id',$this->id)
+                                    ->whereStatus('active')
+                                    ->whereAction('checkin')
+                                    ->sum('item_count');
+        $checkout = ItemTransaction::where('stock_item_id',$this->id)
+                                    ->whereStatus('active')
+                                    ->whereAction('checkout')
+                                    ->sum('item_count');
+        return $checkin - $checkout;
     }
 
     public function scopeFilterbySearch($query, $search)
@@ -80,7 +96,11 @@ class StockItem extends Model
        //$stock_items = loadCSV('business_load_utf8');
       //  \Log::info('FILENAME==>'.$fileName);
         //stocks_id,item_code,item_name,unit_count,item_receive,date_receive,date_expire,price,catalog_number,lot_number
-        $user_add = User::where('sap_id',10030727)->first();
+
+        if(app()->isProduction())
+            $user_add = User::where('sap_id',10030727)->first();
+        else
+             $user_add = User::where('name','raksak.lek')->first();
 
         if(!$user_add){
             return "not found user admin_med_stock";
@@ -96,7 +116,7 @@ class StockItem extends Model
                                 'item_code'=>$stock_item['material_number'],
                                 'item_name'=>$stock_item['item_name'],
                                 'unit_count'=>$stock_item['unit_count'],
-                                'item_sum'=>$stock_item['item_receive'],
+                                'item_sum'=>0,
                                 'price'=>$stock_item['price'],
                                 'pur_order'=>$stock_item['pur_order'],
                                 'invoice_number'=>$stock_item['invoice_number'],

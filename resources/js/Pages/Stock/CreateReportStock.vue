@@ -145,8 +145,8 @@
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  lg:hidden">จำนวนคงเหลือปัจจุบัน:</label>
                         <label class=" font-bold"> 
-                            {{item_sum_format(item_tran.stock_item['item_sum'])}}
-                        
+                            {{item_sum_format(item_tran.item_balance)}}
+                        <!-- {{item_tran.item_balance}} -->
                         </label>
                     </div>
                 </div>     

@@ -28,7 +28,7 @@ class AdminReportStockController extends Controller
     public function index($division_id)
     {
         //Log::info($division_id);
-       // logger('AdminReportStockController index');
+     //  logger('AdminReportStockController index');
         $user = Auth::user();
        // Logger($user);
      //   Logger($user->roles[0]['name']);
@@ -62,12 +62,18 @@ class AdminReportStockController extends Controller
 
         
         foreach($stock_items as $key=>$stock_item){
-            $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
-                                            ->where('action','checkin')
-                                            ->where('status','active')
-                                            ->latest()
-                                            ->first();
-            $stock_items[$key]['checkin_last'] = $checkin_last;
+            // $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+            //                                 ->where('action','checkin')
+            //                                 ->where('status','active')
+            //                                 ->latest()
+            //                                 ->first();
+            $checkin_last = $stock_item->itemTransactionCheckinLatest();
+            $item_balance = $stock_item->itemBalance();
+            //  logger('checkin_last==>');
+            //  logger($checkin_last->date_action);
+            $stock_items[$key]['checkin_last'] = $checkin_last->date_action;
+            $stock_items[$key]['item_balance'] = $item_balance;
+            //$stock_items[$key]['checkin_last'] = $checkin_last;
         }
         // $msg_notify_test = $user->name.' ดูจำนวนคงเหลือ '.$stock_selected_name->stockname;
         // Logger($msg_notify_test);
@@ -106,12 +112,19 @@ class AdminReportStockController extends Controller
 
 
             foreach($stock_items as $key=>$stock_item){
-                $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
-                                        ->where('action','checkin')
-                                        ->where('status','active')
-                                        ->latest()
-                                        ->first();
-                $stock_items[$key]['checkin_last'] = $checkin_last;
+                // $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+                //                         ->where('action','checkin')
+                //                         ->where('status','active')
+                //                         ->latest()
+                //                         ->first();
+                // $stock_items[$key]['checkin_last'] = $checkin_last;
+
+                $checkin_last = $stock_item->itemTransactionCheckinLatest();
+                $item_balance = $stock_item->itemBalance();
+                //  logger('checkin_last==>');
+                //  logger($checkin_last->date_action);
+                $stock_items[$key]['checkin_last'] = $checkin_last->date_action;
+                $stock_items[$key]['item_balance'] = $item_balance;
             }
             $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();
             $msg_notify_test = $user->name.' ดูจำนวนคงเหลือ '.$stock_selected_name->stockname;

@@ -14,6 +14,8 @@ return new class extends Migration
      */
     public function up()
     {
+       
+            
         Schema::create('agreements', function (Blueprint $table) {
             $table->id();
             $table->timestamp('date_effected')->index();
@@ -50,6 +52,9 @@ return new class extends Migration
      */
     public function down()
     {
+        if(app()->isProduction())
+            return;
+
         Schema::dropIfExists('agreement_user');
         Schema::dropIfExists('agreements');
     }

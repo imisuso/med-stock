@@ -45,6 +45,9 @@ class CreateItemTransactionsTable extends Migration
      */
     public function down()
     {
+        if(app()->isProduction())
+            return;
+
         Schema::dropIfExists('item_transactions');
     }
 }

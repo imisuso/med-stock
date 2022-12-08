@@ -57,14 +57,18 @@ class StockController extends Controller
       
         foreach($stock_items as $key=>$stock_item){
            
-            $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
-                                            ->where('action','checkin')
-                                            ->where('status','active')
-                                            ->latest()
-                                            ->first();
-            // logger('checkin_last==>');
-            // logger($checkin_last);
+            // $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+            //                                 ->where('action','checkin')
+            //                                 ->where('status','active')
+            //                                 ->latest()
+            //                                 ->first();
+
+            $checkin_last = $stock_item->itemTransactionCheckinLatest();
+            $item_balance = $stock_item->itemBalance();
+            //  logger('checkin_last==>');
+            //  logger($checkin_last->date_action);
             $stock_items[$key]['checkin_last'] = $checkin_last;
+            $stock_items[$key]['item_balance'] = $item_balance;
           
         }
         $unit = Unit::where('unitid',$user->unitid)->first();

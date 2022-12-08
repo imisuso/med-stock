@@ -162,15 +162,15 @@ class ItemTransactionController extends Controller
             return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
         }
 
-        $balance = $stock_item->item_sum - $request->confirm_item_count;
-     //   Log::info($balance);
-        try{
-            StockItem::whereSlug($request->confirm_item_slug)->update(['item_sum'=>$balance]);
-        }catch(\Illuminate\Database\QueryException $e){
-             //rollback
-            //return redirect()->back();
-            return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
-        }
+        // $balance = $stock_item->item_sum - $request->confirm_item_count;
+        //     //   Log::info($balance);
+        // try{
+        //     StockItem::whereSlug($request->confirm_item_slug)->update(['item_sum'=>$balance]);
+        // }catch(\Illuminate\Database\QueryException $e){
+        //      //rollback
+        //     //return redirect()->back();
+        //     return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
+        // }
 
            /****************  insert log ****************/
         
@@ -207,11 +207,13 @@ class ItemTransactionController extends Controller
       //Log::info('---------ItemTransactionController show ------------');
      //  Log::info($stock_item);
       //  Log::info($stock_item->unitCount->countname);
-        $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
-                                ->where('action','checkin')
-                                ->where('status','active')
-                                ->latest()
-                                ->first();
+        // $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+        //                         ->where('action','checkin')
+        //                         ->where('status','active')
+        //                         ->latest()
+        //                         ->first();
+        $checkin_last = $stock_item->itemTransactionCheckinLatest();
+        $item_balance = $stock_item->itemBalance();
       //  logger('checkin_last-->');
       //  logger($checkin_last);
         $user = Auth::user();
@@ -228,6 +230,7 @@ class ItemTransactionController extends Controller
                                               'stock' => $stock,
                                               'item_trans' => $item_trans,
                                               'checkin_last'=>$checkin_last,
+                                              'item_balance'=>$item_balance,
                                               'count_name'=>$stock_item->unit_count,
                                               'can_abilities'=>$user->abilities,
                                               'can'=>[
@@ -252,6 +255,7 @@ class ItemTransactionController extends Controller
                                     'stock' => $stock,
                                     'item_trans' => $item_trans,
                                     'checkin_last'=>$checkin_last,
+                                    'item_balance'=>$item_balance,
                                     'count_name'=>$stock_item->unit_count,
                                     'can_abilities'=>$user->abilities,
                                     'can'=>[
@@ -312,15 +316,15 @@ class ItemTransactionController extends Controller
 
     
 
-      $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
-      $old_changes =array();
-      $old_changes['stock_item_id'] = $item_tran->stock_item_id;
-      $old_changes['item_sum_old'] = $stock_item->item_sum;
+    //   $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
+    //   $old_changes =array();
+    //   $old_changes['stock_item_id'] = $item_tran->stock_item_id;
+    //   $old_changes['item_sum_old'] = $stock_item->item_sum;
 
-      $new_item_balance = $stock_item->item_sum + $item_tran->item_count;
-     // logger($new_item_balance);
-      $stock_item->item_sum = $new_item_balance;
-      $stock_item->save();
+    //   $new_item_balance = $stock_item->item_sum + $item_tran->item_count;
+    //  // logger($new_item_balance);
+    //   $stock_item->item_sum = $new_item_balance;
+    //   $stock_item->save();
 
     
     
@@ -340,7 +344,7 @@ class ItemTransactionController extends Controller
             'function_name' => 'checkout_item',
             'action' => 'cancel_checkout',
             'detail'=> $detail_log,
-            'old_value'=> $old_changes,
+            //'old_value'=> $old_changes,
         ]);
 
         $msg_notify_test = $use_in->name.'  ยกเลิกการเบิกพัสดุสำเร็จ';
@@ -362,16 +366,19 @@ class ItemTransactionController extends Controller
       $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
       $old_changes =array();
       $old_changes['stock_item_id'] = $item_tran->stock_item_id;
-      $old_changes['item_sum_old'] = $stock_item->item_sum;
+      // $old_changes['item_sum_old'] = $stock_item->item_sum;
 
-      $new_item_balance = $stock_item->item_sum - $item_tran->item_count;
+      //$new_item_balance = $stock_item->item_sum - $item_tran->item_count;
+
+      $new_item_balance = $stock_item->itemBalance();
+
       if($new_item_balance==0){  //ต้องไป cancel พัสดุนี้ที่ stock_items ด้วย
-          $stock_item->item_sum = $new_item_balance;
+        //  $stock_item->item_sum = $new_item_balance;
           $stock_item->status = 9;
           $stock_item->save();
       }else{
            // logger($new_item_balance);
-          $stock_item->item_sum = $new_item_balance;
+         // $stock_item->item_sum = $new_item_balance;
           $stock_item->save();
       }
     
