@@ -24,7 +24,7 @@ class StockItemImportController extends Controller
     public function index()
     { 
  
-    logger('StockItemImportController index');
+    //logger('StockItemImportController index');
 
     $user = Auth::user();
    // logger($user->unitid);
