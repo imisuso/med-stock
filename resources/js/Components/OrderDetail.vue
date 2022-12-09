@@ -21,7 +21,7 @@
                                <span v-if="orderList.status=='created'" >ยังไม่ส่งไปภาคฯ</span>
                                 <span v-if="orderList.status=='sended'" >รอภาคฯอนุมัติ</span>
                                 <span v-if="orderList.status=='approved'" >ภาคฯอนุมัติแล้ว</span>
-                                <span v-if="orderList.status=='checkin'"  >ตรวจรับพัสดุแล้ว</span>
+                                <span v-if="orderList.status=='checkin'"  >ตรวจรับวัสดุแล้ว</span>
                             </span>
                     </Link>
                 </div>
@@ -69,7 +69,7 @@
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                     <span class="inline-block w-1/3  font-bold">วันที่ตรวจรับพัสดุ</span> {{orderList.timeline['checkin_datetime']}}
+                     <span class="inline-block w-1/3  font-bold">วันที่ตรวจรับวัสดุ</span> {{orderList.timeline['checkin_datetime']}}
                 </div>
                 
                 <div>

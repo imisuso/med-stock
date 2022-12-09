@@ -6,12 +6,12 @@
       <div class=" flex justify-center ">
             <img src="../../images/logo_med_tranparent.gif" class=" w-2/3">
              <!-- <p class="font-semibold text-2xl text-blue-400 pl-4">
-          ระบบพัสดุ
+          ระบบวัสดุ
         </p> -->
       </div>
       <div class="w-full   flex px-4 items-center mb-4">
         <!-- <p class="font-semibold text-2xl text-blue-400 pl-4">
-          ระบบพัสดุ
+          ระบบวัสดุ
         </p> -->
       </div>
   <!-- {{$page.props.auth}} -->
@@ -23,7 +23,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" />
             </svg>
-            <span class="text-gray-700 ml-2">ตัดสต๊อกพัสดุ</span>
+            <span class="text-gray-700 ml-2">ตัดสต๊อกวัสดุ</span>
           </div>
         </Link>
         <Link :href="route('stock-item-import')" v-if="!$page.props.auth.abilities.includes('manage_master_data')">
@@ -31,7 +31,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
           </svg>
-            <span class="text-gray-700 ml-2">เพิ่มพัสดุลงคลังหลังจากตรวจรับ</span>
+            <span class="text-gray-700 ml-2">เพิ่มวัสดุลงคลังหลังจากตรวจรับ</span>
           </div>
         </Link>
         <Link :href="route('report-list',$page.props.auth.user.unitid)">
@@ -39,7 +39,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
           </svg>
-          <span class="text-gray-700 ml-2">ดูจำนวนคงเหลือในคลังพัสดุ</span>
+          <span class="text-gray-700 ml-2">ดูจำนวนคงเหลือในคลังวัสดุ</span>
         </div>
         </Link>
 
@@ -68,7 +68,7 @@
         <div :class="managementMenuOpen ? '' : 'hidden'">
           <Link :href="route('stock-add')">
             <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
-              <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>เพิ่ม/แก้ไข คลังพัสดุ</div>
+              <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>เพิ่ม/แก้ไข คลังวัสดุ</div>
             </div>
           </Link>
           <!-- <Link href="#">
@@ -90,7 +90,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
           </svg>
-            <span class="text-gray-700 ml-2">เพิ่มพัสดุลงคลังหลังจากตรวจรับ</span>
+            <span class="text-gray-700 ml-2">เพิ่มวัสดุลงคลังหลังจากตรวจรับ</span>
           </div>
         </Link>
 
@@ -99,7 +99,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
           </svg>
-          <span class="text-gray-700 ml-2">ดูจำนวนคงเหลือในคลังพัสดุ</span>
+          <span class="text-gray-700 ml-2">ดูจำนวนคงเหลือในคลังวัสดุ</span>
         </div>
         </Link>
 
@@ -108,7 +108,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
               </svg>
-              <span class="text-gray-700 ml-2">ดูข้อมูลการตัดสต๊อกพัสดุ</span>
+              <span class="text-gray-700 ml-2">ดูข้อมูลการตัดสต๊อกวัสดุ</span>
           </div>
         </Link>
 

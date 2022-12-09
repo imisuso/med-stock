@@ -133,7 +133,7 @@ class UserController extends Controller
           Logger($msg_notify_test);
         
         return Redirect::route('user-add')
-                        ->with(['status' => 'success', 'msg' => 'เพิ่มรหัสเจ้าหน้าที่นี้เป็นผู้ใช้งานระบบพัสดุแล้ว']);
+                        ->with(['status' => 'success', 'msg' => 'เพิ่มรหัสเจ้าหน้าที่นี้เป็นผู้ใช้งานระบบวัสดุแล้ว']);
 
 
     }

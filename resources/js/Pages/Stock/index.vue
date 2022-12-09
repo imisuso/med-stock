@@ -27,7 +27,7 @@
                     {{$page.props.unit.unitname}}
                 </div>
                 <div class="mt-3" >
-                    <label for="">เลือกคลังพัสดุ</label> 
+                    <label for="">เลือกคลังวัสดุ</label> 
                 </div>
                 <!-- {{stocks}} -->
                 <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
@@ -37,13 +37,13 @@
             </div>
           
             <!-- <div >
-                <input type="text" placeholder="พิมพ์ชื่อพัสดุหรือชื่อบริษัทที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
+                <input type="text" placeholder="พิมพ์ชื่อวัสดุหรือชื่อบริษัทที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
                     @keyup="purchase_filter" v-model="search" 
                     class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
                     >
             </div> -->
             <div class="w-full">
-                            <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อพัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
+                            <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อวัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
                                  v-model="search" 
                                 class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
                             >
@@ -53,7 +53,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-red-500 ">
                                 <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
                                 </svg>
-                            <label for="">เตือนเมื่อพัสดุมีน้อยกว่า 6 ชิ้น </label> 
+                            <label for="">เตือนเมื่อวัสดุมีน้อยกว่า 6 ชิ้น </label> 
                             </div>
                        
                   

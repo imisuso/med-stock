@@ -84,7 +84,7 @@ class ReportCutStockExportCollection implements FromCollection ,WithMapping ,Wit
     {
         return [
             'SAP',
-            'ชื่อพัสดุ',
+            'ชื่อวัสดุ',
             'วันที่หมดอายุ',
             'วันที่เบิกจ่าย',
             'จำนวนที่เบิก',

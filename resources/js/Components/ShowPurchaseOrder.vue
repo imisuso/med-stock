@@ -12,7 +12,7 @@
                 <span v-if="purchaseOrder.status=='created'" >ยังไม่ส่งไปภาคฯ</span>
                 <span v-if="purchaseOrder.status=='sended'" >รอภาคฯอนุมัติ</span>
                 <span v-if="purchaseOrder.status=='approved'" >ภาคฯอนุมัติแล้ว</span>
-                <span v-if="purchaseOrder.status=='received'"  >ตรวจรับพัสดุแล้ว</span>
+                <span v-if="purchaseOrder.status=='received'"  >ตรวจรับวัสดุแล้ว</span>
                 <span v-if="purchaseOrder.status=='received' && purchaseOrder.timeline['create_by']=='admin'" > บันทึกข้อมูลย้อนหลัง</span>
             </span>
            
@@ -45,7 +45,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
                     </svg>
-                        พิมพ์รายการพัสดุสั่งซื้อ
+                        พิมพ์รายการวัสดุสั่งซื้อ
                 </div>
             </a>
 
@@ -110,14 +110,14 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
                 </svg>
-                ตรวจรับพัสดุ
+                ตรวจรับวัสดุ
                 </span>
             </a>
         </div>
 
         <ModalUpToYou :isModalOpen="confirm_send_order" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการส่งเอกสารใบสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+                <p class="text-md font-bold text-red-600 ">คุณต้องการส่งเอกสารใบสั่งซื้อวัสดุนี้ใช่หรือไม่?</p> 
                                         
             </template>
 
@@ -152,7 +152,7 @@
 
         <ModalUpToYou :isModalOpen="confirm_approve_order" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติใบสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติใบสั่งซื้อวัสดุนี้ใช่หรือไม่?</p> 
                                         
             </template>
 
@@ -186,7 +186,7 @@
 
         <ModalUpToYou :isModalOpen="confirm_return_order" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการส่งคืนใบสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+                <p class="text-md font-bold text-red-600 ">คุณต้องการส่งคืนใบสั่งซื้อวัสดุนี้ใช่หรือไม่?</p> 
                                         
             </template>
 

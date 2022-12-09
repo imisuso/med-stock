@@ -183,7 +183,7 @@
                 <!-- <div class="text-gray-900 text-xl font-medium dark:text-white">
                     คุณต้องการลบข้อมูลบุคคลากร
                 </div> -->
-                <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกการเบิกพัสดุรายการนี้ใช่หรือไม่?</p> 
+                <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกการเบิกวัสดุรายการนี้ใช่หรือไม่?</p> 
                                         
             </template>
 

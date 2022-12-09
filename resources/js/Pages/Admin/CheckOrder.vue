@@ -44,10 +44,10 @@
      
      
         <!-- show order lists -->
-         <!-- <h1 class="p-2 mt-3 text-center" >รายการใบสั่งซื้อพัสดุจากสาขา/หน่วย</h1>
+         <!-- <h1 class="p-2 mt-3 text-center" >รายการใบสั่งซื้อวัสดุจากสาขา/หน่วย</h1>
          <h1 class=" text-center" >(ณ เดือนปีปัจจุบัน)</h1> -->
         <div class=" flex justify-between my-2 ">
-            <div class=" font-bold" >รายการใบสั่งซื้อพัสดุ จากสาขา/หน่วย</div>
+            <div class=" font-bold" >รายการใบสั่งซื้อวัสดุ จากสาขา/หน่วย</div>
             <div >
                 <select name="" id=""
                     class=" w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow  focus:outline-none focus:shadow-outline"
@@ -56,7 +56,7 @@
                     <option value="">รายการที่ยังไม่ส่งมาภาคฯ</option>
                     <option value="">รายการที่ยังไม่ได้อนุมัติ</option>
                     <option value="">รายการที่อนุมัติแล้ว</option>
-                    <option value="">รายการที่ถูกตรวจรับพัสดุแล้ว</option>
+                    <option value="">รายการที่ถูกตรวจรับวัสดุแล้ว</option>
                 </select>
             </div>
         </div>
@@ -64,7 +64,7 @@
         <div v-if="order_lists.length==0"
             class=" flex justify-center text-red-600"
             >
-            <label for="">ไม่พบรายการใบสั่งซื้อพัสดุ</label>
+            <label for="">ไม่พบรายการใบสั่งซื้อวัสดุ</label>
         </div>
 
         <OrderDetail v-for="(order_list,key) in order_lists" :key=order_list.id 
@@ -79,7 +79,7 @@
                 <span v-if="order_list.status == 'created'" class=" text-sm text-red-500">รอสาขา/หน่วยกดปุ่มส่งเอกสารสั่งซื้อ และส่งเอกสารตัวจริงมาที่ภาควิชาฯ </span>
                 <span v-if="order_list.status == 'send'" class=" text-sm text-red-500">เมื่อหัวหน้าภาควิชาฯ เซ็นอนุมัติแล้ว ให้กดปุ่มอนุมัติ</span>
                 <span v-if="order_list.status == 'approve'" class=" text-sm text-red-500">
-                    รอสาขา/หน่วย ตรวจรับพัสดุ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ    
+                    รอสาขา/หน่วย ตรวจรับวัสดุ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ    
                 </span>
             </template>
             <template v-slot:buttongroup>
@@ -90,7 +90,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
                                     </svg>
-                                    เอกสารตรวจรับพัสดุ
+                                    เอกสารตรวจรับวัสดุ
                                 </span>
                             </a>
                              <a :href="route('print-checkin',order_list.id)" v-if="order_list.status == 'checkin'" target="blank">
@@ -118,7 +118,7 @@
 <!-- {{order_lists}} -->
         <ModalUpToYou :isModalOpen="confirm_approve_order" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติใบสัญญาสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติใบสัญญาสั่งซื้อวัสดุนี้ใช่หรือไม่?</p> 
                                         
             </template>
 

@@ -38,7 +38,7 @@
         
         <div class=" w-full p-4 flex-col justify-center bg-blue-100 rounded-md ">
             <div class=" text-center text-lg font-bold ">
-                <p class=" my-2 ">จัดการข้อมูลคลังพัสดุ</p> 
+                <p class=" my-2 ">จัดการข้อมูลคลังวัสดุ</p> 
             </div>
             
                <!-- {{ $page.props.unit }}
@@ -112,7 +112,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        เพิ่มคลังพัสดุ
+                        เพิ่มคลังวัสดุ
                     </button>
                 </div>
             </div>  
@@ -128,7 +128,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                            เพิ่มคลังพัสดุ
+                            เพิ่มคลังวัสดุ
                     </button>
                 </div>
             </div>
@@ -137,7 +137,7 @@
                 <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                
                     <div class="mt-3" >
-                        <label for="">ระบุชื่อคลังพัสดุ(ภาษาไทย):</label> 
+                        <label for="">ระบุชื่อคลังวัสดุ(ภาษาไทย):</label> 
                     </div>
                     <input type="text" class="w-full  py-2 rounded-md "
                         v-model="form.stock_name_thai"
@@ -147,7 +147,7 @@
                 <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                 
                     <div class="mt-3" >
-                        <label for="">ระบุชื่อคลังพัสดุ(ภาษาอังกฤษ):</label> 
+                        <label for="">ระบุชื่อคลังวัสดุ(ภาษาอังกฤษ):</label> 
                     </div>
                     <input type="text" class="w-full  py-2 rounded-md "
                         v-model="form.stock_name_en"
@@ -175,7 +175,7 @@
 
         <ModalUpToYou :isModalOpen="confirm_add_stock" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการเพิ่มคลังพัสดุนี้ใช่หรือไม่?</p> 
+                <p class="text-md font-bold text-red-600 ">คุณต้องการเพิ่มคลังวัสดุนี้ใช่หรือไม่?</p> 
                                         
             </template>
 

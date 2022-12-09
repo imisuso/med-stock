@@ -13,24 +13,24 @@
             </label>
         </div>
         <div class=" w-full p-4 mt-2  justify-center bg-red-100">
-            <p class=" flex font-bold underline">กรุณาอ่าน:คำแนะนำการนำเข้าพัสดุจากไฟล์ excel</p>
+            <p class=" flex font-bold underline">กรุณาอ่าน:คำแนะนำการนำเข้าวัสดุจากไฟล์ excel</p>
             <p >1.ตรวจสอบชื่อคอลัมน์และจำนวนคอลัมน์ให้ถูกต้องตามตัวอย่างไฟล์ excel</p>
             <div class=" flex">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-700">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15M9 12l3 3m0 0l3-3m-3 3V2.25" />
                 </svg>
-                <a href="../../../../docs/ตัวอย่างข้อมูลพัสดุที่จะนำเข้าระบบพัสดุ_UAT.xlsx" class=" underline underline-offset-2 font-extrabold text-green-700"> 
-                    download ตัวอย่างไฟล์รายการพัสดุ
+                <a href="../../../../docs/ตัวอย่างข้อมูลวัสดุที่จะนำเข้าระบบวัสดุ_UAT.xlsx" class=" underline underline-offset-2 font-extrabold text-green-700"> 
+                    download ตัวอย่างไฟล์รายการวัสดุ
                 </a>
             </div>
           
            
-            <p >2.ตรวจสอบจำนวนรายการพัสดุต้องไม่เกิน 50 รายการต่อ 1 ไฟล์ excel</p>
+            <p >2.ตรวจสอบจำนวนรายการวัสดุต้องไม่เกิน 50 รายการต่อ 1 ไฟล์ excel</p>
             <p >3.ตรวจสอบ Format Cell ให้ตรงกับตัวอย่างไฟล์ excel ทุกคอลัมน์</p>
         </div> 
         <div class=" w-full p-4 mt-2 flex-col justify-center bg-blue-100 rounded-md ">
             <div class=" bg-blue-800 text-white text-center text-lg font-bold ">
-                <p class=" my-2 ">นำเข้าข้อมูลพัสดุจากไฟล์ Excel ตรวจรับพัสดุ</p> 
+                <p class=" my-2 ">นำเข้าข้อมูลวัสดุจากไฟล์ Excel ตรวจรับวัสดุ</p> 
             </div>
             
                <!-- {{ $page.props.unit }}
@@ -41,7 +41,7 @@
                     {{$page.props.unit.unitname}}
                 </div>
                 <div class="mt-3" >
-                    <label for="">เลือกคลังพัสดุที่ต้องการเพิ่มพัสดุ</label> 
+                    <label for="">เลือกคลังวัสดุที่ต้องการเพิ่มวัสดุ</label> 
                 </div>
                 <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
                     v-model="form.unit_id"
@@ -49,7 +49,7 @@
                     <option v-for="(stock) in  stocks" :key=stock.id :value="stock.id">{{stock.stockname}}</option>
                 </select>
                 <div class="mt-3" >
-                    <label for="">เลือกประเภทการจัดซื้อพัสดุ</label> 
+                    <label for="">เลือกประเภทการจัดซื้อวัสดุ</label> 
                 </div>
                 <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
                     v-model="form.stock_item_status"
@@ -65,7 +65,7 @@
                 <input type="text" name="" class="w-full  py-2 rounded-md "   v-model="form.stock_po"> -->
                 
                 <!-- <div class="mt-3">
-                    <label for="">วันที่ตรวจรับพัสดุ:</label>
+                    <label for="">วันที่ตรวจรับวัสดุ:</label>
                     <input type="date" name="" id=""
                         v-model="form.date_receive"
                         class="w-full px-12 py-2  rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
@@ -80,7 +80,7 @@
                     @endif -->
                     <!-- <form action="" method="post" enctype="multipart/form-data"> -->
                         <div class="">
-                            เลือกไฟล์ excel รายการพัสดุที่ต้องการนำเข้าคลังสาขา
+                            เลือกไฟล์ excel รายการวัสดุที่ต้องการนำเข้าคลังสาขา
                             <input type="file" name="file" id="" @change="onChangeFile">
                            
                         </div>

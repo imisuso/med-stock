@@ -28,7 +28,7 @@ class StockItem extends Model
         'pur_order',
         'invoice_number',
         'business_name',
-        'status' ,     // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ,9=cancel
+        'status' ,     // 1 = วัสดุตามสัญญาสั่งซื้อ , 2= วัสดุตามใบสั่งซื้อ,9=cancel
         'profile',
     ];
 

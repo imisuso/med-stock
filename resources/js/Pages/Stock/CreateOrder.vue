@@ -20,7 +20,7 @@
                 {{unit.unitname}}
             </div>
             <div class="mt-3" >
-                <label for="">เลือกคลังพัสดุ</label> 
+                <label for="">เลือกคลังวัสดุ</label> 
             </div>
             <select name="" id="" 
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
@@ -32,7 +32,7 @@
        
         </div>
       
-    <h1 class=" m-3 text-center text-lg font-bold" >สร้างเอกสารใบสัญญาสั่งซื้อพัสดุ </h1>
+    <h1 class=" m-3 text-center text-lg font-bold" >สร้างเอกสารใบสัญญาสั่งซื้อวัสดุ </h1>
 
     <h1 class=" m-3 text-center text-lg font-bold" >ข้อมูลจำนวนคงเหลือ ณ วันที่ปัจจุบัน {{sysdate_thai}}</h1>
 
@@ -64,7 +64,7 @@
         
         <label for="previeworder" class=" flex items-start justify-between w-full p-1 bg-yellow-200  shadow-lg text-yellow-900 font-bold" 
             title="close" >
-            รายการพัสดุที่ต้องการสั่งซื้อ
+            รายการวัสดุที่ต้องการสั่งซื้อ
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
             </svg>

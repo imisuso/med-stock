@@ -49,7 +49,7 @@ class LoginController extends Controller
         if($user_check){
 
             if($user_check->status !=1){
-                return Redirect::back()->with(['status' => '1', 'msg' => 'เจ้าหน้าที่คนนี้ถูกยกเลิกใช้งานระบบ กรุณาติดต่อเจ้าหน้าที่หน่วยพัสดุภาควิชาอายุรศาสตร์']);
+                return Redirect::back()->with(['status' => '1', 'msg' => 'เจ้าหน้าที่คนนี้ถูกยกเลิกใช้งานระบบ กรุณาติดต่อเจ้าหน้าที่หน่วยวัสดุภาควิชาอายุรศาสตร์']);
             }
 
             Auth::login($user_check);
@@ -82,7 +82,7 @@ class LoginController extends Controller
            /* Log to Slack */
            $msg_notify_test = $sirirajUser['name'].'  เข้าระบบไม่สำเร็จ เพราะไม่พบเจ้าหน้าที่คนนี้เป็นผู้ใช้งานระบบ';
            Logger($msg_notify_test);
-            return Redirect::back()->with(['status' => '1', 'msg' => 'ไม่พบเจ้าหน้าที่คนนี้เป็นผู้ใช้งานระบบ กรุณาติดต่อเจ้าหน้าที่หน่วยพัสดุภาควิชาอายุรศาสตร์']);
+            return Redirect::back()->with(['status' => '1', 'msg' => 'ไม่พบเจ้าหน้าที่คนนี้เป็นผู้ใช้งานระบบ กรุณาติดต่อเจ้าหน้าที่หน่วยวัสดุภาควิชาอายุรศาสตร์']);
         }
        // Logger('login success');
      //   return Redirect::route('welcome');

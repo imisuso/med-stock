@@ -43,7 +43,7 @@
                     
                         <div class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
                             <div class="flex ml-2"> จำนวนคงเหลือ :
-                                <p class=" ml-2 text-red-600">{{item_balance}}</p>     
+                                <p class=" ml-2 text-red-600">{{number_format_show(item_balance)}}</p>     
                             </div>
                             <div class="flex ml-2"> Pur.Order : 
                                     <p class=" ml-2 text-blue-600">{{stock_item.pur_order}}</p> 
@@ -166,13 +166,13 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
-            ลบพัสดุนี้ออกจากคลัง
+            ลบวัสดุนี้ออกจากคลัง
         </button>
     </div> -->
 
     <ModalUpToYou :isModalOpen="confirm_delete_item" >
             <template v-slot:header>
-                <p class="text-md font-bold text-blue-700 ">คุณต้องการลบวัสดุนี้ออกจากข้อมูลคลังพัสดุใช่หรือไม่?</p> 
+                <p class="text-md font-bold text-blue-700 ">คุณต้องการลบวัสดุนี้ออกจากข้อมูลคลังวัสดุใช่หรือไม่?</p> 
                                         
             </template>
 
@@ -245,6 +245,14 @@ const form = useForm({
 const confirm_delete_item=ref(false);
 const confirm_delete_item_name=ref('');
 const confirm_delete_item_pur_order=ref('');
+
+const number_format_show=(item)=>{
+   // console.log(price)
+   let  price_show = item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return price_show;
+  // return '1,200.5';
+}
+
 
 const cancel_checkout=(item_tran_id)=>{
 

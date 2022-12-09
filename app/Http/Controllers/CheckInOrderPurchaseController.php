@@ -63,7 +63,7 @@ class CheckInOrderPurchaseController extends Controller
 
         foreach($order->items as $key=>$item ){
             Log::info($item[0]['material']);
-            //  status = 2  คือพัสดุที่มาจากใบสั่งซื้อ
+            //  status = 2  คือวัสดุที่มาจากใบสั่งซื้อ
             $old_item_sum = StockItem::select('item_sum')->whereStatus('2')
                                     ->where('item_code',$item[0]['material'])
                                     ->first();

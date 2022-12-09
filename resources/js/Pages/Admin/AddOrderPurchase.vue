@@ -25,7 +25,7 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" v-if="stock_alert" class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                                         </svg>
-                                        <label >ชื่อคลังพัสดุ:</label>
+                                        <label >ชื่อคลังวัสดุ:</label>
                                 </div>
                                 <!-- <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                                         <div class="bg-blue-800 text-white text-xl text-center ">
@@ -116,7 +116,7 @@
                         <div v-if="form.preview_orders.length!=0 && action == 'add' "
                                 class=" p-2 border-2 border-green-600 rounded-md">
                                
-                                <label class="font-bold">รายการพัสดุที่สั่งซื้อ:</label>
+                                <label class="font-bold">รายการวัสดุที่สั่งซื้อ:</label>
                                 <div v-for="(order,index) in form.preview_orders" :key=order.id
                                         class=" bg-white my-2"
                                         >

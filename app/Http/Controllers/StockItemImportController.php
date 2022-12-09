@@ -28,7 +28,7 @@ class StockItemImportController extends Controller
 
     $user = Auth::user();
    // logger($user->unitid);
-    if($user->unitid != 27){  //หน่วยพัสดุ
+    if($user->unitid != 27){  //หน่วยวัสดุ
         $stocks = Stock::where(['unit_id'=>$user->unitid,'status'=>1])->get();
     }else{
         $stocks = Stock::where('status',1)->get();
@@ -65,8 +65,8 @@ class StockItemImportController extends Controller
             'stock_item_status.required' => 'ต้องเลือกประเภทการจัดซื้อ',
             'stock_item_status.numeric' => 'ประเภทการจัดซื้อต้องเป็นตัวเลขเท่านั้น',
             'stock_item_status.min' => 'ต้องเลือกประเภทการจัดซื้อ',
-            'file_stock_item.required' => 'ต้องระบุไฟล์ excel รายการพัสดุที่ต้องการนำเข้า ',
-            // 'file_stock_item.file' => 'ไฟล์ excel รายการพัสดุที่ต้องการนำเข้า',
+            'file_stock_item.required' => 'ต้องระบุไฟล์ excel รายการวัสดุที่ต้องการนำเข้า ',
+            // 'file_stock_item.file' => 'ไฟล์ excel รายการวัสดุที่ต้องการนำเข้า',
         ];
 
         $input_validate = Validator::make($request->all(),$input_rules,$input_customMessages)->errors();
@@ -150,28 +150,28 @@ class StockItemImportController extends Controller
                 ];
  
                 $customMessages = [
-                    '0.required' => 'ต้องรหัสพัสดุในคอลัมน์ item_code ',
+                    '0.required' => 'ต้องรหัสวัสดุในคอลัมน์ item_code ',
                     '0.integer' => 'ข้อมูล item_code ต้องเป็นตัวเลขเท่านั้น',
                     '0.digits' => 'ข้อมูล item_code ต้องเป็นตัวเลข 8 หลัก เท่านั้น',
-                    '1.required' => 'ต้องระบุชื่อพัสดุในคอลัมน์ item_name ',
-                    '1.max' => 'ข้อมูลชื่อพัสดุในคอลัมน์ item_name ต้องไม่เกิน 100 ตัวอักษร ',
-                    '2.required' => 'ต้องใส่ข้อมูลจำนวนพัสดุในคอลัมน์ item_receive ',
+                    '1.required' => 'ต้องระบุชื่อวัสดุในคอลัมน์ item_name ',
+                    '1.max' => 'ข้อมูลชื่อวัสดุในคอลัมน์ item_name ต้องไม่เกิน 100 ตัวอักษร ',
+                    '2.required' => 'ต้องใส่ข้อมูลจำนวนวัสดุในคอลัมน์ item_receive ',
                     '2.integer' => 'ข้อมูล item_receive ต้องเป็นตัวเลขเท่านั้น',
                     '2.digits_between' => 'ข้อมูล item_receive ต้องเป็นตัวเลขไม่เกิน 5 หลักเท่านั้น',
-                    '3.required' => 'ต้องใส่ข้อมูลหน่วยนับของพัสดุที่ตรวจรับในคอลัมน์ unit_count ', 
+                    '3.required' => 'ต้องใส่ข้อมูลหน่วยนับของวัสดุที่ตรวจรับในคอลัมน์ unit_count ', 
                     '3.max' => 'ข้อมูลหน่วยนับในคอลัมน์ unit_count ต้องไม่เกิน 20 ตัวอักษร ',
-                    '4.required' => 'ต้องใส่ข้อมูลราคาต่อหน่วยของพัสดุในคอลัมน์ price ',
+                    '4.required' => 'ต้องใส่ข้อมูลราคาต่อหน่วยของวัสดุในคอลัมน์ price ',
                     '4.regex' => 'ข้อมูล price ต้องเป็นตัวเลขเท่านั้น',
-                    '4.max' => 'ข้อมูลราคาพัสดุในคอลัมน์ price ต้องเป็นตัวเลขไม่เกิน 8 หลักเท่านั้น',
+                    '4.max' => 'ข้อมูลราคาวัสดุในคอลัมน์ price ต้องเป็นตัวเลขไม่เกิน 8 หลักเท่านั้น',
                     '5.required' => 'ต้องใส่ข้อมูลในคอลัมน์ vendor',
                     '5.max'=>'ข้อมูล vendor ต้องไม่เกิน 200 ตัวอักษร',
                     '6.required' => 'ต้องใส่ข้อมูลในคอลัมน์ Pur.Order',
                     '6.max'=>'ข้อมูล Pur.Order ต้องไม่เกิน 50 ตัวอักษร',
                     '7.required' => 'ต้องใส่ข้อมูลในคอลัมน์ Invoice Number',
                     '7.max'=>'ข้อมูล Invoice Number ต้องไม่เกิน 50 ตัวอักษร',
-                    '8.required' => 'ต้องใส่ข้อมูลวันที่ตรวจรับพัสดุในคอลัมน์ date_receive ',
+                    '8.required' => 'ต้องใส่ข้อมูลวันที่ตรวจรับวัสดุในคอลัมน์ date_receive ',
                     '8.date'=>'ข้อมูล date_receive รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
-                    '9.required' => 'ต้องใส่ข้อมูลวันที่หมดอายุของพัสดุในคอลัมน์ date_expire ',
+                    '9.required' => 'ต้องใส่ข้อมูลวันที่หมดอายุของวัสดุในคอลัมน์ date_expire ',
                     '9.date'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
                    
                 ];
@@ -221,7 +221,7 @@ class StockItemImportController extends Controller
       //  dd('test');
 
         if(count($collect)>50){
-            $error_validate_excel ='จำนวนรายการพัสดุต้องไม่เกิน 50 รายการต่อการนำเข้าระบบ 1 ครั้ง';
+            $error_validate_excel ='จำนวนรายการวัสดุต้องไม่เกิน 50 รายการต่อการนำเข้าระบบ 1 ครั้ง';
                     return Inertia::render('Admin/StockItemImportShow',[
                         'validate_excel'=>false,
                         'msg_validate_excel'=> $error_validate_excel,
@@ -398,7 +398,7 @@ class StockItemImportController extends Controller
             'detail'=> $detail_log,
         ]);
 
-        $msg = 'เพิ่มพัสดุจากไฟล์ excel จำนวน '.$cnt.' รายการ เรียบร้อย';
+        $msg = 'เพิ่มวัสดุจากไฟล์ excel จำนวน '.$cnt.' รายการ เรียบร้อย';
 
         $msg_notify_test = $user->name.' '.$msg;
         Logger($msg_notify_test);

@@ -99,7 +99,7 @@ class ReportCutStockExportTest implements FromCollection
     {
         return [
             'SAP',
-            'ชื่อพัสดุ',
+            'ชื่อวัสดุ',
             'วันที่หมดอายุ',
             'วันที่เบิกจ่าย',
             'จำนวน',

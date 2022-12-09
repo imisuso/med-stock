@@ -1,12 +1,12 @@
 <template>
     <AppLayout>
        <h4   v-if="$page.props.auth.abilities.includes('view_master_data')"
-            class=" mt-3 text-center text-red-600">ระบุชื่อคลังพัสดุที่ต้องการดูรายงาน</h4>
+            class=" mt-3 text-center text-red-600">ระบุชื่อคลังวัสดุที่ต้องการดูรายงาน</h4>
         <div v-if="$page.props.auth.abilities.includes('view_master_data')" 
             class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
              <div class="m-2" >
-                <label for="">ชื่อคลังพัสดุ</label> 
-                <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกคลังพัสดุ</label>
+                <label for="">ชื่อคลังวัสดุ</label> 
+                <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกคลังวัสดุ</label>
                 <select name="" id="" v-model="form.stock_selected"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                     <option v-for="(stock) in  stocks" :key=stock.id :value=stock.id >{{stock.stockname}}</option>
@@ -37,16 +37,16 @@
         <!-- {{$page.props.//}} -->
       
         <!-- show order lists -->
-         <h1 class="p-2 mt-3 text-center font-bold" >รายงานจำนวนคงเหลือในคลังพัสดุ </h1>
+         <h1 class="p-2 mt-3 text-center font-bold" >รายงานจำนวนคงเหลือในคลังวัสดุ </h1>
           <h1 class="p-2 mt-1 text-center font-bold" >{{form.stock_selected.text}}</h1>
           <h1 v-if="stock_selected_name" class="p-2  text-center font-bold" >{{stock_selected_name.stockname}}</h1>
-        <!-- <div class=" text-red-500">***เพิ่ม ปุ่มยกเลิกรายการพัสดุ สำหรับกรณี excel import มีบางรายการผิด</div> -->
+        <!-- <div class=" text-red-500">***เพิ่ม ปุ่มยกเลิกรายการวัสดุ สำหรับกรณี excel import มีบางรายการผิด</div> -->
          <!-- <button class=" mb-2 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
            Export EXCEL
         </button> -->
 
         <div class="w-full">
-            <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อพัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
+            <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อวัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
                     v-model="search" 
                 class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
             >
@@ -63,7 +63,7 @@
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
                     
                     <div class=" lg:w-2/12  ">
-                        SAP-ชื่อพัสดุ
+                        SAP-ชื่อวัสดุ
                     </div>
                 
                     <div class=" lg:w-1/12 ">
