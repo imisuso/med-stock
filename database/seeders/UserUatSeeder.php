@@ -29,6 +29,7 @@ class UserUatSeeder extends Seeder
             ['name' => 'poonsap.panit', 'unitid' => '33','role'=>'admin_it'],
             ['name' => 'sophon.nitit', 'unitid' => '33','role'=>'admin_it'],
             ['name' => 'sansanee.sumit', 'unitid' => '33','role'=>'admin_it'],
+            ['name' => 'koramit.pic', 'unitid' => '13','role'=>'officer'],
             ['name' => 'officer.id', 'unitid' => '5','role'=>'officer'],
             ['name' => 'officer.chest', 'unitid' => '10','role'=>'officer'],
             ['name' => 'officer.hemato', 'unitid' => '12','role'=>'officer'],
