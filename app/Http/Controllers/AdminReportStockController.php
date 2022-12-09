@@ -127,8 +127,8 @@ class AdminReportStockController extends Controller
                 $stock_items[$key]['item_balance'] = $item_balance;
             }
             $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();
-            $msg_notify_test = $user->name.' ดูจำนวนคงเหลือ '.$stock_selected_name->stockname;
-            Logger($msg_notify_test);
+           // $msg_notify_test = $user->name.' ดูจำนวนคงเหลือ '.$stock_selected_name->stockname;
+          //  Logger($msg_notify_test);
 
                  /****************  insert log ****************/
                     // logger($old_changes);

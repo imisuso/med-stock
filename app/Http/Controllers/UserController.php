@@ -157,18 +157,18 @@ class UserController extends Controller
      */
     public function edit($slug)
     {
-      //  Logger($slug);
+        //Logger($slug);
       //   dd('edit user');
         $user_status_list = array(
             ['id'=>'1','desc'=>'ปกติ'],
             ['id'=>'2','desc'=>'ยกเลิก'],
         );
         //$stock->unit;
-        $user = User::whereSlug($slug)
+        $user_edit = User::whereSlug($slug)
                     ->with('unit:unitid,unitname')
                     ->first();
     
-        $user->roles;
+        $user_edit->roles;
         $units = Unit::all();
         $user = Auth::user();
         //$role_admin = array('admin_it','admin_med_stock','super_officer');
@@ -181,7 +181,7 @@ class UserController extends Controller
         }
        // $roles = Role::whereStatus(1)->get();
         return Inertia::render('Admin/EditUser',[
-                        'user'=> $user,
+                        'user'=> $user_edit,
                         'user_status_list'=>$user_status_list,
                         'units'=> $units,
                         'roles'=>$roles
