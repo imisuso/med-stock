@@ -11,7 +11,7 @@
             </div>
 
             <div class="w-full flex flex-col  bg-blue-200">
-                <label for="">  รายการพัสดุที่สั่งซื้อมีดังนี้</label>
+                <label for="">  รายการวัสดุที่สั่งซื้อมีดังนี้</label>
             </div>
         </div>
 
@@ -23,7 +23,7 @@
                     <div class="flex flex-col font-bold text-md  lg:flex-row lg:justify-between  mx-2"  >
                         
                         <div class=" lg:w-4/12  ">
-                            SAP:ชื่อพัสดุ
+                            SAP:ชื่อวัสดุ
                         </div>
                         <div class=" lg:w-1/12  ">
                             จำนวน
@@ -60,7 +60,7 @@
                 <div class="flex flex-col text-sm  lg:flex-row   "  >
                     <div class=" hidden lg:block">{{key+1}}.</div>
                     <div class=" bg-blue-100 lg:bg-transparent lg:w-4/12  ">
-                        <label for="" class="  lg:hidden">{{key+1}}.SAP:ชื่อพัสดุ:</label>
+                        <label for="" class="  lg:hidden">{{key+1}}.SAP:ชื่อวัสดุ:</label>
                         <!-- <p for="" class="  "> {{key+1}}.</p> -->
                         <label class=" font-bold ">
                         {{order.stock_item['item_code']}}: {{order.stock_item['item_name']}}

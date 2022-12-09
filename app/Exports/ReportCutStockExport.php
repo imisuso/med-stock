@@ -62,7 +62,7 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
     {
         return [
             'SAP',
-            'ชื่อพัสดุ',
+            'ชื่อวัสดุ',
             'วันที่หมดอายุ',
             'วันที่เบิกจ่าย',
             'จำนวน',

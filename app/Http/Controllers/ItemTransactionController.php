@@ -189,10 +189,10 @@ class ItemTransactionController extends Controller
            
         //    ]);
 
-        $msg_notify_test = $user->name.'  บันทึกการเบิกพัสดุสำเร็จ';
+        $msg_notify_test = $user->name.'  บันทึกการเบิกวัสดุสำเร็จ';
         Logger($msg_notify_test);
       
-        return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกการเบิกพัสดุสำเร็จ']);
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกการเบิกวัสดุสำเร็จ']);
        
     }
 
@@ -347,9 +347,9 @@ class ItemTransactionController extends Controller
             //'old_value'=> $old_changes,
         ]);
 
-        $msg_notify_test = $use_in->name.'  ยกเลิกการเบิกพัสดุสำเร็จ';
+        $msg_notify_test = $use_in->name.'  ยกเลิกการเบิกวัสดุสำเร็จ';
         Logger($msg_notify_test);
-        return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการเบิกพัสดุสำเร็จ']);
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการเบิกวัสดุสำเร็จ']);
        
     }
 
@@ -372,7 +372,7 @@ class ItemTransactionController extends Controller
 
       $new_item_balance = $stock_item->itemBalance();
 
-      if($new_item_balance==0){  //ต้องไป cancel พัสดุนี้ที่ stock_items ด้วย
+      if($new_item_balance==0){  //ต้องไป cancel วัสดุนี้ที่ stock_items ด้วย
         //  $stock_item->item_sum = $new_item_balance;
           $stock_item->status = 9;
           $stock_item->save();
@@ -400,9 +400,9 @@ class ItemTransactionController extends Controller
             'old_value'=> $old_changes,
         ]);
 
-        $msg_notify_test = $use_in->name.'  ยกเลิกการนำเข้าพัสดุสำเร็จ';
+        $msg_notify_test = $use_in->name.'  ยกเลิกการนำเข้าวัสดุสำเร็จ';
         Logger($msg_notify_test);
-        return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการนำเข้าพัสดุสำเร็จ']);
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการนำเข้าวัสดุสำเร็จ']);
        
     }
 }

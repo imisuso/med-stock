@@ -29,7 +29,7 @@
                 {{$page.props.unit.unitname}}
             </div>
             <div class="mt-3" >
-                <label for="">เลือกคลังพัสดุ</label> 
+                <label for="">เลือกคลังวัสดุ</label> 
             </div>
             <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                 <option v-for="(stock) in  $page.props.stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
@@ -42,7 +42,7 @@
      
     <!-- show order lists -->
     <div class=" flex justify-between my-2 ">
-            <div class=" font-bold" >รายการใบสัญญาสั่งซื้อพัสดุ</div>
+            <div class=" font-bold" >รายการใบสัญญาสั่งซื้อวัสดุ</div>
             <div >
                 <select name="" id=""
                     class=" w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow  focus:outline-none focus:shadow-outline"
@@ -51,7 +51,7 @@
                     <option value="">รายการที่ยังไม่ส่งไปภาคฯ</option>
                     <option value="">รายการที่รอภาคฯอนุมัติ</option>
                     <option value="">รายการที่ภาคฯอนุมัติแล้ว</option>
-                    <option value="">รายการที่ตรวจรับพัสดุแล้ว</option>
+                    <option value="">รายการที่ตรวจรับวัสดุแล้ว</option>
                 </select>
             </div>
     </div>
@@ -59,7 +59,7 @@
     <div v-if="order_lists.length==0"
         class=" flex justify-center text-red-600"
         >
-        <label for="">ไม่พบรายการใบสัญญาสั่งซื้อพัสดุ</label>
+        <label for="">ไม่พบรายการใบสัญญาสั่งซื้อวัสดุ</label>
     </div>
     <OrderDetail v-for="(order_list,key) in order_lists" :key=order_list.id 
         :orderIndex="key" 
@@ -69,7 +69,7 @@
             <span v-if="order_list.status == 'created'" class=" text-sm text-red-500">กดปุ่มพิมพ์และเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ แล้วกดปุ่มส่ง</span>
             <span v-if="order_list.status == 'sended'" class=" text-sm text-red-500">รออนุมัติการสั่งซื้อ จากภาควิชาฯ</span>
             <span v-if="order_list.status == 'approved'" class=" text-sm text-red-500">
-                รีบดำเนินการให้บริษัทเซ็นใบสั่งซื้อ+ส่งของ+ตรวจรับ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ เมื่อตรวจรับพัสดุตามเอกสารสั่งซื้อแล้ว ให้กดปุ่มตรวจรับพัสดุ แล้วกดปุ่มพิมพ์เอกสารตรวจรับพัสดุและเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ   
+                รีบดำเนินการให้บริษัทเซ็นใบสั่งซื้อ+ส่งของ+ตรวจรับ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ เมื่อตรวจรับวัสดุตามเอกสารสั่งซื้อแล้ว ให้กดปุ่มตรวจรับวัสดุ แล้วกดปุ่มพิมพ์เอกสารตรวจรับวัสดุและเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ   
             </span>
         </template>
         <template v-slot:buttongroup>
@@ -90,7 +90,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
                                 </svg>
-                                เอกสารตรวจรับพัสดุ
+                                เอกสารตรวจรับวัสดุ
                             </span>
                         </a>
                         
@@ -110,7 +110,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
                             </svg>
-                            ตรวจรับพัสดุ
+                            ตรวจรับวัสดุ
                             </span>
                         </a>
                         <button v-if="order_list.status == 'created'"
@@ -126,7 +126,7 @@
     
     <ModalUpToYou :isModalOpen="confirm_send_order" >
         <template v-slot:header>
-            <p class="text-md font-bold text-red-600 ">คุณต้องการส่งเอกสารการสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+            <p class="text-md font-bold text-red-600 ">คุณต้องการส่งเอกสารการสั่งซื้อวัสดุนี้ใช่หรือไม่?</p> 
                                     
         </template>
 

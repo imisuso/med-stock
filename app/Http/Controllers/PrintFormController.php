@@ -87,7 +87,7 @@ class PrintFormController extends Controller
           $unit = Unit::where('unitid',$order->items[0][0]['stock_id'])->first();
         //  Log::info($unit);
           $division_name = $unit->unitname;
-          $head = 'แบบฟอร์มบันทึกการรับพัสดุ สาขา/หน่วยงาน';
+          $head = 'แบบฟอร์มบันทึกการรับวัสดุ สาขา/หน่วยงาน';
           $title = $head.'  '.$division_name;
           $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $title),0,0,'C');
   
@@ -312,7 +312,7 @@ class PrintFormController extends Controller
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลงชื่อ................................................'));
         $y = $y+10;
         $pdf->SetXY(20, $y);
-        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', '            เจ้าหน้าที่พัสดุสาขา'));
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', '            เจ้าหน้าที่วัสดุสาขา'));
 
         $y = $y+14;
         $pdf->SetXY(20, $y);

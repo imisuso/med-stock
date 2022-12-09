@@ -34,11 +34,11 @@
                 </svg>
             </label>
         </div>
-        <!-- sap test:  10032608 , โลหิต 10003133 ,หายใจ 10016895 ,พัสดุ 10019699 10030727 -->
+        <!-- sap test:  10032608 , โลหิต 10003133 ,หายใจ 10016895 ,วัสดุ 10019699 10030727 -->
         <div class=" w-full text-sm p-4 my-2  justify-center bg-red-100">
             <p for="" class=" underline underline-offset-1 " >คำแนะนำการเพิ่มผู้ใช้งาน</p>
             <p for="">1.ระบุรหัสเจ้าหน้าที่ แล้วกดปุ่มตรวจสอบสถานะ แล้วตรวจสอบข้อมูลว่าเป็นบุคคลที่ต้องการเพิ่มเป็นผู้ใช้งานระบบนี้หรือไม่</p>
-            <p for="">2.ระบุหน่วยงานภายในภาควิชาฯที่บุคคลนี้สังกัด ซึ่งหากสังกัดหน่วยงานใดก็จะมีสิทธิเข้าถึงคลังพัสดุของหน่วยงานนั้นเท่านั้น </p>
+            <p for="">2.ระบุหน่วยงานภายในภาควิชาฯที่บุคคลนี้สังกัด ซึ่งหากสังกัดหน่วยงานใดก็จะมีสิทธิเข้าถึงคลังวัสดุของหน่วยงานนั้นเท่านั้น </p>
             <p for="">3.ระบุสิทธิการใช้งานระบบ (หากเป็นเจ้าหน้าที่สาขาที่ทำหน้าที่บันทึกตัดสต๊อก ให้ระบุสิทธิเป็น เจ้าหน้าที่)</p>
         </div> 
         <div class=" w-full p-4 flex-col justify-center bg-blue-100 rounded-md ">
@@ -69,7 +69,7 @@
                         <div v-if="employeeStatus=='found_user_med_stock'" 
                              class=" flex flex-col  text-red-600  text-center"
                          > 
-                           <label for=""> สถานะ:พบรหัสเจ้าหน้าที่ตามที่ระบุในฐานข้อมูลผู้ใช้งานระบบพัสดุแล้ว </label>
+                           <label for=""> สถานะ:พบรหัสเจ้าหน้าที่ตามที่ระบุในฐานข้อมูลผู้ใช้งานระบบวัสดุแล้ว </label>
                        
                         </div>
                         <label for="" v-if="employeeStatus=='not_found'" class="  text-red-600"> 
@@ -115,7 +115,7 @@
                     
                     </div>
                     <div class="mt-3" >
-                        <label for="">เลือกคลังพัสดุที่ต้องการให้บันทึกตัดสต๊อก:</label> 
+                        <label for="">เลือกคลังวัสดุที่ต้องการให้บันทึกตัดสต๊อก:</label> 
                     </div>
                     <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
                         

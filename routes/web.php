@@ -78,31 +78,31 @@ Route::post('/login',[LoginController::class, 'authenticate'])->name('login')->m
     
 Route::get('/logout', [LoginController::class,'logout'])->name('logout')->middleware('auth');
 
-//แสดงหน้าเบิกพัสดุ
+//แสดงหน้าเบิกวัสดุ
 Route::get('/stock', [StockController::class,'index'])->name('stock')->middleware('auth','can:checkout_item');
 //Route::post('/stock/item-filter', [StockController::class,'filter'])->name('stock-item-filter')->middleware('auth','can:checkout_item');
 
 Route::controller(ItemTransactionController::class)
         ->middleware('auth')
         ->group(function(){
-            //แสดงรายละเอียดการเบิก/ตรวจรับ พัสดุ
+            //แสดงรายละเอียดการเบิก/ตรวจรับ วัสดุ
             Route::get('/stock-item/{stock_item}','show')->name('list-stock-item'); 
-            //เบิกพัสดุ
+            //เบิกวัสดุ
             Route::post('/checkout-stock-item','store')->name('checkout-stock-item');
-            //ยกเลิกรายการเบิกพัสดุ
+            //ยกเลิกรายการเบิกวัสดุ
             Route::post('/cancel-checkout-stock-item','destroy')->name('cancel-checkout-stock-item');
-            //ยกเลิกรายการนำเข้าพัสดุ
+            //ยกเลิกรายการนำเข้าวัสดุ
             Route::post('/cancel-checkin-stock-item','cancelCheckin')->name('cancel-checkin-stock-item');
         });
-//แสดงรายละเอียดการเบิก/ตรวจรับ พัสดุ
+//แสดงรายละเอียดการเบิก/ตรวจรับ วัสดุ
 //Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item')->middleware('auth');
-//เบิกพัสดุ
+//เบิกวัสดุ
 //Route::post('/checkout-stock-item', [ItemTransactionController::class,'store'])->name('checkout-stock-item')->middleware('auth');
 
 
-//ไม่แน่ใจว่าจะใช้ หน้าแสดงข้อมูลปีเดือน ที่มีการเบิกพัสดุ
+//ไม่แน่ใจว่าจะใช้ หน้าแสดงข้อมูลปีเดือน ที่มีการเบิกวัสดุ
 //Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock')->middleware('auth');
-//ไม่แน่ใจว่าจะใช้ หน้าแสดงรายละเอียดการเบิกพัสดุ
+//ไม่แน่ใจว่าจะใช้ หน้าแสดงรายละเอียดการเบิกวัสดุ
 Route::get('/report-checkout-item/{division_id}', [ReportStockController::class,'index'])->name('report-checkout-item')->middleware('auth','can:view_master_data');
 Route::get('/get-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'show'])->name('get-checkout-item')->middleware('auth');
 Route::get('/export-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'export'])->name('export-checkout-item')->middleware('auth');
@@ -120,9 +120,9 @@ Route::get('/create-order/print/{order}', [PrintFormController::class,'show'])->
 Route::get('/order-list', [CreateOrderController::class,'show'])->name('order-list')->middleware('auth');
 //ส่งเอกสารใบสั่งซื้อแบบสัญญา
 Route::post('/order-list/update', [CreateOrderController::class,'update'])->name('send-order')->middleware('auth');
-//บันทึกรับพัสดุใหม่ลงคลัง
+//บันทึกรับวัสดุใหม่ลงคลัง
 Route::post('/order-list/checkin/', [CheckInOrderController::class,'store'])->name('checkin-order')->middleware('auth');
-//แสดงหน้าตรวจรับพัสดุ
+//แสดงหน้าตรวจรับวัสดุ
     Route::get('/receive-order/{order}', [CheckInOrderController::class,'update'])->name('receive-order')->middleware('auth');
 //พิมพ์ใบตรวจรับ
 Route::get('/create-order/print-checkin/{order}', [PrintFormController::class,'create'])->name('print-checkin')->middleware('auth');
@@ -189,10 +189,10 @@ Route::controller(PurchaseOrderController::class)
 Route::get('/purchase-order/print/{order}', [PrintFormController::class,'printPurchaseOrder'])->name('print-purchase-order')->middleware('auth');
 Route::get('/purchase-order/print-item/{order}', [PrintFormController::class,'printPurchaseOrderItem'])->name('print-purchase-order-item')->middleware('auth');
 
-//แสดงหน้าตรวจรับพัสดุ จากใบสั่งซื้อ
+//แสดงหน้าตรวจรับวัสดุ จากใบสั่งซื้อ
 Route::get('/receive-order-purchase/{order}', [CheckInOrderPurchaseController::class,'show'])->name('receive-order-purchase')->middleware('auth');
 
-//ค้นหาพัสดุ
+//ค้นหาวัสดุ
 Route::get('/search-stock-item/{item_name_search}', [StockItemController::class,'searchByItemName'])->name('search-stock-item')->middleware('auth');
 //printForm test
 Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');
@@ -218,7 +218,7 @@ Route::post('/user/update-user/{user}',[UserController::class,'update'])->name('
 Route::get('/stock/add',[StockController::class,'create'])->name('stock-add')->middleware('auth');
 Route::post('/stock/add',[StockController::class,'store'])->name('stock-add-confirm')->middleware('auth');
 
-//**********เมนูการจัดการคลังพัสดุ 
+//**********เมนูการจัดการคลังวัสดุ 
 //get-list-stock-unit
 Route::get('/stock/get-list-stock-unit/{unit_id}',[StockController::class,'getListStockUnit'])->name('get-list-stock-unit')->middleware('auth');
 //show detail stock for edit

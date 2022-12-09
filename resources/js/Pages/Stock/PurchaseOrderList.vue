@@ -36,12 +36,12 @@
         <div v-if="$page.props.auth.user.profile.division_id < 20" class="flex flex-col p-2 bg-yellow-100">
             <label class=" font-bold text-red-500">ขั้นตอน/คำแนะนำ:(ให้ user ยืนยันขั้นตอนการทำงาน)</label>
             <label >1.กดปุ่มส่งเอกสารสั่งซื้อ เพื่อส่งให้สำนักงานภาคฯ</label>
-            <label >2.หลังจากหัวหน้าภาคฯอนุมัติแล้ว จึงจะเห็นปุ่มตรวจรับพัสดุ </label>
-            <label >3.เมื่อได้รับพัสดุแล้ว จึงมากดปุ่มตรวจรับพัสดุ </label>
+            <label >2.หลังจากหัวหน้าภาคฯอนุมัติแล้ว จึงจะเห็นปุ่มตรวจรับวัสดุ </label>
+            <label >3.เมื่อได้รับวัสดุแล้ว จึงมากดปุ่มตรวจรับวัสดุ </label>
         </div>
         <!-- search word in data -->
          <!-- <div v-if="$page.props.auth.user.profile.division_id > 20">
-                <input type="text" placeholder="พิมพ์คำที่ต้องการค้นหา จากชื่อคลังพัสดุ/วันที่สั่งซื้อ/ผู้บันทึกข้อมูล" 
+                <input type="text" placeholder="พิมพ์คำที่ต้องการค้นหา จากชื่อคลังวัสดุ/วันที่สั่งซื้อ/ผู้บันทึกข้อมูล" 
                  @keyup="purchase_filter" v-model="filter_key" 
                     class="mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-500 rounded-md">
         </div> -->

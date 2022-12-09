@@ -47,8 +47,8 @@ class AbilityRoleTableSeeder extends Seeder
         $roles = array(
             ['name' => 'officer', 'label' => 'เจ้าหน้าที่', 'status'=>'1'],
             ['name' => 'super_officer', 'label' => 'เลขาภาควิชาฯ' , 'status'=>'2'],
-            // ['name' => 'admin_division_stock', 'label' => 'ผู้ดูแลคลังพัสดุสาขา'],
-            ['name' => 'admin_med_stock', 'label' => 'ผู้ดูแลคลังพัสดุทั้งหมดของภาควิชาฯ', 'status'=>'1'],
+            // ['name' => 'admin_division_stock', 'label' => 'ผู้ดูแลคลังวัสดุสาขา'],
+            ['name' => 'admin_med_stock', 'label' => 'ผู้ดูแลคลังวัสดุทั้งหมดของภาควิชาฯ', 'status'=>'1'],
             ['name' => 'admin_it', 'label' => 'ผู้ดูแลระบบ', 'status'=>'1'],
         );
 

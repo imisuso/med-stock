@@ -18,7 +18,7 @@
         >
             <!-- {{msg_validate_row}} -->
             <li v-for="(msg_validate,index) in msg_validate_row" :key="index">
-                รายการพัสดุแถวที่:{{index}} 
+                รายการวัสดุแถวที่:{{index}} 
                 <div v-for="(msg,index_msg) in msg_validate" :key="index_msg"
                  class="mx-5 text-sm "
                 >
@@ -43,7 +43,7 @@
             class=" w-full p-4   text-lg font-bold bg-blue-100 rounded-md "
             >
             <div class=" ">
-                <p class="  ">นำเข้ารายการพัสดุจากไฟล์ Excel</p> 
+                <p class="  ">นำเข้ารายการวัสดุจากไฟล์ Excel</p> 
             </div>
             <div>
                 <label for="">{{stock_name}}</label> 
@@ -56,17 +56,17 @@
                 <label>วันที่ตรวจรับ:{{date_receive}}</label>
             </div> -->
             <div>
-                <label for="">จำนวนพัสดุจากไฟล์มี : {{stock_item_import_count}} รายการ</label>
+                <label for="">จำนวนวัสดุจากไฟล์มี : {{stock_item_import_count}} รายการ</label>
             </div>
         </div>  
  
         <div>
             <!-- <div class=" w-full flex   bg-blue-900 text-white ">
                     <div class="  ">
-                       # รหัสพัสดุ
+                       # รหัสวัสดุ
                     </div >
                     <div class=" pl-16 ">
-                       <label for=""  class="  text-left">ชื่อพัสดุ </label> 
+                       <label for=""  class="  text-left">ชื่อวัสดุ </label> 
                     </div>
                     <div class=" pl-40">
                          จำนวนที่สั้งซื้อ 
@@ -113,18 +113,18 @@
                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
                     </svg>
-                    ยืนยันการเพิ่มพัสดุ
+                    ยืนยันการเพิ่มวัสดุ
             </button>
         </div>
         <div class=" w-full  mt-2">
-                <label class=" text-red-600">-ถ้าเป็นพัสดุใหม่ รหัสพัสดุต้องไม่ซ้ำกับพัสดุที่มีอยู่แล้ว ถ้ารหัสพัสดุซ้ำระบบจะนำจำนวนสั่งซื้อครั้งนี้ไปบวกเพิ่มให้อัตโนมัติ 
+                <label class=" text-red-600">-ถ้าเป็นวัสดุใหม่ รหัสวัสดุต้องไม่ซ้ำกับวัสดุที่มีอยู่แล้ว ถ้ารหัสวัสดุซ้ำระบบจะนำจำนวนสั่งซื้อครั้งนี้ไปบวกเพิ่มให้อัตโนมัติ 
                     และปรับปรุงข้อมูลราคาให้อัตโนมัติ
-                    แต่ถ้าเป็นรหัสพัสดุใหม่ระบบจะเพิ่มรายการพัสดุเป็นรายการใหม่
+                    แต่ถ้าเป็นรหัสวัสดุใหม่ระบบจะเพิ่มรายการวัสดุเป็นรายการใหม่
                 </label>
         </div>
         <div class=" w-full  mt-2 text-red-600">
                 <label for="">
-                    - ถ้าใบสัญญาสั่งซื้อจะเป็นพัสดุเดิมที่เคยมีในคลังพัสดุอยู่แล้ว เท่านั้นใช่หรือไม่
+                    - ถ้าใบสัญญาสั่งซื้อจะเป็นวัสดุเดิมที่เคยมีในคลังวัสดุอยู่แล้ว เท่านั้นใช่หรือไม่
                 </label>
         </div>
 
@@ -137,7 +137,7 @@
             <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
                     <div for="">
                     <!-- {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}  -->
-                    <label for="">บันทึกข้อมูลพัสดุลงคลังสำเร็จ</label>
+                    <label for="">บันทึกข้อมูลวัสดุลงคลังสำเร็จ</label>
                     </div>
             </div>
             </template>

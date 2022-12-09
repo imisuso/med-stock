@@ -5,7 +5,7 @@
                 {{unit.unitname}}
             </div>
             <div class="mt-3" >
-                <label for="">เลือกคลังพัสดุ</label> 
+                <label for="">เลือกคลังวัสดุ</label> 
             </div>
             <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                 <option v-for="(stock) in  stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
@@ -24,7 +24,7 @@
 
      
         <!-- show order lists -->
-         <h1 class="p-2 m-4 text-center" >รายงานการเบิกพัสดุ</h1>
+         <h1 class="p-2 m-4 text-center" >รายงานการเบิกวัสดุ</h1>
         <table class="min-w-full border-collapse block  md:table">
 		<thead class="block  md:table-header-group">
 			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">

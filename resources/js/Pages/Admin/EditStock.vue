@@ -39,7 +39,7 @@
         
         <div class=" w-full p-4 flex-col justify-center bg-blue-100 rounded-md ">
             <div class=" text-center text-lg font-bold ">
-                <p class=" my-2 ">แก้ไขข้อมูลคลังพัสดุ</p> 
+                <p class=" my-2 ">แก้ไขข้อมูลคลังวัสดุ</p> 
             </div>
             
             <!-- {{stock}}--
@@ -58,7 +58,7 @@
                 <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                
                     <div class="mt-3" >
-                        <label for="">ระบุชื่อคลังพัสดุ(ภาษาไทย):</label> 
+                        <label for="">ระบุชื่อคลังวัสดุ(ภาษาไทย):</label> 
                     </div>
                     <input type="text" class="w-full  py-2 rounded-md "
                         v-model="form.stock_name_thai"
@@ -66,7 +66,7 @@
                 </div>
                 <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                     <div class="mt-3" >
-                        <label for="">ระบุชื่อคลังพัสดุ(ภาษาอังกฤษ):</label> 
+                        <label for="">ระบุชื่อคลังวัสดุ(ภาษาอังกฤษ):</label> 
                     </div>
                     <input type="text" class="w-full  py-2 rounded-md "
                         v-model="form.stock_name_en"
@@ -74,7 +74,7 @@
                 </div>
                 <div class=" w-full  bg-blue-100 p-2 rounded-md ">
                     <div class="mt-3" >
-                        <label for="">ระบุสถานะคลังพัสดุ:</label> 
+                        <label for="">ระบุสถานะคลังวัสดุ:</label> 
                     </div>
                  
                         <!-- <div>Status: {{ form.stock_status }}</div> -->

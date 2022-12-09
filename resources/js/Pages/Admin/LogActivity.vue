@@ -19,7 +19,7 @@
         </div>
         <!-- {{//}} -->
         <!-- {{stock_items}} -->
-        <!-- <h4  class=" mt-3 text-center text-lg">ระบุปีและเดือน ที่ต้องการดูรายงานการเบิกใช้พัสดุ</h4> -->
+        <!-- <h4  class=" mt-3 text-center text-lg">ระบุปีและเดือน ที่ต้องการดูรายงานการเบิกใช้วัสดุ</h4> -->
        <!-- {{year_has}} -->
         <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
             <div class=" m-2">

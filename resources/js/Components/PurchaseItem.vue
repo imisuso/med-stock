@@ -1,7 +1,7 @@
 <template>
     <div class=" my-2 p-2 bg-blue-100 rounded-md ">
         <div class=" w-full flex  justify-between ">
-                <label class=" text-lg font-bold text-red-600" >เพิ่มรายการพัสดุให้ครบก่อนกดปุ่มบันทึกใบสั่งซื้อ:</label>
+                <label class=" text-lg font-bold text-red-600" >เพิ่มรายการวัสดุให้ครบก่อนกดปุ่มบันทึกใบสั่งซื้อ:</label>
                 <button 
                         class="  flex  p-2 justify-center mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="openSearchItem"
@@ -9,7 +9,7 @@
                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
-                        ค้นหาพัสดุ
+                        ค้นหาวัสดุ
                 </button>
         </div>
         <div class=" w-full block "> 
@@ -68,16 +68,16 @@
 
              <ModalUpToYou :isModalOpen="show_search_item" modalSize="large" >
                         <template v-slot:header>
-                                <p class="text-md font-bold text-blue-800 ">ค้นหาพัสดุ </p> 
-                                <!-- <p class="text-sm font-bold text-red-600 ">***พิมพ์ชื่อพัสดุอย่างน้อย 3 ตัวอักษร</p>  -->
+                                <p class="text-md font-bold text-blue-800 ">ค้นหาวัสดุ </p> 
+                                <!-- <p class="text-sm font-bold text-red-600 ">***พิมพ์ชื่อวัสดุอย่างน้อย 3 ตัวอักษร</p>  -->
                         </template>
                         <template v-slot:body>
-                         <p class="text-sm font-bold text-red-600 ">***พิมพ์ชื่อพัสดุอย่างน้อย 3 ตัวอักษร</p> 
+                         <p class="text-sm font-bold text-red-600 ">***พิมพ์ชื่อวัสดุอย่างน้อย 3 ตัวอักษร</p> 
                         <div class="w-full flex  text-gray-900 text-md font-medium dark:text-white">
                                <div class=" w-3/4">
                                                   <!-- {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}  -->
                                         <input type="text" v-model="form.item_name_search" name="" id="" 
-                                                placeholder="พิมพ์ชื่อพัสดุอย่างน้อย 3 ตัวอักษร"
+                                                placeholder="พิมพ์ชื่อวัสดุอย่างน้อย 3 ตัวอักษร"
                                                 class="w-full  py-2 rounded-md appearance-none focus:border-indigo-600 "
                                                 :class="[item_name_search_alert ? 'border-red-500 border-2 ' : 'border-gray-500' ]"
                                         >
@@ -96,7 +96,7 @@
                         </div>
                         <div class=" bg-blue-50">
                                 <div v-if="form.stock_items.length == 0">
-                                        <p>ไม่พบชื่อพัสดุที่ต้องการค้นหา</p>
+                                        <p>ไม่พบชื่อวัสดุที่ต้องการค้นหา</p>
                                 </div>
                                 <div v-else>
                                         <div class="w-full  justify-between mt-2 border-b-2 border-blue-800"

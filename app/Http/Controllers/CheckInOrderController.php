@@ -119,7 +119,7 @@ class CheckInOrderController extends Controller
         }
 
         //return "test";
-        return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกรับพัสดุใหม่ลงคลังสำเร็จ']);
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกรับวัสดุใหม่ลงคลังสำเร็จ']);
     }
 
     /**

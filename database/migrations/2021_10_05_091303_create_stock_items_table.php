@@ -19,7 +19,7 @@ class CreateStockItemsTable extends Migration
             $table->uuid('slug');
             $table->unsignedSmallInteger('stock_id');
             $table->unsignedSmallInteger('user_id')->default(1);
-            $table->string('item_code')->uniqid();   //SAP พัสดุ
+            $table->string('item_code')->uniqid();   //SAP วัสดุ
             $table->string('item_name');
             $table->string('unit_count')->nullable();
             $table->integer('item_sum');
@@ -31,7 +31,7 @@ class CreateStockItemsTable extends Migration
             $table->string('pur_order');
             $table->string('invoice_number');
             $table->string('business_name');
-            $table->integer('status')->default(1);    // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ ,9=cancel
+            $table->integer('status')->default(1);    // 1 = วัสดุตามสัญญาสั่งซื้อ , 2= วัสดุตามใบสั่งซื้อ ,9=cancel
             $table->json('profile')->nullable();
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ class UnitSeeder extends Seeder
      //*****เอาข้อมูลสาขามาจากระบบ consult
         $units = array(
             ['unitid' => '99', 'unitname' => 'สำนักงานภาควิชาอายุรศาสตร์','unittype'=>'1','shortname'=>'med'],
-            ['unitid' => '27', 'unitname' => 'หน่วยงบประมาณและพัสดุ','unittype'=>'1','shortname'=>'stockmed'],
+            ['unitid' => '27', 'unitname' => 'หน่วยงบประมาณและวัสดุ','unittype'=>'1','shortname'=>'stockmed'],
             ['unitid' => '33', 'unitname' => 'หน่วยเวชสารสนเทศและบริหารข้อมูล','unittype'=>'1','shortname'=>'itmed'],
             ['unitid' => '1', 'unitname' => 'สาขาวิชาการบริบาลผู้ป่วยนอก','unittype'=>'2','shortname'=>'ambu'],
             ['unitid' => '2', 'unitname' => 'สาขาวิชาความดันโลหิตสูง','unittype'=>'2','shortname'=>'hypertension'],

@@ -157,7 +157,7 @@ class AdminReportStockController extends Controller
 
    
 
-      //  $msg = 'เพิ่มพัสดุจากไฟล์ excel จำนวน '.$cnt.' รายการ เรียบร้อย';
+      //  $msg = 'เพิ่มวัสดุจากไฟล์ excel จำนวน '.$cnt.' รายการ เรียบร้อย';
 
       
        

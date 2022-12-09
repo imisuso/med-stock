@@ -37,7 +37,7 @@
                     <a :href="route('annouce')"  
                     class="font-semibold mt-2 text-2xl text-blue-400 "
                     >
-                      ระบบพัสดุ
+                      ระบบวัสดุ
                     </a>  
                   <!-- </p> -->
                  

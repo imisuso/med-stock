@@ -32,7 +32,7 @@ class CreateItemTransactionsTable extends Migration
             $table->string('pur_order')->nullable();
             $table->string('invoice_number')->nullable();
             $table->string('business_name')->nullable();
-            $table->integer('order_type')->default(1);    // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
+            $table->integer('order_type')->default(1);    // 1 = วัสดุตามสัญญาสั่งซื้อ , 2= วัสดุตามใบสั่งซื้อ
             $table->json('profile')->nullable();  //if action = checkin -> price ,catalog_no , lot_no
             $table->timestamps();
         });
