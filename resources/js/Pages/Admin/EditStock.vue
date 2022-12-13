@@ -98,12 +98,19 @@
                         >
                         แก้ไข
                     </button>
-                    <!-- <button type="submit" 
+                    <button type="submit" 
                         class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
                         @click="getListStockUnit()"
                         >
                         กลับ
-                    </button> -->
+                    </button>
+                    <!-- <Link :href="route('stock-add',stock.unit_id)" >
+                        <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
+                         
+
+                            <span class="text-gray-700 ml-2">กลับ</span>
+                        </div>
+                    </Link> -->
 
                    
                 </div>
@@ -207,7 +214,7 @@ const confirmEditStock=(()=>{
 const okconfirmEditStock=()=>{
     confirm_edit_stock.value = false;
     // console.log(form.order_id);
-       console.log('----------okconfirmEditStock------');
+   //    console.log('----------okconfirmEditStock------');
       form.post(route('update-stock',form.stock_id), {
         preserveState: false,
         preserveScroll: true,
@@ -219,25 +226,21 @@ const okconfirmEditStock=()=>{
     })
 }
 const getListStockUnit=(()=>{
-     console.log('----------getListStockUnit------')
-    console.log(form.unit);
+    //  console.log('----------getListStockUnit------')
+    // console.log(form.unit);
 
-    form.get(route('get-list-stock-unit',form.unit), {
+    form.get(route('stock-add'), {
         preserveState: false,
         preserveScroll: true,
-        onSuccess: page => { console.log('success');},
+        onSuccess: page => { 
+            console.log('success');
+        },
         onError: errors => { 
             console.log('error');
         },
         onFinish: visit => { console.log('finish');},
     })
-    // axios.get(route('get-list-stock-unit',{unit_id:form.unit})).then(res => {
-    //     console.log(res.data.list_stock_unit.length);
-    // //    stocks_unit.value = res.data.list_stock_unit;   
-    // //    stocks_unit_count.value = res.data.list_stock_unit.length;
-    // //    show_form_add_stock.value=false
-    //    //console.log(stocks_unit.count());
-    // });
+   
 })
 
   

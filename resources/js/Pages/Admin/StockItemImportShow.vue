@@ -116,17 +116,17 @@
                     ยืนยันการเพิ่มวัสดุ
             </button>
         </div>
-        <div class=" w-full  mt-2">
+        <!-- <div class=" w-full  mt-2">
                 <label class=" text-red-600">-ถ้าเป็นวัสดุใหม่ รหัสวัสดุต้องไม่ซ้ำกับวัสดุที่มีอยู่แล้ว ถ้ารหัสวัสดุซ้ำระบบจะนำจำนวนสั่งซื้อครั้งนี้ไปบวกเพิ่มให้อัตโนมัติ 
                     และปรับปรุงข้อมูลราคาให้อัตโนมัติ
                     แต่ถ้าเป็นรหัสวัสดุใหม่ระบบจะเพิ่มรายการวัสดุเป็นรายการใหม่
                 </label>
-        </div>
-        <div class=" w-full  mt-2 text-red-600">
+        </div> -->
+        <!-- <div class=" w-full  mt-2 text-red-600">
                 <label for="">
                     - ถ้าใบสัญญาสั่งซื้อจะเป็นวัสดุเดิมที่เคยมีในคลังวัสดุอยู่แล้ว เท่านั้นใช่หรือไม่
                 </label>
-        </div>
+        </div> -->
 
         <ModalUpToYou :isModalOpen="show_alert_msg_import_success" >
             <template v-slot:header>

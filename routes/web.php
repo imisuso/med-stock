@@ -215,7 +215,7 @@ Route::post('/user/update-user/{user}',[UserController::class,'update'])->name('
 
 
 //Add Stock
-Route::get('/stock/add',[StockController::class,'create'])->name('stock-add')->middleware('auth');
+Route::get('/stock/add',[StockController::class,'show'])->name('stock-add')->middleware('auth')->middleware('remember');
 Route::post('/stock/add',[StockController::class,'store'])->name('stock-add-confirm')->middleware('auth');
 
 //**********เมนูการจัดการคลังวัสดุ 

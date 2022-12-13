@@ -120,14 +120,18 @@ class ItemTransactionController extends Controller
       
         $user = Auth::user();
         // Log::info('ItemTransactionController store');
-       //  Logger($request->all());
+        //logger($request->all());
        //  return "store";
         // Log::info($request->confirm_item_slug);
         // Log::info($request->confirm_item_date);
         // Log::info($request->confirm_item_count);
         $stock_item = StockItem::whereSlug($request->confirm_item_slug)->first();
         // Log::info($stock_item);
-      
+        $item_balance = $stock_item->itemBalance();
+        //dd($item_balance);
+        if($request->confirm_item_count >$item_balance )
+        return Redirect::back()->with(['status' => 'error', 'msg' => 'ERROR!!จำนวนที่เบิกมากกว่าจำนวนที่คงเหลือ']);
+        //return Redirect::back()->withErrors(['status' => 'error', 'msg' => 'ERROR!!จำนวนที่เบิกมากกว่าจำนวนที่คงเหลือ']);
       
         // Log::info($stock_item->stock);
         $year_checkout= substr($request->confirm_item_date,0,4);

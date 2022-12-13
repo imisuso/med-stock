@@ -105,17 +105,7 @@ class StockController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-        $main_menu_links = [
-            'is_admin_division_stock'=> $user->can('view_master_data'),
-           // 'user_abilities'=>$user->abilities,
-          ];
-        request()->session()->flash('mainMenuLinks', $main_menu_links);
-         request()->session()->flash('user', $user);
-        $units = Unit::all();
-        return Inertia::render('Admin/AddStock',[
-            'units'=> $units,
-            ]);
+     
     }
 
     /**
@@ -163,9 +153,35 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-      
+        $user = Auth::user();
+        $main_menu_links = [
+            'is_admin_division_stock'=> $user->can('view_master_data'),
+           // 'user_abilities'=>$user->abilities,
+          ];
+        request()->session()->flash('mainMenuLinks', $main_menu_links);
+         request()->session()->flash('user', $user);
+        $units = Unit::all();
+
+
+        if(request()->input('unit')){
+            logger('has unit');
+
+            $list_stock_unit = Stock::where('unit_id',request()->input('unit'))->get();
+            // return response()->json([
+            //     'list_stock_unit' => $list_stock_unit
+            // ]);
+            return Inertia::render('Admin/AddStock',[
+                    'units'=> $units,
+                    'list_stock_unit' => $list_stock_unit,
+                    'unit_search' => request()->input('unit'),
+                ]);
+        }
+
+        return Inertia::render('Admin/AddStock',[
+            'units'=> $units,
+            ]);
 
     }
 

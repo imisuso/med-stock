@@ -1,7 +1,7 @@
 <template>
     <!-- give the sidebar z-50 class so its higher than the navbar if you want to see the logo -->
     <!-- you will need to add a little "X" button next to the logo in order to close it though -->
-    <div class="overflow-y-auto w-2/3 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 h-screen lg:block bg-gray-100 border-r z-30" :class="sideBarOpen ? '' : 'hidden'" id="main1-nav">
+    <div class="overflow-y-auto  w-2/3 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 lg:h-screen lg:block bg-gray-100 border-r z-30" :class="sideBarOpen ? '' : 'hidden'" id="main1-nav">
 
       <div class=" flex justify-center ">
             <img src="../../images/logo_med_tranparent.gif" class=" w-2/3">
@@ -66,7 +66,9 @@
           <i :class="managementMenuOpen ? iconExpland : iconCollapse" class="ml-2" style="fontSize: 0.7rem"></i>
         </div >
         <div :class="managementMenuOpen ? '' : 'hidden'">
-          <Link :href="route('stock-add')">
+          <Link :href="route('stock-add')"
+                :data="{ 'remember': 'forget' }"
+                >
             <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
               <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>เพิ่ม/แก้ไข คลังวัสดุ</div>
             </div>

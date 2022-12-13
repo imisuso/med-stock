@@ -1,5 +1,5 @@
 <template>
-    <AppLayout>
+    <AgreementLayout>
      <!-- {{user}} -->
         <div class=" flex-col p-2 w-full justify-center bg-red-50  ">
              <!-- <div>
@@ -17,7 +17,7 @@
         </div>
  
         <div v-if="user_agreement">
-            <div class="w-full flex justify-center my-2 mx-10  text-red-600 ">
+            <div class="w-full flex justify-center my-2  text-red-600 ">
                     <label for="">ท่านรับทราบและตกลงตามนโยบายการคุ้มครองข้อมูลส่วนบุคคลข้างต้น</label>
             </div>
             <div  class="flex flex-col lg:flex-row px-2 py-2  ">
@@ -31,12 +31,12 @@
                         </button>
             </div>
         </div>
-    </AppLayout>
+    </AgreementLayout>
  </template>
  
  <script setup>
  //import { ref } from 'vue'
- import AppLayout from '@/Layouts/AppLayout.vue'
+ import AgreementLayout from '@/Layouts/AgreementLayout.vue'
 import { useForm } from '@inertiajs/inertia-vue3';
  import dayjs from 'dayjs';
  import 'dayjs/locale/th'
