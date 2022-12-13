@@ -148,7 +148,7 @@
         </Link> -->
 
         <Link :href="route('add-annouce')"
-          v-if="$page.props.auth.abilities.includes('import_item_excel')"
+          v-if="$page.props.auth.user.roles[0].name == 'admin_med_stock' || $page.props.auth.user.roles[0].name == 'admin_it'"
           >
           <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
