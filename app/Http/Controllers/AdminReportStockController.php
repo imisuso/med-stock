@@ -81,8 +81,8 @@ class AdminReportStockController extends Controller
         /****************  insert log ****************/
            // logger($old_changes);
            // $use_in = Auth::user();
-
            $detail_log =array();
+        if($stock_selected_name)
            $detail_log['stock_id'] = $stock_selected_name->stockname;
    
 

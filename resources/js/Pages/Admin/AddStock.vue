@@ -50,7 +50,7 @@
                     {{$page.props.auth.user.profile.division_name}}
                 </div> -->
                 <div class="mt-3" >
-                    <label for="">เลือกหน่วยงาน:</label> 
+                    <label for="">กรุณาเลือกหน่วยงานที่ต้องการเพิ่ม/แก้ไข คลัง:</label> 
                 </div>
                 <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
                     v-model="form.unit"
@@ -86,7 +86,8 @@
                        
                         <!-- <label for="" v-if="stock.status==1" class=" ml-4 "> สถานะ:ใช้งาน</label> -->
                     </div>
-                    <div class="flex  justify-center bg-yellow-200 px-2 rounded-md shadow-md " >
+                    <div v-if="$page.props.auth.user.roles[0].name == 'admin_med_stock'"
+                        class="flex  justify-center bg-yellow-200 px-2 rounded-md shadow-md " >
                         
                         <a :href="route('show-detail-stock',stock)"  >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -120,7 +121,7 @@
                 class="w-full   p-2 my-2 rounded-md"
                 >
                 <label for="">ไม่พบรายชื่อคลังในหน่วย/สาขา นี้</label>
-                <div class=" my-2 ">
+                <div class=" my-2 " v-if="$page.props.auth.user.roles[0].name == 'admin_med_stock'">
                     <button type="submit" 
                         class=" w-full flex justify-center py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
                         @click="showFormAddStock()"

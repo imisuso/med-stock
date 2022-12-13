@@ -23,17 +23,42 @@ class UserUatSeeder extends Seeder
             ['name' => 'sukanya.par', 'unitid' => '99','role'=>'super_officer'],
             ['name' => 'raksak.lek', 'unitid' => '27','role'=>'admin_med_stock'],
             ['name' => 'thayika.sup', 'unitid' => '27','role'=>'admin_med_stock'],
-            ['name' => 'panudda.tieit', 'unitid' => '27','role'=>'admin_med_stock'],
-            ['name' => 'juntima.nucit', 'unitid' => '33','role'=>'admin_it'],
-            ['name' => 'tossapon.ngait', 'unitid' => '33','role'=>'admin_it'],
-            ['name' => 'poonsap.panit', 'unitid' => '33','role'=>'admin_it'],
-            ['name' => 'sophon.nitit', 'unitid' => '33','role'=>'admin_it'],
-            ['name' => 'sansanee.sumit', 'unitid' => '33','role'=>'admin_it'],
-            ['name' => 'koramit.pic', 'unitid' => '13','role'=>'officer'],
-            ['name' => 'officer.id', 'unitid' => '5','role'=>'officer'],
-            ['name' => 'officer.chest', 'unitid' => '10','role'=>'officer'],
             ['name' => 'officer.hemato', 'unitid' => '12','role'=>'officer'],
-            ['name' => 'officer.nephro', 'unitid' => '13','role'=>'officer'],
+            ['name' => 'officer.chest', 'unitid' => '10','role'=>'officer'],
+
+            ['name' => 'panudda.adminit', 'unitid' => '33','role'=>'admin_it'],
+            ['name' => 'panudda.adminmedstock', 'unitid' => '27','role'=>'admin_med_stock'],
+            ['name' => 'panudda.officerid', 'unitid' => '5','role'=>'officer'],
+            ['name' => 'panudda.officernephro', 'unitid' => '13','role'=>'officer'],
+
+                 
+            ['name' => 'juntima.adminit', 'unitid' => '33','role'=>'admin_it'],
+            ['name' => 'juntima.adminmedstock', 'unitid' => '27','role'=>'admin_med_stock'],
+            ['name' => 'juntima.officerid', 'unitid' => '5','role'=>'officer'],
+            ['name' => 'juntima.officernephro', 'unitid' => '13','role'=>'officer'],
+
+            ['name' => 'tossapon.adminit', 'unitid' => '33','role'=>'admin_it'],
+            ['name' => 'tossapon.adminmedstock', 'unitid' => '27','role'=>'admin_med_stock'],
+            ['name' => 'tossapon.officerid', 'unitid' => '5','role'=>'officer'],
+            ['name' => 'tossapon.officernephro', 'unitid' => '13','role'=>'officer'],
+
+            ['name' => 'poonsap.adminit', 'unitid' => '33','role'=>'admin_it'],
+            ['name' => 'poonsap.adminmedstock', 'unitid' => '27','role'=>'admin_med_stock'],
+            ['name' => 'poonsap.officerid', 'unitid' => '5','role'=>'officer'],
+            ['name' => 'poonsap.officernephro', 'unitid' => '13','role'=>'officer'],
+
+            ['name' => 'sophon.adminit', 'unitid' => '33','role'=>'admin_it'],
+            ['name' => 'sophon.adminmedstock', 'unitid' => '27','role'=>'admin_med_stock'],
+            ['name' => 'sophon.officerid', 'unitid' => '5','role'=>'officer'],
+            ['name' => 'sophon.officernephro', 'unitid' => '13','role'=>'officer'],
+
+            ['name' => 'sansanee.adminit', 'unitid' => '33','role'=>'admin_it'],
+            ['name' => 'sansanee.adminmedstock', 'unitid' => '27','role'=>'admin_med_stock'],
+            ['name' => 'sansanee.officerid', 'unitid' => '5','role'=>'officer'],
+            ['name' => 'sansanee.officernephro', 'unitid' => '13','role'=>'officer'],
+
+
+            ['name' => 'koramit.nephro', 'unitid' => '13','role'=>'officer'],
         );
 
         $profile['user_id_in'] = 0;

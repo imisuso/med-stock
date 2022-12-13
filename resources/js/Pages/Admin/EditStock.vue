@@ -98,8 +98,16 @@
                         >
                         แก้ไข
                     </button>
-                </div>
+                    <!-- <button type="submit" 
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        @click="getListStockUnit()"
+                        >
+                        กลับ
+                    </button> -->
 
+                   
+                </div>
+              
             </div>
            
         </div>
@@ -151,6 +159,7 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { useForm } from '@inertiajs/inertia-vue3';
 import { ref ,computed} from 'vue';
+import { Link } from '@inertiajs/inertia-vue3'
 
 
 const props =defineProps({
@@ -160,7 +169,6 @@ const props =defineProps({
     // status:{type:Array}
     
 })
-
 
 const confirm_edit_stock=ref(false);
 
@@ -185,7 +193,7 @@ const form = useForm({
     stock_name_thai:props.stock.stockname ? props.stock.stockname : '',
     stock_name_en:props.stock.stockengname ? props.stock.stockengname : '',
     stock_status:props.stock.status ? props.stock.status : 0,
-    
+    unit:props.stock.unit_id ? props.stock.unit_id : '',
 })
 
 
@@ -210,7 +218,27 @@ const okconfirmEditStock=()=>{
         onFinish: visit => { console.log('finish');},
     })
 }
+const getListStockUnit=(()=>{
+     console.log('----------getListStockUnit------')
+    console.log(form.unit);
 
+    form.get(route('get-list-stock-unit',form.unit), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: page => { console.log('success');},
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
+    // axios.get(route('get-list-stock-unit',{unit_id:form.unit})).then(res => {
+    //     console.log(res.data.list_stock_unit.length);
+    // //    stocks_unit.value = res.data.list_stock_unit;   
+    // //    stocks_unit_count.value = res.data.list_stock_unit.length;
+    // //    show_form_add_stock.value=false
+    //    //console.log(stocks_unit.count());
+    // });
+})
 
   
 </script>
