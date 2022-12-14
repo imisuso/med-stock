@@ -265,7 +265,7 @@
             </template>
 
             <template v-slot:body>
-                <div class="text-gray-900 text-md font-medium dark:text-white">
+                <div class="text-gray-900 text-md font-medium ">
                      <label for="" class="  flex  justify-start w-full text-sm "
                      >
                          รหัสเจ้าหน้าที่: {{form.sap_id}} 

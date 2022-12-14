@@ -183,7 +183,7 @@
             </template>
 
             <template v-slot:body>
-                <div class="text-gray-900 text-md font-medium dark:text-white">
+                <div class="text-gray-900 text-md font-medium ">
                      <label for=""
                      class="  flex  justify-start w-full text-sm "
                      >
@@ -297,14 +297,15 @@ const getListStockUnit=(()=>{
         preserveState: false,
         preserveScroll: true,
         onSuccess: page => { 
-            console.log('success');
+            //console.log('success');
             // console.log(props.list_stock_unit.length);
             // stocks_unit_count.value = props.list_stock_unit.length;
         },
         onError: errors => { 
             console.log('error');
         },
-        onFinish: visit => { console.log('finish');},
+        onFinish: visit => { //console.log('finish');
+        },
     })
 })
 

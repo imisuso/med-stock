@@ -11,6 +11,18 @@
                     </svg>
                 </label>
         </div>
+
+        <div v-if="$page.props.flash.status=='error'" 
+                class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
+                <input type="checkbox" class="hidden" id="banneralert">
+                
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-300 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+                 {{ $page.props.flash.msg }}
+                   <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </label>
+        </div>
   
         <div  v-if="checkin_last" class="bg-blue-800 text-white text-xl text-center ">
                 {{$page.props.stock.stockname}}
@@ -177,7 +189,7 @@
             </template>
 
             <template v-slot:body>
-                <div class="text-gray-900 text-md font-medium dark:text-white">
+                <div class="text-gray-900 text-md font-medium ">
                   
                     <label  class="  flex  justify-start w-full text-md ">
                         ชื่อวัสดุ:{{confirm_delete_item_name}}

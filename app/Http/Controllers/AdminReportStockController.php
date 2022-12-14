@@ -11,6 +11,7 @@ use App\Models\Stock;
 use App\Models\StockItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
 use function PHPSTORM_META\elementType;
 
@@ -28,17 +29,27 @@ class AdminReportStockController extends Controller
     public function index($division_id)
     {
         //Log::info($division_id);
-     //  logger('AdminReportStockController index');
+      logger('AdminReportStockController index');
         $user = Auth::user();
        // Logger($user);
      //   Logger($user->roles[0]['name']);
-       //  logger(request()->all());
-       //  logger($division_id);
+      //  logger(request()->all());
+      //   logger($division_id);
         // logger('----------');
         $role_admin = array('admin_it','admin_med_stock','super_officer');
 
+        if(!in_array($user->roles[0]['name'] , $role_admin)
+             &&  ($user->unitid != $division_id)
+        )   
+        {
+            // logger("can not view ");
+            return Redirect::back()->with(['status' => 'error', 'msg' => 'คุณไม่มีสิทธิดูจำนวนคงเหลือของคลังนี้']);
+        
+        }
+
         if(!in_array($user->roles[0]['name'] , $role_admin)){
-            $stocks = Stock::whereId($division_id)->get();
+            //$stocks = Stock::whereId($division_id)->get();
+            $stocks = Stock::where('unit_id',$division_id)->where('status',1)->get();
             $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();
         }
         else{
@@ -49,8 +60,8 @@ class AdminReportStockController extends Controller
     if(request()->input('stock_selected')){
 
        $stock_selected_id = request()->input('stock_selected');
-       $stock_selected_name = Stock::select('stockname')->where('unit_id',$stock_selected_id)->first();
-   
+      // $stock_selected_name = Stock::select('stockname')->where('unit_id',$stock_selected_id)->first();
+       $stock_selected_name = Stock::select('stockname')->where('id',request()->input('stock_selected'))->first();
 
         $query = StockItem::query()->where('stock_id',request()->input('stock_selected'))
                             ->where('status','!=',9)
@@ -150,23 +161,17 @@ class AdminReportStockController extends Controller
         }else{
                 $stock_items = [];
             // $stock_item_checkouts = '';
-                $stock_selected_id='';
-                $stock_selected_name='';
+                $stock_selected_id=0;
+                $stock_selected_name=[];
         }
     }
 
-   
-
-      //  $msg = 'เพิ่มวัสดุจากไฟล์ excel จำนวน '.$cnt.' รายการ เรียบร้อย';
-
-      
-       
-        
+       // logger(count($stock_items));
         return Inertia::render('Admin/ListReportStock',[
                             'stocks'=>$stocks,
                             'stock_items'=> $stock_items,
-                           // 'item_trans' => $stock_item_checkouts,
-                            'stock_selected' => $stock_selected_id,
+                            'stock_items_count' => count($stock_items),
+                            'stock_selected' => (int)$stock_selected_id,
                             'stock_selected_name' => $stock_selected_name,
                             'filters' => request()->only(['search'])        
                         ]);

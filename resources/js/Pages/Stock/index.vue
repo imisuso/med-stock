@@ -44,8 +44,12 @@
                     <label for="">เลือกคลังวัสดุ</label> 
                 </div>
                 <!-- {{stocks}} -->
-                <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                    <option v-for="(stock) in  $page.props.stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
+                <select name="" id="" 
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
+                    v-model="form.stock_id"
+                    @change="getListStockItem()"
+                    >
+                    <option v-for="(stock) in  $page.props.stocks" :key=stock.id :value="stock.id">{{stock.stockname}}</option>
                 </select>
             
             </div>
@@ -121,6 +125,7 @@ let search = ref(props.filters.search)
 
 const form = useForm({
     filter_key:'',
+    stock_id:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid : 0,
 })
 
 watch( search, value => {
@@ -134,10 +139,25 @@ watch( search, value => {
   //  }
 })
 
-// const purchase_filter = () => {
-//   console.log(filter_key.value)
+const getListStockItem=(()=>{
+    // console.log('----------getListStockItem------')
+    // console.log(form.stock_id);
 
-// }
+
+    form.get(route('stock'), {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: page => { 
+            console.log('success');
+            // console.log(props.list_stock_unit.length);
+            // stocks_unit_count.value = props.list_stock_unit.length;
+        },
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
+})
 
 </script>
  

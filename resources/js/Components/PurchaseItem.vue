@@ -73,7 +73,7 @@
                         </template>
                         <template v-slot:body>
                          <p class="text-sm font-bold text-red-600 ">***พิมพ์ชื่อวัสดุอย่างน้อย 3 ตัวอักษร</p> 
-                        <div class="w-full flex  text-gray-900 text-md font-medium dark:text-white">
+                        <div class="w-full flex  text-gray-900 text-md font-medium ">
                                <div class=" w-3/4">
                                                   <!-- {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}  -->
                                         <input type="text" v-model="form.item_name_search" name="" id="" 

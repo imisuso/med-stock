@@ -27,7 +27,12 @@ class StockController extends Controller
     {
 
        // Log::info('StockController index');
+       // logger(Request()->all());
         $user = Auth::user();
+
+             /*  Validate  User View own Item Only  */
+      
+        
         $stocks = Stock::where('unit_id',$user->unitid)
                         ->where('status',1)
                         ->get();
@@ -45,9 +50,32 @@ class StockController extends Controller
         // logger($user->unitid);
         // logger(request()->input('search'));
 
-        $query = StockItem::query()->where('stock_id',$user->unitid)
+
+
+
+        if(request()->input('stock_id')){
+
+            $stock_check = Stock::where('id',request()->input('stock_id'))
+                        ->where('status',1)
+                        ->first();
+
+            if( $user->unitid != $stock_check->unit_id)   
+            {
+                // logger("can not view stock item");
+            
+                return Redirect::back()->with(['status' => 'error', 'msg' => 'คุณไม่มีสิทธิตัดสต๊อกคลังวัสดุนี้']);
+                
+            }
+            $query = StockItem::query()->where('stock_id',request()->input('stock_id'))
                                     ->where('status','!=',9)
                                     ->filterBySearch(request()->search);
+         
+        }else{
+
+            $query = StockItem::query()->where('stock_id',$user->unitid)
+                                    ->where('status','!=',9)
+                                    ->filterBySearch(request()->search);
+        }
      
 
              $stock_items = $query->orderBy('item_name')
@@ -166,7 +194,7 @@ class StockController extends Controller
 
 
         if(request()->input('unit')){
-            logger('has unit');
+           // logger('has unit');
 
             $list_stock_unit = Stock::where('unit_id',request()->input('unit'))->get();
             // return response()->json([
@@ -175,7 +203,7 @@ class StockController extends Controller
             return Inertia::render('Admin/AddStock',[
                     'units'=> $units,
                     'list_stock_unit' => $list_stock_unit,
-                    'unit_search' => request()->input('unit'),
+                    'unit_search' => (int)request()->input('unit'),
                 ]);
         }
 

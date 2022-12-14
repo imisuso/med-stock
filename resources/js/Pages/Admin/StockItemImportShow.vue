@@ -11,6 +11,13 @@
               
          
             </li>
+          
+            <button type="submit" 
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        @click="backImportExcel()"
+                        >
+                        กลับ
+             </button>
         </div>
       
         <div v-if="!validate_row_excel"
@@ -61,48 +68,7 @@
         </div>  
  
         <div>
-            <!-- <div class=" w-full flex   bg-blue-900 text-white ">
-                    <div class="  ">
-                       # รหัสวัสดุ
-                    </div >
-                    <div class=" pl-16 ">
-                       <label for=""  class="  text-left">ชื่อวัสดุ </label> 
-                    </div>
-                    <div class=" pl-40">
-                         จำนวนที่สั้งซื้อ 
-                    </div>
-                    <div class=" pl-5 ">
-                         ราคา/หน่วย (บาท)
-                    </div>
-                    <div class=" pl-5 ">
-                        catalog_number-lot_number
-                    </div>
-                                
-                </div> -->
 
-            <!-- <div class=" border p-1 " 
-                v-for="(item_import,index) in stock_item_import"
-                :key="index"
-             >
-                <div class=" w-full flex-row md:flex md:justify-between ">
-                    <div class="  ">
-                        {{index+1}}.  {{item_import.item_code}}:{{item_import.item_name}}
-                    </div >
-                    <div class=" ">
-                         จำนวน {{item_import.item_receive}} {{item_import.unit_count}}  
-                    </div>
-                    <div>
-                        ราคา/หน่วย {{item_import.price}} บาท
-                    </div>
-                    <div>
-                        ({{item_import.catalog_number}}-{{item_import.lot_number}})
-                    </div>
-                    <div>
-                        วันที่รับเข้า:{{item_import.date_receive}} วันที่หมดอายุ:{{item_import.date_expire}}
-                    </div>
-                                
-                </div>
-            </div> -->
             
         </div> 
         <div v-if="validate_excel && validate_row_excel && validate_input" class=" mt-2">
@@ -115,6 +81,13 @@
                     </svg>
                     ยืนยันการเพิ่มวัสดุ
             </button>
+
+            <button type="submit" 
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        @click="backImportExcel()"
+                        >
+                        กลับ
+             </button>
         </div>
         <!-- <div class=" w-full  mt-2">
                 <label class=" text-red-600">-ถ้าเป็นวัสดุใหม่ รหัสวัสดุต้องไม่ซ้ำกับวัสดุที่มีอยู่แล้ว ถ้ารหัสวัสดุซ้ำระบบจะนำจำนวนสั่งซื้อครั้งนี้ไปบวกเพิ่มให้อัตโนมัติ 
@@ -134,7 +107,7 @@
                                     
             </template>
             <template v-slot:body>
-            <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+            <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
                     <div for="">
                     <!-- {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}  -->
                     <label for="">บันทึกข้อมูลวัสดุลงคลังสำเร็จ</label>
@@ -192,9 +165,6 @@ const form = useForm({
 })
 
 
-
-
-
 const CheckInToStockItem=(()=>{
    // console.log('----------CheckInToStockItem------')
    // console.log(form.stock_id);
@@ -214,6 +184,23 @@ const CheckInToStockItem=(()=>{
            // import_stock_items.value = res.data.stock_item_import;   
         },
     })
+})
+const backImportExcel=(()=>{
+    // console.log('----------getListUser------')
+    // console.log(form.unit);
+
+    form.get(route('stock-item-import'), {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: page => { 
+            console.log('success');
+        },
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
+   
 })
   
 </script>

@@ -150,11 +150,12 @@
                                 <input type="number" name="" id="" 
                                     :min="0"
                                     :max="stockItem.item_balance"
+                                    pattern = "[0-9]"
                                     v-model="form.unit_checkout"
                                     class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
                                     :class="[unitcheckout_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
                                 >
-                                <label v-if="msg_alert_checkout">{{msg_alert}}</label>
+                                <label v-if="unitcheckout_alert">{{msg_alert}}</label>
                             </div>
                           
                         </div>
@@ -185,15 +186,13 @@
          <ModalUpToYou :isModalOpen="confirm_checkout" >
 
             <template v-slot:header>
-                <!-- <div class="text-gray-900 text-xl font-medium dark:text-white">
-                    คุณต้องการลบข้อมูลบุคคลากร
-                </div> -->
+              
                 <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกการเบิกวัสดุรายการนี้ใช่หรือไม่?</p> 
                                         
             </template>
 
             <template v-slot:body>
-                <div class="text-gray-900 text-md font-medium dark:text-white">
+                <div class="text-gray-900 text-md font-medium ">
                     <p class="mt-2">{{form.confirm_item_name}} เบิกใช้วันที่ {{ form.confirm_item_date}} จำนวน {{form.confirm_item_count}} ชิ้น</p>   
                 </div>
             </template>
@@ -223,6 +222,7 @@ import { ref } from '@vue/reactivity';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
+
 dayjs.extend(buddhistEra)
 
 const props = defineProps({
@@ -277,6 +277,19 @@ const confirmCheckout=(stock_item)=>{
         unitcheckout_alert.value=false;
     }
 
+   
+    // Number.isInteger(form.unit_checkout)
+    // console.log(Number.isInteger(form.unit_checkout));
+    if(!Number.isInteger(form.unit_checkout)){
+        unitcheckout_alert.value=true
+        msg_alert.value="กรุณาระบุจำนวนที่เบิกวัสดุเป็นจำนวนเต็ม";
+       // console.log('กรุณาระบุจำนวน');
+      //  document.getElementById("order_in").focus();
+        return false;
+    }else{
+        unitcheckout_alert.value=false;
+    }
+
     if(form.unit_checkout > stock_item.item_balance){
         unitcheckout_alert.value=true
         msg_alert_checkout.value=true
@@ -312,5 +325,6 @@ const okConfirmCheckout=()=>{
     })
   
 }
+
 
 </script>

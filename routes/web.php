@@ -198,14 +198,14 @@ Route::get('/search-stock-item/{item_name_search}', [StockItemController::class,
 Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');
 
 //Import Data From Excel
-Route::get('/stockitem/import',[StockItemImportController::class,'index'])->name('stock-item-import')->middleware('auth');
+Route::get('/stockitem/import',[StockItemImportController::class,'index'])->name('stock-item-import')->middleware('auth')->middleware('remember');
 
 Route::post('/stockitem/import',[StockItemImportController::class,'show'])->name('stock-item-import-show')->middleware('auth');
 
 Route::post('/stockitem/checkin-to-stock',[StockItemImportController::class,'store'])->name('import-checkin-to-stock')->middleware('auth');
 
 //Add User
-Route::get('/user/add',[UserController::class,'index'])->name('user-add')->middleware('auth');
+Route::get('/user/add',[UserController::class,'index'])->name('user-add')->middleware('auth')->middleware('remember');
 Route::get('/user/check-employee-status/{sap_id}',[UserController::class,'checkEmployeeStatus'])->name('check-employee-status')->middleware('auth');
 Route::post('/user/add',[UserController::class,'store'])->name('add-user')->middleware('auth');
 //show detail user for edit

@@ -43,8 +43,10 @@
                   
                       </a>  
                     </div>
-                    <div>
-                      <label class="font-semibold mt-2 text-2xl text-blue-400">ระบบวัสดุ</label> 
+                    <div class="font-semibold  text-2xl text-blue-400 ">
+                      <a :href="route('annouce')"  >
+                          ระบบพัสดุ
+                        </a>  
                     </div>
                    
                   <!-- </p> -->
@@ -52,7 +54,7 @@
                 </div>
                 
                 
-                <div class=" flex flex-row  mt-4 text-md ">
+                <div class=" flex flex-row  text-md ">
                       <!-- <img src="https://a7sas.net/wp-content/uploads/2019/07/4060.jpeg" class="w-12 h-12 rounded-full shadow-lg" @click="dropDownOpen = !dropDownOpen"> -->
                   
                     <div class="text-pink-400  ">

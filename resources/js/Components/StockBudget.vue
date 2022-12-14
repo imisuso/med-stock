@@ -151,7 +151,7 @@
                                     
         </template>
         <template v-slot:body>
-            <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+            <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
                 <div for="">
                     {{form.stock_name}} 
                 </div>
@@ -188,7 +188,7 @@
                                     
         </template>
         <template v-slot:body>
-            <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+            <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
                 <div for="">
                     {{form.stock_name}} 
                 </div>
@@ -225,7 +225,7 @@
                                     
         </template>
         <template v-slot:body>
-            <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+            <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
                 <div for="">
                  {{ $page.props.flash.status }}:{{ $page.props.flash.msg }} 
                 

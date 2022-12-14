@@ -12,7 +12,7 @@
                 </svg>
             </label>
         </div>
-        {{$page.props.auth.user.unitid}}
+        <!-- user unitid={{$page.props.auth.user.unitid}} -->
         <div class=" w-full p-4 mt-2  justify-center bg-red-100">
             <p class=" flex font-bold underline">กรุณาอ่าน:คำแนะนำการนำเข้าวัสดุจากไฟล์ excel</p>
             <p >1.ตรวจสอบชื่อคอลัมน์และจำนวนคอลัมน์ให้ถูกต้องตามตัวอย่างไฟล์ excel</p>
@@ -48,12 +48,13 @@
                     <label for="">เลือกคลังวัสดุที่ต้องการเพิ่มวัสดุ</label> 
                 </div>
                 <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
-                    v-model="form.unit_id"
+                    v-model="form.stock_id"
                 >
                     <option v-for="(stock) in  stocks" :key=stock.id :value="stock.id">{{stock.stockname}}</option>
                 </select>
                 <div class="mt-3" >
                     <label for="">เลือกประเภทการจัดซื้อวัสดุ</label> 
+                    <label v-if="box_alert" class=" text-red-600"> !!{{msg_alert}}</label>
                 </div>
                 <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
                     v-model="form.stock_item_status"
@@ -76,27 +77,31 @@
                 </div> -->
            
             </div>
-            <div class=" text-center">
+            <div class=" w-full flex flex-col justify-center text-center">
                     <!-- @if(session('status'))
                         <div class=" alert alert-success">
                             {{ session('status')}}
                         </div>
                     @endif -->
                     <!-- <form action="" method="post" enctype="multipart/form-data"> -->
-                        <div class="">
+                        <div class=" ">
                             เลือกไฟล์ excel รายการวัสดุที่ต้องการนำเข้าคลังสาขา
-                            <input type="file" name="file" id="" @change="onChangeFile">
+                            <input type="file" name="file" id="uploadFile" @change="onChangeFile">
                            
+                        </div>
+                        <div>
+                            <label v-if="box_alert_file" class=" text-red-600"> !!{{msg_alert}}</label>
                         </div>
                         <div class="p-2">
                             <button type="submit" 
-                                class="  inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-6 border border-green-500 rounded"
+                                class=" w-full flex justify-center text-sm  bg-green-500 hover:bg-green-700 text-white py-2 px-6 border border-green-500 rounded"
                                 @click="ImportStockItem()"
                                 >
                                 ตกลง
                             </button>
                         </div>
                     <!-- </form> -->
+                  
             </div>
 
          
@@ -117,6 +122,9 @@ const props =defineProps({
     //stock_item_import: {type:Array, default:[]},
     
 })
+const msg_alert=ref('');
+const box_alert=ref(false);
+const box_alert_file=ref(false);
 
 const stock_item_types=[{'type_id':'1','type_name':'ใบสัญญาสั่งซื้อ'},
                       {'type_id':'2','type_name':'ใบสั่งซื้อ'}
@@ -125,7 +133,7 @@ const stock_item_types=[{'type_id':'1','type_name':'ใบสัญญาสั�
 
 const form = useForm({
     file_stock_item: File,
-   // unit_id:'',
+   stock_id:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid : 0,
   // usePage().props.value.auth.user.unitid
     unit_id:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid : 0,
     stock_item_status:0,
@@ -134,27 +142,46 @@ const form = useForm({
 })
 
 const onChangeFile=((e)=>{
-    console.log(e.target.files[0])
+ //   console.log(e.target.files[0])
     form.file_stock_item = e.target.files[0];
 })
 
-// const getStockItemFromExcel = () => {
-//     console.log('getListPurchase');
 
-
-//     Inertia.get(route('purchase-order-list'), { year: form.year_selected }, {
-//         preserveState: true,
-//         replace: true
-//     })
-//    // forceUpdate();
-// }
 
 const ImportStockItem=(()=>{
     // console.log('----------Import Stock------')
-    // console.log(form.unit_id);
+    // console.log('stock_id='+form.stock_id);
+    // console.log('unit_id='+form.unit_id);
+    // console.log('stock_item_status='+form.stock_item_status);
+    // console.log('file excel='+form.file_stock_item);
+
+
+     //return false;
     // console.log(form.file_stock_item);
-    // console.log(form.stock_item_status);
+   
     // console.log(form.date_receive);
+
+    if(form.stock_item_status==0){
+        box_alert.value=true
+        msg_alert.value="กรุณาเลือกประเภทการจัดซื้อวัสดุ";
+      //  console.log('กรุณาระบุวันที่เบิก');
+      //  document.getElementById("order_in").focus();
+        return false;
+    }else{
+        box_alert.value=false;
+    }
+
+    if(document.getElementById("uploadFile").value == "") {
+       // console.log('no file');
+        box_alert_file.value=true
+        msg_alert.value="กรุณาเลือกไฟล์ excel รายการวัสดุที่ต้องการนำเข้าระบบ";
+        return false;
+    }else{
+        box_alert.value=false;
+    }
+
+  
+
     form.post(route('stock-item-import-show'), {
         preserveState: true,
         preserveScroll: true,

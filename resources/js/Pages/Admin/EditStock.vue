@@ -80,7 +80,7 @@
                         <!-- <div>Status: {{ form.stock_status }}</div> -->
                         <div v-for="(status) in stock_status_list" :key=status.id 
                             class="form-check">
-                            <input type="radio" id="one"  :value="status.id" v-model="form.stock_status" 
+                            <input type="radio" :id="one"  :value="status.id" v-model="form.stock_status" 
                                 class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                             />
                             <label for="one">{{status.desc}}</label>
@@ -126,7 +126,7 @@
             </template>
 
             <template v-slot:body>
-                <div class="text-gray-900 text-md font-medium dark:text-white">
+                <div class="text-gray-900 text-md font-medium ">
                   
                     <label  class="  flex  justify-start w-full text-sm ">
                         ชื่อคลัง: {{form.stock_name_thai}} ({{form.stock_name_en}})
@@ -170,7 +170,7 @@ import { Link } from '@inertiajs/inertia-vue3'
 
 
 const props =defineProps({
-    stock:Array,
+    stock:{type:Object},
     stock_status_list:{type:Array,required:true},
     //stock_item_import: {type:Array, default:[]},
     // status:{type:Array}

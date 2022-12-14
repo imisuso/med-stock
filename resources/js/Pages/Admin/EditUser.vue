@@ -99,7 +99,14 @@
                         >
                         แก้ไข
                     </button>
+                    <button type="submit" 
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        @click="getListUser()"
+                        >
+                        กลับ
+                    </button>
                 </div>
+                
 
             </div>
            
@@ -112,7 +119,7 @@
             </template>
 
             <template v-slot:body>
-                <div class="text-gray-900 text-md font-medium dark:text-white">
+                <div class="text-gray-900 text-md font-medium ">
                   
                     <label  class="  flex  justify-start w-full text-sm ">
                         ชื่อ: {{user.name}} 
@@ -240,7 +247,23 @@ const okconfirmEditUser=()=>{
         onFinish: visit => { console.log('finish');},
     })
 }
+const getListUser=(()=>{
+    // console.log('----------getListUser------')
+    // console.log(form.unit);
 
+    form.get(route('user-add'), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: page => { 
+            console.log('success');
+        },
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
+   
+})
 
   
 </script>

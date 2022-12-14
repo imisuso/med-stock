@@ -1,24 +1,24 @@
 <template>
     <div class="leading-normal tracking-normal" id="main-body">
         
-        <div class="flex flex-wrap">
+        <div class="flex flex-col  bg-green-300 ">
   
-            <div class="w-full flex mx-4 mt-4 justify-between  ">
+            <div class="w-full flex justify-between  py-6 px-6 bg-blue-200 ">
                 
                 <!-- <img src="/storage/images/hq_med_v3.png" class=""> -->
                 <div class=" flex  text-md ">
                     <!-- <p class="font-semibold mt-2 text-2xl text-blue-400 "> -->
                     <a :href="route('annouce')"  
-                    class="font-semibold mt-2 text-xl text-blue-400 "
+                    class="font-semibold text-xl text-blue-700 "
                     >
-                        ระบบวัสดุ
+                        ระบบพัสดุ
                     </a>  
                     <!-- </p> -->
                     
                 </div>
             
             
-                <div class=" flex  text-sm my-4  ">
+                <div class=" flex  text-sm  ">
                         <!-- <img src="https://a7sas.net/wp-content/uploads/2019/07/4060.jpeg" class="w-12 h-12 rounded-full shadow-lg" @click="dropDownOpen = !dropDownOpen"> -->
                     
                     <div class="text-pink-400  ">
@@ -26,13 +26,12 @@
                     <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                     </svg>
                     </div>
-                
-                    
+                  
                         {{$page.props.auth.user.name}}
                 
                 </div>
 
-         </div>
+            </div>
   
             <div class="w-full bg-gray-100 pl-0 4 min-h-screen" id="main-content">
     
