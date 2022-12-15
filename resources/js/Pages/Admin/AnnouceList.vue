@@ -29,6 +29,7 @@
                 :annouceFrom="annouces.from"
                 :annouceIndex="key"
                 :annouce="annouce" 
+                :annouce_status_list = "annouce_status_list"
                 />
         </div>
      
@@ -45,6 +46,7 @@ import {  ref } from '@vue/reactivity';
 defineProps({
   //years:{type:Object,required:true},
   annouces:{type:Object,required:true},
+  annouce_status_list:{type:Object,required:true}
 })
 
 //const years=ref([2021,2022])

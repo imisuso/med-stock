@@ -98,19 +98,17 @@
                         >
                         แก้ไข
                     </button>
-                    <button type="submit" 
+                    <!-- <button type="submit" 
                         class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
                         @click="getListStockUnit()"
                         >
                         กลับ
-                    </button>
-                    <!-- <Link :href="route('stock-add',stock.unit_id)" >
-                        <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
-                         
-
-                            <span class="text-gray-700 ml-2">กลับ</span>
+                    </button> -->
+                    <Link :href="route('stock-add')" >
+                        <div class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded">
+                            <span class=" text-white ml-2">กลับ</span>
                         </div>
-                    </Link> -->
+                    </Link>
 
                    
                 </div>
@@ -225,23 +223,23 @@ const okconfirmEditStock=()=>{
         onFinish: visit => { console.log('finish');},
     })
 }
-const getListStockUnit=(()=>{
-    //  console.log('----------getListStockUnit------')
-    // console.log(form.unit);
+// const getListStockUnit=(()=>{
+//     //  console.log('----------getListStockUnit------')
+//     // console.log(form.unit);
 
-    form.get(route('stock-add'), {
-        preserveState: false,
-        preserveScroll: true,
-        onSuccess: page => { 
-            console.log('success');
-        },
-        onError: errors => { 
-            console.log('error');
-        },
-        onFinish: visit => { console.log('finish');},
-    })
+//     form.get(route('stock-add'), {
+//         preserveState: false,
+//         preserveScroll: true,
+//         onSuccess: page => { 
+//             console.log('success');
+//         },
+//         onError: errors => { 
+//             console.log('error');
+//         },
+//         onFinish: visit => { console.log('finish');},
+//     })
    
-})
+// })
 
   
 </script>

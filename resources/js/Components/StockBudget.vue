@@ -47,14 +47,21 @@
                             </label>
                            
                         </div> -->
+                       
                         <div>
+                            <div v-if="show_alert"
+                            class=" text-red-600"
+                            >
+                            <label >{{msg_alert}}</label>
+                        </div>
                              <label  class=" ">
                             ระบุงบประมาณ:
                             </label>
-                             <input type="number" 
+                             <input type="number"  id="budget_add"
                                 class=" rounded-md "
                                 v-model="form.budget_input"
                                 >
+                           
                         </div>
                         <div  class=" p-2 mr-2 ">
                             <!-- บันทึก -->
@@ -196,7 +203,14 @@
                     ปีงบ:{{form.budget_year+543}} 
                 </div>
                  <div for="">
-                     <input type="number"  class=" rounded-md " v-model="form.budget_edit">
+                    <div v-if="show_alert_edit"
+                            class=" text-red-600"
+                            >
+                        <label >{{msg_alert}}</label>
+                    </div>
+                     <input type="number" id="budget_edit"  class=" rounded-md " 
+                        min="0"
+                        v-model="form.budget_edit">
                 </div>
             </div>
         </template>
@@ -277,11 +291,13 @@ const form = useForm({
     stock_id:{type:Number},
     stock_name:{type:String},
     budget_year:{type:Number},
-    budget_input:{type:Number,defaulte:0},
+    budget_input:props.stockBudget.budget['budget_add'] ? props.stockBudget.budget['budget_add'] :0,
     budget_edit:{type:Number,defaulte:0},
-  //  budget_edit:{type:Object},
+    year_selected:{type:Number},
 
 })
+
+const form_close = useForm({})
 
 
 const budget_add = computed(()=>{
@@ -299,36 +315,58 @@ const budget_balance = computed(()=>{
     }
 })
 
-const viewAllOrder=()=>{
-    form.get(route('get-list-order'), {
-            preserveState: true,
-            preserveScroll: true,
-            onSuccess: page => { 
-                console.log('success');
-               // show_alert_msg.value = true;
-                console.log(form.budget_year);
-                },
-            onError: errors => { 
-                console.log('error');
-                //  show_alert_msg.value = true;
-            },
-            onFinish: visit => { 
-                console.log('finish');
-            },
-    })
-}
-    
-
 // const viewAllOrder=()=>{
-//     view_order.value=!view_order.value;
+//     form.get(route('get-list-order'), {
+//             preserveState: true,
+//             preserveScroll: true,
+//             onSuccess: page => { 
+//                 console.log('success');
+//                // show_alert_msg.value = true;
+//                 console.log(form.budget_year);
+//                 },
+//             onError: errors => { 
+//                 console.log('error');
+//                 //  show_alert_msg.value = true;
+//             },
+//             onFinish: visit => { 
+//                 console.log('finish');
+//             },
+//     })
 // }
+const msg_alert=ref('');
+const show_alert=ref(false);
+const show_alert_edit=ref(false);
 
 const confirmAddBudget=(order)=>{
-  //  console.log(order);
+   // console.log('confirmAddBudget');
+   // console.log('budget='+form.budget_input);
+   // console.log('length='+form.budget_input.length);
+
+    if(form.budget_input==0){
+        show_alert.value=true
+        msg_alert.value="กรุณาระบุงบประมาณก่อนกดปุ่มบันทึก";
+      //  console.log('กรุณาระบุวันที่เบิก');
+      //  document.getElementById("order_in").focus();
+        return false;
+    }else{
+        show_alert.value=false;
+    }
+
+    if(document.getElementById('budget_add').value < 0){
+        show_alert.value=true
+        msg_alert.value="กรุณาระบุงบประมาณไม่เป็นจำนวนติดลบ";
+        document.getElementById("budget_add").focus();
+        return false;
+   }else{
+   
+         show_alert_edit.value=false;
+   }
+ 
     confirm_add_budget.value = true;
     form.stock_id = props.stockBudget.id;
     form.stock_name = props.stockBudget.stockname;
     form.budget_year = props.budgetYear;
+    form.year_selected = props.budgetYear;
     budget_confirm_show.value = form.budget_input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
            
 }
@@ -338,16 +376,20 @@ const  cancelAddBudget=()=>{
 }
 
 const  closeAlert=()=>{
-   //  console.log('close alert='+form.budget_year);
+   // console.log('close alert='+form.budget_year);
     show_alert_msg.value = false;
-    Inertia.visit(route('budget-list'));
-//    Inertia.visit(route('get-list-budget',{year:form.budget_year}),{
-//        method: 'get',
-//    })
-    //  axios.get(route('get-list-budget',{year:form.year_selected})).then(res => {
-    //    // console.log(res.data.stocks);
-    //     stock_budgets.value = res.data.stocks;   
-    // });
+  
+    // form.get(route('get-list-budget'), {
+    //     preserveState: false,
+    //     preserveScroll: true,
+    //     onSuccess: page => { 
+    //         console.log('success');
+    //     },
+    //     onError: errors => { 
+    //         console.log('error');
+    //     },
+    //     onFinish: visit => { console.log('finish');},
+    // })
 }
 
 const okConfirmAddBudget=()=>{
@@ -373,11 +415,12 @@ const okConfirmAddBudget=()=>{
 }
 
 const editBudget=()=>{
-    console.log('edit budget');
+   // console.log('edit budget');
     form.stock_id = props.stockBudget.id;
     form.stock_name = props.stockBudget.stockname;
     form.budget_year = props.budgetYear;
     form.budget_edit = props.stockBudget.budget['budget_add'];
+    form.year_selected = props.budgetYear;
     confirm_edit_budget.value = true;
 
     //form.budget_edit= props.stockBudget.budget;
@@ -388,6 +431,44 @@ const editBudget=()=>{
 }
 
 const okConfirmEditBudget=()=>{
+    //  console.log('okConfirmEditBudget');
+    //   console.log('budget edit='+form.budget_edit);
+    //   console.log('budget_year edit='+form.budget_year);
+    //   console.log('year_selected edit='+form.year_selected);
+//    console.log(document.getElementById('budget_edit').value);
+
+   if(document.getElementById('budget_edit').value==''){
+        show_alert_edit.value=true
+        msg_alert.value="กรุณาระบุงบประมาณที่ต้องการแก้ไข";
+        document.getElementById("budget_edit").focus();
+        return false;
+   }else{
+   
+         show_alert_edit.value=false;
+   }
+
+   if(document.getElementById('budget_edit').value < 0){
+        show_alert_edit.value=true
+        msg_alert.value="กรุณาระบุงบประมาณไม่เป็นจำนวนติดลบ";
+        document.getElementById("budget_edit").focus();
+        return false;
+   }else{
+   
+         show_alert_edit.value=false;
+   }
+  
+   if(form.budget_input==0){
+        show_alert.value=true
+        msg_alert.value="กรุณาระบุงบประมาณก่อนกดปุ่มบันทึก";
+      //  console.log('กรุณาระบุวันที่เบิก');
+      //  document.getElementById("order_in").focus();
+        return false;
+    }else{
+        show_alert.value=false;
+    }
+
+ //console.log('okConfirmEditBudget post edit-budget');
+  //return false;
       confirm_edit_budget.value = false;
        form.post(route('edit-budget'), {
             preserveState: true,
@@ -410,6 +491,7 @@ const okConfirmEditBudget=()=>{
 
 const  cancelEditBudget=()=>{
     confirm_edit_budget.value = false;
+    show_alert_edit.value=false;
 }
    
 

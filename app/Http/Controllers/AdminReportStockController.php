@@ -29,7 +29,7 @@ class AdminReportStockController extends Controller
     public function index($division_id)
     {
         //Log::info($division_id);
-      logger('AdminReportStockController index');
+      //logger('AdminReportStockController index');
         $user = Auth::user();
        // Logger($user);
      //   Logger($user->roles[0]['name']);

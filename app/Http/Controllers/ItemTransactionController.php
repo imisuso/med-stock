@@ -276,6 +276,8 @@ class ItemTransactionController extends Controller
         return Inertia::render('Admin/ListBudgetDetailPurOrder',[
                             'order_item_trans'=>$order_item_trans,
                             'order_budget_used'=> request()->input('order_budget_used'),
+                            'year_budget'=>  request()->input('year_budget'),
+                            'stock_id'=>  request()->input('stock_id')
                             ]);
     }
 

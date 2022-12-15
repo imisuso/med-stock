@@ -59,7 +59,7 @@
             </div>
 
             <div class="my-4 text-md text-gray-800  ">
-              <p class=" text-red-700"> Login ด้วย Siriraj AD  (ใช้ User ID และ Password เดี่ยวกับระบบ e-Document)</p>
+              <p class=" text-red-700"> Login ด้วย Siriraj AD  (ใช้ Username และ Password เดียวกับระบบ e-Document)</p>
             </div>
 
          

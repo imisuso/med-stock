@@ -28,7 +28,7 @@ class ReportStockController extends Controller
     public function index($division_id)
     {
        
-       // logger('ReportStockController index');
+      //  logger('ReportStockController index');
        //  logger(request()->all());
         $user = Auth::user();
             $main_menu_links = [
@@ -80,9 +80,12 @@ class ReportStockController extends Controller
                                                             // ->get();
 
                     // Log::info($stock_item_checkouts);
-
+                  
+                    $check_item_change=0;
                     foreach($stock_item_checkouts as $key=>$tran_checkout){
-                    //  Log::info($tran_checkout->stock_item_id);
+                       // Log::info('--------------');
+                     // Log::info($tran_checkout->stock_item_id);
+                     // Log::info($tran_checkout->item_count);
                         $date_expire_last = ItemTransaction::query()->select('date_expire')
                                         ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
                                                             'action'=>'checkin',
@@ -92,16 +95,33 @@ class ReportStockController extends Controller
                                         ->first();
                         //  Log::info($date_expire_last->date_expire);
                         $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
-
-                        $checkin = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
-                                                ->whereStatus('active')
-                                                ->whereAction('checkin')
-                                                ->sum('item_count');
+                      
+                     
+                        if($tran_checkout->stock_item_id != $check_item_change){
+                         //   Log::info('new checkin');
+                            $checkin = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
+                                                    ->whereStatus('active')
+                                                    ->whereAction('checkin')
+                                                    ->sum('item_count');
+                             $balance_now = $checkin;
+                        }
+                       
+                      
                         $checkout = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
                                                 ->whereStatus('active')
                                                 ->whereAction('checkout')
                                                 ->sum('item_count');
+
                         $stock_item_checkouts[$key]['item_balance'] = $checkin - $checkout;
+
+                        
+
+                        $balance_now = $balance_now-$tran_checkout->item_count;
+                    
+                        $check_item_change = $tran_checkout->stock_item_id;
+                        $stock_item_checkouts[$key]['balance_now'] = $balance_now;
+                      //  Log::info('balance_now=');
+                       // Log::info($balance_now);
                      
                     }
                    // logger(count($stock_item_checkouts));

@@ -198,7 +198,7 @@ class StockController extends Controller
 
             $list_stock_unit = Stock::where('unit_id',request()->input('unit'))->get();
             // return response()->json([
-            //     'list_stock_unit' => $list_stock_unit
+            //     'list_stock_unit' => list_stock_unit
             // ]);
             return Inertia::render('Admin/AddStock',[
                     'units'=> $units,

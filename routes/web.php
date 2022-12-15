@@ -141,7 +141,7 @@ Route::post('/admin/order-list/update', [AdminOrderController::class,'update'])-
 //แสดงหน้าแรก ค้นหาข้อมูลงบประมาณในแต่ละปี
 Route::get('/admin/budget-list/', [BudgetController::class,'index'])->name('budget-list')->middleware('auth','can:view_master_data');
 //ดึงรายการงบประมาณตั้งต้นแต่ละสาขา ตามปีที่ระบุ
-Route::get('/admin/get-list-budget/{year}', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:view_master_data');
+Route::get('/admin/get-list-budget', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:view_master_data')->middleware('remember');
 //บันทึกงบประมาณสาขา
 Route::post('/admin/add-budget',[BudgetController::class,'store'])->name('add-budget')->middleware('auth','can:manage_master_data');
 //แก้ไขข้อมูลงบ
@@ -149,7 +149,7 @@ Route::post('/admin/edit-budget',[BudgetController::class,'edit'])->name('edit-b
 //พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
 Route::get('/admin/print-budget-order/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrder'])->name('print-budget-order')->middleware('auth','can:view_master_data');
 //แสดงงบประมาณในรายการสั่งซื้อแต่ละครั้ง
-Route::get('/admin/get-list-order/{stock_id}/{year}', [ItemTransactionController::class,'index'])->name('get-list-order')->middleware('auth','can:view_master_data');
+Route::get('/admin/get-list-order/{stock_id}/{year}', [ItemTransactionController::class,'index'])->name('get-list-order')->middleware(['auth','can:view_master_data','remember']);
 //พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
 Route::get('/admin/print-budget-order-import/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrderImport'])->name('print-budget-order-import')->middleware('auth','can:view_master_data');
 //ดึงรายรายละเอียดการสั่งซื้อ ตามเลข Pur.Order
@@ -234,8 +234,10 @@ Route::match(['get', 'post'],'/stock/get-log/',[LogActivityController::class,'in
 Route::get('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce')->middleware('auth','can:manage_master_data');
 Route::post('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce-new')->middleware('auth','can:manage_master_data');
 Route::get('/annouce',[AnnouceController::class,'show'])->name('annouce')->middleware('auth');
-Route::post('/close-annouce',[AnnouceController::class,'update'])->name('close-annouce')->middleware('auth');
-Route::post('/open-annouce',[AnnouceController::class,'update'])->name('open-annouce')->middleware('auth');
+
+Route::post('/update_status-annouce',[AnnouceController::class,'update'])->name('update_status-annouce')->middleware('auth');
+//Route::post('/close-annouce',[AnnouceController::class,'update'])->name('close-annouce')->middleware('auth');
+//Route::post('/open-annouce',[AnnouceController::class,'update'])->name('open-annouce')->middleware('auth');
 Route::post('/delete-annouce',[AnnouceController::class,'update'])->name('delete-annouce')->middleware('auth');
 
 

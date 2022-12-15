@@ -412,7 +412,7 @@ class PrintFormController extends Controller
         $pdf->SetFontSize('16'); 
         $pdf->SetXY(12, 27);
         $pdf->SetLineWidth(1);
-        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ                    วันที่สั่งซื้อ                                      ใช้งบไป(บาท)'),'B');
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ                    วันที่สั่งซื้อ                                  งบประมาณที่ใช้(บาท)'),'B');
         
        
         //**************************order list
@@ -628,7 +628,7 @@ class PrintFormController extends Controller
         $pdf->SetFontSize('16'); 
         $pdf->SetXY(12, 32);
         $pdf->SetLineWidth(1);
-        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ              ประเภท                      วันที่ตรวจรับ                     ใช้งบไป(บาท)'),'B');
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ              ประเภท                      วันที่ตรวจรับ                   งบประมาณที่ใช้(บาท)'),'B');
         
        
         //**************************order list
@@ -738,7 +738,7 @@ class PrintFormController extends Controller
                     $pdf->SetFontSize('16'); 
                     $pdf->SetXY(12, 16);
                     $pdf->SetLineWidth(1);
-                    $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ              ประเภท                      วันที่ตรวจรับ                     ใช้งบไป(บาท)'),'B');
+                    $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ              ประเภท                      วันที่ตรวจรับ                  งบประมาณที่ใช้(บาท)'),'B');
         
                     $y=28;
                     $x=15;
@@ -1090,7 +1090,7 @@ class PrintFormController extends Controller
         $pdf->SetFontSize('16'); 
         $pdf->SetXY(12, 37);
         $pdf->SetLineWidth(1);
-        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ                         ชื่อวัสดุ                          วันที่หมดอายุ          วันที่เบิกจ่าย            จำนวน                ผู้เบิก              คงเหลือ ณ ปัจจุบัน            '),'B');
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                         วันที่หมดอายุ          วันที่เบิกจ่าย       จำนวนที่เบิก                ผู้เบิก                     คงเหลือ ณ ปัจจุบัน            '),'B');
        
         //     //body  list item
 
@@ -1103,7 +1103,9 @@ class PrintFormController extends Controller
                                                         ])
                                                         ->with('stockItem:id,item_name,item_code,item_sum')
                                                         ->with('user:id,name')
-                                                        ->orderBy('stock_item_id')->get();
+                                                        ->orderBy('stock_item_id')
+                                                        ->orderBy('date_action')
+                                                        ->get();
 
         foreach($stock_item_checkouts as $key=>$tran_checkout){
             //  Log::info($tran_checkout->stock_item_id);
@@ -1137,17 +1139,20 @@ class PrintFormController extends Controller
            
             $count_line = 0;
         foreach ($stock_item_checkouts as $item) {
-            $seq++;
+          
             //Log::info($item);
             $pdf->SetFontSize('16'); 
           
             // $pdf->SetXY($x, $y);
             // $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq),'B'); //print line buttom
 
-            $pdf->SetXY($x, $y);
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq));
+          
 
             if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) {
+                $seq++;
+                $pdf->SetXY($x, $y);
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq));
+
                 $pdf->SetXY(23, $y);
                 $pdf->SetFontSize('14'); 
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_code']));
@@ -1180,7 +1185,7 @@ class PrintFormController extends Controller
             $pdf->SetXY(186, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->item_count));
 
-            $pdf->SetXY(199, $y);
+            $pdf->SetXY(210, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->user['name']));
 
             if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) {

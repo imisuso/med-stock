@@ -89,7 +89,7 @@
                     <div class=" lg:w-2/12 ">
                         ผู้เบิก:
                     </div>
-                    <div class=" lg:w-4/12 ">
+                    <div class=" lg:w-5/12 ">
                         SAP-ชื่อวัสดุ:
                     </div>
                     <div class=" lg:w-2/12 ">
@@ -98,9 +98,9 @@
                     <div class=" lg:w-1/12 ">
                         จำนวนที่เบิก:
                     </div>
-                    <div class=" lg:w-1/12 ">
+                    <!-- <div class=" lg:w-1/12 ">
                         จำนวนคงเหลือปัจจุบัน:
-                    </div>
+                    </div> -->
                 </div>     
             </div>
         </div>
@@ -125,7 +125,7 @@
                         <label for="" class="   lg:hidden">ผู้เบิก:</label>
                         <label class=" font-bold">{{item_tran.user['name']}}</label>
                     </div>
-                    <div class="   lg:w-4/12 lg:text-xs ">
+                    <div class="   lg:w-5/12 lg:text-xs ">
                         <label for="" class="   lg:hidden">SAP:</label>
                         <label class=" font-bold">
                             {{item_tran.stock_item['item_code']}} - {{item_tran.stock_item['item_name']}}
@@ -142,13 +142,13 @@
                         <label for="" class="  lg:hidden">จำนวนที่เบิก:</label>
                         <label class=" font-bold">{{item_tran.item_count}} </label>
                     </div>
-                    <div class="  lg:w-1/12 ">
+                    <!-- <div class="  lg:w-1/12 ">
                         <label for="" class="  lg:hidden">จำนวนคงเหลือปัจจุบัน:</label>
                         <label class=" font-bold"> 
-                            {{item_sum_format(item_tran.item_balance)}}
-                        <!-- {{item_tran.item_balance}} -->
+                            {{item_sum_format(item_tran.balance_now)}}
+                      
                         </label>
-                    </div>
+                    </div> -->
                 </div>     
             </div>
         </div>

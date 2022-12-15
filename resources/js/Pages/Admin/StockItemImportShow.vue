@@ -33,6 +33,12 @@
                 </div>
          
             </li>
+            <button type="submit" 
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        @click="backImportExcel()"
+                        >
+                        กลับ
+             </button>
         </div>
         <div v-if="!validate_excel"
             class=" w-full p-4   text-lg font-bold bg-red-200 rounded-md "
@@ -43,7 +49,12 @@
                 {{header_false}}
             </li>
             <p for="" v-if="validate_excel">ในไฟล์นี้พบว่ามี {{stock_item_import_count}} รายการ</p>
-            <!-- {{header_diff}} -->
+            <button type="submit" 
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        @click="backImportExcel()"
+                        >
+                        กลับ
+             </button>
         </div>
        
         <div v-if="validate_excel && validate_row_excel && validate_input"
