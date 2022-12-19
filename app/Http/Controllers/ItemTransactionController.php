@@ -231,7 +231,8 @@ class ItemTransactionController extends Controller
                                                 ->where('stock_item_id',$stock_item->id)
                                                 ->whereIn('status',['active','canceled'])
                                                 ->orderBy('date_action')
-                                                ->get();
+                                                ->paginate(10);
+                                                //->get();
             //return "list checkout";
           // $stock_item = StockItem::where('id',$stock_item->id)->first();
             $stock = Stock::where('id',$stock_item->stock_id)->first();

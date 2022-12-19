@@ -29,13 +29,12 @@ class AdminReportStockController extends Controller
     public function index($division_id)
     {
         //Log::info($division_id);
-      //logger('AdminReportStockController index');
+     // logger('AdminReportStockController index');
         $user = Auth::user();
        // Logger($user);
      //   Logger($user->roles[0]['name']);
       //  logger(request()->all());
-      //   logger($division_id);
-        // logger('----------');
+ 
         $role_admin = array('admin_it','admin_med_stock','super_officer');
 
         if(!in_array($user->roles[0]['name'] , $role_admin)
@@ -80,9 +79,11 @@ class AdminReportStockController extends Controller
             //                                 ->first();
             $checkin_last = $stock_item->itemTransactionCheckinLatest();
             $item_balance = $stock_item->itemBalance();
-            //  logger('checkin_last==>');
+           // logger('checkin_last11==>');
+           // logger($checkin_last);
             //  logger($checkin_last->date_action);
             $stock_items[$key]['checkin_last'] = $checkin_last->date_action;
+            $stock_items[$key]['price_last'] = $checkin_last->price;
             $stock_items[$key]['item_balance'] = $item_balance;
             //$stock_items[$key]['checkin_last'] = $checkin_last;
         }
@@ -132,9 +133,10 @@ class AdminReportStockController extends Controller
 
                 $checkin_last = $stock_item->itemTransactionCheckinLatest();
                 $item_balance = $stock_item->itemBalance();
-                //  logger('checkin_last==>');
-                //  logger($checkin_last->date_action);
+             //   logger('checkin_last22==>');
+              //  logger($checkin_last);
                 $stock_items[$key]['checkin_last'] = $checkin_last->date_action;
+                $stock_items[$key]['price_last'] = $checkin_last->price;
                 $stock_items[$key]['item_balance'] = $item_balance;
             }
             $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();

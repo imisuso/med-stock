@@ -94,14 +94,14 @@
                         <div class="flex ml-2"> ราคาต่อหน่วย : 
                             <p class=" ml-2 text-blue-600">
                                 <!-- {{stockItem.price}} -->
-                                {{price_format(stockItem.price)}} บาท
+                                {{price_format(stockItem.checkin_last.price)}} บาท
                             </p> 
                         </div>
                         <div class="flex ml-2"> Pur.Order : 
-                            <p class=" ml-2 text-blue-600">{{stockItem.pur_order}}</p> 
+                            <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.pur_order}}</p> 
                         </div>
                         <div class="flex ml-2"> ชื่อบริษัท : 
-                            <p class=" ml-2 text-blue-600">{{stockItem.business_name}}</p> 
+                            <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.business_name}}</p> 
                         </div>
                         <div class="flex ml-2"> วันหมดอายุ : 
                             <p class=" ml-2 text-blue-600">

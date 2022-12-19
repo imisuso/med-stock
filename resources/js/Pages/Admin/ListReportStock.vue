@@ -143,7 +143,7 @@
                   
                         <label class=" ml-2 " >
                             <!-- {{stock_item.price}} -->
-                            {{price_format(stock_item.price)}}
+                            {{price_format(stock_item.price_last)}}
                         </label> 
                     </div>
                     <div class="   lg:w-3/12 lg:text-xs  ">
