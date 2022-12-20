@@ -20,6 +20,7 @@ use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrintFormController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\ResourceActionLogController;
 use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\StockItemImportController;
 use App\Http\Controllers\UserController;
@@ -230,6 +231,10 @@ Route::post('/stock/update-stock/{stock}',[StockController::class,'update'])->na
 Route::get('/stock/show-log/{slug}',[LogActivityController::class,'show'])->name('show-log')->middleware('auth','can:manage_master_data');
 Route::get('/stock/index-get-log/',[LogActivityController::class,'index'])->name('index-get-log')->middleware('auth','can:manage_master_data');
 Route::match(['get', 'post'],'/stock/get-log/',[LogActivityController::class,'index'])->name('get-log')->middleware('auth','can:manage_master_data');
+
+//Log
+Route::get('/get-resource-log/{model}/{id}',[ResourceActionLogController::class,'show'])->name('get-resource-log')->middleware('auth','can:manage_master_data');
+
 //annouce
 Route::get('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce')->middleware('auth','can:manage_master_data');
 Route::post('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce-new')->middleware('auth','can:manage_master_data');

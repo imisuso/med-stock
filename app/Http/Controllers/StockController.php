@@ -146,7 +146,7 @@ class StockController extends Controller
     {
        // logger($request->all());
         $user = Auth::user();
-        Stock::create([
+        $stock = Stock::create([
             'stockname'=>$request->stock_name_thai,
             'stockengname'=>$request->stock_name_en,
             'status'=>1,
@@ -158,14 +158,19 @@ class StockController extends Controller
             $detail_log['stockname'] =$request->stock_name_thai;
 
             //  dd($detail_log);
-
-            $log_activity = LogActivity::create([
+            /****************  insert resource_action_logs ****************/
+            $stock->actionLogs()->create([
                 'user_id' => $user->id,
-                'sap_id' => $user->sap_id,
-                'function_name' => 'manage_stock',
-                'action' => 'add_stock',
-                'detail' => $detail_log,
+                'action' => 'add_new_stock',
             ]);
+
+            // $log_activity = LogActivity::create([
+            //     'user_id' => $user->id,
+            //     'sap_id' => $user->sap_id,
+            //     'function_name' => 'manage_stock',
+            //     'action' => 'add_stock',
+            //     'detail' => $detail_log,
+            // ]);
 
             // dd($log_activity);
             $msg_notify_test = $user->name.'  เพิ่มคลังใหม่ชื่อ '.$request->stock_name_thai.' สำเร็จ';
@@ -266,26 +271,38 @@ class StockController extends Controller
         if(count($changes)){
           
             foreach($changes as $key=>$val){
-                $old_changes[] = [ 'column'=>$key , 'old'=>$original_val[$key] , 'new'=>$val];
+                $old_changes[$key] = [  'old'=>$original_val[$key] , 'new'=>$val];
             }
             array_pop($old_changes); //เอา updated_at  ออก
            
             /****************  insert log ****************/
           //  logger($old_changes);
 
-          $detail_log =array();
-          $detail_log['stockname'] =$stock->stockname;
+        //   $detail_log =array();
+        //   $old_changes['stockname'] =$stock->stockname;
 
           $user = Auth::user();
 
-          $log_activity = LogActivity::create([
-              'user_id' => $user->id,
-              'sap_id' => $user->sap_id,
-              'function_name' => 'manage_stock',
-              'action' => 'edit_stock',
-              'detail' => $detail_log,
-              'old_value' => $old_changes,
-          ]);
+          
+            /****************  insert resource_action_logs ****************/
+        
+         // $user_in = Auth::user();
+
+            $stock->actionLogs()->create([
+                'user_id' => Auth::id(),
+                'action' => 'change_stock',
+                'log' => $old_changes,
+
+            ]);
+
+        //   $log_activity = LogActivity::create([
+        //       'user_id' => $user->id,
+        //       'sap_id' => $user->sap_id,
+        //       'function_name' => 'manage_stock',
+        //       'action' => 'edit_stock',
+        //       'detail' => $detail_log,
+        //       'old_value' => $old_changes,
+        //   ]);
 
           // dd($log_activity);
           $msg_notify_test = $user->name.'  แก้ไขข้อมูลคลัง '.$stock->stockname.' สำเร็จ';

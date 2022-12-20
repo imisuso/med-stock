@@ -99,6 +99,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Agreement::class)->withTimestamps();
     }
 
+     //user has many loggable
+
+    public function actionLogs()
+    {
+        return $this->morphMany(ResourceActionLog::class,'loggable');
+    }
+
     public function needAcceptAgreement()
     {
         $lastestAgreement = Agreement::OrderByDesc('date_effected')->first();

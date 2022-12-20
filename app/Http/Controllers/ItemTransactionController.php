@@ -274,6 +274,19 @@ class ItemTransactionController extends Controller
                                     ->orderBy('date_action')
                                     ->get();
         //dd($order_item_trans);
+
+        /****************  insert resource_action_logs ****************/
+        
+         // $user_in = Auth::user();
+
+          $detail_log =array();
+          $detail_log['pur_order'] = request()->input('pur_order');
+
+          $order_item_trans[0]->actionLogs()->create([
+            'user_id' => Auth::id(),
+            'action' => 'view_order',
+            'log' => $detail_log,
+          ]);
         return Inertia::render('Admin/ListBudgetDetailPurOrder',[
                             'order_item_trans'=>$order_item_trans,
                             'order_budget_used'=> request()->input('order_budget_used'),

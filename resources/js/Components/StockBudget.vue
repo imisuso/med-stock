@@ -39,21 +39,15 @@
                     </div> -->
                 </div>
                 <!-- {{stockBudget}} -->
-                <div v-if="stockBudget.budget['budget_add']==0" 
+                <div v-if="stockBudget.budget['budget_add']==0 && $page.props.auth.user.roles[0].name=='admin_med_stock'" 
                     class="flex justify-between px-3 " >
-                        <!-- <div class="px-3">
-                            <label  class=" ">
-                            ไม่พบข้อมูลงบประมาณ
-                            </label>
-                           
-                        </div> -->
                        
                         <div>
                             <div v-if="show_alert"
                             class=" text-red-600"
                             >
                             <label >{{msg_alert}}</label>
-                        </div>
+                        </div >
                              <label  class=" ">
                             ระบุงบประมาณ:
                             </label>
@@ -62,7 +56,7 @@
                                 v-model="form.budget_input"
                                 >
                            
-                        </div>
+                </div>
                         <div  class=" p-2 mr-2 ">
                             <!-- บันทึก -->
                               <button v-if="$page.props.auth.user.roles[0].name=='admin_med_stock'"
@@ -91,10 +85,20 @@
                                 >
                                 แก้ไข
                             </button>
+                          
+                        </div>
+                        <div class="px-3 ">
+                            <a :href="route('get-resource-log',{'model':'budget','id':stockBudget.budget['id']})" 
+                              class=" flex  py-1 px-2 rounded-md shadow-md bg-blue-300" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+
+                            </a>
                         </div>
                         <div v-if="stockBudget.count_import>0"  class="flex mr-2">
                             <a :href="route('get-list-order',{stock_id:stockBudget.id,year:budgetYear})"
-                                class=" flex justify-center py-1 px-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
+                                class=" flex justify-center py-1 px-2 bg-pink-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
                               
                                 >
                                 ดูรายการสั่งซื้อที่นำเข้าจากExcel

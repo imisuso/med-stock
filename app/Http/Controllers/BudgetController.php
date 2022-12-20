@@ -103,25 +103,29 @@ class BudgetController extends Controller
             return redirect()->back()->with(['status' => 'error', 'msg' =>  'เกิดความผิดพลาดในการบันทึกข้อมูลกรุณาติดต่อเจ้าหน้าที่ IT ภาคฯ']);
         }
 
+        /****************  insert resource_action_logs ****************/
+          $budget->actionLogs()->create([
+            'user_id' => $user->id,
+            'action' => 'add_budget',
+          ]);
+
           /****************  insert log ****************/
         
          
 
-          $detail_log =array();
-          $detail_log['table'] ='budget';
-          $detail_log['stock_id'] =$request->stock_id;
-          $detail_log['budget'] =$request->budget_input;
+        //   $detail_log =array();
+        //   $detail_log['table'] ='budget';
+        //   $detail_log['stock_id'] =$request->stock_id;
+        //   $detail_log['budget'] =$request->budget_input;
 
-         //  dd($detail_log);
-
-           $log_activity = LogActivity::create([
-               'user_id' => $user->id,
-               'sap_id' => $budget->id,
-               'function_name' => 'manage_budget',
-               'action' => 'add_budget',
-               'detail' => $detail_log,
+        //    $log_activity = LogActivity::create([
+        //        'user_id' => $user->id,
+        //        'sap_id' => $budget->id,
+        //        'function_name' => 'manage_budget',
+        //        'action' => 'add_budget',
+        //        'detail' => $detail_log,
              
-           ]);
+        //    ]);
        
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกงบประมาณสำเร็จ']);
     }
@@ -138,6 +142,8 @@ class BudgetController extends Controller
       // logger('budgetController show');
        // logger(request()->all());
         $year_search = request()->input('year_selected');
+        $budget = budget::where(['year'=>$year_search ])
+                         ->first();
        // Log::info($year_search);
        // return "test";
         $stocks = Stock::where('status','1')->get();
@@ -202,35 +208,38 @@ class BudgetController extends Controller
                 $stocks[$key]['purchase_use_budget'] = $purchase_use_budget;
                 $stocks[$key]['balance_budget'] = $balance_budget;
                 $stocks[$key]['count_import'] = $count_import;
+
+
             }
           
             $stocks[$key]['budget'] = $budget_year;
           //   Log::info($stocks);
-
         }
-         /****************  insert log ****************/
-        
-         
-         $user = Auth::user();
-         $detail_log =array();
-         $detail_log['year'] = $year_search;
-        
 
-        //  dd($detail_log);
-
-          $log_activity = LogActivity::create([
-              'user_id' => $user->id,
-              'sap_id' => $user->sap_id,
-              'function_name' => 'manage_budget',
-              'action' => 'get_budget',
-              'detail' => $detail_log,
+       
+        /****************  insert resource_action_logs ****************/
+        $detail_log =array();
+        $detail_log['year'] = $year_search;
+        if($budget)
+        {
+            $budget->actionLogs()->create([
+                    'user_id' => Auth::id(),
+                    'action' => 'view_stock_budget_year',
+                    'log' => $detail_log,
+                    ]);
+        }
+    
+         /****************  insert log_activities ****************/
+        //     $user = Auth::user();
+        //      $log_activity = LogActivity::create([
+        //       'user_id' => $user->id,
+        //       'sap_id' => $user->sap_id,
+        //       'function_name' => 'manage_budget',
+        //       'action' => 'get_budget',
+        //       'detail' => $detail_log,
             
-          ]);
-        // return response()->json([
-        //     'stocks' => $stocks
-        // ]);
-        // $list_years = array();
-        // $list_years[] = request()->input['list_years'];
+        //   ]);
+     
 
         $year_send= array();
       
@@ -308,33 +317,44 @@ class BudgetController extends Controller
             return redirect()->back()->with(['status' => 'error', 'msg' =>  'เกิดความผิดพลาดในการแก้ไขข้อมูลกรุณาติดต่อเจ้าหน้าที่ IT ภาคฯ']);
         }
 
-        $old_changes =array();
+        $old_changes =[];
         if (count($budget_changes)) {
             foreach ($budget_changes as $key=>$val) {
-                $old_changes[] = [ 'column'=>$key , 'old'=>$original_val_budget[$key] , 'new'=>$val];
+                //$old_changes[] = [ 'column'=>$key , 'old'=>$original_val_budget[$key] , 'new'=>$val];
+                $old_changes[$key] = ['old'=>$original_val_budget[$key] , 'new'=>$val];
             }
             array_pop($old_changes); //เอา updated_at  ออก
+        }else{
+            return Redirect::back()->with(['status' => 'Warnning', 'msg' => 'No Update']);
         }
          
-            /****************  insert log ****************/
+       
+            /****************  insert resource_action_logs ****************/
         
-          $use_in = Auth::user();
+         // $user_in = Auth::user();
 
-          $detail_log =array();
-          $detail_log['table'] ='budget';
-          $detail_log['row_change'] =$budget->id;
-          $detail_log['stock_id'] = request()->input('stock_id');
+          $budget->actionLogs()->create([
+            'user_id' => Auth::id(),
+            'action' => 'change_budget',
+            'log' => $old_changes,
 
-         //  dd($detail_log);
+          ]);
+        /****************  insert log_activities ****************/
+        //   $detail_log =array();
+        //   $detail_log['table'] ='budget';
+        //   $detail_log['row_change'] =$budget->id;
+        //   $detail_log['stock_id'] = request()->input('stock_id');
 
-           $log_activity = LogActivity::create([
-               'user_id' => $use_in->id,
-               'sap_id' => $budget->id,
-               'function_name' => 'manage_budget',
-               'action' => 'edit_budget',
-               'detail' => $detail_log,
-               'old_value'=> $old_changes,
-           ]);
+        //  //  dd($detail_log);
+
+        //    $log_activity = LogActivity::create([
+        //        'user_id' => $use_in->id,
+        //        'sap_id' => $budget->id,
+        //        'function_name' => 'manage_budget',
+        //        'action' => 'edit_budget',
+        //        'detail' => $detail_log,
+        //        'old_value'=> $old_changes,
+        //    ]);
 
         return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขงบประมาณสำเร็จ']);
     }

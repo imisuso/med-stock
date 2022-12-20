@@ -66,37 +66,56 @@
                 class="w-full   text-sm   my-2 rounded-md"
                 >
                 <label for="">รายชื่อคลังที่มีอยู่แล้วในหน่วย/สาขา นี้:</label>
-                <div v-for="(stock,index) in  form.stocks_unit" :key=index :value="stock.id"
-                    class=" bg-white p-2 my-2  lg:flex lg:justify-between border-b-2  border-gray-300 "
-                >
-                    <div class=" flex flex-col lg:flex-row ">
-                        <div>
-                            {{index+1}}. {{stock.stockname}}({{stock.stockengname}})
-                        </div>
-                        <div>
-                            <label class=" p-2 text-blue-600">สถานะ:</label>
-                            <label class=" bg-red-100">{{stock.status_name}}</label>
-                            
-                        </div>
-                        <div class="">
-                                <label  class=" mx-2  text-xs ">
-                                    แก้ไขล่าสุดเมื่อ: 
-                                    {{dayjs(stock.updated_at).locale('th').format('D MMM BBBB H:mm')}}
-                                    น.
-                                </label>
-                        </div>
-                       
-                        <!-- <label for="" v-if="stock.status==1" class=" ml-4 "> สถานะ:ใช้งาน</label> -->
-                    </div>
-                    <div v-if="$page.props.auth.user.roles[0].name == 'admin_med_stock'"
-                        class="flex  justify-center bg-yellow-200 px-2 rounded-md shadow-md " >
+                    <div v-for="(stock,index) in  form.stocks_unit" :key=index :value="stock.id"
+                        class=" bg-white p-2 my-2  lg:flex lg:justify-between border-b-2  border-gray-300 "
+                     >
+                        <div class=" flex flex-col lg:flex-row ">
+                            <div>
+                                {{index+1}}. {{stock.stockname}}({{stock.stockengname}})
+                            </div>
+                            <div>
+                                <label class=" p-2 text-blue-600">สถานะ:</label>
+                                <label class=" bg-red-100">{{stock.status_name}}</label>
+                                
+                            </div>
+                            <div class="">
+                                    <label  class=" mx-2  text-xs ">
+                                        แก้ไขล่าสุดเมื่อ: 
+                                        {{dayjs(stock.updated_at).locale('th').format('D MMM BBBB H:mm')}}
+                                        น.
+                                    </label>
+                            </div>
                         
-                        <a :href="route('show-detail-stock',stock)"  >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                        </a>
-                     
+                            <!-- <label for="" v-if="stock.status==1" class=" ml-4 "> สถานะ:ใช้งาน</label> -->
+                        </div>
+                        <div v-if="$page.props.auth.user.roles[0].name == 'admin_med_stock' || $page.props.auth.user.roles[0].name == 'admin_it'"
+                            class="flex  justify-center " >
+                            
+                            <a :href="route('show-detail-stock',stock)"  
+                              class=" mx-2  rounded-md shadow-md bg-yellow-200"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
+                                   class="w-6 h-6  ">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                </svg>
+                            </a>
+                            <a :href="route('get-resource-log',{'model':'stock','id':stock.id})" 
+                              class=" mx-2  rounded-md shadow-md bg-blue-300" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+
+                            </a>
+                        </div>
+                        <!-- <div v-if="$page.props.auth.user.roles[0].name == 'admin_it' || $page.props.auth.user.roles[0].name == 'admin_med_stock'"
+                            class="flex  justify-center  px-2  " >
+                            <a :href="route('get-resource-log',{'model':'stock','id':stock.id})" class=" mx-2  rounded-md shadow-md bg-blue-300" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+
+                            </a>
+                        </div> -->
                         <!-- <button type="submit" 
                             class="   ml-4 px-2 text-md  bg-red-500 hover:bg-red-700 text-white  border border-red-500  rounded-md shadow-md"
                             @click="confirmDeleteStock()"
@@ -117,7 +136,7 @@
                         </svg>
                         เพิ่มคลังวัสดุ
                     </button>
-                </div>
+                 
             </div>  
             <div v-if="props.list_stock_unit.length==0 && props.unit_search "
                 class="w-full   p-2 my-2 rounded-md"

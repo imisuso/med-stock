@@ -43,7 +43,7 @@ class UserController extends Controller
         //                 ->get();
                      
 
-          $users = User::select('slug','name','status','unitid','updated_at')
+          $users = User::select('id','slug','name','status','unitid','updated_at')
                         ->with('unit:id,unitid,unitname')
                         ->orderBy('unitid')
                         ->paginate(10);
@@ -119,14 +119,23 @@ class UserController extends Controller
         $detail_log['unitid'] =request()->input('unit_id');
         $detail_log['role_name'] =$role->name;
          //  dd($detail_log);
-
-           $log_activity = LogActivity::create([
-               'user_id' => $use_in->id,
-               'sap_id' => request()->input('sap_id'),
-               'function_name' => 'manage_user',
-               'action' => 'add_user',
-               'detail' => $detail_log,
-           ]);
+ 
+        /****************  insert resource_action_logs ****************/
+      
+       
+            $user->actionLogs()->create([
+                    'user_id' => Auth::id(),
+                    'action' => 'add_user',
+                    'log' => $detail_log,
+                    ]);
+        
+        //    $log_activity = LogActivity::create([
+        //        'user_id' => $use_in->id,
+        //        'sap_id' => request()->input('sap_id'),
+        //        'function_name' => 'manage_user',
+        //        'action' => 'add_user',
+        //        'detail' => $detail_log,
+        //    ]);
 
           // dd($log_activity);
           $msg_notify_test = $use_in->name.'  เพิ่ม '.request()->input('employee_full_name').' เป็นผู้ใช้งานระบบสำเร็จ';
@@ -223,7 +232,7 @@ class UserController extends Controller
                 $user->revokeRole();
                 $user->assignRole($role_name);
                 $role_change = 1;
-                $old_changes[] = ['column'=>'role_name','old'=>$original_val_user['role_name'],'new'=>$role_name];
+                $old_changes['role_name'] = ['old'=>$original_val_user['role_name'],'new'=>$role_name];
                // logger($old_changes);
             }
 
@@ -240,7 +249,8 @@ class UserController extends Controller
           
             if (count($changes)) {
                 foreach ($changes as $key=>$val) {
-                    $old_changes[] = [ 'column'=>$key , 'old'=>$original_val_user[$key] , 'new'=>$val];
+                 //   $old_changes[] = [ 'column'=>$key , 'old'=>$original_val_user[$key] , 'new'=>$val];
+                    $old_changes[$key] = ['old'=>$original_val_user[$key] , 'new'=>$val];
                 }
                 array_pop($old_changes); //เอา updated_at  ออก
             }
@@ -257,15 +267,23 @@ class UserController extends Controller
 
            
            //  dd($detail_log);
+            /****************  insert resource_action_logs ****************/
+      
+       
+            $user->actionLogs()->create([
+                'user_id' => Auth::id(),
+                'action' => 'change_user',
+                'log' => $old_changes,
+                ]);
   
-             $log_activity = LogActivity::create([
-                 'user_id' => $use_in->id,
-                 'sap_id' => $user->sap_id,
-                 'function_name' => 'manage_user',
-                 'action' => 'edit_user',
-                 'detail'=> $detail_log,
-                 'old_value'=> $old_changes,
-             ]);
+            //  $log_activity = LogActivity::create([
+            //      'user_id' => $use_in->id,
+            //      'sap_id' => $user->sap_id,
+            //      'function_name' => 'manage_user',
+            //      'action' => 'edit_user',
+            //      'detail'=> $detail_log,
+            //      'old_value'=> $old_changes,
+            //  ]);
 
              $msg_notify_test = $use_in->name.'  แก้ไขข้อมูลผู้ใช้งาน '.$user->name.' สำเร็จ';
              Logger($msg_notify_test);

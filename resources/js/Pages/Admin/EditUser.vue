@@ -99,12 +99,12 @@
                         >
                         แก้ไข
                     </button>
-                    <button type="submit" 
+                    <Link :href="route('user-add')"
                         class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
-                        @click="getListUser()"
-                        >
-                        กลับ
-                    </button>
+                     >
+                         กลับ
+                    </Link>
+                   
                 </div>
                 
 
@@ -163,7 +163,7 @@
 //import { ref } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm,Link } from '@inertiajs/inertia-vue3';
 import { ref ,computed} from 'vue';
 
 
