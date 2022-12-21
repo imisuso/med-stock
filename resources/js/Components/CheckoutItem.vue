@@ -255,7 +255,7 @@ const price_format=(price)=>{
   // return '1,200.5';
 }
 const confirmCheckout=(stock_item)=>{
-   // console.log('confirmCheckout');
+   console.log('confirmCheckout');
    // console.log(form.date_checkout[index]);
     if(form.date_checkout.length==0){
         date_alert.value=true
@@ -299,7 +299,21 @@ const confirmCheckout=(stock_item)=>{
         unitcheckout_alert.value=false
         msg_alert_checkout.value=false
     }
-    
+
+    //if(document.getElementById('budget_add').value < 0)
+    if(form.unit_checkout <0)
+    {
+        unitcheckout_alert.value=true
+        msg_alert_checkout.value=true
+        msg_alert.value="จำนวนที่เบิกต้องไม่เป็นจำนวนติดลบ";
+        //document.getElementById("budget_add").focus();
+        return false;
+   }else{
+   
+        unitcheckout_alert.value=false
+        msg_alert_checkout.value=false
+   }
+   
     confirm_checkout.value = true;
     form.confirm_item_slug = stock_item.slug;
     form.confirm_item_name = stock_item.item_name;

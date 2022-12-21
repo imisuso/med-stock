@@ -20,7 +20,7 @@
           <div class=" flex flex-col p-2 bg-purple-200 rounded-md shadow-md">
              <label class=" font-bold py-2">  สวัสดี,วันที่ {{dayjs(new Date()).locale('th').format('D MMM BBBB HH:mm')}} น. </label>
             <!-- <label for="">วันนี้อากาศแจ่มใส </label> -->
-            <p class="p-2"><label for="">ขอเชิญเจ้าหน้าที่สาขาวิชาฯต่างๆทดลองใช้ระบบวัสดุในการตัดสต๊อก ตั้งแต่วันที่ 8-11 พฤศจิกายน 2565</label></p>
+           
             <p class="  p-2 underline underline-offset-1">
               <!-- {{doc_division_filename}}-- -->
             <!-- <a :href=" '../../../../../storage/docs/'+doc_division_filename " target="_blank"> -->
@@ -55,7 +55,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
               </svg>
-              <label class=" p-4 text-xl">ระบบวัสดุ (MED-STOCK)</label>
+              <label class=" p-4 text-xl">ระบบพัสดุ (MED-STOCK)</label>
             </div>
 
             <div class="my-4 text-md text-gray-800  ">

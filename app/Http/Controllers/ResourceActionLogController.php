@@ -57,7 +57,8 @@ class ResourceActionLogController extends Controller
        // $user = User::select('sap_id','name')->where('slug',$slug)->first();
         $logs = ResourceActionLog::where('loggable_id',$id)
                                     ->where('loggable_type','like',$log_type)
-                                    ->where('action','like','%change%')
+                                    // ->where('action','like','%change%')
+                                    // ->orWhere('action','like','%add%')
                                     ->with('user:id,name')
                                     ->get();
         // $logs = LogActivity::where('sap_id',$user->sap_id)

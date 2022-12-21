@@ -779,7 +779,7 @@ class PrintFormController extends Controller
         $pdf->Line(125,$y,180,$y);
 
         $y = $y+3;
-        $pdf->SetXY(160, $y);
+        $pdf->SetXY(160, 265);
         $pdf->SetFontSize('14'); 
         $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/'.$page_all,0,0,'C');
 
@@ -1157,7 +1157,7 @@ class PrintFormController extends Controller
                 $pdf->SetFontSize('14'); 
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_code']));
 
-                $pdf->SetFontSize('16'); 
+                $pdf->SetFontSize('14'); 
                 $pdf->SetXY(41, $y);
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_name']));
             }
@@ -1185,7 +1185,8 @@ class PrintFormController extends Controller
             $pdf->SetXY(186, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->item_count));
 
-            $pdf->SetXY(210, $y);
+         
+            $pdf->SetXY(200, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->user['name']));
 
             if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) {
@@ -1206,6 +1207,7 @@ class PrintFormController extends Controller
                 $count_line =0;
                 $count_page++;
                 $pdf->SetXY(255, $y);
+                $pdf->SetFontSize('14'); 
                 $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/'.$page_all,0,0,'C');
                 $pdf->AddPage();
                  //head column
@@ -1213,7 +1215,7 @@ class PrintFormController extends Controller
                 $pdf->SetFontSize('16'); 
                 $pdf->SetXY(12, 17);
                 $pdf->SetLineWidth(1);
-                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ                         ชื่อวัสดุ                          วันที่หมดอายุ          วันที่เบิกจ่าย            จำนวน                ผู้เบิก              คงเหลือ ณ ปัจจุบัน            '),'B');
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                         วันที่หมดอายุ          วันที่เบิกจ่าย       จำนวนที่เบิก                ผู้เบิก                     คงเหลือ ณ ปัจจุบัน            '),'B');
                 $y=28;
                 $x=15;
                 $pdf->SetFont('THSarabunNew');

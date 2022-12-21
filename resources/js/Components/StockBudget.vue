@@ -87,7 +87,9 @@
                             </button>
                           
                         </div>
-                        <div class="px-3 ">
+                        <div class="px-3 "
+                             v-if="$page.props.auth.user.roles[0].name=='admin_it'"
+                            >
                             <a :href="route('get-resource-log',{'model':'budget','id':stockBudget.budget['id']})" 
                               class=" flex  py-1 px-2 rounded-md shadow-md bg-blue-300" >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -98,10 +100,10 @@
                         </div>
                         <div v-if="stockBudget.count_import>0"  class="flex mr-2">
                             <a :href="route('get-list-order',{stock_id:stockBudget.id,year:budgetYear})"
-                                class=" flex justify-center py-1 px-2 bg-pink-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
+                                class=" flex justify-center py-1 px-2 bg-pink-200 text-pink-900 rounded-md shadow-md hover:bg-pink-300 focus:outline-none"
                               
                                 >
-                                ดูรายการสั่งซื้อที่นำเข้าจากExcel
+                                ดูใบสั่งซื้อที่นำเข้าจากExcel
                             </a>
                               <!-- <a :href="route('print-budget-order',{stock_id:stockBudget.id,year:budgetYear})"
                                 v-if="stockBudget.budget['budget_add'] !=0"
@@ -342,10 +344,10 @@ const show_alert=ref(false);
 const show_alert_edit=ref(false);
 
 const confirmAddBudget=(order)=>{
-   // console.log('confirmAddBudget');
-   // console.log('budget='+form.budget_input);
+    console.log('confirmAddBudget');
+  //  console.log('budget='+form.budget_input);
    // console.log('length='+form.budget_input.length);
-
+   // console.log(document.getElementById('budget_add').value)
     if(form.budget_input==0){
         show_alert.value=true
         msg_alert.value="กรุณาระบุงบประมาณก่อนกดปุ่มบันทึก";
@@ -365,7 +367,7 @@ const confirmAddBudget=(order)=>{
    
          show_alert_edit.value=false;
    }
- 
+//    return false;
     confirm_add_budget.value = true;
     form.stock_id = props.stockBudget.id;
     form.stock_name = props.stockBudget.stockname;
