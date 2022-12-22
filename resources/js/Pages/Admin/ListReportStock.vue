@@ -65,7 +65,7 @@
             
             <div 
                 class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
-                <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
+                <div class="flex flex-col text-xs  lg:flex-row lg:justify-between  mx-2"  >
                     
                     <div class=" lg:w-2/12  ">
                         SAP-ชื่อวัสดุ
@@ -94,7 +94,7 @@
                     </div> -->
                    
                     <div class=" lg:w-1/12 text-xs ">
-                        ::
+                        ประวัติรับเข้า-เบิกออก
                     </div>
                 </div>     
             </div>
@@ -179,7 +179,7 @@
               
                   
                     <div class="  lg:w-1/12 ">
-                        <label for="" class="  hidden">::</label>
+                        <label for="" class="  hidden"> ประวัติรับเข้า-เบิกออก</label>
                        
                         <Link :href="route('list-stock-item',stock_item)">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-700">

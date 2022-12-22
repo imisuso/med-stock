@@ -53,7 +53,8 @@
                         </div>
                     
                     
-                        <div class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
+                        <div  v-if="checkin_last"
+                            class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
                             <div class="flex ml-2"> จำนวนคงเหลือ :
                                 <p class=" ml-2 text-red-600">{{number_format_show(item_balance)}}</p>     
                             </div>

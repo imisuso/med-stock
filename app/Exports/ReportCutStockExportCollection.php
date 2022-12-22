@@ -51,7 +51,7 @@ WithMapping ,WithHeadings, ShouldAutoSize, WithStrictNullComparison
                 $item_trans->item_count,
                 $item_trans->user->name,
                // $item_trans->stockItem->item_sum,
-                $item_trans->item_balance,
+              //  $item_trans->item_balance,
             // Date::dateTimeToExcel($TransactionCheckout->created_at),
            
         ];
@@ -99,7 +99,7 @@ WithMapping ,WithHeadings, ShouldAutoSize, WithStrictNullComparison
             'วันที่เบิกจ่าย',
             'จำนวนที่เบิก',
             'ผู้เบิก',
-            'ปัจจุบันคงเหลือ'
+         //   'ปัจจุบันคงเหลือ'
         ];
     }
 }

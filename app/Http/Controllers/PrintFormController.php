@@ -988,7 +988,7 @@ class PrintFormController extends Controller
             $total_budget = 0.0;
         foreach ($purchase_order->items as $item) {
             $seq++;
-           // Log::info($item);
+          // logger($item);
             $pdf->SetFontSize('16'); 
           
             // $pdf->SetXY($x, $y);
@@ -1065,15 +1065,23 @@ class PrintFormController extends Controller
         $thaimonth_short = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
         $date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year_print;
 
-        $pdf->SetFontSize('14');
-        $pdf->SetXY(200,3);
-        $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
-        $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'R');
+
+        // $this->SetY(-15);
+        // // Select Arial italic 8
+        // $this->SetFont('Arial', 'I', 8);
+        // // Print centered page number
+        // $this->Cell(0, 10, 'Page '.$this->PageNo(), 0, 0, 'C');
+
+    //     $pdf->SetFontSize('14');
+    //    // $pdf->SetY(-19);
+    //     $pdf->SetXY(10,178);
+    //     $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
+    //     $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
 
 
          $stock = Stock::find($stock_id);
       
-        $pdf->SetXY(14, 13);
+        $pdf->SetXY(14, 10);
         $head = 'รายงานบันทึกการตัดสต๊อกวัสดุ ';
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $head),0,0,'C');
 
@@ -1090,8 +1098,8 @@ class PrintFormController extends Controller
         $pdf->SetFontSize('16'); 
         $pdf->SetXY(12, 37);
         $pdf->SetLineWidth(1);
-        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                         วันที่หมดอายุ          วันที่เบิกจ่าย       จำนวนที่เบิก                ผู้เบิก                     คงเหลือ ณ ปัจจุบัน            '),'B');
-       
+        //$pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                  วันที่หมดอายุ   วันที่รับเข้า   จำนวนยกมา    วันที่เบิกจ่าย   จำนวนที่เบิก           ผู้เบิก           คงเหลือ ณ ปัจจุบัน '),'B');
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                                      วันที่หมดอายุ       วันที่เบิกจ่าย      จำนวนที่เบิก                  ผู้เบิก          '),'B');
         //     //body  list item
 
         $stock_item_checkouts = ItemTransaction::where(
@@ -1110,16 +1118,38 @@ class PrintFormController extends Controller
         foreach($stock_item_checkouts as $key=>$tran_checkout){
             //  Log::info($tran_checkout->stock_item_id);
           
-
+                // $checkin_last_item = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
+                //                                     ->whereStatus('active')
+                //                                     ->whereAction('checkin')
+                //                                     ->first();
+                // logger($checkin_last_item);     
+                
+                // $stock_item_checkouts[$key]['check_in_date'] = $checkin_last_item->date_action;
+                // $stock_item_checkouts[$key]['check_in_item_count'] = $checkin_last_item->item_count;
                 $checkin = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
                                         ->whereStatus('active')
                                         ->whereAction('checkin')
+                                        // ->whereYear('date_action','<=',$year)
+                                        // ->whereMonth('date_action','<',$month)
                                         ->sum('item_count');
+                // logger('checkin=');
+                // logger($checkin);
+                $stock_item_checkouts[$key]['balance_last'] = $checkin;
                 $checkout = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
                                         ->whereStatus('active')
                                         ->whereAction('checkout')
+                                        // ->whereYear('date_action','<=',$year)
+                                        // ->whereMonth('date_action','<',$month)
                                         ->sum('item_count');
+
+                // logger('checkout=');
+                // logger($checkout);
+
                 $stock_item_checkouts[$key]['item_balance'] = $checkin - $checkout;
+
+      
+
+
                 
         }
         $y=48;
@@ -1140,13 +1170,16 @@ class PrintFormController extends Controller
             $count_line = 0;
         foreach ($stock_item_checkouts as $item) {
           
-            //Log::info($item);
-            $pdf->SetFontSize('16'); 
+           // logger($item);
+            $pdf->SetFontSize('14'); 
           
             // $pdf->SetXY($x, $y);
             // $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq),'B'); //print line buttom
 
-          
+            // logger($item->stockItem['item_code']);
+            // logger($item->stockItem['item_name']);
+            // logger($item->item_balance);
+            // logger($item->balance_last);
 
             if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) {
                 $seq++;
@@ -1154,14 +1187,15 @@ class PrintFormController extends Controller
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq));
 
                 $pdf->SetXY(23, $y);
-                $pdf->SetFontSize('14'); 
+
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_code']));
 
-                $pdf->SetFontSize('14'); 
+             
                 $pdf->SetXY(41, $y);
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_name']));
             }
- 
+          
+            //วันที่หมดอายุ
             if(strlen($item->date_expire)==0){
                 $date_expire_show= "-";
                 $pdf->SetXY(125, $y);
@@ -1170,31 +1204,57 @@ class PrintFormController extends Controller
                 $split_date_expire = explode('-', $item->date_expire);
                 $year_print = (int) $split_date_expire[0] + 543;
                 $date_expire_show = $split_date_expire[2].'  '.$thaimonth_short[(int) $split_date_expire[1]].' '.$year_print;       
-                $pdf->SetXY(112, $y);
+                $pdf->SetXY(127, $y);
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_expire_show));
             }
+           
+            // //วันที่รับเข้า
+            // $pdf->SetXY(123, $y);
+            // $split_check_in_date = explode('-', $item->check_in_date);
+            // $year_print = (int) $split_check_in_date[0] + 543;
+            // $check_in_date_show = $split_check_in_date[2].'  '.$thaimonth_short[(int) $split_check_in_date[1]].' '.$year_print;
+            // $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $check_in_date_show));
                    
             
+            // //จำนวนรับเข้า
+            // if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) 
+            // {
+            //     $pdf->SetXY(150, $y);
+            //     $pdf->SetFontSize('14');
+            //     $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item->check_in_item_count,0) ));
+            // }
 
-            $pdf->SetXY(147, $y);
+            //จำนวนยกมา
+            // $pdf->SetXY(150, $y);
+            // $pdf->SetFontSize('14');
+            // $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item->item_balance,0) ));
+
+            //วันที่เบิก
+            $pdf->SetXY(155, $y);
             $split_date_action = explode('-', $item->date_action);
             $year_print = (int) $split_date_action[0] + 543;
             $date_action_show = $split_date_action[2].'  '.$thaimonth_short[(int) $split_date_action[1]].' '.$year_print;
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_action_show));
 
-            $pdf->SetXY(186, $y);
+            //จำนวนที่เบิก
+            $pdf->SetXY(195, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->item_count));
 
          
-            $pdf->SetXY(200, $y);
+            $pdf->SetXY(220, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->user['name']));
 
-            if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) {
-                $pdf->SetXY(255, $y);
-                $pdf->SetFontSize('14');
-                $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item->item_balance,0) ));
-            }
-          
+            //จำนวนคงเหลือ
+            // if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) {
+            //     $item_balance_now =$item->item_balance;
+            // }
+            // $pdf->SetXY(265, $y);
+            // $pdf->SetFontSize('14');
+            // // $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item->item_balance,0) ));
+            // $item_balance_now = $item_balance_now - $item->item_count;
+            // // $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item_balance_now,0) ));
+            //     $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item->item_balance,0) ));
+            
             $tmp_item_code = $item->stockItem['item_code'];
 
             // $total_budget += $item[0]['total'];
@@ -1210,12 +1270,16 @@ class PrintFormController extends Controller
                 $pdf->SetFontSize('14'); 
                 $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/'.$page_all,0,0,'C');
                 $pdf->AddPage();
+
+             
+
                  //head column
                 $pdf->SetFont('THSarabunNew','B');
                 $pdf->SetFontSize('16'); 
                 $pdf->SetXY(12, 17);
                 $pdf->SetLineWidth(1);
-                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                         วันที่หมดอายุ          วันที่เบิกจ่าย       จำนวนที่เบิก                ผู้เบิก                     คงเหลือ ณ ปัจจุบัน            '),'B');
+                //$pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                         วันที่หมดอายุ          วันที่เบิกจ่าย       จำนวนที่เบิก                ผู้เบิก                     คงเหลือ ณ ปัจจุบัน            '),'B');
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                                      วันที่หมดอายุ       วันที่เบิกจ่าย      จำนวนที่เบิก                  ผู้เบิก          '),'B');
                 $y=28;
                 $x=15;
                 $pdf->SetFont('THSarabunNew');
@@ -1226,7 +1290,11 @@ class PrintFormController extends Controller
 
 
               
-            
+            $pdf->SetFontSize('14');
+            // $pdf->SetY(-19);
+             $pdf->SetXY(10,178);
+             $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
+             $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
           
           //  $pdf->SetXY($x, $y);
           
@@ -1237,7 +1305,13 @@ class PrintFormController extends Controller
         $pdf->SetXY($x, $y);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', ''),'B'); //print line buttom
 
-        $pdf->SetXY(255, 175);
+        // $pdf->SetFontSize('14');
+        // // $pdf->SetY(-19);
+        //  $pdf->SetXY(10,178);
+        //  $date_print = 'วันเวลาที่พิมพ์1'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
+        //  $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
+
+        $pdf->SetXY(255, 178);
         $pdf->SetFontSize('14'); 
         $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/'.$page_all,0,0,'C');
 
