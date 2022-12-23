@@ -48,9 +48,9 @@ class ResourceActionLogController extends Controller
      */
     public function show($model,$id)
     {
-        //logger('ResourceActionLogController show');
-        // logger($id);
-        // logger($model);
+        logger('ResourceActionLogController show');
+        logger($id);
+        logger($model);
 
         $log_type = "%".$model."%";
         $route_back = $model."-add";
@@ -98,14 +98,14 @@ class ResourceActionLogController extends Controller
                 $logs = array();
                 $user_name='';
             }
-            $user_name='';
+          
             $route_back = "get-list-budget";
         }else{
             $user_name='';
             $route_back = '';
         }
-       // logger('3333333');
-        //logger($user_name);
+       logger('3333333');
+        logger($user_name);
         return Inertia::render('Admin/ShowLogsUser',[
                             'user_change_logs'=> $logs,
                             'user_name'=> $user_name,

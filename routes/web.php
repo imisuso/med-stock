@@ -261,3 +261,11 @@ Route::get('/nong', function () {
     return view('welcome');
     //return view('stock.StockItemImport');
   });
+
+Route::get('/budget/{budget}/log',function(App\Models\Budget $budget){
+    return[
+      'log'=> $budget->actionLogs()->with('user:id,name')->get(),
+      'stock'=> $budget->stock,
+    //   'back_url'=>
+    ] ;
+});

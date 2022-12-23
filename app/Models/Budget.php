@@ -43,5 +43,9 @@ class Budget extends Model
     {
         return $this->morphMany(ResourceActionLog::class,'loggable');
     }
+    public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }
