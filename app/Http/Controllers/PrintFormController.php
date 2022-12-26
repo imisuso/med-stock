@@ -1099,7 +1099,7 @@ class PrintFormController extends Controller
         $pdf->SetXY(12, 37);
         $pdf->SetLineWidth(1);
         //$pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                  วันที่หมดอายุ   วันที่รับเข้า   จำนวนยกมา    วันที่เบิกจ่าย   จำนวนที่เบิก           ผู้เบิก           คงเหลือ ณ ปัจจุบัน '),'B');
-        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                                      วันที่หมดอายุ       วันที่เบิกจ่าย      จำนวนที่เบิก                  ผู้เบิก          '),'B');
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่    รหัสวัสดุ   ชื่อวัสดุ                                                      วันที่หมดอายุ       วันที่เบิกจ่าย      จำนวนที่เบิก                  ผู้เบิก          '),'B');
         //     //body  list item
 
         $stock_item_checkouts = ItemTransaction::where(
@@ -1264,6 +1264,13 @@ class PrintFormController extends Controller
            // logger($count_line);
             //addNewPage
             if( $count_line==$line_per_page ){
+
+                $pdf->SetFontSize('14');
+                $pdf->SetXY(10,178);
+                $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
+                $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
+
+                //print head new page
                 $count_line =0;
                 $count_page++;
                 $pdf->SetXY(255, $y);
@@ -1279,22 +1286,19 @@ class PrintFormController extends Controller
                 $pdf->SetXY(12, 17);
                 $pdf->SetLineWidth(1);
                 //$pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                         วันที่หมดอายุ          วันที่เบิกจ่าย       จำนวนที่เบิก                ผู้เบิก                     คงเหลือ ณ ปัจจุบัน            '),'B');
-                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                                      วันที่หมดอายุ       วันที่เบิกจ่าย      จำนวนที่เบิก                  ผู้เบิก          '),'B');
+                $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่    รหัสวัสดุ   ชื่อวัสดุ                                                      วันที่หมดอายุ       วันที่เบิกจ่าย      จำนวนที่เบิก                  ผู้เบิก          '),'B');
                 $y=28;
                 $x=15;
                 $pdf->SetFont('THSarabunNew');
                 $pdf->SetXY($x, $y);
-               // $pdf->SetLineWidth(0.1);
+               // $pdf->SetLineWidth(0.1)
+               ;
                 $pdf->SetLineWidth(0.1);
             }
 
 
               
-            $pdf->SetFontSize('14');
-            // $pdf->SetY(-19);
-             $pdf->SetXY(10,178);
-             $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
-             $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
+          
           
           //  $pdf->SetXY($x, $y);
           
@@ -1305,11 +1309,11 @@ class PrintFormController extends Controller
         $pdf->SetXY($x, $y);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', ''),'B'); //print line buttom
 
-        // $pdf->SetFontSize('14');
-        // // $pdf->SetY(-19);
-        //  $pdf->SetXY(10,178);
-        //  $date_print = 'วันเวลาที่พิมพ์1'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
-        //  $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
+        $pdf->SetFontSize('14');
+        // $pdf->SetY(-19);
+         $pdf->SetXY(10,178);
+         $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
+         $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
 
         $pdf->SetXY(255, 178);
         $pdf->SetFontSize('14'); 

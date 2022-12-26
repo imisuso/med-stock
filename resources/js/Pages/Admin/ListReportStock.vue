@@ -51,7 +51,7 @@
 
 
         <div v-if="stock_items_count!=0" class="w-full">
-            <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อวัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
+            <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อวัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา"
                     v-model="search" 
                 class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
             >
@@ -207,6 +207,12 @@
                     </div>
                 </div>     
             </div>
+
+            <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-blue-700 rounded-sm shadow-md hover:bg-blue-500 focus:outline-none" 
+            :href="route('export-balance-stock', stock_items.data[0].stock_id)"
+                >
+                Export Excel
+            </a>
         </div>
 
         <!--end re-design-->
@@ -269,13 +275,13 @@ const price_format=(price)=>{
 
 watch( search, value => {
    
-   if(value.length >= 3){
+  // if(value.length >= 3){
      //  console.log('key search=' + value)
        Inertia.get(route('report-list',form.unitid), { search: value ,stock_selected: form.stock_selected}, {
            preserveState: true,
            replace: true
        })
-   }
+ //  }
 })
 const getStockReport=()=>{
     //console.log('aaaaaaaaaa');

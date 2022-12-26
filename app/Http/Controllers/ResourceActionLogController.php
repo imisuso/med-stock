@@ -2,13 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Budget;
 use App\Models\ResourceActionLog;
+use App\Models\Stock;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ResourceActionLogController extends Controller
 {
+
+    public function showLogBudget(Budget $budget)
+    {
+        $budget_year = (int)$budget->year+543;
+        $title_head = $budget->stock['stockname']." ปีงบประมาณ ".$budget_year;
+        return Inertia::render('Admin/ShowLogs',[  
+                                'title_name'=> $title_head, 
+                                'logs'=> $budget->actionLogs()->with('user:id,name')->get(),
+                                'back_url'=> 'get-list-budget',
+        ]) ;
+
+    }
+
+    public function showLogUser(User $user)
+    {
+       
+        return Inertia::render('Admin/ShowLogs',[  
+                                'title_name'=> $user->name, 
+                                'logs'=> $user->actionLogs()->with('user:id,name')->get(),
+                                'back_url'=> 'user-add',
+        ]) ;
+
+    }
+
+    public function showLogStock(Stock $stock)
+    {
+     //  dd('showLogStock');
+        return Inertia::render('Admin/ShowLogs',[  
+                                'title_name'=> $stock->stockname, 
+                                'logs'=> $stock->actionLogs()->with('user:id,name')->get(),
+                                'back_url'=> 'stock-add',
+        ]) ;
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -46,6 +83,7 @@ class ResourceActionLogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function show($model,$id)
     {
         logger('ResourceActionLogController show');

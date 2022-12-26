@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\ReportCutStockExport;
 use App\Exports\ReportCutStockExportCollection;
+use App\Exports\ReportBalanceStockExportCollection;
 use App\Exports\ReportCutStockExportTest;
 use App\Http\Controllers\Controller;
 use App\Models\ItemTransaction;
@@ -15,6 +16,7 @@ use App\Models\StockItem;
 use App\Models\Unit;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -25,10 +27,12 @@ class ReportStockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    
     public function index($division_id)
     {
        
-      //  logger('ReportStockController index');
+       // logger('ReportStockController index');
        //  logger(request()->all());
         $user = Auth::user();
             $main_menu_links = [
@@ -319,6 +323,34 @@ class ReportStockController extends Controller
        // return (new ReportCutStockExport($stock_id,$year,$month,$stock_name->stockengname))->download($filename_xls);
 
         return Excel::download(new ReportCutStockExportCollection($stock_id,$year,$month), $filename_xls);
+    }
+    public function exportBalanceStock($stock_id)
+    {   
+        $stock = Stock::find($stock_id);
+      
+        $date_now = date('YMd');
+       
+        $filename_xls = 'ReportBalanceStock'."_".$stock->stockengname."_".$date_now.'.xlsx';
+        //dd($filename_xls);
+        $user = Auth::user();
+
+        $detail_log =array();
+        $detail_log['stock'] = $stock->stockname;
+    
+
+
+    //  dd($detail_log);
+
+        $log_activity = LogActivity::create([
+            'user_id' => $user->id,
+            'sap_id' => $user->sap_id,
+            'function_name' => 'export_excel',
+            'action' => 'report_balance_stock',
+            'detail'=> $detail_log,
+        ]);
+
+        return Excel::download(new ReportBalanceStockExportCollection($stock_id), $filename_xls);
+
     }
 
     public function export_test($checkout_items) 

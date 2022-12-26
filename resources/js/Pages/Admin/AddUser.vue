@@ -232,31 +232,13 @@
                                 </svg>
                             </a>
                         
-                             <a :href="route('get-resource-log',{'model':'user','id':user.id})" class=" mx-2  rounded-md shadow-md bg-blue-300" >
+                             <a :href="route('get-user-log',user)" class=" mx-2  rounded-md shadow-md bg-blue-300" >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
 
                             </a>
-                            <!-- <a :href="route('show-log',user.slug)" class=" mx-2  rounded-md shadow-md bg-blue-300" >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-
-                            </a> -->
-                    
-                            <!-- <a :href="route('show-log',user.slug)" class=" px-4 mx-2 rounded-md shadow-md bg-cyan-200" >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6  bg-cyan-200">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-
-                            </a> -->
-                            <!-- <button type="submit" 
-                                class="   ml-4 px-2 text-md  bg-red-500 hover:bg-red-700 text-white  border border-red-500  rounded-md shadow-md"
-                                @click="confirmDeleteStock()"
-                                >
-                                ลบ
-                            </button> -->
+                         
                         </div>
                        
                     </div>
