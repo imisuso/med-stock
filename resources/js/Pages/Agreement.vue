@@ -1,5 +1,5 @@
 <template>
-    <AppLayout>
+    <AgreementLayout>
      <!-- {{user}} -->
         <div class=" flex-col p-2 w-full justify-center bg-red-50  ">
              <!-- <div>
@@ -17,26 +17,37 @@
         </div>
  
         <div v-if="user_agreement">
-            <div class="w-full flex justify-center my-2 mx-10  text-red-600 ">
+            <div class="w-full flex justify-center my-2  text-red-600 ">
                     <label for="">ท่านรับทราบและตกลงตามนโยบายการคุ้มครองข้อมูลส่วนบุคคลข้างต้น</label>
             </div>
-            <div  class="flex flex-col lg:flex-row px-2 py-2  ">
+            <div  class="flex flex-col  px-2 py-2  ">
                         
-                        <button
-                            class=" w-full flex justify-center px-4 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
-                            v-on:click="AcceptAgreement()"
-                        >
-                    
-                            รับทราบ
-                        </button>
+                <button
+                    class=" w-full  justify-center px-4 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
+                    @click="AcceptAgreement()"
+                >
+            
+                    รับทราบ
+                </button>
+                      
+                <button
+                    class=" w-full mt-2 justify-center px-4 py-1   text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                    @click="UserLogout"
+                >
+            
+                    ออกจากระบบ
+                </button>
             </div>
+                   
+                    
         </div>
-    </AppLayout>
+    </AgreementLayout>
  </template>
  
  <script setup>
  //import { ref } from 'vue'
- import AppLayout from '@/Layouts/AppLayout.vue'
+ import AgreementLayout from '@/Layouts/AgreementLayout.vue'
+import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-vue3';
  import dayjs from 'dayjs';
  import 'dayjs/locale/th'
@@ -65,5 +76,8 @@ import { useForm } from '@inertiajs/inertia-vue3';
         onFinish: visit => { console.log('finish');},
     })
  }
- 
+ const UserLogout=()=>{
+    //console.log('logout');
+    Inertia.post('/logout')
+ }
  </script>

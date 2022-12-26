@@ -94,14 +94,14 @@
                         <div class="flex ml-2"> ราคาต่อหน่วย : 
                             <p class=" ml-2 text-blue-600">
                                 <!-- {{stockItem.price}} -->
-                                {{price_format(stockItem.price)}} บาท
+                                {{price_format(stockItem.checkin_last.price)}} บาท
                             </p> 
                         </div>
                         <div class="flex ml-2"> Pur.Order : 
-                            <p class=" ml-2 text-blue-600">{{stockItem.pur_order}}</p> 
+                            <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.pur_order}}</p> 
                         </div>
                         <div class="flex ml-2"> ชื่อบริษัท : 
-                            <p class=" ml-2 text-blue-600">{{stockItem.business_name}}</p> 
+                            <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.business_name}}</p> 
                         </div>
                         <div class="flex ml-2"> วันหมดอายุ : 
                             <p class=" ml-2 text-blue-600">
@@ -117,8 +117,7 @@
                         </div> -->
                       
                     </div>
-                
-                
+                   
                     <div v-if="canAbility.checkout_item && stockItem.item_balance!=0" class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
                         <div class=" m-2">
                              <div  class="flex justify-start " >
@@ -127,9 +126,13 @@
                                 </svg>
                                  <label for="">วันที่เบิก:</label>
                             </div>
+                           
                             <div>
+                              
                                 <input type="date" name="" id=""
                                     v-model="form.date_checkout"
+                                    :min="stockItem.checkin_last.date_action"
+                                    :max="dayjs(new Date()).locale('th').format('YYYY-MM-DD')"
                                     class="w-full px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
                                   :class="[date_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
                                 >
@@ -145,11 +148,14 @@
                             </div>
                             <div>
                                 <input type="number" name="" id="" 
+                                    :min="0"
+                                    :max="stockItem.item_balance"
+                                    pattern = "[0-9]"
                                     v-model="form.unit_checkout"
                                     class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
                                     :class="[unitcheckout_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
                                 >
-                                <label v-if="msg_alert_checkout">{{msg_alert}}</label>
+                                <label v-if="unitcheckout_alert">{{msg_alert}}</label>
                             </div>
                           
                         </div>
@@ -180,15 +186,13 @@
          <ModalUpToYou :isModalOpen="confirm_checkout" >
 
             <template v-slot:header>
-                <!-- <div class="text-gray-900 text-xl font-medium dark:text-white">
-                    คุณต้องการลบข้อมูลบุคคลากร
-                </div> -->
+              
                 <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกการเบิกวัสดุรายการนี้ใช่หรือไม่?</p> 
                                         
             </template>
 
             <template v-slot:body>
-                <div class="text-gray-900 text-md font-medium dark:text-white">
+                <div class="text-gray-900 text-md font-medium ">
                     <p class="mt-2">{{form.confirm_item_name}} เบิกใช้วันที่ {{ form.confirm_item_date}} จำนวน {{form.confirm_item_count}} ชิ้น</p>   
                 </div>
             </template>
@@ -218,6 +222,7 @@ import { ref } from '@vue/reactivity';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
+
 dayjs.extend(buddhistEra)
 
 const props = defineProps({
@@ -250,7 +255,7 @@ const price_format=(price)=>{
   // return '1,200.5';
 }
 const confirmCheckout=(stock_item)=>{
-   // console.log('confirmCheckout');
+   console.log('confirmCheckout');
    // console.log(form.date_checkout[index]);
     if(form.date_checkout.length==0){
         date_alert.value=true
@@ -272,16 +277,43 @@ const confirmCheckout=(stock_item)=>{
         unitcheckout_alert.value=false;
     }
 
+   
+    // Number.isInteger(form.unit_checkout)
+    // console.log(Number.isInteger(form.unit_checkout));
+    if(!Number.isInteger(form.unit_checkout)){
+        unitcheckout_alert.value=true
+        msg_alert.value="กรุณาระบุจำนวนที่เบิกวัสดุเป็นจำนวนเต็ม";
+       // console.log('กรุณาระบุจำนวน');
+      //  document.getElementById("order_in").focus();
+        return false;
+    }else{
+        unitcheckout_alert.value=false;
+    }
+
     if(form.unit_checkout > stock_item.item_balance){
         unitcheckout_alert.value=true
         msg_alert_checkout.value=true
-        msg_alert.value="จำนวนที่เบิกต้องไม่มากกว่าจำนวนที่มี";
+        msg_alert.value="จำนวนที่เบิกต้องไม่มากกว่าจำนวนคงเหลือ";
         return false;
     }else{
         unitcheckout_alert.value=false
         msg_alert_checkout.value=false
     }
-    
+
+    //if(document.getElementById('budget_add').value < 0)
+    if(form.unit_checkout <0)
+    {
+        unitcheckout_alert.value=true
+        msg_alert_checkout.value=true
+        msg_alert.value="จำนวนที่เบิกต้องไม่เป็นจำนวนติดลบ";
+        //document.getElementById("budget_add").focus();
+        return false;
+   }else{
+   
+        unitcheckout_alert.value=false
+        msg_alert_checkout.value=false
+   }
+   
     confirm_checkout.value = true;
     form.confirm_item_slug = stock_item.slug;
     form.confirm_item_name = stock_item.item_name;
@@ -307,5 +339,6 @@ const okConfirmCheckout=()=>{
     })
   
 }
+
 
 </script>

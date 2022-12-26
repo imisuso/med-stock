@@ -92,29 +92,43 @@
                         <label for="" class="   lg:hidden">วันที่ตรวจรับ:</label>
                         <label class=" font-bold"> {{dayjs(order.date_action).locale('th').format('D MMM BBBB')}}</label>
                     </div>
-                    
+                 
                 </div>     
             </div>
 
             <div class="my-2 p-2 bg-blue-200">
                 <label for="">รวมเป็นเงิน {{order_budget_used}} บาท</label> 
             </div>
+            <!-- {{year_budget}} -{{year}} -->
+           
+            <!-- {{$page.props.stock_budget}} -->
+            <!-- route('get-list-order'),{stock_id:'13',year:'2023'} -->
+            <!-- route('get-list-budget') -->
+            <Link :href="route('get-list-order',{stock_id:stock_id,year:year})"
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-md"
+                      
+                        >
+                        กลับ
+            </Link>
         </div>
     </AppLayout>
     
 </template>
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { Link } from '@inertiajs/inertia-vue3';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 dayjs.extend(buddhistEra)
 
-defineProps({
+const props =defineProps({
     order_item_trans:{type:Array},
-    order_budget_used:{type:String}
+    order_budget_used:{type:String},
+    year_budget:'',
+    stock_id:'',
 })
-
+const year = props.year_budget-543;
 const price_format=(price)=>{
    // console.log(price)
    let  price_show = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")

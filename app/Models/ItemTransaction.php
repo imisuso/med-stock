@@ -56,6 +56,12 @@ class ItemTransaction extends Model
     {
         return $this->belongsTo(OrderItem::class);
     }
+    //budget has many loggable
+
+    public function actionLogs()
+    {
+        return $this->morphMany(ResourceActionLog::class,'loggable');
+    }
     protected function orderTypeName(): Attribute
     {
         return Attribute::make(

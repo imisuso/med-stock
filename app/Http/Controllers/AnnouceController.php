@@ -59,7 +59,10 @@ class AnnouceController extends Controller
 
         }
 
-
+        $annouce_status_list = array(
+            ['id'=>'on','desc'=>'เปิดการแสดงผล'],
+            ['id'=>'off','desc'=>'ปิดการแสดงผล'],
+        );
         $annouces = Annouce::with('User:id,name')
                             ->where('show_on_page',$show_page)
                             ->whereIn('status',['on','off'])
@@ -68,6 +71,7 @@ class AnnouceController extends Controller
        
         return Inertia::render('Admin/AnnouceList',[
                               'annouces'=>$annouces,
+                              'annouce_status_list' =>$annouce_status_list,
            
                          ]);
     }

@@ -20,7 +20,7 @@
           <div class=" flex flex-col p-2 bg-purple-200 rounded-md shadow-md">
              <label class=" font-bold py-2">  สวัสดี,วันที่ {{dayjs(new Date()).locale('th').format('D MMM BBBB HH:mm')}} น. </label>
             <!-- <label for="">วันนี้อากาศแจ่มใส </label> -->
-            <p class="p-2"><label for="">ขอเชิญเจ้าหน้าที่สาขาวิชาฯต่างๆทดลองใช้ระบบวัสดุในการตัดสต๊อก ตั้งแต่วันที่ 8-11 พฤศจิกายน 2565</label></p>
+           
             <p class="  p-2 underline underline-offset-1">
               <!-- {{doc_division_filename}}-- -->
             <!-- <a :href=" '../../../../../storage/docs/'+doc_division_filename " target="_blank"> -->
@@ -55,11 +55,11 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
               </svg>
-              <label class=" p-4 text-xl">ระบบวัสดุ (MED-STOCK)</label>
+              <label class=" p-4 text-xl">ระบบพัสดุ (MED-STOCK)</label>
             </div>
 
             <div class="my-4 text-md text-gray-800  ">
-              <p class=" text-red-700"> Login ด้วย Siriraj AD  (ใช้ User ID และ Password เดี่ยวกับระบบ e-Document)</p>
+              <p class=" text-red-700"> Login ด้วย Siriraj AD  (ใช้ Username และ Password เดียวกับระบบ e-Document)</p>
             </div>
 
          
@@ -71,15 +71,18 @@
                 placeholder="ชื่อ.นามสกุล 3 ตัว (ภาษาอังกฤษ)"
                 class="form-control block w-full px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 v-model="form.username"
+                @keyup.enter="goInputNext('pwdInput')"
               />
             </div>
 
             <!-- Password input -->
             <div class="mb-6">
-              <input
+              <input id="pwdInput"
                 type="password"
                 class="form-control block w-full px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                :class="[enter_login_show ? 'cursor-not-allowed ' : 'border-gray-400' ]"
                 v-model="form.password"
+                @keyup.enter="goInputNext('loginBtn')"
               />
             </div>
 
@@ -89,8 +92,11 @@
             </div>
 
             <div class="flex items-center justify-between">
-            <button class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded" 
-                v-on:click="authAD">
+            <button id="loginBtn"
+                class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded" 
+                :class="[enter_login_show ? 'border-blue-300 border-4  cursor-pointer ' : 'border-gray-400' ]"
+                @click="authAD"
+                >
               เข้าสู่ระบบ
             </button>
             <a class="inline-block align-baseline font-bold text-sm text-blue hover:text-blue-darker" 
@@ -108,6 +114,7 @@
 </template>
 <script setup>
 import { useForm } from '@inertiajs/inertia-vue3';
+import { ref } from '@vue/reactivity';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
@@ -125,12 +132,19 @@ const form = useForm({
 
 })
 
+const enter_login_show=ref(false);
 const authAD=()=>{
 
     // console.log(form.order_id);
-      // console.log('----------authAD------');
+    //   console.log('----------authAD------');
+
+      // console.log(event.key);
+      //  if(event.key == "Enter")
+      //  {
+      //    console.log("enter key was pressed!");
+      //  }
       form.post(route('login'), {
-        preserveState: false,
+        preserveState: true,
         preserveScroll: true,
         onSuccess: page => { //console.log('success');
         },
@@ -140,6 +154,13 @@ const authAD=()=>{
         onFinish: visit => { //console.log('finish');
         },
     })
+    enter_login_show.value = false;
+}
+
+const goInputNext=(nextInput)=>{
+  //console.log('goInputNext');
+  enter_login_show.value = true;
+  document.getElementById(nextInput).focus();
 }
 
 

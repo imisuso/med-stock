@@ -4,10 +4,14 @@ namespace App\Exports;
 use App\Models\ItemTransaction;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class ReportCutStockExportCollection implements FromCollection ,WithMapping ,WithHeadings, ShouldAutoSize
+class ReportCutStockExportCollection implements FromCollection ,
+WithMapping ,WithHeadings, ShouldAutoSize, WithStrictNullComparison
 {
     protected $stock_id;
     protected $year;
@@ -18,6 +22,12 @@ class ReportCutStockExportCollection implements FromCollection ,WithMapping ,Wit
             $this->year = $year;
             $this->month = $month;
     }
+    // public function columnFormats(): array
+    // {
+    //     return [
+    //         'G' => NumberFormat::FORMAT_NUMBER,
+    //     ];
+    // }
     public function map($item_trans): array
     {
     
@@ -41,7 +51,7 @@ class ReportCutStockExportCollection implements FromCollection ,WithMapping ,Wit
                 $item_trans->item_count,
                 $item_trans->user->name,
                // $item_trans->stockItem->item_sum,
-                $item_trans->item_balance,
+              //  $item_trans->item_balance,
             // Date::dateTimeToExcel($TransactionCheckout->created_at),
            
         ];
@@ -75,7 +85,7 @@ class ReportCutStockExportCollection implements FromCollection ,WithMapping ,Wit
                 $item_trans[$key]['item_balance'] = $checkin - $checkout;
                 
         }
-        //logger($item_trans);
+      //  logger($item_trans);
         return $item_trans;
 
     }
@@ -89,7 +99,7 @@ class ReportCutStockExportCollection implements FromCollection ,WithMapping ,Wit
             'วันที่เบิกจ่าย',
             'จำนวนที่เบิก',
             'ผู้เบิก',
-            'ปัจจุบันคงเหลือ'
+         //   'ปัจจุบันคงเหลือ'
         ];
     }
 }

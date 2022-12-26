@@ -39,23 +39,24 @@
                     </div> -->
                 </div>
                 <!-- {{stockBudget}} -->
-                <div v-if="stockBudget.budget['budget_add']==0" 
+                <div v-if="stockBudget.budget['budget_add']==0 && $page.props.auth.user.roles[0].name=='admin_med_stock'" 
                     class="flex justify-between px-3 " >
-                        <!-- <div class="px-3">
-                            <label  class=" ">
-                            ไม่พบข้อมูลงบประมาณ
-                            </label>
-                           
-                        </div> -->
+                       
                         <div>
+                            <div v-if="show_alert"
+                            class=" text-red-600"
+                            >
+                            <label >{{msg_alert}}</label>
+                        </div >
                              <label  class=" ">
                             ระบุงบประมาณ:
                             </label>
-                             <input type="number" 
+                             <input type="number"  id="budget_add"
                                 class=" rounded-md "
                                 v-model="form.budget_input"
                                 >
-                        </div>
+                           
+                </div>
                         <div  class=" p-2 mr-2 ">
                             <!-- บันทึก -->
                               <button v-if="$page.props.auth.user.roles[0].name=='admin_med_stock'"
@@ -84,13 +85,26 @@
                                 >
                                 แก้ไข
                             </button>
+                          
+                        </div>
+                        <!-- view log change -->
+                        <div class="px-3 "
+                             v-if="$page.props.auth.user.roles[0].name=='admin_it'"
+                            >
+                            <a :href="route('get-budget-log',stockBudget)" 
+                              class=" flex  py-1 px-2 rounded-md shadow-md bg-blue-300" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+
+                            </a>
                         </div>
                         <div v-if="stockBudget.count_import>0"  class="flex mr-2">
                             <a :href="route('get-list-order',{stock_id:stockBudget.id,year:budgetYear})"
-                                class=" flex justify-center py-1 px-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
+                                class=" flex justify-center py-1 px-2 bg-pink-200 text-pink-900 rounded-md shadow-md hover:bg-pink-300 focus:outline-none"
                               
                                 >
-                                ดูรายการสั่งซื้อที่นำเข้าจากExcel
+                                ดูใบสั่งซื้อที่นำเข้าจากExcel
                             </a>
                               <!-- <a :href="route('print-budget-order',{stock_id:stockBudget.id,year:budgetYear})"
                                 v-if="stockBudget.budget['budget_add'] !=0"
@@ -151,7 +165,7 @@
                                     
         </template>
         <template v-slot:body>
-            <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+            <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
                 <div for="">
                     {{form.stock_name}} 
                 </div>
@@ -188,7 +202,7 @@
                                     
         </template>
         <template v-slot:body>
-            <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+            <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
                 <div for="">
                     {{form.stock_name}} 
                 </div>
@@ -196,7 +210,14 @@
                     ปีงบ:{{form.budget_year+543}} 
                 </div>
                  <div for="">
-                     <input type="number"  class=" rounded-md " v-model="form.budget_edit">
+                    <div v-if="show_alert_edit"
+                            class=" text-red-600"
+                            >
+                        <label >{{msg_alert}}</label>
+                    </div>
+                     <input type="number" id="budget_edit"  class=" rounded-md " 
+                        min="0"
+                        v-model="form.budget_edit">
                 </div>
             </div>
         </template>
@@ -225,7 +246,7 @@
                                     
         </template>
         <template v-slot:body>
-            <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+            <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
                 <div for="">
                  {{ $page.props.flash.status }}:{{ $page.props.flash.msg }} 
                 
@@ -277,11 +298,13 @@ const form = useForm({
     stock_id:{type:Number},
     stock_name:{type:String},
     budget_year:{type:Number},
-    budget_input:{type:Number,defaulte:0},
+    budget_input:props.stockBudget.budget['budget_add'] ? props.stockBudget.budget['budget_add'] :0,
     budget_edit:{type:Number,defaulte:0},
-  //  budget_edit:{type:Object},
+    year_selected:{type:Number},
 
 })
+
+const form_close = useForm({})
 
 
 const budget_add = computed(()=>{
@@ -299,36 +322,58 @@ const budget_balance = computed(()=>{
     }
 })
 
-const viewAllOrder=()=>{
-    form.get(route('get-list-order'), {
-            preserveState: true,
-            preserveScroll: true,
-            onSuccess: page => { 
-                console.log('success');
-               // show_alert_msg.value = true;
-                console.log(form.budget_year);
-                },
-            onError: errors => { 
-                console.log('error');
-                //  show_alert_msg.value = true;
-            },
-            onFinish: visit => { 
-                console.log('finish');
-            },
-    })
-}
-    
-
 // const viewAllOrder=()=>{
-//     view_order.value=!view_order.value;
+//     form.get(route('get-list-order'), {
+//             preserveState: true,
+//             preserveScroll: true,
+//             onSuccess: page => { 
+//                 console.log('success');
+//                // show_alert_msg.value = true;
+//                 console.log(form.budget_year);
+//                 },
+//             onError: errors => { 
+//                 console.log('error');
+//                 //  show_alert_msg.value = true;
+//             },
+//             onFinish: visit => { 
+//                 console.log('finish');
+//             },
+//     })
 // }
+const msg_alert=ref('');
+const show_alert=ref(false);
+const show_alert_edit=ref(false);
 
 const confirmAddBudget=(order)=>{
-  //  console.log(order);
+    console.log('confirmAddBudget');
+  //  console.log('budget='+form.budget_input);
+   // console.log('length='+form.budget_input.length);
+   // console.log(document.getElementById('budget_add').value)
+    if(form.budget_input==0){
+        show_alert.value=true
+        msg_alert.value="กรุณาระบุงบประมาณก่อนกดปุ่มบันทึก";
+      //  console.log('กรุณาระบุวันที่เบิก');
+      //  document.getElementById("order_in").focus();
+        return false;
+    }else{
+        show_alert.value=false;
+    }
+
+    if(document.getElementById('budget_add').value < 0){
+        show_alert.value=true
+        msg_alert.value="กรุณาระบุงบประมาณไม่เป็นจำนวนติดลบ";
+        document.getElementById("budget_add").focus();
+        return false;
+   }else{
+   
+         show_alert_edit.value=false;
+   }
+//    return false;
     confirm_add_budget.value = true;
     form.stock_id = props.stockBudget.id;
     form.stock_name = props.stockBudget.stockname;
     form.budget_year = props.budgetYear;
+    form.year_selected = props.budgetYear;
     budget_confirm_show.value = form.budget_input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
            
 }
@@ -338,16 +383,20 @@ const  cancelAddBudget=()=>{
 }
 
 const  closeAlert=()=>{
-   //  console.log('close alert='+form.budget_year);
+   // console.log('close alert='+form.budget_year);
     show_alert_msg.value = false;
-    Inertia.visit(route('budget-list'));
-//    Inertia.visit(route('get-list-budget',{year:form.budget_year}),{
-//        method: 'get',
-//    })
-    //  axios.get(route('get-list-budget',{year:form.year_selected})).then(res => {
-    //    // console.log(res.data.stocks);
-    //     stock_budgets.value = res.data.stocks;   
-    // });
+  
+    // form.get(route('get-list-budget'), {
+    //     preserveState: false,
+    //     preserveScroll: true,
+    //     onSuccess: page => { 
+    //         console.log('success');
+    //     },
+    //     onError: errors => { 
+    //         console.log('error');
+    //     },
+    //     onFinish: visit => { console.log('finish');},
+    // })
 }
 
 const okConfirmAddBudget=()=>{
@@ -373,11 +422,12 @@ const okConfirmAddBudget=()=>{
 }
 
 const editBudget=()=>{
-    console.log('edit budget');
+   // console.log('edit budget');
     form.stock_id = props.stockBudget.id;
     form.stock_name = props.stockBudget.stockname;
     form.budget_year = props.budgetYear;
     form.budget_edit = props.stockBudget.budget['budget_add'];
+    form.year_selected = props.budgetYear;
     confirm_edit_budget.value = true;
 
     //form.budget_edit= props.stockBudget.budget;
@@ -388,6 +438,44 @@ const editBudget=()=>{
 }
 
 const okConfirmEditBudget=()=>{
+    //  console.log('okConfirmEditBudget');
+    //   console.log('budget edit='+form.budget_edit);
+    //   console.log('budget_year edit='+form.budget_year);
+    //   console.log('year_selected edit='+form.year_selected);
+//    console.log(document.getElementById('budget_edit').value);
+
+   if(document.getElementById('budget_edit').value==''){
+        show_alert_edit.value=true
+        msg_alert.value="กรุณาระบุงบประมาณที่ต้องการแก้ไข";
+        document.getElementById("budget_edit").focus();
+        return false;
+   }else{
+   
+         show_alert_edit.value=false;
+   }
+
+   if(document.getElementById('budget_edit').value < 0){
+        show_alert_edit.value=true
+        msg_alert.value="กรุณาระบุงบประมาณไม่เป็นจำนวนติดลบ";
+        document.getElementById("budget_edit").focus();
+        return false;
+   }else{
+   
+         show_alert_edit.value=false;
+   }
+  
+   if(form.budget_input==0){
+        show_alert.value=true
+        msg_alert.value="กรุณาระบุงบประมาณก่อนกดปุ่มบันทึก";
+      //  console.log('กรุณาระบุวันที่เบิก');
+      //  document.getElementById("order_in").focus();
+        return false;
+    }else{
+        show_alert.value=false;
+    }
+
+ //console.log('okConfirmEditBudget post edit-budget');
+  //return false;
       confirm_edit_budget.value = false;
        form.post(route('edit-budget'), {
             preserveState: true,
@@ -410,6 +498,7 @@ const okConfirmEditBudget=()=>{
 
 const  cancelEditBudget=()=>{
     confirm_edit_budget.value = false;
+    show_alert_edit.value=false;
 }
    
 

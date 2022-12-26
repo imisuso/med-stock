@@ -1,11 +1,24 @@
 <template>
     <AppLayout>
-       <h4   v-if="$page.props.auth.abilities.includes('view_master_data')"
-            class=" mt-3 text-center text-red-600">ระบุชื่อคลังวัสดุที่ต้องการดูรายงาน</h4>
-        <div v-if="$page.props.auth.abilities.includes('view_master_data')" 
+
+        <div v-if="$page.props.flash.status=='error'" 
+                class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
+                <input type="checkbox" class="hidden" id="banneralert">
+                
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-300 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+                 {{ $page.props.flash.msg }}
+                   <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </label>
+        </div>
+
+       <h4   
+            class=" mt-3 text-center text-black">ระบุชื่อคลังวัสดุที่ต้องการดูรายงาน</h4>
+        <div  
             class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
              <div class="m-2" >
-                <label for="">ชื่อคลังวัสดุ</label> 
+                <label for="">เลือกชื่อคลังวัสดุ</label> 
                 <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกคลังวัสดุ</label>
                 <select name="" id="" v-model="form.stock_selected"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
@@ -15,43 +28,35 @@
          
             
         </div>
-        <div v-if="$page.props.auth.abilities.includes('view_master_data')"
+        <div 
             class="flex flex-col  ">
-            <!-- <button
-                class="px-3 py-1  text-sm text-gray-700 bg-gray-400 rounded-md hover:bg-gray-300 focus:outline-none"
-            >
-                Cancel
-            </button> -->
-             <!-- <Link :href="route('admin-report-stock',{stock_slug:stock_selected,year:year_selected,month:month_selected})"> -->
+          
                 <button 
                     class=" w-full flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
                     @click="getStockReport()"
                 >
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg> -->
+                 
                     ค้นหา
                 </button>
             <!-- </Link> -->
         </div>
         <!-- {{$page.props.//}} -->
-      
+      <!-- {{form.stock_selected}}
+      {{stock_items_count}} -->
         <!-- show order lists -->
-         <h1 class="p-2 mt-3 text-center font-bold" >รายงานจำนวนคงเหลือในคลังวัสดุ </h1>
+        <h1 v-if="stock_items_count==0" class="p-2 mt-3 text-center text-red-600 font-bold" >ไม่พบข้อมูลวัสดุในคลังที่ต้องการดูรายงาน </h1>
+         <h1 v-if="stock_items_count!=0" class="p-2 mt-3 text-center font-bold" >รายงานจำนวนคงเหลือในคลังวัสดุ </h1>
           <h1 class="p-2 mt-1 text-center font-bold" >{{form.stock_selected.text}}</h1>
           <h1 v-if="stock_selected_name" class="p-2  text-center font-bold" >{{stock_selected_name.stockname}}</h1>
-        <!-- <div class=" text-red-500">***เพิ่ม ปุ่มยกเลิกรายการวัสดุ สำหรับกรณี excel import มีบางรายการผิด</div> -->
-         <!-- <button class=" mb-2 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
-           Export EXCEL
-        </button> -->
 
-        <div class="w-full">
-            <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อวัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
+
+        <div v-if="stock_items_count!=0" class="w-full">
+            <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อวัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา"
                     v-model="search" 
                 class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
             >
         </div>
-    <div  class="w-full  p-2  ">
+    <div v-if="stock_items_count!=0" class="w-full  p-2   ">
         
         <div>
             <div v-if="stock_items">
@@ -60,7 +65,7 @@
             
             <div 
                 class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
-                <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
+                <div class="flex flex-col text-xs  lg:flex-row lg:justify-between  mx-2"  >
                     
                     <div class=" lg:w-2/12  ">
                         SAP-ชื่อวัสดุ
@@ -89,7 +94,7 @@
                     </div> -->
                    
                     <div class=" lg:w-1/12 text-xs ">
-                        ::
+                        ประวัติรับเข้า-เบิกออก
                     </div>
                 </div>     
             </div>
@@ -138,7 +143,7 @@
                   
                         <label class=" ml-2 " >
                             <!-- {{stock_item.price}} -->
-                            {{price_format(stock_item.price)}}
+                            {{price_format(stock_item.price_last)}}
                         </label> 
                     </div>
                     <div class="   lg:w-3/12 lg:text-xs  ">
@@ -174,7 +179,7 @@
               
                   
                     <div class="  lg:w-1/12 ">
-                        <label for="" class="  hidden">::</label>
+                        <label for="" class="  hidden"> ประวัติรับเข้า-เบิกออก</label>
                        
                         <Link :href="route('list-stock-item',stock_item)">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-700">
@@ -202,6 +207,12 @@
                     </div>
                 </div>     
             </div>
+
+            <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-blue-700 rounded-sm shadow-md hover:bg-blue-500 focus:outline-none" 
+            :href="route('export-balance-stock', stock_items.data[0].stock_id)"
+                >
+                Export Excel
+            </a>
         </div>
 
         <!--end re-design-->
@@ -238,9 +249,9 @@ dayjs.extend(buddhistEra)
  const props=defineProps({
     stocks:{type:Object,required:false},
     stock_items:Object,
-  //  item_trans:Object,
-    stock_selected:{type:String},
-    stock_selected_name:{type:Object},
+    stock_items_count:{type:Number},
+    stock_selected:{type:Number},
+    stock_selected_name:{type:Object,required:false},
     filters: { type: Object },
 })
 
@@ -248,7 +259,7 @@ let search = ref(props.filters.search)
 const msg_validate_stock=ref(false);
 
 const form = useForm({
-            stock_selected:props.stock_selected ? props.stock_selected :[],
+            stock_selected:props.stock_selected ? props.stock_selected :0,
             // year_selected:'',
             // month_selected:'',
             unitid:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid :0,
@@ -264,13 +275,13 @@ const price_format=(price)=>{
 
 watch( search, value => {
    
-   if(value.length >= 3){
+  // if(value.length >= 3){
      //  console.log('key search=' + value)
        Inertia.get(route('report-list',form.unitid), { search: value ,stock_selected: form.stock_selected}, {
            preserveState: true,
            replace: true
        })
-   }
+ //  }
 })
 const getStockReport=()=>{
     //console.log('aaaaaaaaaa');

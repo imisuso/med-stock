@@ -46,8 +46,8 @@ class StockItemImportController extends Controller
     }
     public function show(Request $request)
     {
-       // Logger($request->all());
-        //dd($request->all());
+       // dd($request->all());
+        //logger($request->all());
         // "unit_id" => "1"
         // "stock_item_status" => "1"
         // "file_stock_item" =>
@@ -79,7 +79,7 @@ class StockItemImportController extends Controller
             ]);
          }
 
-        $stock = Stock::where('unit_id',$request->unit_id)->first();
+        $stock = Stock::where('id',$request->stock_id)->first();
        
         $rows = Excel::toArray(new StockItemImportToCollection(),$request->file('file_stock_item'));
         //$rows = Excel::toCollection(new StockItemImportToCollection(),$request->file('file_stock_item'));
@@ -233,7 +233,7 @@ class StockItemImportController extends Controller
         return Inertia::render('Admin/StockItemImportShow',[
                                 'stock_id'=>$stock->id,
                                 'stock_name'=>$stock->stockname,
-                                'stock_item_status'=> $request->stock_item_status,
+                                'stock_item_status'=> (int)$request->stock_item_status,
                                // 'date_receive'=> $request->date_receive,
                                 'stock_item_import_count'=> count($collect),
                                 'stock_item_import'=> $collect,

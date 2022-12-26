@@ -20,6 +20,7 @@ use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrintFormController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\ResourceActionLogController;
 use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\StockItemImportController;
 use App\Http\Controllers\UserController;
@@ -103,11 +104,13 @@ Route::controller(ItemTransactionController::class)
 //ไม่แน่ใจว่าจะใช้ หน้าแสดงข้อมูลปีเดือน ที่มีการเบิกวัสดุ
 //Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock')->middleware('auth');
 //ไม่แน่ใจว่าจะใช้ หน้าแสดงรายละเอียดการเบิกวัสดุ
-Route::get('/report-checkout-item/{division_id}', [ReportStockController::class,'index'])->name('report-checkout-item')->middleware('auth','can:view_master_data');
+Route::get('/report-checkout-item/{stock_id}', [ReportStockController::class,'index'])->name('report-checkout-item')->middleware('auth','can:view_master_data');
 Route::get('/get-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'show'])->name('get-checkout-item')->middleware('auth');
 Route::get('/export-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'export'])->name('export-checkout-item')->middleware('auth');
 Route::get('/export-checkout-item-test/{checkout_items}', [ReportStockController::class,'export_test'])->name('export-checkout-item-test')->middleware('auth');
 Route::get('/print-cutstock/pdf/{stock_id}/{year}/{month}', [PrintFormController::class,'printCutStock'])->name('print-cutstock-pdf')->middleware('auth');
+
+Route::get('/export-balance-stock/{stock_id}', [ReportStockController::class,'exportBalanceStock'])->name('export-balance-stock')->middleware('auth');
 
 
 //หน้าแรกสร้างใบสั่งซื้อแบบสัญญา
@@ -130,7 +133,7 @@ Route::get('/create-order/print-checkin/{order}', [PrintFormController::class,'c
 Route::get('/order-list/show/{order_id}', [CheckInOrderController::class,'show'])->name('view-checkin-order')->middleware('auth');
 
 //Route::get('/admin/report-list/{division_id}', [AdminReportStockController::class,'index'])->name('report-list')->middleware('auth');
-Route::match(['get', 'post'],'/admin/report-list/{division_id}',[AdminReportStockController::class,'index'])->name('report-list')->middleware('auth');
+Route::match(['get', 'post'],'/admin/report-list/{division_id}',[AdminReportStockController::class,'index'])->name('report-list')->middleware(['auth','remember']);
 Route::post('/admin/report-stock', [AdminReportStockController::class,'show'])->name('admin-report-stock')->middleware('auth','can:view_master_data');
 
 //แสดงรายการใบสั่งซื้อแบบสัญญา
@@ -141,19 +144,26 @@ Route::post('/admin/order-list/update', [AdminOrderController::class,'update'])-
 //แสดงหน้าแรก ค้นหาข้อมูลงบประมาณในแต่ละปี
 Route::get('/admin/budget-list/', [BudgetController::class,'index'])->name('budget-list')->middleware('auth','can:view_master_data');
 //ดึงรายการงบประมาณตั้งต้นแต่ละสาขา ตามปีที่ระบุ
-Route::get('/admin/get-list-budget/{year}', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:view_master_data');
+Route::get('/admin/get-list-budget', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:view_master_data')->middleware('remember');
 //บันทึกงบประมาณสาขา
 Route::post('/admin/add-budget',[BudgetController::class,'store'])->name('add-budget')->middleware('auth','can:manage_master_data');
 //แก้ไขข้อมูลงบ
 Route::post('/admin/edit-budget',[BudgetController::class,'edit'])->name('edit-budget')->middleware('auth','can:manage_master_data');
+//ดึงรายการการเปลี่ยนแปลงของงบประมาณสาขานั้นปีนั้น
+Route::get('/get-budget-log/{budget}/log',[ResourceActionLogController::class,'showLogBudget'])->name('get-budget-log')->middleware('auth','can:manage_master_data');
+
+
+
 //พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
 Route::get('/admin/print-budget-order/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrder'])->name('print-budget-order')->middleware('auth','can:view_master_data');
 //แสดงงบประมาณในรายการสั่งซื้อแต่ละครั้ง
-Route::get('/admin/get-list-order/{stock_id}/{year}', [ItemTransactionController::class,'index'])->name('get-list-order')->middleware('auth','can:view_master_data');
+Route::get('/admin/get-list-order/{stock_id}/{year}', [ItemTransactionController::class,'index'])->name('get-list-order')->middleware(['auth','can:view_master_data','remember']);
 //พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
 Route::get('/admin/print-budget-order-import/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrderImport'])->name('print-budget-order-import')->middleware('auth','can:view_master_data');
 //ดึงรายรายละเอียดการสั่งซื้อ ตามเลข Pur.Order
 Route::post('/admin/get-list-budget-detail', [ItemTransactionController::class,'edit'])->name('get-list-budget-detail')->middleware('auth','can:view_master_data');
+
+
 
 Route::controller(AdminOrderPurchaseController::class)
         ->middleware('auth','can:manage_master_data')
@@ -198,24 +208,25 @@ Route::get('/search-stock-item/{item_name_search}', [StockItemController::class,
 Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');
 
 //Import Data From Excel
-Route::get('/stockitem/import',[StockItemImportController::class,'index'])->name('stock-item-import')->middleware('auth');
+Route::get('/stockitem/import',[StockItemImportController::class,'index'])->name('stock-item-import')->middleware('auth')->middleware('remember');
 
 Route::post('/stockitem/import',[StockItemImportController::class,'show'])->name('stock-item-import-show')->middleware('auth');
 
 Route::post('/stockitem/checkin-to-stock',[StockItemImportController::class,'store'])->name('import-checkin-to-stock')->middleware('auth');
 
 //Add User
-Route::get('/user/add',[UserController::class,'index'])->name('user-add')->middleware('auth');
+Route::get('/user/add',[UserController::class,'index'])->name('user-add')->middleware('auth')->middleware('remember');
 Route::get('/user/check-employee-status/{sap_id}',[UserController::class,'checkEmployeeStatus'])->name('check-employee-status')->middleware('auth');
 Route::post('/user/add',[UserController::class,'store'])->name('add-user')->middleware('auth');
 //show detail user for edit
 Route::get('/user/show-detail-user/{slug}',[UserController::class,'edit'])->name('show-detail-user')->middleware('auth');
 //update stock 
 Route::post('/user/update-user/{user}',[UserController::class,'update'])->name('update-user')->middleware('auth');
-
+//ดึงรายการการเปลี่ยนแปลงของ user
+Route::get('/get-user-log/{user}/log',[ResourceActionLogController::class,'showLogUser'])->name('get-user-log')->middleware('auth','can:manage_master_data');
 
 //Add Stock
-Route::get('/stock/add',[StockController::class,'create'])->name('stock-add')->middleware('auth');
+Route::get('/stock/add',[StockController::class,'show'])->name('stock-add')->middleware('auth')->middleware('remember');
 Route::post('/stock/add',[StockController::class,'store'])->name('stock-add-confirm')->middleware('auth');
 
 //**********เมนูการจัดการคลังวัสดุ 
@@ -225,17 +236,25 @@ Route::get('/stock/get-list-stock-unit/{unit_id}',[StockController::class,'getLi
 Route::get('/stock/show-detail-stock/{stock}',[StockController::class,'edit'])->name('show-detail-stock')->middleware('auth');
 //update stock 
 Route::post('/stock/update-stock/{stock}',[StockController::class,'update'])->name('update-stock')->middleware('auth');
+//ดึงรายการการเปลี่ยนแปลงของ stock
+Route::get('/get-stock-log/{stock}/log',[ResourceActionLogController::class,'showLogStock'])->name('get-stock-log')->middleware('auth','can:manage_master_data');
 
-//Log
+//LogActivity
 Route::get('/stock/show-log/{slug}',[LogActivityController::class,'show'])->name('show-log')->middleware('auth','can:manage_master_data');
 Route::get('/stock/index-get-log/',[LogActivityController::class,'index'])->name('index-get-log')->middleware('auth','can:manage_master_data');
 Route::match(['get', 'post'],'/stock/get-log/',[LogActivityController::class,'index'])->name('get-log')->middleware('auth','can:manage_master_data');
+
+//Log
+Route::get('/get-resource-log/{model}/{id}',[ResourceActionLogController::class,'show'])->name('get-resource-log')->middleware('auth','can:manage_master_data');
+
 //annouce
 Route::get('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce')->middleware('auth','can:manage_master_data');
 Route::post('/add-annouce',[AnnouceController::class,'index'])->name('add-annouce-new')->middleware('auth','can:manage_master_data');
 Route::get('/annouce',[AnnouceController::class,'show'])->name('annouce')->middleware('auth');
-Route::post('/close-annouce',[AnnouceController::class,'update'])->name('close-annouce')->middleware('auth');
-Route::post('/open-annouce',[AnnouceController::class,'update'])->name('open-annouce')->middleware('auth');
+
+Route::post('/update_status-annouce',[AnnouceController::class,'update'])->name('update_status-annouce')->middleware('auth');
+//Route::post('/close-annouce',[AnnouceController::class,'update'])->name('close-annouce')->middleware('auth');
+//Route::post('/open-annouce',[AnnouceController::class,'update'])->name('open-annouce')->middleware('auth');
 Route::post('/delete-annouce',[AnnouceController::class,'update'])->name('delete-annouce')->middleware('auth');
 
 
@@ -254,3 +273,4 @@ Route::get('/nong', function () {
     return view('welcome');
     //return view('stock.StockItemImport');
   });
+

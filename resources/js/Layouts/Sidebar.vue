@@ -1,10 +1,14 @@
 <template>
     <!-- give the sidebar z-50 class so its higher than the navbar if you want to see the logo -->
     <!-- you will need to add a little "X" button next to the logo in order to close it though -->
-    <div class="overflow-y-auto w-2/3 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 h-screen lg:block bg-gray-100 border-r z-30" :class="sideBarOpen ? '' : 'hidden'" id="main1-nav">
+    <div class="overflow-y-auto  w-2/3 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 lg:h-screen lg:block bg-gray-100 border-r z-30" 
+      :class="sideBarOpen ? '' : 'hidden'" id="main1-nav">
 
-      <div class=" flex justify-center ">
-            <img src="../../images/logo_med_tranparent.gif" class=" w-2/3">
+      <div class=" flex justify-center  ">
+            <img src="../../images/logo_med_tranparent.gif" 
+            class="mt-8 hidden lg:block lg:w-2/3 lg:mt-1 "
+          
+            >
              <!-- <p class="font-semibold text-2xl text-blue-400 pl-4">
           ระบบวัสดุ
         </p> -->
@@ -16,7 +20,8 @@
       </div>
   <!-- {{$page.props.auth}} -->
 <!-- {{$page.props.auth.user.roles[0].name}} -->
-      <div v-if="(!$page.props.auth.abilities.includes('manage_master_data') && $page.props.auth.user.roles[0].name != 'super_officer')" class="mb-4 px-4 text-sm">
+      <div v-if="(!$page.props.auth.abilities.includes('manage_master_data') && $page.props.auth.user.roles[0].name != 'super_officer')" 
+         class="mt-20 lg:mt-2 mb-4 px-4 text-sm">
         <p class="pl-4  font-semibold mb-1">เมนูหลักของสาขา</p>
         <Link :href="route('stock')">
           <div class="w-full flex items-center text-blue-600 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
@@ -47,7 +52,8 @@
       </div>
 <!-- v-if="$page.props.flash.mainMenuLinks.is_admin_division_stock" -->
 <!-- {{$page.props.auth.abilities.includes("manage_master_data")}} -->
-      <div v-if="$page.props.auth.abilities.includes('manage_master_data') || $page.props.auth.user.roles[0].name == 'super_officer'" class="mb-4 px-4 text-sm">
+      <div v-if="$page.props.auth.abilities.includes('manage_master_data') || $page.props.auth.user.roles[0].name == 'super_officer'" 
+        class=" mt-20 lg:mt-2 mb-4 px-4 text-sm">
         <p class="pl-4  font-semibold mb-1">เมนูหลัก</p>
 
         <div 
@@ -66,7 +72,9 @@
           <i :class="managementMenuOpen ? iconExpland : iconCollapse" class="ml-2" style="fontSize: 0.7rem"></i>
         </div >
         <div :class="managementMenuOpen ? '' : 'hidden'">
-          <Link :href="route('stock-add')">
+          <Link :href="route('stock-add')"
+                :data="{ 'remember': 'forget' }"
+                >
             <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
               <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>เพิ่ม/แก้ไข คลังวัสดุ</div>
             </div>
@@ -76,7 +84,9 @@
               <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>หน่วยนับ</div>
             </div>
           </Link> -->
-            <Link :href="route('user-add')" >
+            <Link :href="route('user-add')" 
+                :data="{ 'remember': 'forget' }"
+            >
               <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
               
                 <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>เพิ่ม/แก้ไข ผู้ใช้งาน</div>
@@ -192,23 +202,7 @@ export default {
   ],
 
   setup() {
-    // const activeLinkItem = ref("helloworld")
 
-    // const isLinkActive = (linkname) => {
-    //   console.log(activeLinkItem.value === linkname)
-    //   return activeLinkItem.value === linkname
-    // }
-
-    // const setLinkActive = (linkname) => {
-    //   console.log(`Set Active Link ${linkname}`)
-    //   activeLinkItem.value = linkname
-    //   //return isLinkActive(linkname)
-    // }
-
-    // return {
-    //   activeLinkItem,
-    //   isLinkActive, setLinkActive
-    // }
 
     const iconCollapse = ref("pi pi-caret-right")
     const iconExpland = ref("pi pi-caret-down")

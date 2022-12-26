@@ -26,7 +26,7 @@ class ItemTransactionController extends Controller
     public function index($stock_id,$year)
     {
        // dd($year);
-        //logger('ItemTransactionController index');
+       // logger('ItemTransactionController index');
         // logger(request()->all());
         $stock_budget = budget::select('stock_id','budget_add','year')
                         ->where(['stock_id'=>$stock_id,'year'=>$year,'status'=>'on'])
@@ -120,14 +120,18 @@ class ItemTransactionController extends Controller
       
         $user = Auth::user();
         // Log::info('ItemTransactionController store');
-       //  Logger($request->all());
+       // dd($request->all());
        //  return "store";
         // Log::info($request->confirm_item_slug);
         // Log::info($request->confirm_item_date);
         // Log::info($request->confirm_item_count);
         $stock_item = StockItem::whereSlug($request->confirm_item_slug)->first();
         // Log::info($stock_item);
-      
+        $item_balance = $stock_item->itemBalance();
+        //dd($item_balance);
+        if($request->confirm_item_count >$item_balance )
+          return Redirect::back()->with(['status' => 'error', 'msg' => 'ERROR!!จำนวนที่เบิกมากกว่าจำนวนที่คงเหลือ']);
+       
       
         // Log::info($stock_item->stock);
         $year_checkout= substr($request->confirm_item_date,0,4);
@@ -159,35 +163,11 @@ class ItemTransactionController extends Controller
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
           //  return redirect()->back();
-            return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
+            return Redirect::back()->with(['status' => 'error', 'msg' => $e->getMessage()]);
+           
         }
 
-        // $balance = $stock_item->item_sum - $request->confirm_item_count;
-        //     //   Log::info($balance);
-        // try{
-        //     StockItem::whereSlug($request->confirm_item_slug)->update(['item_sum'=>$balance]);
-        // }catch(\Illuminate\Database\QueryException $e){
-        //      //rollback
-        //     //return redirect()->back();
-        //     return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
-        // }
-
-           /****************  insert log ****************/
-        
-        //   $detail_log =array();
-        //   $detail_log['sap_id'] =$user->sap_id;
-        //   $detail_log['unitid'] =request()->input('unit_id');
-        //   $detail_log['status']= request()->input('user_status');
-
-        //  //  dd($detail_log);
-        //    $log_activity = LogActivity::create([
-        //        'user_id' => $user->id,
-        //        'sap_id' => $user->sap_id,
-        //        'function_name' => 'manage_user',
-        //        'action' => 'edit_user',
-        //        'detail' => $detail_log,
-           
-        //    ]);
+     
 
         $msg_notify_test = $user->name.'  บันทึกการเบิกวัสดุสำเร็จ';
         Logger($msg_notify_test);
@@ -205,18 +185,27 @@ class ItemTransactionController extends Controller
     public function show(StockItem $stock_item)
     {
       //Log::info('---------ItemTransactionController show ------------');
-     //  Log::info($stock_item);
-      //  Log::info($stock_item->unitCount->countname);
-        // $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
-        //                         ->where('action','checkin')
-        //                         ->where('status','active')
-        //                         ->latest()
-        //                         ->first();
+      // Log::info($stock_item);
+      
+
         $checkin_last = $stock_item->itemTransactionCheckinLatest();
         $item_balance = $stock_item->itemBalance();
       //  logger('checkin_last-->');
       //  logger($checkin_last);
         $user = Auth::user();
+
+        $role_admin = array('admin_it','admin_med_stock','super_officer');
+       
+       /*  Validate  User View own Item Only  */
+        if(!in_array($user->roles[0]['name'] , $role_admin)
+            &&  ($user->unitid != $stock_item->stock->unit_id)
+          )   
+        {
+          // logger("can not view stock item");
+        
+           return Redirect::back()->with(['status' => 'error', 'msg' => 'คุณไม่มีสิทธิดูข้อมูลการนำเข้า-เบิกออกของวัสดุนี้']);
+         
+        }
         $main_menu_links = [
             'is_admin_division_stock'=> $user->can('view_master_data'),
           // 'user_abilities'=>$user->abilities,
@@ -242,7 +231,8 @@ class ItemTransactionController extends Controller
                                                 ->where('stock_item_id',$stock_item->id)
                                                 ->whereIn('status',['active','canceled'])
                                                 ->orderBy('date_action')
-                                                ->get();
+                                                ->paginate(10);
+                                                //->get();
             //return "list checkout";
           // $stock_item = StockItem::where('id',$stock_item->id)->first();
             $stock = Stock::where('id',$stock_item->stock_id)->first();
@@ -284,9 +274,24 @@ class ItemTransactionController extends Controller
                                     ->orderBy('date_action')
                                     ->get();
         //dd($order_item_trans);
+
+        /****************  insert resource_action_logs ****************/
+        
+         // $user_in = Auth::user();
+
+          $detail_log =array();
+          $detail_log['pur_order'] = request()->input('pur_order');
+
+          $order_item_trans[0]->actionLogs()->create([
+            'user_id' => Auth::id(),
+            'action' => 'view_order',
+            'log' => $detail_log,
+          ]);
         return Inertia::render('Admin/ListBudgetDetailPurOrder',[
                             'order_item_trans'=>$order_item_trans,
                             'order_budget_used'=> request()->input('order_budget_used'),
+                            'year_budget'=>  request()->input('year_budget'),
+                            'stock_id'=>  request()->input('stock_id')
                             ]);
     }
 

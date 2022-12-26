@@ -37,4 +37,15 @@ class Budget extends Model
         return $this->belongsTo(Stock::class);
     }
 
+    //budget has many loggable
+
+    public function actionLogs()
+    {
+        return $this->morphMany(ResourceActionLog::class,'loggable');
+    }
+    public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

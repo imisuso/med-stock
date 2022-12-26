@@ -99,7 +99,14 @@
                         >
                         แก้ไข
                     </button>
+                    <Link :href="route('user-add')"
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                     >
+                         กลับ
+                    </Link>
+                   
                 </div>
+                
 
             </div>
            
@@ -112,7 +119,7 @@
             </template>
 
             <template v-slot:body>
-                <div class="text-gray-900 text-md font-medium dark:text-white">
+                <div class="text-gray-900 text-md font-medium ">
                   
                     <label  class="  flex  justify-start w-full text-sm ">
                         ชื่อ: {{user.name}} 
@@ -156,7 +163,7 @@
 //import { ref } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm,Link } from '@inertiajs/inertia-vue3';
 import { ref ,computed} from 'vue';
 
 
@@ -240,7 +247,23 @@ const okconfirmEditUser=()=>{
         onFinish: visit => { console.log('finish');},
     })
 }
+const getListUser=(()=>{
+    // console.log('----------getListUser------')
+    // console.log(form.unit);
 
+    form.get(route('user-add'), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: page => { 
+            console.log('success');
+        },
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
+   
+})
 
   
 </script>

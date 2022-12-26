@@ -131,7 +131,7 @@
         </template>
 
         <template v-slot:body>
-            <div class="text-gray-900 text-md font-medium dark:text-white">
+            <div class="text-gray-900 text-md font-medium ">
                  <label v-for="(confirm_item,index) in confirm_items" :key=confirm_item.id
                         class="  flex  justify-start w-full bg-red-100 text-sm text-red-900">
                     {{index+1}}.{{confirm_item[0].item_name}} จำนวน {{confirm_item[0].order_input}} x {{confirm_item[0].price}}  เป็นเงิน {{confirm_item[0].total}} บาท

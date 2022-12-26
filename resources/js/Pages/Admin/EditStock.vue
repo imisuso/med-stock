@@ -80,7 +80,7 @@
                         <!-- <div>Status: {{ form.stock_status }}</div> -->
                         <div v-for="(status) in stock_status_list" :key=status.id 
                             class="form-check">
-                            <input type="radio" id="one"  :value="status.id" v-model="form.stock_status" 
+                            <input type="radio" :id="one"  :value="status.id" v-model="form.stock_status" 
                                 class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                             />
                             <label for="one">{{status.desc}}</label>
@@ -104,6 +104,11 @@
                         >
                         กลับ
                     </button> -->
+                    <Link :href="route('stock-add')" >
+                        <div class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded">
+                            <span class=" text-white ml-2">กลับ</span>
+                        </div>
+                    </Link>
 
                    
                 </div>
@@ -119,7 +124,7 @@
             </template>
 
             <template v-slot:body>
-                <div class="text-gray-900 text-md font-medium dark:text-white">
+                <div class="text-gray-900 text-md font-medium ">
                   
                     <label  class="  flex  justify-start w-full text-sm ">
                         ชื่อคลัง: {{form.stock_name_thai}} ({{form.stock_name_en}})
@@ -163,7 +168,7 @@ import { Link } from '@inertiajs/inertia-vue3'
 
 
 const props =defineProps({
-    stock:Array,
+    stock:{type:Object},
     stock_status_list:{type:Array,required:true},
     //stock_item_import: {type:Array, default:[]},
     // status:{type:Array}
@@ -207,7 +212,7 @@ const confirmEditStock=(()=>{
 const okconfirmEditStock=()=>{
     confirm_edit_stock.value = false;
     // console.log(form.order_id);
-       console.log('----------okconfirmEditStock------');
+   //    console.log('----------okconfirmEditStock------');
       form.post(route('update-stock',form.stock_id), {
         preserveState: false,
         preserveScroll: true,
@@ -218,27 +223,23 @@ const okconfirmEditStock=()=>{
         onFinish: visit => { console.log('finish');},
     })
 }
-const getListStockUnit=(()=>{
-     console.log('----------getListStockUnit------')
-    console.log(form.unit);
+// const getListStockUnit=(()=>{
+//     //  console.log('----------getListStockUnit------')
+//     // console.log(form.unit);
 
-    form.get(route('get-list-stock-unit',form.unit), {
-        preserveState: false,
-        preserveScroll: true,
-        onSuccess: page => { console.log('success');},
-        onError: errors => { 
-            console.log('error');
-        },
-        onFinish: visit => { console.log('finish');},
-    })
-    // axios.get(route('get-list-stock-unit',{unit_id:form.unit})).then(res => {
-    //     console.log(res.data.list_stock_unit.length);
-    // //    stocks_unit.value = res.data.list_stock_unit;   
-    // //    stocks_unit_count.value = res.data.list_stock_unit.length;
-    // //    show_form_add_stock.value=false
-    //    //console.log(stocks_unit.count());
-    // });
-})
+//     form.get(route('stock-add'), {
+//         preserveState: false,
+//         preserveScroll: true,
+//         onSuccess: page => { 
+//             console.log('success');
+//         },
+//         onError: errors => { 
+//             console.log('error');
+//         },
+//         onFinish: visit => { console.log('finish');},
+//     })
+   
+// })
 
   
 </script>

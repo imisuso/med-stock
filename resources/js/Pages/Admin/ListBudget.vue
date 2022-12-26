@@ -16,12 +16,12 @@
           <!-- {{stock_budgets}} -->
         <div>
             <h1 class=" text-center font-bold text-lg">รายการงบประมาณแต่ละสาขา</h1>
-            <h1 v-if="form.year_selected" class=" text-center font-bold text-lg">ประจำปีงบประมาณ {{form.year_selected + 543}}</h1>
-          
+            <h1 v-if="year_search" class=" text-center font-bold text-lg">ประจำปีงบประมาณ {{year_search+ 543}}</h1>
+          <!-- {{year_search}} -->
             <StockBudget v-for="(stock,key) in stock_budgets" :key="stock.id" 
                 :stockIndex="key"
                 :stockBudget="stock" 
-                :budgetYear="form.year_selected"
+                :budgetYear="year_search"
                 />
         </div>
      
@@ -34,43 +34,47 @@ import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import {  ref } from '@vue/reactivity';
 
 
-defineProps({
+const props =defineProps({
   years:{type:Object,required:true},
+  stock_budgets:{type:Object},
+  year_search:{type:Number},
 })
 
 //const years=ref([2021,2022])
 //const balance_budget = ref(0);
 //const sum_order = ref(0);
 //const stock_order = ref('');
-const stock_budgets = ref('');
+//const stock_budgets = ref('');
 const rerender=ref(true);
 
 const form=useForm({
-    year_selected:'',
+    year_selected:props.year_search ? props.year_search : '',
+   // list_years:props.years ? props.years : [],
 })
 
 
 const getListBudget=()=>{
     //console.log('getListBudget');
-
-    // form.get(route('get-list-budget'), {
-    //         preserveState: false,
-    //         preserveScroll: true,
-    //         onSuccess: page => { 
-    //             console.log('success');
-    //             },
-    //         onError: errors => { 
-    //             console.log('error');
-    //         },
-    //         onFinish: visit => { console.log('finish');},
-    // })
   
 
-    axios.get(route('get-list-budget',{year:form.year_selected})).then(res => {
-       // console.log(res.data.stocks);
-        stock_budgets.value = res.data.stocks;   
-    });
-   // forceUpdate();
+    // axios.get(route('get-list-budget',{year:form.year_selected})).then(res => {
+    //    // console.log(res.data.stocks);
+    //     stock_budgets.value = res.data.stocks;   
+    // });
+
+
+    form.get(route('get-list-budget'), {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: page => { 
+            console.log('success');
+        },
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
+  
 }
 
 </script>

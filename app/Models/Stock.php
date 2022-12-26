@@ -51,6 +51,12 @@ class Stock extends Model
         return $this->belongsTo(Unit::class,'unit_id','unitid');
     }
 
+    //user has many loggable
+
+    public function actionLogs()
+    {
+        return $this->morphMany(ResourceActionLog::class,'loggable');
+    }
     protected function statusName(): Attribute
     {
         // return Attribute::make(

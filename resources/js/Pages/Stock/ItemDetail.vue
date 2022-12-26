@@ -11,6 +11,18 @@
                     </svg>
                 </label>
         </div>
+
+        <div v-if="$page.props.flash.status=='error'" 
+                class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
+                <input type="checkbox" class="hidden" id="banneralert">
+                
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-300 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+                 {{ $page.props.flash.msg }}
+                   <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </label>
+        </div>
   
         <div  v-if="checkin_last" class="bg-blue-800 text-white text-xl text-center ">
                 {{$page.props.stock.stockname}}
@@ -41,16 +53,17 @@
                         </div>
                     
                     
-                        <div class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
+                        <div  v-if="checkin_last"
+                            class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
                             <div class="flex ml-2"> จำนวนคงเหลือ :
                                 <p class=" ml-2 text-red-600">{{number_format_show(item_balance)}}</p>     
                             </div>
                             <div class="flex ml-2"> Pur.Order : 
-                                    <p class=" ml-2 text-blue-600">{{stock_item.pur_order}}</p> 
-                                </div>
-                                <div class="flex ml-2"> ชื่อบริษัท : 
-                                    <p class=" ml-2 text-blue-600">{{stock_item.business_name}}</p> 
-                                </div>
+                                    <p class=" ml-2 text-blue-600">{{checkin_last.pur_order}}</p> 
+                            </div>
+                            <!-- <div class="flex ml-2"> ชื่อบริษัท : 
+                                <p class=" ml-2 text-blue-600">{{stock_item.business_name}}</p> 
+                            </div> -->
                             <div class="flex ml-2" v-if="checkin_last"> วันหมดอายุ : 
                                 <p class=" ml-2 text-blue-600">
                                         <!-- {{checkin_last.date_expire}} -->
@@ -78,17 +91,44 @@
  <!-- {{$page.props.item_trans}}  -->
     <!-- start Table -->
     <label for="" class=" text-red-600 text-sm" >  *ลบได้เฉพาะผู้ที่บันทึกรายการนี้เท่านั้น</label>  
+    <div class="flex">
+        <svg  
+            xmlns="http://www.w3.org/2000/svg" 
+            class="h-4 w-4 text-green-800 bg-green-100 rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        <label for="" class="text-sm" > ข้อมูลการรับวัสดุเข้าคลัง</label>  
+    </div>
+    <div class="flex">
+        <svg  
+            xmlns="http://www.w3.org/2000/svg" 
+            class="h-4 w-4 text-red-800 bg-red-100 rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+        </svg>
+        <label for="" class="text-sm" > ข้อมูลการเบิกวัสดุ</label>  
+    </div>
+   
+
+    <div v-if="item_trans">
+                <paginateMe :pagination="item_trans" />
+    </div>
     <table  class="min-w-full border-collapse block  md:table md:rounded-md">
 		<thead class="block  md:table-header-group">
 			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                <th class=" bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่[Pur.Order]</th>
-                <th class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">จำนวน</th>
-                <th class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ผู้ปฎิบัติ</th>
-                 <th  class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">::</th>
+                <th class=" bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">
+                        วันที่[Pur.Order]</th>
+                <th class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">
+                    จำนวน[ราคาต่อหน่วย]</th>
+                <th class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">
+                    บริษัท</th>
+                <th class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">
+                    ผู้ปฎิบัติ</th>
+                 <th  class="bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">
+                    ::</th>
 			</tr>
 		</thead>
 		<tbody class="block md:table-row-group">
-			<tr v-for="(item_tran) in $page.props.item_trans" :key=item_tran.id
+			<tr v-for="(item_tran) in item_trans.data" :key=item_tran.id
                 class="bg-white my-2 p-2 mb-2 border-2 rounded-md border-gray-500 block md:border-none   md:table-row ">
 				<td class="text-left  block md:table-cell   md:border-b-2 md:border-gray-300 "><span class="inline-block w-1/3 md:hidden font-bold">วันที่</span>
                     <span  
@@ -110,9 +150,16 @@
                       <label v-if="item_tran.action == 'checkin'">   [{{item_tran.pur_order}}]</label>
                    
                 </td>
+               
                 <td class="text-left  block md:table-cell  md:border-b-2 md:border-gray-300 ">
-                    <span class="inline-block w-1/3 md:hidden font-bold">จำนวน</span>
+                    <span class="inline-block w-1/3 md:hidden font-bold">จำนวน[ราคาต่อหน่วย]</span>
                     {{item_tran.item_count}}
+                    <label v-if="item_tran.action == 'checkin'">   [{{item_tran.price}}]</label>
+                </td>
+                <td class="text-left  block md:table-cell  md:border-b-2 md:border-gray-300 ">
+                    <span class="inline-block w-1/3 md:hidden font-bold">บริษัท</span>
+                   
+                    <label v-if="item_tran.action == 'checkin'" class=" text-sm">   {{item_tran.business_name}}</label>
                 </td>
                 <td class="text-left  block md:table-cell  md:border-b-2 md:border-gray-300 "><span class="inline-block w-1/3 md:hidden font-bold">ผู้ปฎิบัติ</span>{{item_tran.user.name}}</td>
                 <td 
@@ -157,6 +204,12 @@
 			
 		</tbody>
 	</table>
+
+    <Link :href="route('report-list',stock.id)" >
+                        <div class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded">
+                            <span class=" text-white ml-2">กลับ</span>
+                        </div>
+    </Link>
     <!-- END table -->
     <!-- <div   
         class=" w-full flex">
@@ -177,7 +230,7 @@
             </template>
 
             <template v-slot:body>
-                <div class="text-gray-900 text-md font-medium dark:text-white">
+                <div class="text-gray-900 text-md font-medium ">
                   
                     <label  class="  flex  justify-start w-full text-md ">
                         ชื่อวัสดุ:{{confirm_delete_item_name}}
@@ -215,9 +268,10 @@
 </template>
 <script setup>
 //import { ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm,Link } from '@inertiajs/inertia-vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
+import PaginateMe from '@/Components/PaginateMe.vue';
 import { ref} from 'vue';
 
 import dayjs from 'dayjs';
@@ -228,7 +282,7 @@ dayjs.extend(buddhistEra)
 const props =defineProps({
         stock_item:{ type: Object, required: true },
         stock:{ type: Object, required: true },
-        item_trans:Array,
+        item_trans:{ type: Object },
         checkin_last:{ type: Object },
         item_balance:{ type: Number },
         count_name:String,

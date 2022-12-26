@@ -110,7 +110,7 @@
 
                         <button type="submit" 
                                 class="  inline-flex text-sm ml-3 "
-                                @click="getOrderDetail(order.pur_order,order.sum_price)"
+                                @click="getOrderDetail(stock_budget.stock_id,year_budget,order.pur_order,order.sum_price)"
                                 >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-blue-700">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
@@ -133,7 +133,7 @@
         <a :href="route('print-budget-order-import',{stock_id:stock_budget.stock_id,year:stock_budget.year})"
             target="blank" class=" ">
             <span
-                class="flex justify-center text-sm  py-2  leading-5 text-white bg-blue-500 rounded-md shadow-lg hover:bg-blue-700 "
+                class="flex justify-center text-sm  py-2  leading-5 text-white bg-green-700 rounded-md shadow-lg hover:bg-green-600 "
             >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
@@ -141,6 +141,12 @@
                 พิมพ์
             </span>
         </a>
+
+        <Link :href="route('get-list-budget')"
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-md"
+                        >
+                        กลับ
+        </Link>
     </div>
     
     </AppLayout>
@@ -150,7 +156,7 @@
 //import { usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm,Link } from '@inertiajs/inertia-vue3';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
@@ -159,38 +165,45 @@ const props=defineProps({
     all_orders:{type:Object,required:true},
     stock_budget:{type:Object,required:true},
     year_budget:{type:Number,required:true},
-    budget_used:{type:Number,required:true},
-    budget_balance:{type:Number,required:true},
-    budget_receive:{type:Number,required:true},
+    budget_used:{type:String,required:true},
+    budget_balance:{type:String,required:true},
+    budget_receive:{type:String,required:true},
 })
 
 const form = useForm({
     pur_order:'',
     order_budget_used: 0.0,
+    year_budget:0,
+    stock_id:0,
     // stock_item_status:props.stock_item_status ? props.stock_item_status : 0,
 
 })
 
-const getOrderDetail=(pur_order,sum_price)=>{
-    console.log('getOrderDetail')
-    console.log(pur_order)
+const getOrderDetail=(stock_id,year_budget,pur_order,sum_price)=>{
+   //  console.log('getOrderDetail')
+    // console.log(stock_id)
     form.pur_order = pur_order;
     form.order_budget_used = sum_price;
+    form.year_budget = year_budget;
+    form.stock_id = stock_id;
 
     form.post(route('get-list-budget-detail'), {
         preserveState: true,
         preserveScroll: true,
-        onSuccess: page => { console.log('success');},
+        onSuccess: page => { 
+            //console.log('success');
+        },
         onError: errors => { 
             console.log('error');
         },
         onFinish: visit => { 
-            console.log('finish');
+           // console.log('finish');
            // import_stock_items.value = res.data.stock_item_import;   
         },
     })
 
 }
+
 
 
 </script>
