@@ -23,14 +23,22 @@
                     </svg>
                 </label>
         </div>
-  
-        <div  v-if="checkin_last" class="bg-blue-800 text-white text-xl text-center ">
+        <button @click="goBack()"
+          class=" flex text-gray-600 font-bold"
+         >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+            </svg>
+
+           กลับ
+         </button>
+        <div  v-if="checkin_last" class=" mt-2 bg-blue-800 text-white text-xl text-center ">
                 {{$page.props.stock.stockname}}
         </div>
 
     <!-- Item Detail -->
      <!-- {{$page.props.checkin_last}} -->
-        <div class="w-full mt-3 p-2  ">
+        <div class="w-full mt-2 p-2  ">
     
             <div 
                     class="w-full bg-purple-100  mt-3 border-2 border-purple-300 rounded-lg lg:max-w-full lg:flex">
@@ -204,24 +212,17 @@
 			
 		</tbody>
 	</table>
-
-    <Link :href="route('report-list',stock.id)" >
+    <!-- END table -->
+    <!-- <Link :href="route('report-list',stock.id)" >
                         <div class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded">
                             <span class=" text-white ml-2">กลับ</span>
                         </div>
-    </Link>
-    <!-- END table -->
-    <!-- <div   
-        class=" w-full flex">
-        <button 
-            v-on:click="confirm_cancel_stock_item(stock_item.id,$page.props.stock_item.item_name,$page.props.stock_item.pur_order)"
-             class=" w-full flex justify-center mt-3 bg-red-700 hover:bg-red-500 text-white text-center font-bold py-1 px-2 border border-red-500 rounded">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-            ลบวัสดุนี้ออกจากคลัง
-        </button>
-    </div> -->
+    </Link> -->
+    <button @click="goBack()"
+         class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+        >
+         กลับ
+    </button>
 
     <ModalUpToYou :isModalOpen="confirm_delete_item" >
             <template v-slot:header>
@@ -355,6 +356,10 @@ const okconfirmDeleteItem=()=>{
 const  cancelDeleteItem=()=>{
     console.log('cancelDeleteItem');
     confirm_delete_item.value= false;
+}
+
+const goBack=()=>{
+    history.back();
 }
 
 
