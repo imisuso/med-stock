@@ -52,14 +52,7 @@ class ReportStockController extends Controller
     //   if(!in_array($user->roles[0]['name'] , $role_admin)){
         if(in_array($user->roles[0]['name'] , $role_admin)){  
             $stocks = Stock::where('status',1)->get();
-            //$stock_items = StockItem::where('stock_id','1')->get();
 
-            // foreach($stock_items as $key=>$stock_item){
-       
-            //     $item_balance = $stock_item->itemBalance();
-            //     $stock_items[$key]['item_balance'] = $item_balance;
-              
-            // }
 
             $unit = Unit::where('unitid',$user->unitid)->first();
 
@@ -90,7 +83,7 @@ class ReportStockController extends Controller
                        // Log::info('--------------');
                      // Log::info($tran_checkout->stock_item_id);
                      // Log::info($tran_checkout->item_count);
-                        $date_expire_last = ItemTransaction::query()->select('date_expire')
+                        $date_expire_last = ItemTransaction::select('date_expire')
                                         ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
                                                             'action'=>'checkin',
                                                             'status'=>'active'    

@@ -19,7 +19,7 @@ class ResourceActionLogController extends Controller
         $title_head = $budget->stock['stockname']." ปีงบประมาณ ".$budget_year;
         return Inertia::render('Admin/ShowLogs',[  
                                 'title_name'=> $title_head, 
-                                'logs'=> $budget->actionLogs()->with('user:id,name')->get(),
+                                'logs'=> $budget->actionLogs()->with('user:id,name')->orderBy('timestamp','desc')->get(),
                                 'back_url'=> 'get-list-budget',
         ]) ;
 
@@ -30,7 +30,7 @@ class ResourceActionLogController extends Controller
        
         return Inertia::render('Admin/ShowLogs',[  
                                 'title_name'=> $user->name, 
-                                'logs'=> $user->actionLogs()->with('user:id,name')->get(),
+                                'logs'=> $user->actionLogs()->with('user:id,name')->orderBy('timestamp','desc')->get(),
                                 'back_url'=> 'user-add',
         ]) ;
 
@@ -41,7 +41,7 @@ class ResourceActionLogController extends Controller
      //  dd('showLogStock');
         return Inertia::render('Admin/ShowLogs',[  
                                 'title_name'=> $stock->stockname, 
-                                'logs'=> $stock->actionLogs()->with('user:id,name')->get(),
+                                'logs'=> $stock->actionLogs()->with('user:id,name')->orderBy('timestamp','desc')->get(),
                                 'back_url'=> 'stock-add',
         ]) ;
 

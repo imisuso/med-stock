@@ -109,23 +109,7 @@ class BudgetController extends Controller
             'action' => 'add_budget',
           ]);
 
-          /****************  insert log ****************/
-        
-         
-
-        //   $detail_log =array();
-        //   $detail_log['table'] ='budget';
-        //   $detail_log['stock_id'] =$request->stock_id;
-        //   $detail_log['budget'] =$request->budget_input;
-
-        //    $log_activity = LogActivity::create([
-        //        'user_id' => $user->id,
-        //        'sap_id' => $budget->id,
-        //        'function_name' => 'manage_budget',
-        //        'action' => 'add_budget',
-        //        'detail' => $detail_log,
-             
-        //    ]);
+      
        
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกงบประมาณสำเร็จ']);
     }
@@ -229,16 +213,7 @@ class BudgetController extends Controller
                     ]);
         }
     
-         /****************  insert log_activities ****************/
-        //     $user = Auth::user();
-        //      $log_activity = LogActivity::create([
-        //       'user_id' => $user->id,
-        //       'sap_id' => $user->sap_id,
-        //       'function_name' => 'manage_budget',
-        //       'action' => 'get_budget',
-        //       'detail' => $detail_log,
-            
-        //   ]);
+        
      
 
         $year_send= array();
@@ -339,22 +314,7 @@ class BudgetController extends Controller
             'log' => $old_changes,
 
           ]);
-        /****************  insert log_activities ****************/
-        //   $detail_log =array();
-        //   $detail_log['table'] ='budget';
-        //   $detail_log['row_change'] =$budget->id;
-        //   $detail_log['stock_id'] = request()->input('stock_id');
-
-        //  //  dd($detail_log);
-
-        //    $log_activity = LogActivity::create([
-        //        'user_id' => $use_in->id,
-        //        'sap_id' => $budget->id,
-        //        'function_name' => 'manage_budget',
-        //        'action' => 'edit_budget',
-        //        'detail' => $detail_log,
-        //        'old_value'=> $old_changes,
-        //    ]);
+     
 
         return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขงบประมาณสำเร็จ']);
     }

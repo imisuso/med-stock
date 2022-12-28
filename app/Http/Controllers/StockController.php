@@ -164,13 +164,7 @@ class StockController extends Controller
                 'action' => 'add_new_stock',
             ]);
 
-            // $log_activity = LogActivity::create([
-            //     'user_id' => $user->id,
-            //     'sap_id' => $user->sap_id,
-            //     'function_name' => 'manage_stock',
-            //     'action' => 'add_stock',
-            //     'detail' => $detail_log,
-            // ]);
+         
 
             // dd($log_activity);
             $msg_notify_test = $user->name.'  เพิ่มคลังใหม่ชื่อ '.$request->stock_name_thai.' สำเร็จ';
@@ -295,14 +289,7 @@ class StockController extends Controller
 
             ]);
 
-        //   $log_activity = LogActivity::create([
-        //       'user_id' => $user->id,
-        //       'sap_id' => $user->sap_id,
-        //       'function_name' => 'manage_stock',
-        //       'action' => 'edit_stock',
-        //       'detail' => $detail_log,
-        //       'old_value' => $old_changes,
-        //   ]);
+    
 
           // dd($log_activity);
           $msg_notify_test = $user->name.'  แก้ไขข้อมูลคลัง '.$stock->stockname.' สำเร็จ';

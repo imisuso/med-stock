@@ -10,7 +10,7 @@
             </div>
             <select name="" id="" v-model="form.function_selected"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
-                v-on:change="setFunctionName"
+               
                 >
                 <option v-for="(function_name) in  function_name_all" v-bind:key=function_name.id v-bind:value="function_name.function_name">{{function_name.function_name}}</option>
             </select>
@@ -254,11 +254,11 @@ const year_thai = (year_select)=>{
 
 
 
-const setFunctionName=()=>{
-  console.log('setFunctionName');
-  //function_name.value =form.function_name_selected;
-     console.log(form.function_selected);
-}
+// const setFunctionName=()=>{
+//   console.log('setFunctionName');
+//   //function_name.value =form.function_name_selected;
+//      console.log(form.function_selected);
+// }
 
 const  getReportLogActivity=()=>{
         //   console.log('getReportLogActivity');
