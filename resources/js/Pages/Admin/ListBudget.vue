@@ -30,7 +30,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import StockBudget from '@/Components/StockBudget.vue';
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import {  ref } from '@vue/reactivity';
 
 

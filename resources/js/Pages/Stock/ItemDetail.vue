@@ -42,14 +42,7 @@
     
             <div 
                     class="w-full bg-purple-100  mt-3 border-2 border-purple-300 rounded-lg lg:max-w-full lg:flex">
-                <div
-                class="flex flex-col  items-center overflow-hidden text-center  bg-cover rounded-t lg:h-auto lg:w-36 lg:rounded-t-none lg:rounded-l"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                </div>
-            
+               
                 <div class="w-full  leading-normal  border-b border-l border-r border-gray-200 rounded-b lg:border-l-0 lg:border-t lg:border-gray-200 lg:rounded-b-none lg:rounded-r"
                 >
                     <div class=" mb-2">
@@ -269,7 +262,7 @@
 </template>
 <script setup>
 //import { ref } from 'vue';
-import { useForm,Link } from '@inertiajs/inertia-vue3';
+import { useForm,Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import PaginateMe from '@/Components/PaginateMe.vue';
@@ -311,7 +304,7 @@ const number_format_show=(item)=>{
 
 const cancel_checkout=(item_tran_id)=>{
 
-   console.log('cancel checkout item='+item_tran_id);
+ //  console.log('cancel checkout item='+item_tran_id);
    form.item_tran_id = item_tran_id;
   form.post(route('cancel-checkout-stock-item'), {
         preserveState: false,
@@ -327,8 +320,8 @@ const cancel_checkout=(item_tran_id)=>{
 }
 
 const confirm_cancel_checkin_item=(stock_item_id,item_name,pur_order)=>{
-    console.log('cancel_stock_item='+stock_item_id);
-    console.log('cancel_stock_item='+item_name);
+  //  console.log('cancel_stock_item='+stock_item_id);
+   // console.log('cancel_stock_item='+item_name);
     confirm_delete_item.value = true;
     confirm_delete_item_name.value = item_name;
     confirm_delete_item_pur_order.value = pur_order;
@@ -336,7 +329,7 @@ const confirm_cancel_checkin_item=(stock_item_id,item_name,pur_order)=>{
 }
 
 const okconfirmDeleteItem=()=>{
-    console.log('okconfirmDeleteItem');
+   // console.log('okconfirmDeleteItem');
     confirm_delete_item.value = false;
     console.log(form.item_tran_id);
 
@@ -354,7 +347,7 @@ const okconfirmDeleteItem=()=>{
 }
 
 const  cancelDeleteItem=()=>{
-    console.log('cancelDeleteItem');
+   // console.log('cancelDeleteItem');
     confirm_delete_item.value= false;
 }
 

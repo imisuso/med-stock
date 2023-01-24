@@ -39,7 +39,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Annouce from '@/Components/Annouce.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import {  ref } from '@vue/reactivity';
 
 

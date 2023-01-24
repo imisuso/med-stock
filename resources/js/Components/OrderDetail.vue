@@ -121,7 +121,7 @@
     </div>
 </template>
 <script setup>
-import { Link, useForm } from '@inertiajs/inertia-vue3'
+import { Link, useForm } from '@inertiajs/vue3'
 import { ref } from '@vue/reactivity';
 const props = defineProps({
     orderIndex:{type:Number,required:true},

@@ -137,7 +137,7 @@
 </template>
 <script setup>
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { ref } from "vue";
 //const { useForm }=require("@inertiajs/inertia-vue3");
 //const { ref }=require("@vue/reactivity");

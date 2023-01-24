@@ -1,8 +1,7 @@
 import './bootstrap';
 
 import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/inertia-vue3';
-import { InertiaProgress } from '@inertiajs/progress';
+import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 
@@ -15,7 +14,14 @@ Alpine.start();
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    progress: {
+      color: '#4B5563',
+    },
+   // resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    resolve: name => {
+      const pages = import.meta.glob('./Pages/**/*.vue')
+      return pages[`./Pages/${name}.vue`]()
+    },
     setup({ el, App, props, plugin }) {
       createApp({ render: () => h(App, props) })
         .use(plugin)
@@ -24,4 +30,4 @@ createInertiaApp({
     },
   });
 
-InertiaProgress.init({ color: '#4B5563' });
+//InertiaProgress.init({ color: '#4B5563' });

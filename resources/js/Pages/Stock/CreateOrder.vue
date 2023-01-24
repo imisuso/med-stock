@@ -117,11 +117,11 @@
 </template>
 <script setup>
 //import { ref } from 'vue';
-//import { usePage } from '@inertiajs/inertia-vue3'
+//import { usePage } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import OrderItem from '@/Components/OrderItem.vue'
-import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia';
+import { Link, useForm, usePage } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from '@vue/runtime-core';
 
 defineProps({
@@ -147,8 +147,8 @@ const form = useForm({
  onMounted(() => {
   //  console.log('onMounted');
     //console.log('stock_item======'+usePage().props.value.stock_items);
-    form.items = usePage().props.value.stock_items;
-    form.unit_id = usePage().props.value.unit.unitid;
+    form.items = usePage().props.stock_items;
+    form.unit_id = usePage().props.unit.unitid;
      
 })
 

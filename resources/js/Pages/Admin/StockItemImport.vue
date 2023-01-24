@@ -112,8 +112,8 @@
  <script setup>
 //import { ref } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
-import { useForm } from '@inertiajs/inertia-vue3';
-import { usePage } from '@inertiajs/inertia-vue3'
+import { useForm } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3'
 import { ref } from 'vue';
 
 const props =defineProps({
@@ -133,9 +133,9 @@ const stock_item_types=[{'type_id':'1','type_name':'ใบสัญญาสั�
 
 const form = useForm({
     file_stock_item: File,
-   stock_id:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid : 0,
-  // usePage().props.value.auth.user.unitid
-    unit_id:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid : 0,
+   stock_id:usePage().props.auth.user.unitid ? usePage().props.auth.user.unitid : 0,
+  // usePage().props.auth.user.unitid
+    unit_id:usePage().props.auth.user.unitid ? usePage().props.auth.user.unitid : 0,
     stock_item_status:0,
    // stock_po:'',
   //  date_receive:0,

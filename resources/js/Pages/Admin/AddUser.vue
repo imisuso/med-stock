@@ -297,7 +297,7 @@
  <script setup>
 //import { ref } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import PaginateMe from '@/Components/PaginateMe.vue';
 import { ref } from 'vue';

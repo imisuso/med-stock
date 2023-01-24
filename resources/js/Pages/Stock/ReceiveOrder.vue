@@ -109,8 +109,8 @@
 
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Inertia } from '@inertiajs/inertia';
-import { useForm,usePage  } from '@inertiajs/inertia-vue3';
+import { router } from '@inertiajs/vue3';
+import { useForm,usePage  } from '@inertiajs/vue3';
 import {ref , onMounted} from "vue"
 // import { onMounted } from '@vue/runtime-core';
 // const { ref }=require("@vue/reactivity");
@@ -131,7 +131,7 @@ defineProps({
 
 onMounted(() => {
  
-      form.order_id = usePage().props.value.order.id;
+      form.order_id = usePage().props.order.id;
      
 });
 

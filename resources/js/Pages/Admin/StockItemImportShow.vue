@@ -142,7 +142,7 @@
  </template>
  <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 

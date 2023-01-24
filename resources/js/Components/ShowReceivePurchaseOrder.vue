@@ -66,8 +66,8 @@
     <!-- <div>{{oldItemsSum[itemIndex]}}</div> -->
 </template>
 <script setup>
-import { Inertia } from '@inertiajs/inertia';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { router } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
 const props = defineProps({
     itemIndex:{type:Number,required:true},

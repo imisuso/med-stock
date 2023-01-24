@@ -77,9 +77,9 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ShowPurchaseOrder from '@/Components/ShowPurchaseOrder.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { ref } from '@vue/reactivity';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/vue3';
 const props = defineProps({
   years:{type:Object},
   year_selected : {type:Number},
@@ -101,7 +101,7 @@ const getListPurchase = () => {
     console.log('getListPurchase');
 
 
-    Inertia.get(route('purchase-order-list'), { year: form.year_selected }, {
+    router.get(route('purchase-order-list'), { year: form.year_selected }, {
         preserveState: true,
         replace: true
     })

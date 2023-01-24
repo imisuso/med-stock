@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-   
+   {{ $page.props.flash.status }}
         <div v-if="$page.props.flash.status=='success'" 
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
@@ -106,8 +106,8 @@
 import CheckoutItem from '@/Components/CheckoutItem.vue'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
-import { Inertia } from '@inertiajs/inertia'
-import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
+import { router } from '@inertiajs/vue3'
+import { Link, useForm, usePage } from '@inertiajs/vue3'
 import { ref ,watch} from 'vue';
 //import { onBeforeMount, onMounted, ref,watch } from '@vue/runtime-core';
 const props = defineProps({
@@ -125,14 +125,14 @@ let search = ref(props.filters.search)
 
 const form = useForm({
     filter_key:'',
-    stock_id:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid : 0,
+    stock_id:usePage().props.auth.user.unitid ? usePage().props.auth.user.unitid : 0,
 })
 
 watch( search, value => {
    
    // if(value.length >= 3){
       //  console.log('key search=' + value)
-        Inertia.get(route('stock'), { search: value }, {
+      router.get(route('stock'), { search: value }, {
             preserveState: true,
             replace: true
         })
