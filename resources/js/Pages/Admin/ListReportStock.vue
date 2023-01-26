@@ -173,7 +173,7 @@
                         <label for="" class="   lg:hidden">วันที่รับเข้า:</label>
                   
                         <label class=" ml-2 " >
-                            {{dayjs(stock_item.checkin_last).locale('th').format('D MMM BBBB')}}
+                            {{dayjs(stock_item.checkin_last.date_action).locale('th').format('D MMM BBBB')}}
                         </label> 
                     </div>
               

@@ -12,6 +12,17 @@
                 </svg>
             </label>
         </div>
+        <div v-if="$page.props.flash.status=='error'" 
+            class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
+            <input type="checkbox" class="hidden" id="banneralert">
+            
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-white shadow rounded-md border-2 border-red-600 text-red-800 font-bold" title="close" for="banneralert">
+                {{ $page.props.flash.msg }}
+                <svg class="fill-current text-red-600 " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+            </label>
+        </div>
         <!-- user unitid={{$page.props.auth.user.unitid}} -->
         <div class=" w-full p-4 mt-2  justify-center bg-red-100">
             <p class=" flex font-bold underline">กรุณาอ่าน:คำแนะนำการนำเข้าวัสดุจากไฟล์ excel</p>

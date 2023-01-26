@@ -145,8 +145,8 @@ class StockItemImportController extends Controller
                           '5' => 'required|max:200',    //vendor
                           '6' => 'required|max:50',    //Pur.Order
                           '7' => 'required|max:50',    //Invoice Number
-                          '8' => 'required|date',           //date_receive
-                          '9' => 'required|date',           //date_expire
+                          '8' => 'required|date_format:Y-m-d',           //date_receive
+                          '9' => 'required|date_format:Y-m-d',           //date_expire
                 ];
  
                 $customMessages = [
@@ -170,9 +170,10 @@ class StockItemImportController extends Controller
                     '7.required' => 'ต้องใส่ข้อมูลในคอลัมน์ Invoice Number',
                     '7.max'=>'ข้อมูล Invoice Number ต้องไม่เกิน 50 ตัวอักษร',
                     '8.required' => 'ต้องใส่ข้อมูลวันที่ตรวจรับวัสดุในคอลัมน์ date_receive ',
-                    '8.date'=>'ข้อมูล date_receive รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
+                    '8.date_format'=>'ข้อมูล date_receive รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
                     '9.required' => 'ต้องใส่ข้อมูลวันที่หมดอายุของวัสดุในคอลัมน์ date_expire ',
-                    '9.date'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
+                    '9.date_format'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
+                   // '9.date'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
                    
                 ];
 
@@ -257,10 +258,10 @@ class StockItemImportController extends Controller
         foreach($request->import_items as $key => $item )
         {
             // Logger($item['item_code']);
-            // Logger($item['item_name']);
+            //  Logger($item['item_name']);
             // Logger($item['item_receive']);
-            // Logger($item['date_receive']);
-            // Logger($item['date_expire']);
+            //  Logger($item['date_receive']);
+            //  Logger($item['date_expire']);
 
 
             $date_split = explode('-',$item['date_receive']);
@@ -278,7 +279,7 @@ class StockItemImportController extends Controller
                                         ])->first();
           //  Logger($has_old_item);
             if($has_old_item){
-              // Logger('has item');
+             //  Logger('has item');
                 //*****insert item_transactions
                 try{
                     ItemTransaction::create([
@@ -305,12 +306,9 @@ class StockItemImportController extends Controller
                     }catch(\Illuminate\Database\QueryException $e){
                         //rollback
                        // return redirect()->back();
-                        return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
+                        return Redirect::back()->with(['status' => 'error', 'msg' => $e->getMessage()]);
                     }
-                //*****update stock_item  ไม่ใช้แล้ว
-                // $item_add = (int)$has_old_item->item_sum + (int)$item['item_receive'];
-                // $has_old_item->item_sum = $item_add;
-                // $has_old_item->save();
+             
 
             }else{
                // Logger('no item');
@@ -338,7 +336,7 @@ class StockItemImportController extends Controller
                     }catch(\Illuminate\Database\QueryException $e){
                         //rollback
                        // return redirect()->back();
-                        return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
+                        return Redirect::back()->with(['status' => 'error', 'msg' => $e->getMessage()]);
                     }
                 //****insert item_transactions
 
@@ -369,8 +367,9 @@ class StockItemImportController extends Controller
                     }catch(\Illuminate\Database\QueryException $e){
                         //rollback
                        // return redirect()->back();
-                        return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
+                        return Redirect::back()->with(['status' => 'error', 'msg' => $e->getMessage()]);
                     }
+                //return Redirect::back()->with(['status' => 'error', 'msg' => 'test error']);
                
             }
           
