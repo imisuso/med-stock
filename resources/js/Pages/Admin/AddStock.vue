@@ -236,7 +236,7 @@
 //import { ref } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { ref ,computed} from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'

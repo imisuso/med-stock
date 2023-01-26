@@ -272,8 +272,8 @@
 import BudgetOrder from '@/Components/BudgetOrder.vue';
 import PurchaseOrder from '@/Components/PurchaseOrder.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { Inertia } from '@inertiajs/inertia';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { router } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import {ref,computed,onMounted, watch} from 'vue';
 // const { ref, computed }=require("@vue/reactivity")
 // const { onMounted, watch }=require("@vue/runtime-core")

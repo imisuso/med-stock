@@ -78,7 +78,8 @@ class AdminReportStockController extends Controller
            // logger('checkin_last11==>');
            // logger($checkin_last);
             //  logger($checkin_last->date_action);
-            $stock_items[$key]['checkin_last'] = $checkin_last->date_action;
+           // $stock_items[$key]['checkin_last'] = $checkin_last->date_action;
+           $stock_items[$key]['checkin_last'] = $checkin_last;
             $stock_items[$key]['price_last'] = $checkin_last->price;
             $stock_items[$key]['item_balance'] = $item_balance;
             //$stock_items[$key]['checkin_last'] = $checkin_last;
@@ -126,7 +127,7 @@ class AdminReportStockController extends Controller
                 $item_balance = $stock_item->itemBalance();
              //   logger('checkin_last22==>');
               //  logger($checkin_last);
-                $stock_items[$key]['checkin_last'] = $checkin_last->date_action;
+                $stock_items[$key]['checkin_last'] = $checkin_last;
                 $stock_items[$key]['price_last'] = $checkin_last->price;
                 $stock_items[$key]['item_balance'] = $item_balance;
             }

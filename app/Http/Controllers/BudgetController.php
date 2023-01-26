@@ -197,7 +197,7 @@ class BudgetController extends Controller
             }
           
             $stocks[$key]['budget'] = $budget_year;
-          //   Log::info($stocks);
+           
         }
 
        
@@ -250,6 +250,7 @@ class BudgetController extends Controller
         array_push($year_send,$year_end);
        // logger('year_search=');
        // logger($year_search);
+       Log::info($stocks);
         return Inertia::render('Admin/ListBudget',[
              'years'=>$year_send,
              'stock_budgets'=>$stocks,

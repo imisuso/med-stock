@@ -174,11 +174,11 @@
 </template>
 <script setup>
 //import { ref } from 'vue';
-//import { usePage } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia';
+//import { usePage } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
-import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
+import { Link, useForm, usePage } from '@inertiajs/vue3'
 import { ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
 import dayjs from 'dayjs';

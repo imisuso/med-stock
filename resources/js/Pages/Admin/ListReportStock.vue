@@ -173,7 +173,7 @@
                         <label for="" class="   lg:hidden">วันที่รับเข้า:</label>
                   
                         <label class=" ml-2 " >
-                            {{dayjs(stock_item.checkin_last).locale('th').format('D MMM BBBB')}}
+                            {{dayjs(stock_item.checkin_last.date_action).locale('th').format('D MMM BBBB')}}
                         </label> 
                     </div>
               
@@ -234,11 +234,11 @@
 </template>
 <script setup>
 //import { ref } from 'vue';
-import { usePage } from '@inertiajs/inertia-vue3'
+import { usePage } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
-import { Link, useForm } from '@inertiajs/inertia-vue3';
-import { Inertia } from '@inertiajs/inertia';
+import { Link, useForm } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import { ref } from '@vue/reactivity';
 import {computed, watch} from 'vue';
 import dayjs from 'dayjs';
@@ -262,7 +262,7 @@ const form = useForm({
             stock_selected:props.stock_selected ? props.stock_selected :0,
             // year_selected:'',
             // month_selected:'',
-            unitid:usePage().props.value.auth.user.unitid ? usePage().props.value.auth.user.unitid :0,
+            unitid:usePage().props.auth.user.unitid ? usePage().props.auth.user.unitid :0,
         //    unitid:props.auth.user.unitid ? props.auth.user.unitid :0 ,
 })
 
@@ -277,7 +277,7 @@ watch( search, value => {
    
   // if(value.length >= 3){
      //  console.log('key search=' + value)
-       Inertia.get(route('report-list',form.unitid), { search: value ,stock_selected: form.stock_selected}, {
+     router.get(route('report-list',form.unitid), { search: value ,stock_selected: form.stock_selected}, {
            preserveState: true,
            replace: true
        })

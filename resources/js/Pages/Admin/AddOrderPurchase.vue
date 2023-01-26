@@ -256,7 +256,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PurchaseItem from '@/Components/PurchaseItem.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref,onMounted } from 'vue';
 
 
@@ -293,26 +293,26 @@ console.log(`{stockid:${props.stocks[0].id},stockname:${props.stocks[0].stocknam
 // } 
  onMounted(() => {
    console.log('onMounted');
-   //console.log(usePage().props.value.order_purchase);
+   //console.log(usePage().props.order_purchase);
    // console.log(usePage().props.value.stocks);
        
-        if(usePage().props.value.stocks.length==1){
-                form.stock_select = usePage().props.value.stocks[0].id;
+        if(usePage().props.stocks.length==1){
+                form.stock_select = usePage().props.stocks[0].id;
                 console.log(form.stock_select);
         }
      
-         console.log(usePage().props.value.action);
-        if(usePage().props.value.action == 'edit'){
-                form.preview_orders.push(usePage().props.value.order_purchase.items);
+         console.log(usePage().props.action);
+        if(usePage().props.action == 'edit'){
+                form.preview_orders.push(usePage().props.order_purchase.items);
                  console.log(form.preview_orders[0].length)   
                 count_order_edit.value = form.preview_orders[0].length;
-                show_total_bath.value = usePage().props.value.order_purchase.budget;
-                form.total_budget = usePage().props.value.order_purchase.budget;
+                show_total_bath.value = usePage().props.order_purchase.budget;
+                form.total_budget = usePage().props.order_purchase.budget;
                 console.log(form.total_budget);
-                form.project_name = usePage().props.value.order_purchase.project_name;
-                form.date_purchase = usePage().props.value.order_purchase.date_order;
-                form.order_purchase_id = usePage().props.value.order_purchase.id;
-                //form.stock_select = usePage().props.value.order_purchase.unit_id;
+                form.project_name = usePage().props.order_purchase.project_name;
+                form.date_purchase = usePage().props.order_purchase.date_order;
+                form.order_purchase_id = usePage().props.order_purchase.id;
+                //form.stock_select = usePage().props.order_purchase.unit_id;
         }else{
 
         }
@@ -326,7 +326,7 @@ const getOrder=(item)=>{
     form.total_budget += Number(item[0].total);
     show_total_bath.value= form.total_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
    console.log(show_total_bath.value);
-    if(usePage().props.value.action == 'edit'){
+    if(usePage().props.action == 'edit'){
              form.preview_orders[0].push(item);
     }else{
              form.preview_orders.push(item);
@@ -397,7 +397,7 @@ const okConfirmAddPurchase=()=>{
        // console.log('okConfirmAddPurchase');
         confirm_add_purchase.value = false;
 
-        if(usePage().props.value.action=='add'){
+        if(usePage().props.action=='add'){
                 form.post(route('store-purchase'), {
                         preserveState: true,
                         preserveScroll: true,

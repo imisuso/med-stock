@@ -162,10 +162,10 @@
 </template>
 <script setup>
 //import { ref } from 'vue';
-//import { usePage } from '@inertiajs/inertia-vue3'
+//import { usePage } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
-import { useForm,Link } from '@inertiajs/inertia-vue3';
+import { useForm,Link } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'

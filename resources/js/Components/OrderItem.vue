@@ -104,7 +104,7 @@
 </template>
 <script setup>
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import {  useForm, usePage } from '@inertiajs/inertia-vue3'
+import {  useForm, usePage } from '@inertiajs/vue3'
 import { ref } from '@vue/reactivity';
 
 const emits = defineEmits(['previewOrder'])

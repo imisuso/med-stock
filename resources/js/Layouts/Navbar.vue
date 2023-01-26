@@ -91,14 +91,14 @@
 
 <script>
 import { ref } from 'vue'
-import { Inertia } from '@inertiajs/inertia'
+import { router } from '@inertiajs/vue3'
 export default {
     emits: ['toggleSidebar'],
     setup() {
         const dropDownOpen = ref(false);
 
         const submit=()=>{
-          Inertia.post('/logout')
+          router.post('/logout')
         }
 
         return {

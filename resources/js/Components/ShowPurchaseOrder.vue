@@ -220,9 +220,9 @@
   
 </template>
 <script setup>
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/vue3';
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/vue3';
 import { onMounted, ref,computed } from "vue"
 //const { onMounted, ref,computed }=require("@vue/runtime-core");
 

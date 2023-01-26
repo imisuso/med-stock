@@ -163,7 +163,7 @@
 //import { ref } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { useForm,Link } from '@inertiajs/inertia-vue3';
+import { useForm,Link } from '@inertiajs/vue3';
 import { ref ,computed} from 'vue';
 
 

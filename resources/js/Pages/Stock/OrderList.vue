@@ -165,8 +165,8 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import OrderDetail from '@/Components/OrderDetail.vue'
-import { Link, useForm } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia';
+import { Link, useForm } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3';
 import { ref } from '@vue/reactivity';
 
 defineProps({

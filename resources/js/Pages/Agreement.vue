@@ -47,8 +47,8 @@
  <script setup>
  //import { ref } from 'vue'
  import AgreementLayout from '@/Layouts/AgreementLayout.vue'
-import { Inertia } from '@inertiajs/inertia';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { router } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
  import dayjs from 'dayjs';
  import 'dayjs/locale/th'
  import buddhistEra from 'dayjs/plugin/buddhistEra'
@@ -78,6 +78,6 @@ import { useForm } from '@inertiajs/inertia-vue3';
  }
  const UserLogout=()=>{
     //console.log('logout');
-    Inertia.post('/logout')
+    router.post('/logout')
  }
  </script>
