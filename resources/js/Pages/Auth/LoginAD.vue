@@ -26,7 +26,7 @@
             <!-- <a :href=" '../../../../../storage/docs/'+doc_division_filename " target="_blank"> -->
             <!-- <a href="../../../../docs/poster_teacher_ios.pdf" target="_blank">  -->
             <!-- <a :href="doc_division_filename" target="_blank">  -->
-            <a href="../../../../docs/poster_division_med_stock.pdf" target="_blank">
+            <a href="../../../../docs/poster_division_cutstock.pdf" target="_blank">
               1.คู่มือสำหรับเจ้าหน้าที่สาขาบันทึกตัดสต๊อกวัสดุ
             </a>
             </p>
