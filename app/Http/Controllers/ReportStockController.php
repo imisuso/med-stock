@@ -167,7 +167,7 @@ class ReportStockController extends Controller
                
                 }
               
-                Logger($msg_notify_test);
+               // Logger($msg_notify_test);
 
             }else{
                 $stock_item_checkouts = [];
@@ -348,8 +348,8 @@ class ReportStockController extends Controller
 
     public function export_test($checkout_items) 
     {
-        Log::info('export_test');
-        Log::info($checkout_items);
+        // Log::info('export_test');
+        // Log::info($checkout_items);
 
       
 
