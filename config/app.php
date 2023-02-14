@@ -217,7 +217,6 @@ return [
     ])->toArray(),
 
     'AUTH_USER_PROVIDER' => env('AUTH_USER_PROVIDER', '\App\APIs\FakeUserAPI'),
-    'SI_SELFSERVICE_API_URL' => env('SI_SELFSERVICE_API_URL'),
 
     'HAN_API_SERVICE_URL' => env('HAN_API_SERVICE_URL'),
     'HAN_API_SERVICE_TOKEN' => env('HAN_API_SERVICE_TOKEN'),
