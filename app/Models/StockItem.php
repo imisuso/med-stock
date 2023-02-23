@@ -110,47 +110,93 @@ class StockItem extends Model
         //     Log::info($stock_item);
         //     Log::info($stock_item['stock_id']);
         //    Log::info($stock_item['material_number']);
-           StockItem::create([
-                                'stock_id'=>$stock_item['stock_id'],
-                                'user_id'=>$user_add->id,
-                                'item_code'=>$stock_item['material_number'],
-                                'item_name'=>$stock_item['item_name'],
-                                'unit_count'=>$stock_item['unit_count'],
-                                'item_sum'=>0,
-                                'price'=>$stock_item['price'],
-                                'pur_order'=>$stock_item['pur_order'],
-                                'invoice_number'=>$stock_item['invoice_number'],
-                                'business_name'=>$stock_item['vendor'],
-                                'status'=>$stock_item['order_type'],
-                            ]);
 
-            $stock_item_id = StockItem::select('id')
-                                        ->where('item_code',$stock_item['material_number'])
-                                        ->where('status','!=',9)
-                                        ->first();
-           
+            $date_split = explode('-',$stock_item['date_receive']);
+            
+            if((int)$date_split[1]>9){
+                $year_budget = (int)$date_split[0]+1;
+            }else{
+                $year_budget = $date_split[0];
+            }
+
+        // $stock_item_id = StockItem::select('id')
+        //                 ->where('item_code',$stock_item['material_number'])
+        //                 ->where('stock_id',$stock_item['stock_id'])
+        //                 ->where('status','!=',9)
+        //                 ->first();
+
+            $stock_item_id = StockItem::where([
+                                    'item_code'=>$stock_item['material_number'],
+                                    'stock_id'=>$stock_item['stock_id'],
+                                ])
+                                ->where('status','!=',9)
+                                ->first();
+            if($stock_item_id){
+
+                ItemTransaction::create([
+                    'stock_id' =>$stock_item['stock_id'],
+                    'stock_item_id'=>$stock_item_id->id,
+                    'user_id'=>$user_add->id,
+                    'year'=> $year_budget,
+                    'month'=>$date_split[1],
+                    'date_action'=>$stock_item['date_receive'],
+                    'action'=>'checkin',
+                    'date_expire'=>$stock_item['date_expire'],
+                    'item_count'=>$stock_item['item_receive'],
+                    'status'=>'active',
+                    'price'=>$stock_item['price'],
+                    'pur_order'=>$stock_item['pur_order'],
+                    'invoice_number'=>$stock_item['invoice_number'],
+                    'business_name'=>$stock_item['vendor'],
+                    'order_type'=>$stock_item['order_type'],
+                    'profile'=>[
+                            'import'=>false,
+                            'admin_load_data'=>true,
+                        ],
+                ]);
+            }else{
+
+        
+                $stock_item_add=  StockItem::create([
+                                        'stock_id'=>$stock_item['stock_id'],
+                                        'user_id'=>$user_add->id,
+                                        'item_code'=>$stock_item['material_number'],
+                                        'item_name'=>$stock_item['item_name'],
+                                        'unit_count'=>$stock_item['unit_count'],
+                                        'item_sum'=>0,
+                                        'price'=>$stock_item['price'],
+                                        'pur_order'=>$stock_item['pur_order'],
+                                        'invoice_number'=>$stock_item['invoice_number'],
+                                        'business_name'=>$stock_item['vendor'],
+                                        'status'=>$stock_item['order_type'],
+                                    ]);
+
+                ItemTransaction::create([
+                    'stock_id' =>$stock_item['stock_id'],
+                    'stock_item_id'=>$stock_item_add->id,
+                    'user_id'=>$user_add->id,
+                    'year'=> $year_budget,
+                    'month'=>$date_split[1],
+                    'date_action'=>$stock_item['date_receive'],
+                    'action'=>'checkin',
+                    'date_expire'=>$stock_item['date_expire'],
+                    'item_count'=>$stock_item['item_receive'],
+                    'status'=>'active',
+                    'price'=>$stock_item['price'],
+                    'pur_order'=>$stock_item['pur_order'],
+                    'invoice_number'=>$stock_item['invoice_number'],
+                    'business_name'=>$stock_item['vendor'],
+                    'order_type'=>$stock_item['order_type'],
+                    'profile'=>[
+                            'import'=>false,
+                            'admin_load_data'=>true,
+                        ],
+                ]);
+
+        
+            }
       
-            ItemTransaction::create([
-                                'stock_id' =>$stock_item['stock_id'],
-                                'stock_item_id'=>$stock_item_id->id,
-                                'user_id'=>$user_add->id,
-                                'year'=> 2022,
-                                'month'=>1,
-                                'date_action'=>$stock_item['date_receive'],
-                                'action'=>'checkin',
-                                'date_expire'=>$stock_item['date_expire'],
-                                'item_count'=>$stock_item['item_receive'],
-                                'status'=>'active',
-                                'price'=>$stock_item['price'],
-                                'pur_order'=>$stock_item['pur_order'],
-                                'invoice_number'=>$stock_item['invoice_number'],
-                                'business_name'=>$stock_item['vendor'],
-                                'order_type'=>$stock_item['order_type'],
-                                'profile'=>[
-                                        'import'=>false,
-                                        'admin_load_data'=>true,
-                                    ],
-                            ]);
+          
         }
     }
     public static function loadDataOrderPurchase($fileName){
