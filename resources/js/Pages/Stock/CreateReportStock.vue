@@ -264,12 +264,12 @@ const item_sum_format=(item_balance)=>{
 }
 
 const year_thai = (year_select)=>{
-   // console.log('year_select=')
-   // console.log(year_select)
+    // console.log('year_select=')
+    // console.log(year_select)
     if(year_select.length==0)
          return '';
     else
-         return year_select+543;
+         return   parseInt(year_select)+543;
 }
 
 
