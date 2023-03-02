@@ -142,7 +142,7 @@ class ItemTransactionController extends Controller
                                                         'action'=>'checkin',
                                                         'status'=>'active'    
                                                 ])
-                                    ->orderBy('created_at','desc')
+                                    ->orderBy('date_expire','desc')
                                     ->first();
        // dd($date_expire_last->date_expire);
         try{

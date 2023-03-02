@@ -28,12 +28,11 @@ class AdminReportStockController extends Controller
      */
     public function index($division_id)
     {
-        //Log::info($division_id);
-       // logger('AdminReportStockController index');
+          // logger('AdminReportStockController index');
         $user = Auth::user();
-       // Logger($user);
-     //   Logger($user->roles[0]['name']);
-      //  logger(request()->all());
+  
+        //dd(request()->all());
+  
  
         $role_admin = array('admin_it','admin_med_stock','super_officer');
 
@@ -47,9 +46,12 @@ class AdminReportStockController extends Controller
         }
 
         if(!in_array($user->roles[0]['name'] , $role_admin)){
-            //$stocks = Stock::whereId($division_id)->get();
+            
+            //user สาขา Login มา จะเข้า logic ตรงนี้
+          
             $stocks = Stock::where('unit_id',$division_id)->where('status',1)->get();
             $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();
+           
         }
         else{
             $stocks = Stock::where('status',1)->get();
@@ -57,7 +59,7 @@ class AdminReportStockController extends Controller
     
       
     if(request()->input('stock_selected')){
-
+      
        $stock_selected_id = request()->input('stock_selected');
       // $stock_selected_name = Stock::select('stockname')->where('unit_id',$stock_selected_id)->first();
        $stock_selected_name = Stock::select('stockname')->where('id',request()->input('stock_selected'))->first();
@@ -95,17 +97,21 @@ class AdminReportStockController extends Controller
            $detail_log['stock_id'] = $stock_selected_name->stockname;
    
 
-       //  dd($detail_log);
+        //dd($detail_log);
+            if(request()->search == null && request()->input('stock_selected')){
+                    $log_activity = LogActivity::create([
+                        'user_id' => $user->id,
+                        'sap_id' => $user->sap_id,
+                        'function_name' => 'report_stock_balance',
+                        'action' => 'get_report',
+                        'detail'=> $detail_log,
+                    ]);
+            }
 
-           $log_activity = LogActivity::create([
-               'user_id' => $user->id,
-               'sap_id' => $user->sap_id,
-               'function_name' => 'report_stock_balance',
-               'action' => 'get_report',
-               'detail'=> $detail_log,
-           ]);
+        
    
     }else{
+     
         if(!in_array($user->roles[0]['name'] , $role_admin)){
           //  $stocks = [];
             $stock_selected_id = $user->unitid;
@@ -143,24 +149,20 @@ class AdminReportStockController extends Controller
                     $detail_log['stock_id'] = $stock_selected_name->stockname;
             
 
-                //  dd($detail_log);
-
-                    $log_activity = LogActivity::create([
-                        'user_id' => $user->id,
-                        'sap_id' => $user->sap_id,
-                        'function_name' => 'report_stock_balance',
-                        'action' => 'get_report',
-                        'detail'=> $detail_log,
-                    ]);
+                  
         }else{
                 $stock_items = [];
-            // $stock_item_checkouts = '';
                 $stock_selected_id=0;
                 $stock_selected_name=[];
+              
         }
     }
 
        // logger(count($stock_items));
+     
+        
+
+       
         return Inertia::render('Admin/ListReportStock',[
                             'stocks'=>$stocks,
                             'stock_items'=> $stock_items,

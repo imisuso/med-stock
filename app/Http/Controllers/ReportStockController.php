@@ -34,6 +34,7 @@ class ReportStockController extends Controller
        
        // logger('ReportStockController index');
        //  logger(request()->all());
+  
         $user = Auth::user();
             $main_menu_links = [
                     'is_admin_division_stock'=> $user->can('view_master_data'),
@@ -88,7 +89,7 @@ class ReportStockController extends Controller
                                                             'action'=>'checkin',
                                                             'status'=>'active'    
                                                     ])
-                                        ->orderBy('created_at','desc')
+                                        ->orderBy('date_expire','desc')
                                         ->first();
                         //  Log::info($date_expire_last->date_expire);
                         $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
@@ -242,7 +243,7 @@ class ReportStockController extends Controller
         // Log::info($year);
         // Log::info($month);
 
-
+     
         // return 'test';
 
         $stock_item_checkouts = ItemTransaction::where(
@@ -265,7 +266,7 @@ class ReportStockController extends Controller
                                                                     'action'=>'checkin',
                                                                     'status'=>'active'    
                                                             ])
-                                                ->orderBy('created_at','desc')
+                                                ->orderBy('date_expire','desc')
                                                 ->first();
           //  Log::info($date_expire_last->date_expire);
             $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
