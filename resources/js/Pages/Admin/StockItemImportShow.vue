@@ -56,8 +56,25 @@
                         กลับ
              </button>
         </div>
+        <div v-if="stock_item_import_count==0"
+            class=" w-full p-4   text-lg font-bold bg-red-200 rounded-md "
+        >
+      
+            <label for="">{{msg_validate_excel}}</label>
+            <li v-for="(header_false,index) in header_diff" :key="index">
+                {{header_false}}
+            </li>
+            <p for="" v-if="validate_excel">ในไฟล์นี้พบว่ามี {{stock_item_import_count}} รายการ</p>
+            <button type="submit" 
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        @click="backImportExcel()"
+                        >
+                        กลับ
+             </button>
+        </div>
+        
        
-        <div v-if="validate_excel && validate_row_excel && validate_input"
+        <div v-if="validate_excel && validate_row_excel && validate_input && stock_item_import_count>0"
             class=" w-full p-4   text-lg font-bold bg-blue-100 rounded-md "
             >
             <div class=" ">
@@ -82,7 +99,7 @@
 
             
         </div> 
-        <div v-if="validate_excel && validate_row_excel && validate_input" class=" mt-2">
+        <div v-if="validate_excel && validate_row_excel && validate_input && stock_item_import_count>0" class=" mt-2">
             <button
             class="  w-full flex justify-center py-2  text-md   font-bold bg-green-300 hover:bg-green-200 focus:outline-none"
             @click="CheckInToStockItem()"
@@ -100,6 +117,14 @@
                         กลับ
              </button>
         </div>
+        <!-- <div v-else>
+            <button type="submit" 
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        @click="backImportExcel()"
+                        >
+                        กลับ
+             </button>
+        </div> -->
         <!-- <div class=" w-full  mt-2">
                 <label class=" text-red-600">-ถ้าเป็นวัสดุใหม่ รหัสวัสดุต้องไม่ซ้ำกับวัสดุที่มีอยู่แล้ว ถ้ารหัสวัสดุซ้ำระบบจะนำจำนวนสั่งซื้อครั้งนี้ไปบวกเพิ่มให้อัตโนมัติ 
                     และปรับปรุงข้อมูลราคาให้อัตโนมัติ
