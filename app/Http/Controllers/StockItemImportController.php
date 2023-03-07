@@ -8,6 +8,7 @@ use App\Models\Unit;
 use App\Models\StockItem;
 use App\Models\ItemTransaction;
 use App\Models\LogActivity;
+use Carbon\Carbon;
 use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
@@ -145,8 +146,8 @@ class StockItemImportController extends Controller
                           '5' => 'required|max:200',    //vendor
                           '6' => 'required|max:50',    //Pur.Order
                           '7' => 'required|max:50',    //Invoice Number
-                          '8' => 'required|date_format:Y-m-d',           //date_receive
-                          '9' => 'required|date_format:Y-m-d',           //date_expire
+                          '8' => 'required|date_format:d-m-Y',           //date_receive
+                          '9' => 'required|date_format:d-m-Y',           //date_expire
                 ];
  
                 $customMessages = [
@@ -170,25 +171,25 @@ class StockItemImportController extends Controller
                     '7.required' => 'ต้องใส่ข้อมูลในคอลัมน์ Invoice Number',
                     '7.max'=>'ข้อมูล Invoice Number ต้องไม่เกิน 50 ตัวอักษร',
                     '8.required' => 'ต้องใส่ข้อมูลวันที่ตรวจรับวัสดุในคอลัมน์ date_receive ',
-                    '8.date_format'=>'ข้อมูล date_receive รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
+                    '8.date_format'=>'ข้อมูล date_receive รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 31-12-2022 , 01-03-2022)',
                     '9.required' => 'ต้องใส่ข้อมูลวันที่หมดอายุของวัสดุในคอลัมน์ date_expire ',
-                    '9.date_format'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
-                   // '9.date'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 2022-12-31)',
-                   
+                    '9.date_format'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 31-12-2022 , 01-03-2022)',             
                 ];
 
-                //dd(Validator::make($row,$rules,$customMessages)->errors());
-                //if(Validator::make($row,$rules,$customMessages)->passes())
-                $tmp_error_validate = Validator::make($row,$rules,$customMessages)->errors();
-                //  Logger($tmp_error_validate);
-                // Logger($tmp_error_validate->first($key));
-                // dd($tmp_error_validate);
-                // dd($tmp_error_validate->array_count_values($tmp_error_validate['messages']));
+                    //dd(Validator::make($row,$rules,$customMessages)->errors());
+                    //if(Validator::make($row,$rules,$customMessages)->passes())
+                    $tmp_error_validate = Validator::make($row,$rules,$customMessages)->errors();
+                    //  Logger($tmp_error_validate);
+                    // Logger($tmp_error_validate->first($key));
+                    // dd($tmp_error_validate);
+                    // dd($tmp_error_validate->array_count_values($tmp_error_validate['messages']));
                if(count($tmp_error_validate)>0){
                      $error_validate[$key] = $tmp_error_validate;
                }else{
-                    $date_temp=date_create($row[8]);
-                    $date_format_receive = date_format($date_temp,"Y-m-d");
+                    $date_receive_temp=date_create($row[8]);
+                    $date_format_receive = date_format($date_receive_temp,"Y-m-d");
+                    $date_expire_temp=date_create($row[9]);
+                    $date_format_expire = date_format($date_expire_temp,"Y-m-d");
                 //  $row[3]->formatDates(true, 'Y-m-d');
                 // $reader->formatDates(true, 'Y-m-d');
 
@@ -203,7 +204,7 @@ class StockItemImportController extends Controller
                         'pur_order' => $row[6],
                         'invoice_number' => $row[7],
                         'date_receive' => $date_format_receive,
-                        'date_expire' => $row[9],
+                        'date_expire' => $date_format_expire,
                     );
                 }
             }
@@ -249,19 +250,13 @@ class StockItemImportController extends Controller
     {
        // Logger($request->all());
 
-        
         $user = Auth::user();
         // Logger($request->stock_id);
        //  Logger($request->stock_item_status);
         // Logger($request->date_receive);
-     
+      
         foreach($request->import_items as $key => $item )
         {
-            // Logger($item['item_code']);
-            //  Logger($item['item_name']);
-            // Logger($item['item_receive']);
-            //  Logger($item['date_receive']);
-            //  Logger($item['date_expire']);
 
 
             $date_split = explode('-',$item['date_receive']);
@@ -272,15 +267,17 @@ class StockItemImportController extends Controller
                 $year_budget = $date_split[0];
             }
            
+          
             $has_old_item = StockItem::where([
                                         'item_code'=>$item['material_number'],
                                         'stock_id'=>$request->stock_id,
                                         'status'=>$request->stock_item_status
                                         ])->first();
-          //  Logger($has_old_item);
+     
             if($has_old_item){
-             //  Logger('has item');
+         
                 //*****insert item_transactions
+
                 try{
                     ItemTransaction::create([
                                             'stock_id'=>$request->stock_id ,
@@ -324,8 +321,6 @@ class StockItemImportController extends Controller
                         'unit_count'=>$item['unit_count'],
                         'item_sum'=>$item['item_receive'],
                         'price'=>$item['price'],
-                        // 'catalog_number'=>$item['catalog_number'],
-                        // 'lot_number'=>$item['lot_number'],
                         'pur_order'=>$item['pur_order'],
                         'invoice_number'=>$item['invoice_number'],
                         'business_name'=>$item['vendor'],

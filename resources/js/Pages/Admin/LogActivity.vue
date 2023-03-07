@@ -249,7 +249,7 @@ const year_thai = (year_select)=>{
     if(year_select.length==0)
          return '';
     else
-         return year_select+543;
+         return parseInt(year_select)+543;
 }
 
 

@@ -82,21 +82,21 @@
                 class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
                     
-                    <div class=" lg:w-2/12  ">
-                        วันที่เบิก:
-                    </div>
-                
-                    <div class=" lg:w-2/12 ">
-                        ผู้เบิก:
-                    </div>
                     <div class=" lg:w-5/12 ">
                         SAP-ชื่อวัสดุ:
                     </div>
                     <div class=" lg:w-2/12 ">
                         วันที่หมดอายุ:
                     </div>
+                    <div class=" lg:w-2/12  ">
+                        วันที่เบิก:
+                    </div>
+                   
                     <div class=" lg:w-1/12 ">
                         จำนวนที่เบิก:
+                    </div>
+                    <div class=" lg:w-2/12 ">
+                        ผู้เบิก:
                     </div>
                     <!-- <div class=" lg:w-1/12 ">
                         จำนวนคงเหลือปัจจุบัน:
@@ -111,21 +111,8 @@
                 class="w-full border-b-2   border-gray-500 shadow-sm ">
               
                 <div class="flex flex-col  lg:flex-row   "  >
-                    
-                    <div class=" bg-blue-100 lg:bg-transparent lg:w-2/12  ">
+                    <div class="   lg:w-5/12 lg:text-xs bg-blue-100 lg:bg-transparent  ">
                         <label for="" class="  ">  {{item_trans.from + key}}. </label>
-                        <label for="" class="  lg:hidden">วันที่เบิก:</label>
-                        <label class=" font-bold">
-                            <!-- {{date_action_thai(item_tran.date_action)}} -->
-                            {{dayjs(item_tran.date_action).locale('th').format('D MMM BBBB')}}
-                        </label>
-                    </div>
-                
-                    <div class=" lg:w-2/12  lg:text-xs ">
-                        <label for="" class="   lg:hidden">ผู้เบิก:</label>
-                        <label class=" font-bold">{{item_tran.user['name']}}</label>
-                    </div>
-                    <div class="   lg:w-5/12 lg:text-xs ">
                         <label for="" class="   lg:hidden">SAP:</label>
                         <label class=" font-bold">
                             {{item_tran.stock_item['item_code']}} - {{item_tran.stock_item['item_name']}}
@@ -135,13 +122,29 @@
                     <div class=" lg:w-2/12  ">
                         <label for="" class="  lg:hidden">วันที่หมดอายุ:</label>
                         <label class=" font-bold">
-                            {{dayjs(item_tran.date_expire_last).locale('th').format('D MMM BBBB')}}
+                            {{dayjs(item_tran.date_expire_last).locale('th').format('DD MMM BBBB')}}
                         </label>
                     </div>
+                    <div class="  lg:w-2/12  ">
+                       
+                        <label for="" class="  lg:hidden">วันที่เบิก:</label>
+                        <label class=" font-bold">
+                            <!-- {{date_action_thai(item_tran.date_action)}} -->
+                            {{dayjs(item_tran.date_action).locale('th').format('DD MMM BBBB')}}
+                        </label>
+                    </div>
+                
+                
+                  
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  lg:hidden">จำนวนที่เบิก:</label>
                         <label class=" font-bold">{{item_tran.item_count}} </label>
                     </div>
+                    <div class=" lg:w-2/12  lg:text-xs ">
+                        <label for="" class="   lg:hidden">ผู้เบิก:</label>
+                        <label class=" font-bold">{{item_tran.user['name']}}</label>
+                    </div>
+                
                     <!-- <div class="  lg:w-1/12 ">
                         <label for="" class="  lg:hidden">จำนวนคงเหลือปัจจุบัน:</label>
                         <label class=" font-bold"> 
@@ -261,12 +264,12 @@ const item_sum_format=(item_balance)=>{
 }
 
 const year_thai = (year_select)=>{
-   // console.log('year_select=')
-   // console.log(year_select)
+    // console.log('year_select=')
+    // console.log(year_select)
     if(year_select.length==0)
          return '';
     else
-         return year_select+543;
+         return   parseInt(year_select)+543;
 }
 
 

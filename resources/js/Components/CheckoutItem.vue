@@ -74,12 +74,12 @@
                         <div class="flex ml-2"> ชื่อบริษัท : 
                             <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.business_name}}</p> 
                         </div>
-                        <div class="flex ml-2"> วันหมดอายุ : 
+                        <div class="flex ml-2"> วันหมดอายุ(Lot. ล่าสุด) : 
                             <p class=" ml-2 text-blue-600">
                                 {{dayjs(stockItem.checkin_last.date_expire).locale('th').format('D MMMM BBBB')}}
                             </p> 
                         </div>
-                        <div class="flex ml-2"> วันที่รับเข้า : 
+                        <div class="flex ml-2"> วันที่รับเข้า(Lot. ล่าสุด) : 
                             <p class=" ml-2 text-blue-600">{{dayjs(stockItem.checkin_last.date_action).locale('th').format('D MMMM BBBB')}}</p> 
                         </div>
                        
@@ -97,12 +97,11 @@
                                 </svg>
                                  <label for="">วันที่เบิก:</label>
                             </div>
-                           
+                           <!--  :min="stockItem.checkin_last.date_action" เอาออกเนื่องจากอาจต้องการระบุวันที่ที่เก่ากว่า วันที่รับเข้าล่าสุด-->
                             <div>
                               
                                 <input type="date" name="" id=""
                                     v-model="form.date_checkout"
-                                    :min="stockItem.checkin_last.date_action"
                                     :max="dayjs(new Date()).locale('th').format('YYYY-MM-DD')"
                                     class="w-full px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
                                   :class="[date_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
