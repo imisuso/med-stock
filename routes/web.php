@@ -18,6 +18,7 @@ use App\Http\Controllers\CheckInOrderPurchaseController;
 use App\Http\Controllers\ItemTransactionController;
 use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PrintFormController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ResourceActionLogController;
@@ -273,4 +274,6 @@ Route::get('/nong', function () {
     return view('welcome');
     //return view('stock.StockItemImport');
   });
-
+  Route::get('/stockitem/testdompdf', [PDFController::class,'index'] );
+  Route::get('/stockitem/viewpdf', [PDFController::class, 'viewPDF'])->name('view-stockitem-pdf');
+  Route::post('/stockitem/downloadpdf', [PDFController::class, 'downloadPDF'])->name('download-emp-pdf');

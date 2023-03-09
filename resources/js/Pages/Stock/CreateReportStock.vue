@@ -181,6 +181,9 @@
                         พิมพ์รายงานตัดสต๊อกวัสดุ
                 </div>
             </a>
+            <div >
+                 <a  :href="route('view-stockitem-pdf')">View PDF</a>
+             </div>
     </div>
 
      
