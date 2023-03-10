@@ -181,9 +181,15 @@
                         พิมพ์รายงานตัดสต๊อกวัสดุ
                 </div>
             </a>
-            <div >
-                 <a  :href="route('view-stockitem-pdf')">View PDF</a>
-             </div>
+          
+            <a  :href="route('view-stockitem-pdf')"
+                 class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-red-400 rounded-sm shadow-md hover:bg-purple-200 focus:outline-none"
+                >
+                <div class=" flex items-center " >
+                    View DOMPDF
+                </div>
+            </a>
+           
     </div>
 
      
