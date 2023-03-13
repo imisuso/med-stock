@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ItemTransaction;
+use App\Models\Stock;
 use App\Models\StockItem;
 use Illuminate\Http\Request;
 //use PDF;
@@ -17,13 +18,14 @@ class PDFController extends Controller
         $stock_items = StockItem::take(10)->get();
        return view('pdf.stock_item_view', ['stock_items'=>$stock_items]);
     }
-    public function viewPDF() 
+    public function viewPDF(int $stock_id,int $year,int $month) 
     {
      
        // $stock_items = StockItem::take(10)->get();
-       $stock_id =12;
-       $year=2023;
-       $month=2;
+     //  dd($month);
+    //    $stock_id =12;
+    //    $year=2023;
+    //    $month=2;
        $stock_item_checkouts = ItemTransaction::where(
                                                 [   'stock_id'=>$stock_id,
                                                     'year'=>$year,
@@ -36,23 +38,7 @@ class PDFController extends Controller
                                                 ->orderBy('stock_item_id')
                                                 ->get();
 
-        // $stock_item_checkouts = DB::table('item_transactions')
-        //                         ->join('stock_items','item_transactions.stock_item_id','=','stock_items.id')
-        //                         ->join('users','item_transactions.user_id','=','users.id')
-        //                         ->select('item_transactions.date_action',
-        //                         'item_transactions.item_count',
-        //                         'stock_items.id',
-        //                         'stock_items.item_code',
-        //                         'stock_items.item_name',
-        //                         'users.name')
-        //                         ->where(['item_transactions.stock_id'=>12,
-        //                                 'item_transactions.year'=>2023,
-        //                                 'item_transactions.month'=>2,
-        //                                 'item_transactions.action'=>'checkout',
-        //                                 'item_transactions.status'=>'active']
-        //                         )
-        //                         ->orderBy('item_transactions.stock_item_id')
-        //                         ->get();
+     
 
      logger($stock_item_checkouts);
     //  logger($stock_item_checkouts[0]);
@@ -76,34 +62,33 @@ class PDFController extends Controller
 
             // logger($stock_item_checkouts[$key]['date_expire_last']);
           
-              // $tmp_arr[] = collect([
-              //   'id'=>$tran_checkout->id,
-              //   'date_action'=>$tran_checkout->date_action,
-              //   'item_code'=>$tran_checkout->item_code,
-              //   'item_name'=>$tran_checkout->item_name,
-              //   'item_count'=>$tran_checkout->item_count,
-              //   'name'=>$tran_checkout->name,
-              //   'date_expire_last' => $date_expire_last->date_expire,
-              //   // 'test' => collect([
-              //   //     'a' => 'a',
-              //   //     'b' => 'b',
-              //   // ]),
-              // ]);
 
         }
         //  logger('aaaaaaaaaaaaaaaaaaaaaaaaa');
         // dd($stock_item_checkouts);
-        // logger($tmp_arr);
-        // logger(collect($stock_item_checkouts)->all());
-    //    $array = json_decode($stock_item_checkouts);
-
+   
       
-
-        
         // $pdf = Pdf::loadView('pdf.stock_item_view', ['stock_items'=>collect($stock_item_checkouts)->all() ])
         //                     ->setPaper('a4','landscape');
+        $stock = Stock::find($stock_id);
+        $head2 = $stock->stockname."  ภาควิชาอายุรศาสตร์";
+       
 
-        $pdf = Pdf::loadView('pdf.stock_item_view', ['stock_items'=>$stock_item_checkouts])
+        $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+        $head3 = "เดือน".$thaimonth[(int) $month]."  ปี ".$year+543;
+       
+
+        $pdf = Pdf::setOptions([
+                        'isRemoteEnabled' => true, // อนุญาตให้ download font จาก link ได้
+                        // 'fontDir' => storage_path('fonts'), // folder ต้อง exists และมีสิทธิ์ RW
+                        // 'fontCache' => storage_path('fonts'), // folder ต้อง exists และมีสิทธิ์ RW
+                    ])->loadView('pdf.stock_item_view', 
+                                    [
+                                        'stock_items'=>$stock_item_checkouts,
+                                        'head2'=>$head2,
+                                        'head3'=>$head3,
+                                    ]
+                                )
                     ->setPaper('a4','landscape');
         return $pdf->stream('pdf_file.pdf');
     }
