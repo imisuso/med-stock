@@ -4,47 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   
-    <title>Document</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>ReportCutStock</title>
 
-   
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  
     <style>
+                @font-face {
+            font-family: 'THSarabunNew';
+            font-style: normal;
+            font-weight: normal;
+            src: url("{{public_path('fonts/sarabun/THSarabunNew.ttf')}}") format('truetype');
+        }
+        @font-face {
+            font-family: 'THSarabunNew';
+            font-style: normal;
+            font-weight: bold;
+            src: url("{{ public_path('fonts/sarabun/THSarabunNew Bold.ttf') }}") format('truetype');
+        }
+        @font-face {
+            font-family: 'THSarabunNew';
+            font-style: italic;
+            font-weight: normal;
+            src: url("{{ public_path('fonts/sarabun/THSarabunNew Italic.ttf') }}") format('truetype');
+        }
+        @font-face {
+            font-family: 'THSarabunNew';
+            font-style: italic;
+            font-weight: bold;
+            src: url("{{ public_path('fonts/sarabun/THSarabunNew BoldItalic.ttf') }}") format('truetype');
+        }
+     
+      
+      
         .font-lobster-two {
             font-family: 'Lobster Two', cursive;
         }
         .font-sarabun {
-            font-family: 'Sarabun', sans-serif;
-            font-size: 14px;
+            font-family: 'THSarabunNew', sans-serif;
+            font-size: 16px;
         }
         h3 {
             text-align: center;
-            font-family: 'Sarabun', sans-serif;
+            font-family: 'THSarabunNew', sans-serif;
             font-size: 18px;
+           
         }
-        p {
+        .p-center {
             text-align: center;
-            font-family: 'Sarabun', sans-serif;
+            font-family: 'THSarabunNew', sans-serif;
+            font-size: 16px;
+            line-height: 0.5;
+        }
+        .p-left {
+            text-align: left;
+            font-family: 'THSarabunNew', sans-serif;
             font-size: 16px;
             line-height: 0.5;
         }
         table {
              width: 100%;
         }
+        .footer {  
+            position: fixed;  
+            left: 10px;  
+            bottom: 5px;  
+            right: 10px;   
+            width: 95%;  
+            /* background-color: gray;  
+            color: white;  
+            text-align: center;   */
+        }  
+        .footer-page {  
+            position: fixed;  
+            right: 20px;  
+            bottom: 2px;    
+           
+         
+        }  
+        .page-number:after {
+            text-align: right;
+            font-family: 'THSarabunNew', sans-serif;
+            font-size: 16px;
+            content: "Page: " counter(page)   ;
+        }
+        .page-break {
+            page-break-after: always;
+          
+        }
+
+
     </style>
 </head>
 
 <body >
+    {{-- <h1>Page 1</h1>
+<div class="page-break"></div>
+<h1>Page 2</h1> --}}
     <div >
         <h3 class="h3" >รายงานบันทึกการตัดสต๊อกวัสดุ</h3>
-        <p class="p " >{{$head2}}</p>
-        <p class="p" >{{$head3}}</p>
-        <!-- ภาษาไทยต้อง style ด้วย font thai ไม่งั้นไม่แสดง -->
-        {{-- <p class="">น้องนีดีใจ ได้ไปคอนเสิร์ตจ้ะ</p>
-        <p class="font-sarabun">น้องนีดีใจที่สุดจิ๊จ๊ะ ได้ไปคอนเสิร์ต</p> --}}
+        <p class="p-center" >{{$head2}}</p>
+        <p class="p-center" >{{$head3}} </p>
+    
         <div >
             <table >
                 <thead>
@@ -65,16 +125,27 @@
                         <th>{{ $key+1}}</th>
                         <td scope="col">{{ $data->stockItem?->item_code }}</td>
                         <td scope="col">{{ $data->stockItem?->item_name }}</td>
-                        <td scope="col">{{ date('d-m-Y', strtotime($data->date_expire)) }}</td>
-                        <td scope="col">{{ Carbon\Carbon::parse($data->date_action)->format('d-m-Y')  }}</td>
+                        <td scope="col">{{ $data->date_expire_last }}</td>
+                        <td scope="col">{{ $data->date_action_show }}</td>
                         <th scope="col">{{ $data->item_count }}</td>
                         <td scope="col">{{ $data->user->name}}</td>
                     </tr>
+                        @if( $key % 10 == 0 && $key !=0 )
+                        <div class="footer-page">
+                            <p class="page-number"><br>   
+                        </div>
+                            <div class="page-break"></div>
+                          
+                        @endif
                     @endforeach
                 </tbody>
             </table>
         </div>
-     
+      
+        <footer class="footer">
+            <p class="p-left">{{$date_print}}<br>   
+        </footer>
+       
     </div>
 </body>
 </html>
