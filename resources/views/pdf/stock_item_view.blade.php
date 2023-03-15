@@ -46,14 +46,14 @@
         h3 {
             text-align: center;
             font-family: 'THSarabunNew', sans-serif;
-            font-size: 18px;
+            font-size: 20px;
            
         }
         .p-center {
             text-align: center;
             font-family: 'THSarabunNew', sans-serif;
-            font-size: 16px;
-            line-height: 0.5;
+            font-size: 18px;
+            line-height: 0.5px;
         }
         .p-left {
             text-align: left;
@@ -61,15 +61,31 @@
             font-size: 16px;
             line-height: 0.5;
         }
+        .p-right {
+            text-align: right;
+            font-family: 'THSarabunNew', sans-serif;
+            font-size: 16px;
+          
+        }
         table {
              width: 100%;
         }
+      
+        .th-bg-color {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            background-color: #EAE8EA;
+           
+        }
         .footer {  
             position: fixed;  
-            left: 10px;  
             bottom: 5px;  
-            right: 10px;   
-            width: 95%;  
+            left: 0px;  
+            right: 0px;   
+            width: 100%;  
+            line-height: 35px;
+            border-top:1px solid #000000;
+            font-size: 17px;
             /* background-color: gray;  
             color: white;  
             text-align: center;   */
@@ -85,13 +101,15 @@
             text-align: right;
             font-family: 'THSarabunNew', sans-serif;
             font-size: 16px;
-            content: "Page: " counter(page)   ;
+          //  content: "Page: " counter(page) ' of '  ;
         }
         .page-break {
-            page-break-after: always;
-          
+            /* page-break-after: always; */
+            page-break-before:always;
         }
-
+        table {
+            page-break-inside: avoid !important;
+        }
 
     </style>
 </head>
@@ -108,21 +126,29 @@
         <div >
             <table >
                 <thead>
-                    <tr class="font-sarabun">
-                        <th scope="col">ลำดับที่</th>
-                        <th scope="col">รหัสวัสดุ</th>
-                        <th scope="col">ชื่อวัสดุ</th>
-                        <th scope="col">วันที่หมดอายุ</th>
-                        <th scope="col">วันที่เบิกจ่าย</th>
-                        <th scope="col">จำนวนที่เบิก</th>
-                        <th scope="col">ผู้เบิก</th>
+                    <tr class="font-sarabun ">
+                        <th scope="col" class="th-bg-color">ลำดับที่</th>
+                        <th scope="col" class="th-bg-color">รหัสวัสดุ</th>
+                        <th scope="col" class="th-bg-color">ชื่อวัสดุ</th>
+                        <th scope="col" class="th-bg-color">วันที่หมดอายุ</th>
+                        <th scope="col" class="th-bg-color">วันที่เบิกจ่าย</th>
+                        <th scope="col" class="th-bg-color">จำนวนที่เบิก</th>
+                        <th scope="col" class="th-bg-color">ผู้เบิก</th>
                     </tr>
                 </thead>
-              
+                <div class="th-line"></div>
                 <tbody>
+                    @php 
+                        $row = 0; 
+                        $my_page=1;
+                    @endphp
                     @foreach($stock_items ?? '' as  $key => $data)
                     <tr class="font-sarabun">
-                        <th>{{ $key+1}}</th>
+                        @php 
+                            $row++; 
+                           
+                        @endphp
+                        <th>{{$key+1}} </th>
                         <td scope="col">{{ $data->stockItem?->item_code }}</td>
                         <td scope="col">{{ $data->stockItem?->item_name }}</td>
                         <td scope="col">{{ $data->date_expire_last }}</td>
@@ -130,21 +156,39 @@
                         <th scope="col">{{ $data->item_count }}</td>
                         <td scope="col">{{ $data->user->name}}</td>
                     </tr>
-                        @if( $key % 10 == 0 && $key !=0 )
-                        <div class="footer-page">
-                            <p class="page-number"><br>   
-                        </div>
+              
+                        @if( $row == 15 )
+                            {{-- <div class="footer-page">
+                                <p class="page-number"> 
+                            </div> --}}
+                           
+                            <div class="footer-page">
+                                <p class="p-right">Page: {{$my_page}} / {{$pages}} </p>
+                            </div>
+                            <footer class="footer">
+                                <p class="p-left">{{$date_print}}<br>   
+                            </footer>
                             <div class="page-break"></div>
-                          
+                           
+                            @php 
+                                $row = 0; 
+                                $my_page++;
+                            @endphp
+                           
                         @endif
                     @endforeach
                 </tbody>
             </table>
+            <div class="footer-page">
+                <p class="p-right">Page: {{$my_page}} / {{$pages}} </p>
+            </div>
+            <footer class="footer">
+                <p class="p-left">{{$date_print}}<br>   
+            </footer>
         </div>
       
-        <footer class="footer">
-            <p class="p-left">{{$date_print}}<br>   
-        </footer>
+     
+       
        
     </div>
 </body>

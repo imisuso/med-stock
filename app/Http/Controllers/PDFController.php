@@ -19,6 +19,14 @@ class PDFController extends Controller
         $stock_items = StockItem::take(10)->get();
        return view('pdf.stock_item_view', ['stock_items'=>$stock_items]);
     }
+    public function testPDF()
+    {
+        $pdf = Pdf::loadView('pdf.test_pdf')
+                    ->setPaper('a4','landscape');
+
+        return $pdf->stream('test_pdf.pdf');
+
+    }
     public function viewPDF(int $stock_id,int $year,int $month) 
     {
      
@@ -83,6 +91,10 @@ class PDFController extends Controller
         $year_print = (int) $split_date_now[0] + 543;
         $date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year_print;
         $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
+
+       
+        $pages = number_format(ceil(count($stock_item_checkouts)/15),0);
+       // dd($pages);
        
         $pdf = Pdf::loadView('pdf.stock_item_view', 
                                     [
@@ -90,6 +102,7 @@ class PDFController extends Controller
                                         'head2'=>$head2,
                                         'head3'=>$head3,
                                         'date_print'=>$date_print,
+                                        'pages'=>$pages,
                                     ]
                                 )
                     ->setPaper('a4','landscape');

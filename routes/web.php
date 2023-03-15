@@ -275,5 +275,5 @@ Route::get('/nong', function () {
     //return view('stock.StockItemImport');
   });
   Route::get('/stockitem/testdompdf', [PDFController::class,'index'] );
-  Route::get('/stockitem/viewpdf', [PDFController::class, 'viewPDF'])->name('view-stockitem-pdf');
+  Route::get('/testpdf', [PDFController::class, 'testPDF'])->name('test-view-pdf');
   Route::post('/stockitem/downloadpdf', [PDFController::class, 'downloadPDF'])->name('download-emp-pdf');
