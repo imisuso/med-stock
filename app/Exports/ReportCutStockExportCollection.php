@@ -68,6 +68,7 @@ WithMapping ,WithHeadings, ShouldAutoSize, WithStrictNullComparison
                                 ->with('stockItem:id,item_name,item_code')
                                 ->with('user:id,name')
                                 ->orderBy('stock_item_id')
+                                ->orderBy('date_action')
                                 ->get();
 
         foreach($item_trans as $key=>$tran_checkout){

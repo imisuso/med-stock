@@ -73,6 +73,7 @@ class ReportStockController extends Controller
                                                             ->with('stock:id,stockname')
                                                             ->with('user:id,name')
                                                             ->orderBy('stock_item_id')
+                                                            ->orderBy('date_action')
                                                             ->paginate(10)
                                                             ->withQueryString();
                                                             // ->get();
@@ -244,7 +245,7 @@ class ReportStockController extends Controller
         // Log::info($month);
 
      
-        // return 'test';
+        //dd('show');
 
         $stock_item_checkouts = ItemTransaction::where(
                                                     [   'stock_id'=>$stock_id,
@@ -255,8 +256,8 @@ class ReportStockController extends Controller
                                                     ])
                                                     ->with('stockItem:id,item_name,item_code,item_sum')
                                                     ->with('user:id,name')
-                                                    ->orderBy('stock_item_id')
-                                                    ->orderBy('date_action')
+                                                    ->orderBy('stock_item_id','asc')
+                                                    ->orderBy('date_action','asc')
                                                     ->get();
 
        // Log::info($stock_item_checkouts);
