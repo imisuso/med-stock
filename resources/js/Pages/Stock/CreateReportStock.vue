@@ -181,6 +181,15 @@
                         พิมพ์รายงานตัดสต๊อกวัสดุ
                 </div>
             </a>
+          
+            <a  :href="route('view-cutstockitem-pdf',{stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })"
+                 class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-red-400 rounded-sm shadow-md hover:bg-purple-200 focus:outline-none"
+                >
+                <div class=" flex items-center " >
+                    View DOMPDF
+                </div>
+            </a>
+           
     </div>
 
      

@@ -18,6 +18,7 @@ use App\Http\Controllers\CheckInOrderPurchaseController;
 use App\Http\Controllers\ItemTransactionController;
 use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PrintFormController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ResourceActionLogController;
@@ -109,7 +110,7 @@ Route::get('/get-checkout-item/{stock_id}/{year}/{month}', [ReportStockControlle
 Route::get('/export-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'export'])->name('export-checkout-item')->middleware('auth');
 Route::get('/export-checkout-item-test/{checkout_items}', [ReportStockController::class,'export_test'])->name('export-checkout-item-test')->middleware('auth');
 Route::get('/print-cutstock/pdf/{stock_id}/{year}/{month}', [PrintFormController::class,'printCutStock'])->name('print-cutstock-pdf')->middleware('auth');
-
+Route::get('/stockitem/viewpdf/{stock_id}/{year}/{month}', [PDFController::class, 'viewPDF'])->name('view-cutstockitem-pdf');
 Route::get('/export-balance-stock/{stock_id}', [ReportStockController::class,'exportBalanceStock'])->name('export-balance-stock')->middleware('auth');
 
 
@@ -273,4 +274,6 @@ Route::get('/nong', function () {
     return view('welcome');
     //return view('stock.StockItemImport');
   });
-
+  Route::get('/stockitem/testdompdf', [PDFController::class,'index'] );
+  Route::get('/testpdf', [PDFController::class, 'testPDF'])->name('test-view-pdf');
+  Route::post('/stockitem/downloadpdf', [PDFController::class, 'downloadPDF'])->name('download-emp-pdf');
