@@ -366,11 +366,13 @@ class ItemTransactionController extends Controller
      $item_tran->status = 'canceled';
      $item_tran->save();
 
+     $old_changes =array();
+     $old_changes['item_tran_id'] = Request()->input('item_tran_id');
+
     
      //logger($item_tran->stock_item_id);
       $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
-      $old_changes =array();
-      $old_changes['stock_item_id'] = $item_tran->stock_item_id;
+    
 
       //ตรวจสอบว่ามีการนำเข้าครั้งอื่นๆอีกหรือไม่
       $checkin = ItemTransaction::where('stock_item_id',$item_tran->stock_item_id)
@@ -384,6 +386,7 @@ class ItemTransactionController extends Controller
        // logger('upadte status item =9');
         $stock_item->status = 9;
         $stock_item->save();
+        $old_changes['stock_item_id'] = $item_tran->stock_item_id;
       }
      
     //  logger('not upadte status item =9');
