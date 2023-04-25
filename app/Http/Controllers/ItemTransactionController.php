@@ -361,31 +361,34 @@ class ItemTransactionController extends Controller
     public function cancelCheckin()
     {
 
-      //dd(Request()->input('item_tran_id'));
-      $item_tran = ItemTransaction::whereId(Request()->input('item_tran_id'))->first();
-      $item_tran->status = 'canceled';
-      $item_tran->save();
+     // dd(Request()->input('item_tran_id'));
+     $item_tran = ItemTransaction::whereId(Request()->input('item_tran_id'))->first();
+     $item_tran->status = 'canceled';
+     $item_tran->save();
 
     
-
+     //logger($item_tran->stock_item_id);
       $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
       $old_changes =array();
       $old_changes['stock_item_id'] = $item_tran->stock_item_id;
-      // $old_changes['item_sum_old'] = $stock_item->item_sum;
 
-      //$new_item_balance = $stock_item->item_sum - $item_tran->item_count;
-
-      $new_item_balance = $stock_item->itemBalance();
-
-      if($new_item_balance==0){  //ต้องไป cancel วัสดุนี้ที่ stock_items ด้วย
-        //  $stock_item->item_sum = $new_item_balance;
-          $stock_item->status = 9;
-          $stock_item->save();
-      }else{
-           // logger($new_item_balance);
-         // $stock_item->item_sum = $new_item_balance;
-          $stock_item->save();
+      //ตรวจสอบว่ามีการนำเข้าครั้งอื่นๆอีกหรือไม่
+      $checkin = ItemTransaction::where('stock_item_id',$item_tran->stock_item_id)
+                ->whereStatus('active')
+                ->whereAction('checkin')
+                ->count();
+      
+      //logger($checkin);
+      if($checkin==0)  //ถ้าไม่มีการนำเข้าครั้งอื่น ให้ยกเลิกวัสดุนี้ได้เลย
+      {
+       // logger('upadte status item =9');
+        $stock_item->status = 9;
+        $stock_item->save();
       }
+     
+    //  logger('not upadte status item =9');
+    
+   
     
       /****************  insert log ****************/
         // logger($old_changes);
