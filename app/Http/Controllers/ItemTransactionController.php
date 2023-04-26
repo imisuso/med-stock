@@ -9,9 +9,11 @@ use App\Models\ItemTransaction;
 use App\Models\LogActivity;
 use App\Models\StockItem;
 use App\Models\Stock;
+use Carbon\Carbon;
 use Database\Seeders\BudgetSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
@@ -362,12 +364,14 @@ class ItemTransactionController extends Controller
     {
 
      // dd(Request()->input('item_tran_id'));
+     $use_in = Auth::user();
      $item_tran = ItemTransaction::whereId(Request()->input('item_tran_id'))->first();
      $item_tran->status = 'canceled';
      $item_tran->save();
 
+     $detail_log =array();
      $old_changes =array();
-     $old_changes['item_tran_id'] = Request()->input('item_tran_id');
+     $old_changes['item_tran_id_checkin'] = Request()->input('item_tran_id');
 
     
      //logger($item_tran->stock_item_id);
@@ -381,12 +385,31 @@ class ItemTransactionController extends Controller
                 ->count();
       
       //logger($checkin);
-      if($checkin==0)  //ถ้าไม่มีการนำเข้าครั้งอื่น ให้ยกเลิกวัสดุนี้ได้เลย
+      if($checkin==0)  //ถ้าไม่มีการนำเข้าครั้งอื่น ให้ยกเลิกวัสดุนี้ได้เลย  และยกเลิกการตัดสต๊อกของวัสดุนี้ไปด้วย
       {
        // logger('upadte status item =9');
         $stock_item->status = 9;
         $stock_item->save();
-        $old_changes['stock_item_id'] = $item_tran->stock_item_id;
+        $old_changes['stock_item_id_canceled'] = $item_tran->stock_item_id;
+
+        $datetime_now = Carbon::now();
+ 
+        $profile_log =array();
+        $profile_log['user_cancel_checkin'] =$use_in->id;
+        $profile_log['date_cancel'] =$datetime_now->toDateTimeString();
+
+        $cancel_checkout = DB::table('item_transactions')
+                            ->where([
+                                  'stock_item_id'=>$item_tran->stock_item_id,
+                                  'status'=>'active'
+                                ])
+                              ->update(['status' => 'canceled',
+                                      'profile' =>  $profile_log
+                                      ]
+                               );   
+       
+        // logger($cancel_checkout); 
+        $detail_log['cancel_checkout_rows'] =$cancel_checkout;                    
       }
      
     //  logger('not upadte status item =9');
@@ -395,9 +418,9 @@ class ItemTransactionController extends Controller
     
       /****************  insert log ****************/
         // logger($old_changes);
-        $use_in = Auth::user();
+       
 
-        $detail_log =array();
+       
         $detail_log['table'] ='item_transactions';
 
       //  dd($detail_log);
