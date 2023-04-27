@@ -343,27 +343,76 @@ class UserController extends Controller
            ]);
 
 
+        //    'ok' => true,
+        //    'found' => true,
+        //    'active' => false,
+        //    'login' => 'sirapat.poo',
+        //    'org_id' => '10035478',
+        //    'full_name' => 'น.ส. สิรภัทร พูลสงวน',
+        //    'document_id' => NULL,
+        //    'position_id' => '70000103',
+        //    'position_name' => 'นิติกร',
+        //    'division_id' => '00014976',
+        //    'division_name' => NULL,
+        //    'password_expires_in_days' => 0,
+        //    'remark' => 'นิติกร นิติกร สำนักงานคณบดี',
+      
+        // Logger('found=');
+        // Logger($check_status_emp['found']);
 
-        if(isset($check_status_emp['found']))
-        {
-            if(!$check_status_emp['found']){
-                $get_user['status'] = 'not_found';
-                return $get_user;
-            }
-        }else{
-            if(strcmp($check_status_emp['status'],'active') ==0)
+        //******เมษายน 2566 check config('app.AUTH_USER_PROVIDER') เนื่องจาก  format data return ต่างกัน
+
+        $api_provider = config('app.AUTH_USER_PROVIDER');
+        //   Logger('api_provider=');
+        // Logger($api_provider);
+        if(strcmp($api_provider,'\App\APIs\HannahAPI')==0){
+            if(isset($check_status_emp['found']))
             {
-                $get_user = array();
-
-                $get_user = $api->getUserAD($check_status_emp['login']);
-                $get_user['status'] = 'active';
-             //   Logger($get_user);
-                return $get_user;
+                if(!$check_status_emp['found']){
+                    $get_user['status'] = 'not_found';
+                    return $get_user;
+                }
+            }else{
+                if(strcmp($check_status_emp['status'],'active') ==0)
+                {
+                    $get_user = array();
+    
+                    $get_user = $api->getUserAD($check_status_emp['login']);
+                    $get_user['status'] = 'active';
+                 //   Logger($get_user);
+                    return $get_user;
+                }
+    
+            // Logger('Withdrawn');
+                return $check_status_emp;
             }
-
-        // Logger('Withdrawn');
-            return $check_status_emp;
+        }else{ //*****SiMedPortalAPI
+            if(!$check_status_emp['found'])
+            {
+              
+                // if(!$check_status_emp['found']){
+                    $get_user['status'] = 'not_found';
+                    return $get_user;
+               // }
+            }else{
+                // Logger('active=');
+                // Logger($check_status_emp['active']);
+                if($check_status_emp['active'])
+                {
+                    $get_user = array();
+    
+                    $get_user = $api->getUserAD($check_status_emp['login']);
+                    $get_user['status'] = 'active';
+                  //  Logger('check active user');
+                    return $get_user;
+                }
+    
+               // Logger('user not active ');
+                $check_status_emp['status'] = 'withdrawn';
+                return $check_status_emp;
+            }
         }
+       
 
         
      

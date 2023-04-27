@@ -42,36 +42,51 @@ class TestUserAPI implements AuthUserAPI
 
     public function checkEmployeeStatus($sap)
     {
-        $headers = ['app' => config('app.HAN_API_SERVICE_SECRET'), 'token' => config('app.HAN_API_SERVICE_TOKEN')];
-        $options = ['timeout' => 8.0, 'verify' => false];
-        $url = config('app.HAN_API_SERVICE_URL').'user-status-by-id';
-       // $url = config('app.SI_SELFSERVICE_API_URL');
-        $response = Http::withHeaders($headers)->withOptions($options)
-                        ->post($url, ['org_id' => $sap]);
-        
-        $data = json_decode($response->getBody(),true);
+        $baseUrl = config('app.SIMED_PROTAL_API_SERVICE_URL');
        
-       // Logger($data);
-        return $data;
+        $token = config('app.SIMED_PROTAL_API_SERVICE_TOKEN');
 
+        $options = ['timeout' => 8.0, 'verify' => false];
+        //$token = '11121213';
+       // $baseUrl='aaaa';
+        $response = Http::withToken($token)
+                    ->withOptions($options)
+                    ->acceptJson()
+                    ->post($baseUrl.'user', ['org_id' => $sap])
+                    ->json();
+       // Logger('checkEmployeeStatus By SAP');
+       // Logger($response);
+        return $response;
     }
 
     public function getUserAD($username)
     {
-        $headers = ['app' => config('app.HAN_API_SERVICE_SECRET'), 'token' => config('app.HAN_API_SERVICE_TOKEN')];
-        $options = ['timeout' => 8.0, 'verify' => false];
-        $url = config('app.HAN_API_SERVICE_URL').'user';
-        $response = Http::withHeaders($headers)->withOptions($options)
-                         ->post($url, ['login' => $username]);
+        // $headers = ['app' => config('app.HAN_API_SERVICE_SECRET'), 'token' => config('app.HAN_API_SERVICE_TOKEN')];
+        // $options = ['timeout' => 8.0, 'verify' => false];
+        // $url = config('app.HAN_API_SERVICE_URL').'user';
+        // $response = Http::withHeaders($headers)->withOptions($options)
+        //                  ->post($url, ['login' => $username]);
         
-        $data = json_decode($response->getBody(),true);
+        // $data = json_decode($response->getBody(),true);
+
+        $baseUrl = config('app.SIMED_PROTAL_API_SERVICE_URL');
        
-        if($response->status()!=200){
-            return ['reply_code' => '1', 'reply_text' => 'request failed','found'=>'false'];
-        }
-        // if(!$data['ok']) {
-        //     return ['reply_code' => '1', 'reply_text' => 'Username or Password is incorrect','found'=>'false'];
+        $token = config('app.SIMED_PROTAL_API_SERVICE_TOKEN');
+
+        $options = ['timeout' => 8.0, 'verify' => false];
+        //$token = '11121213';
+       // $baseUrl='aaaa';
+        $response = Http::withToken($token)
+                    ->withOptions($options)
+                    ->acceptJson()
+                    ->post($baseUrl.'user', ['login' => $username])
+                    ->json();
+       
+        // if($response->status()!=200){
+        //     return ['reply_code' => '1', 'reply_text' => 'request failed','found'=>'false'];
         // }
+       $data = array();
+       $data = $response;
         if(!$data['found']) {
             return ['reply_code' => '1', 'reply_text' => $data['body'],'found'=>'false'];
         }
