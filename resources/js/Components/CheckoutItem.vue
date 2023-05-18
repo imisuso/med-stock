@@ -83,29 +83,34 @@
                             <p class=" ml-2 text-blue-600">{{dayjs(stockItem.checkin_last.date_action).locale('th').format('D MMMM BBBB')}}</p> 
                         </div>
                        
-                        <!-- <div class="flex ml-2"> Cat.No/Lot.No : 
-                            <p class=" ml-2 text-blue-600">{{stockItem.checkin_last.profile['catalog_number']}} /{{stockItem.checkin_last.profile['lot_number']}}</p> 
-                        </div> -->
+                    
                       
                     </div>
                    
+                    <div class="flex ml-2"> 
+                            <p class=" ml-2 text-red-600 text-xs"> *คลิ๊กที่ icon รูปปฎิทินเพื่อเลือกวันที่เบิก</p> 
+                        </div>
                     <div v-if="canAbility.checkout_item && stockItem.item_balance!=0" class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
                         <div class=" m-2">
                              <div  class="flex justify-start " >
                                 <svg xmlns="http://www.w3.org/2000/svg" v-if="date_alert" class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                                 </svg>
-                                 <label for="">วันที่เบิก:</label>
+                                 <label >วันที่เบิก:</label>
+                                
                             </div>
                            <!--  :min="stockItem.checkin_last.date_action" เอาออกเนื่องจากอาจต้องการระบุวันที่ที่เก่ากว่า วันที่รับเข้าล่าสุด-->
                             <div>
                               
-                                <input type="date" name="" id=""
+                                <input type="date" id="dateCheckout" 
                                     v-model="form.date_checkout"
                                     :max="dayjs(new Date()).locale('th').format('YYYY-MM-DD')"
                                     class="w-full px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-                                  :class="[date_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
+                                    :class="[date_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
+                                    @keydown="checkKeydown"
                                 >
+
+                              
                             </div>
                            
                         </div>
@@ -125,14 +130,17 @@
                                     class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
                                     :class="[unitcheckout_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
                                 >
-                                <label v-if="unitcheckout_alert">{{msg_alert}}</label>
+                              
                             </div>
                           
                         </div>
                     
                         
                     </div>
-
+                    <div class="mx-2 text-center bg-red-600 text-sm text-white">
+                        <label v-if="date_alert" >!!! {{msg_alert}} !!!</label>
+                        <label v-if="unitcheckout_alert">!!! {{msg_alert}} !!!</label>
+                    </div>
                     <div v-if="canAbility.checkout_item && stockItem.item_balance!=0" class="flex flex-col lg:flex-row px-2 py-2  ">
                       
                         <button
@@ -226,7 +234,9 @@ const price_format=(price)=>{
 }
 const confirmCheckout=(stock_item)=>{
   // console.log('confirmCheckout');
-   // console.log(form.date_checkout[index]);
+   // console.log(form.date_checkout);
+  //  let date =  new Date().getFullYear();
+  //  console.log(date);
     if(form.date_checkout.length==0){
         date_alert.value=true
         msg_alert.value="กรุณาระบุวันที่เบิก";
@@ -300,13 +310,19 @@ const okConfirmCheckout=()=>{
     form.post(route('checkout-stock-item'), {
         preserveState: false,
         preserveScroll: true,
-        onSuccess: page => { console.log('success');},
+        //onSuccess: page => { console.log('success');},
         onError: errors => { 
             console.log('error');
         },
-        onFinish: visit => { console.log('finish');},
+      //  onFinish: visit => { console.log('finish');},
     })
   
+}
+const checkKeydown=()=>{
+    date_alert.value=true
+    msg_alert.value="กรุณาระบุวันที่โดยคลิ๊กที่รูปปฎิทิน";
+    document.getElementById("dateCheckout").value = "";
+    return false;
 }
 
 
