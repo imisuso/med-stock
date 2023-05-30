@@ -23,6 +23,18 @@
                     </svg>
                 </label>
         </div>
+
+        <div v-if="$page.props.flash.status=='Warnning'" 
+                class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
+                <input type="checkbox" class="hidden" id="banneralert">
+                
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-yellow-200 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+                 {{ $page.props.flash.msg }}
+                   <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </label>
+        </div>
         <button @click="goBack()"
           class=" flex text-gray-600 font-bold"
          >
@@ -129,7 +141,7 @@
 			</tr>
 		</thead>
 		<tbody class="block md:table-row-group">
-			<tr v-for="(item_tran,index) in item_trans.data" :key=item_tran.id
+			<tr v-for="(item_tran) in item_trans.data" :key=item_tran.id
                 class="bg-white my-2 p-2 mb-2 border-2 rounded-md border-gray-500 block md:border-none   md:table-row ">
 				<td class="text-left  block md:table-cell   md:border-b-2 md:border-gray-300 "><span class="inline-block w-1/3 md:hidden font-bold">วันที่</span>
                     <span  
@@ -161,8 +173,8 @@
                                   item_tran.user_id == $page.props.auth.user.id
                                 "
                         v-on:click="edit_price(item_tran.id,item_tran.price)"
-                        class=" ml-3 text-green-700 font-bold py-1 px-2 ">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        class=" ml-3  bg-green-300  hover:bg-green-200 border border-green-600 text-green-800 font-bold py-1 px-2  rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
                         </svg>
                     </button>
@@ -339,7 +351,7 @@ const props =defineProps({
 const form = useForm({
     item_tran_id:0,
     price_edit_new:0,
-   // delete_stock_item_id:0,
+    update_item:'',
 })
 const confirm_delete_item=ref(false);
 const confirm_delete_item_name=ref('');
@@ -367,8 +379,21 @@ const  cancelEditPrice=()=>{
 }
 
 const okconfirmEditPrice=()=>{
-    console.log(form.item_tran_id);
-    console.log(form.price_edit_new);
+    //console.log(form.item_tran_id);
+    //console.log(form.price_edit_new);
+    form.update_item = "price";
+
+    form.post(route('edit-price-item'), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: page => { //console.log('success');
+        },
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { //console.log('finish');
+        },
+    })
 }
 
 const cancel_checkout=(item_tran_id)=>{

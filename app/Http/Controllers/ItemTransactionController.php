@@ -247,7 +247,7 @@ class ItemTransactionController extends Controller
                                     'stock' => $stock,
                                     'item_trans' => $item_trans,
                                     'checkin_last'=>$checkin_last,
-                                    'item_balance'=>$item_balance,
+                                  'item_balance'=>$item_balance,
                                     'count_name'=>$stock_item->unit_count,
                                     'can_abilities'=>$user->abilities,
                                     'can'=>[
@@ -304,9 +304,58 @@ class ItemTransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update()
     {
-        //
+        //dd(request()->all());
+
+        $user = Auth::user();
+
+        /* Insert Log */
+        $item = ItemTransaction::where(['id'=>request()->input('item_tran_id')])
+                                ->first();
+      
+        $original_val_item = array();
+        $original_val_item = $item->getOriginal(); //เก็บค่าเก่าไว้ก่อน
+
+        try{
+           
+             $item->update(['price'=>request()->input('price_edit_new')]);
+           
+            //Log::info($update_budget);
+             $item_changes = $item->getChanges();
+         //   logger($item_changes);
+             $msg_notify_test = $user->name.' แก้ไขราคาวัสดุสำเร็จ ';
+             Logger($msg_notify_test);
+        }catch(\Illuminate\Database\QueryException $e){
+            //rollback
+            Log::info($e->getMessage());
+            //return Redirect::back()->with(['status' => 'error', 'msg' => $e->getMessage()]);
+            return redirect()->back()->with(['status' => 'error', 'msg' =>  'เกิดความผิดพลาดในการแก้ไขข้อมูลราคาวัสดุกรุณาติดต่อเจ้าหน้าที่ IT ภาคฯ']);
+        }
+
+        $old_changes =[];
+        if (count($item_changes)) {
+            foreach ($item_changes as $key=>$val) {
+                //$old_changes[] = [ 'column'=>$key , 'old'=>$original_val_budget[$key] , 'new'=>$val];
+                $old_changes[$key] = ['old'=>$original_val_item[$key] , 'new'=>$val];
+            }
+            array_pop($old_changes); //เอา updated_at  ออก
+        }else{
+            return Redirect::back()->with(['status' => 'Warnning', 'msg' => 'No Update']);
+        }
+
+           /****************  insert resource_action_logs ****************/
+
+         $item->actionLogs()->create([
+          'user_id' => Auth::id(),
+          'action' => 'change_item',
+          'log' => $old_changes,
+
+        ]);
+   
+
+      return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขงบประมาณสำเร็จ']);
+
     }
 
     /**
