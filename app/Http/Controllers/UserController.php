@@ -311,8 +311,8 @@ class UserController extends Controller
     public function checkEmployeeStatus($sap_id,AuthUserAPI $api)
     {
         //Logger(request()->all());
-        //Logger($sap_id);
-
+       // Logger($sap_id);
+      //  dd('checkEmployeeStatus');
         $check_user = User::where('sap_id',$sap_id)->first();
 
         if($check_user)
@@ -366,27 +366,43 @@ class UserController extends Controller
         //   Logger('api_provider=');
         // Logger($api_provider);
         if(strcmp($api_provider,'\App\APIs\HannahAPI')==0){
-            if(isset($check_status_emp['found']))
-            {
-                if(!$check_status_emp['found']){
-                    $get_user['status'] = 'not_found';
-                    return $get_user;
-                }
-            }else{
-                if(strcmp($check_status_emp['status'],'active') ==0)
+
+                if(isset($check_status_emp['found']))
                 {
-                    $get_user = array();
-    
-                    $get_user = $api->getUserAD($check_status_emp['login']);
-                    $get_user['status'] = 'active';
-                 //   Logger($get_user);
-                    return $get_user;
+                    if(!$check_status_emp['found']){
+                        $get_user['status'] = 'not_found';
+                        return $get_user;
+                    }
+                }else{
+                    if(strcmp($check_status_emp['status'],'active') ==0)
+                    {
+                        $get_user = array();
+        
+                        $get_user = $api->getUserAD($check_status_emp['login']);
+                        $get_user['status'] = 'active';
+                    //   Logger($get_user);
+                        return $get_user;
+                    }
+        
+                // Logger('Withdrawn');
+                    return $check_status_emp;
                 }
-    
-            // Logger('Withdrawn');
-                return $check_status_emp;
-            }
         }else{ //*****SiMedPortalAPI
+
+            //   Logger('SiMedPortalAPI');
+            //   Logger($check_status_emp);
+            //   Logger('key found-->');
+            //   Logger($check_status_emp['found']);
+            if($check_status_emp['reply_code'] == '9')
+            {
+                $get_user['status'] = 'error_sap';
+                $get_user['msg_error'] = $check_status_emp['reply_text'];
+                   Logger('final return--->');
+                    Logger($get_user);
+                return $get_user;
+            }
+
+
             if(!$check_status_emp['found'])
             {
               
@@ -395,15 +411,33 @@ class UserController extends Controller
                     return $get_user;
                // }
             }else{
-                // Logger('active=');
+               // Logger($check_status_emp);
+                //  Logger('active=');
                 // Logger($check_status_emp['active']);
+                // Logger('full_name=');
+                // Logger($check_status_emp['full_name']);
                 if($check_status_emp['active'])
                 {
                     $get_user = array();
     
+
                     $get_user = $api->getUserAD($check_status_emp['login']);
-                    $get_user['status'] = 'active';
-                  //  Logger('check active user');
+                    // Logger($get_user);
+     
+                    // Logger('check active user');
+                    if($get_user['reply_code'] == '9')
+                    {
+                        $get_user['status'] = 'error';
+                        $get_user['msg_error'] = $get_user['reply_text'];
+                        $get_user['login'] = $check_status_emp['login'];
+                    }
+                    else
+                    {
+                        $get_user['status'] = 'active';
+                    }
+
+                    // Logger('final return--->');
+                    // Logger($get_user);
                     return $get_user;
                 }
     

@@ -90,15 +90,25 @@ class SiMedPortalAPI implements AuthUserAPI
         $response = Http::withToken($token)
                     ->withOptions($options)
                     ->acceptJson()
-                    ->post($baseUrl.'user', ['org_id' => $sap])
-                    ->json();
-       // Logger('checkEmployeeStatus By SAP');
-       // Logger($response);
-        return $response;
+                    ->post($baseUrl.'user', ['org_id' => $sap]);
+                   // ->json();
+        Logger('checkEmployeeStatus By SAP');
+        Logger($response->json());
+       if($response->status()!=200){
+        $data = $response->json();
+        return ['reply_code' => '9', 'reply_text' => $data['message']];
+       }
+      //  Logger($response);
+        $data = $response->json();
+        $data['reply_code'] = 0;
+        return $data;
     }
 
     public function getUserAD($username)
     {
+        //Logger('----getUserAD-----');
+        // Logger('username-->');
+        // Logger($username);
         // $headers = ['app' => config('app.HAN_API_SERVICE_SECRET'), 'token' => config('app.HAN_API_SERVICE_TOKEN')];
         // $options = ['timeout' => 8.0, 'verify' => false];
         // $url = config('app.HAN_API_SERVICE_URL').'user';
@@ -117,14 +127,18 @@ class SiMedPortalAPI implements AuthUserAPI
         $response = Http::withToken($token)
                     ->withOptions($options)
                     ->acceptJson()
-                    ->post($baseUrl.'user', ['login' => $username])
-                    ->json();
-       
-        // if($response->status()!=200){
-        //     return ['reply_code' => '1', 'reply_text' => 'request failed','found'=>'false'];
-        // }
+                    ->post($baseUrl.'user', ['login' => $username]);
+                    //->json();
+       //  Logger($response->status());
+      //   Logger($response->json());
+        if($response->status()!=200){
+            $data = $response->json();
+            return ['reply_code' => '9', 'reply_text' => $data['message'],'found'=>'true'];
+        }
+   
+   //  Logger($response->json());
        $data = array();
-       $data = $response;
+       $data = $response->json();
         if(!$data['found']) {
             return ['reply_code' => '1', 'reply_text' => $data['body'],'found'=>'false'];
         }
