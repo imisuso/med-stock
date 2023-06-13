@@ -171,8 +171,8 @@ class ItemTransactionController extends Controller
 
      
 
-        $msg_notify_test = $user->name.'  บันทึกการเบิกวัสดุสำเร็จ';
-        Logger($msg_notify_test);
+        // $msg_notify_test = $user->name.'  บันทึกการเบิกวัสดุสำเร็จ';
+        // Logger($msg_notify_test);
       
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกการเบิกวัสดุสำเร็จ']);
        
@@ -324,8 +324,8 @@ class ItemTransactionController extends Controller
             //Log::info($update_budget);
              $item_changes = $item->getChanges();
          //   logger($item_changes);
-             $msg_notify_test = $user->name.' แก้ไขราคาวัสดุสำเร็จ ';
-             Logger($msg_notify_test);
+            //  $msg_notify_test = $user->name.' แก้ไขราคาวัสดุสำเร็จ ';
+            //  Logger($msg_notify_test);
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
             Log::info($e->getMessage());
@@ -348,13 +348,28 @@ class ItemTransactionController extends Controller
 
          $item->actionLogs()->create([
           'user_id' => Auth::id(),
-          'action' => 'change_item',
+          'action' => 'change_price',
           'log' => $old_changes,
 
         ]);
+
+        $use_in = Auth::user();
+        $detail_log =array();
+        $detail_log['item_transactions_id'] =$item->id;
+  
+
+      //  dd($detail_log);
+
+        $log_activity = LogActivity::create([
+            'user_id' => $use_in->id,
+            'sap_id' => $use_in->sap_id,
+            'function_name' => 'change_price',
+            'action' => 'change_price_item',
+            'detail'=> $detail_log,
+        ]);
    
 
-      return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขงบประมาณสำเร็จ']);
+      return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขราคาวัสดุสำเร็จ']);
 
     }
 
@@ -403,8 +418,8 @@ class ItemTransactionController extends Controller
             //'old_value'=> $old_changes,
         ]);
 
-        $msg_notify_test = $use_in->name.'  ยกเลิกการเบิกวัสดุสำเร็จ';
-        Logger($msg_notify_test);
+        // $msg_notify_test = $use_in->name.'  ยกเลิกการเบิกวัสดุสำเร็จ';
+        // Logger($msg_notify_test);
         return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการเบิกวัสดุสำเร็จ']);
        
     }
@@ -483,8 +498,8 @@ class ItemTransactionController extends Controller
             'old_value'=> $old_changes,
         ]);
 
-        $msg_notify_test = $use_in->name.'  ยกเลิกการนำเข้าวัสดุสำเร็จ';
-        Logger($msg_notify_test);
+        // $msg_notify_test = $use_in->name.'  ยกเลิกการนำเข้าวัสดุสำเร็จ';
+        // Logger($msg_notify_test);
         return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการนำเข้าวัสดุสำเร็จ']);
        
     }

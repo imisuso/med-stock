@@ -394,8 +394,8 @@ class StockItemImportController extends Controller
 
         $msg = 'เพิ่มวัสดุจากไฟล์ excel จำนวน '.$cnt.' รายการ เรียบร้อย';
 
-        $msg_notify_test = $user->name.' '.$msg;
-        Logger($msg_notify_test);
+        // $msg_notify_test = $user->name.' '.$msg;
+        // Logger($msg_notify_test);
 
         return Redirect::back()->with(['status' => 'success', 'msg' => $msg]);
     }
