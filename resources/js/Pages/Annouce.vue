@@ -10,15 +10,14 @@
                     </svg>
                     What's New
                 </button>
-              
-                <!-- <a href="http://">อ่านข้อตกลงและนโยบายการคุ้มครองข้อมูลส่วนบุคคล</a> -->
+
                 <Link :href="route('agreement')" class="underline">อ่านข้อตกลงและนโยบายการคุ้มครองข้อมูลส่วนบุคคล</Link>
             </div>
             <div>
-                <p class=" my-2 text-center font-bold text-lg text-blue-800 ">ข่าวประชาสัมพันธ์</p> 
+                <p class=" my-2 text-center font-bold text-lg text-blue-800 ">ข่าวประชาสัมพันธ์</p>
             </div>
-          
-            <div v-for="(annouce,key) in annouces" :key="annouce.id" 
+
+            <div v-for="(annouce,key) in annouces" :key="annouce.id"
                 class=" flex-col text-blue-900 text-lg bg-blue-50 p-4 border-b-2 m-4 border-blue-300  rounded-md  "
                     >
                     <p class=" underline underline-offset-2 ">  ข่าวที่ {{key+1}}.</p>
@@ -29,30 +28,35 @@
 
        <ModalUpToYou :isModalOpen="open_news" modalSize="large">
         <template v-slot:header>
-            <p class="text-md font-bold text-blue-800 ">What's new in MED-STOCK</p> 
-                                    
+            <p class="text-md font-bold text-blue-800 ">What's new in MED-STOCK</p>
+
         </template>
 
         <template v-slot:body>
             <div class="text-gray-900 text-md font-medium ">
-                 <li>15 มิถุนายน 2566 เพิ่ม Feature แก้ไขราคา โดยผู้ที่นำเข้าวัสดุรายการใด จะสามารถแก้ไขราคาวัสดุรายการนั้นได้ โดยเข้าไปที่หน้าจอแสดงประวัติการรับเข้าและเบิกออก</li>
+                 <li >15 มิถุนายน 2566 เพิ่ม Feature แก้ไขราคา โดยผู้ที่นำเข้าวัสดุรายการใด จะสามารถแก้ไขราคาวัสดุรายการนั้นได้ โดยเข้าไปที่หน้าจอแสดงประวัติการรับเข้าและเบิกออก
+                     <a href="../../../../docs/poster_edit_price_item.pdf" target="_blank" class=" underline ">
+                        (คู่มือ)
+                     </a>
+                 </li>
+
 
             </div>
         </template>
 
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
-                <button 
+                <button
                     class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="closeNews"
                     >
                     ปิด
                 </button>
-              
+
             </div>
         </template>
     </ModalUpToYou>
-    
+
    </AppLayout>
 </template>
 
@@ -77,13 +81,13 @@ const open_news=ref(false);
 const openNews=()=>{
   //  console.log(order);
   open_news.value = true;
-           
+
 }
 
 const closeNews=()=>{
   //  console.log(order);
   open_news.value = false;
-           
+
 }
 
 </script>

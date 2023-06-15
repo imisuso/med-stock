@@ -10,10 +10,9 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
-use Inertia\Inertia;
+
 
 class LoginController extends Controller
 {
@@ -31,9 +30,9 @@ class LoginController extends Controller
     public function authenticate( AuthUserAPI $api)
     {
         //******* Authenticate siriraj AD user
-     
+
         //Logger('-------Login Controller----------');
-      
+
         $sirirajUser = $api->authenticate(request()->input('username'), request()->input('password'));
         //  \Log::info('-------Login Controller----------');
         //Logger($sirirajUser);
@@ -45,7 +44,7 @@ class LoginController extends Controller
 
         $user_check =  User::where('sap_id',$sirirajUser['org_id'])->first();
         //Logger($user_check);
-       
+
         if($user_check){
 
             if($user_check->status !=1){
@@ -53,19 +52,17 @@ class LoginController extends Controller
             }
 
             Auth::login($user_check);
-           
+
             $user = Auth::user();
-            // Logger('after auth');
-            // Logger($user);
-            // Logger($user->abilities);
+
 
             $main_menu_links = [
                    'is_admin_division_stock'=> $user->can('view_master_data'),
                   // 'user_abilities'=>$user->abilities,
             ];
-         
+
             request()->session()->flash('mainMenuLinks', $main_menu_links);
-       
+
             $log_activity = new LogActivity();
             $log_activity->user_id = $user->id;
             $log_activity->sap_id = $user->sap_id;
@@ -76,8 +73,8 @@ class LoginController extends Controller
             // $msg_notify_test = $user->name.'  เข้าระบบสำเร็จ';
             // Logger($msg_notify_test);
            return redirect()->intended(RouteServiceProvider::HOME);
-           
-           
+
+
         }else{
            /* Log to Slack */
            $msg_notify_test = $sirirajUser['name'].'  เข้าระบบไม่สำเร็จ เพราะไม่พบเจ้าหน้าที่คนนี้เป็นผู้ใช้งานระบบ';
@@ -86,14 +83,14 @@ class LoginController extends Controller
         }
        // Logger('login success');
      //   return Redirect::route('welcome');
-       
-        
-        
+
+
+
     }
 
     public function index()
     {
-       
+
     }
 
     /**
@@ -101,10 +98,7 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -112,10 +106,7 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+
 
     /**
      * Display the specified resource.
@@ -123,10 +114,7 @@ class LoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -134,10 +122,7 @@ class LoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -146,10 +131,6 @@ class LoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -157,10 +138,7 @@ class LoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+
 
     public function logout(Request $request)
     {
@@ -176,13 +154,13 @@ class LoginController extends Controller
     //     $log_activity->program_name = 'auth';
     //     $log_activity->action = 'logout_success';
     //     $log_activity->save();
-      
+
     //     Auth::logout();
     //     //Session::forget('user');
     //     $request->session()->invalidate();
 
     //     $request->session()->regenerateToken();
-       
+
     //     return Redirect::route('welcome');
     }
 
