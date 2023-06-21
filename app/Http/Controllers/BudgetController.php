@@ -26,9 +26,9 @@ class BudgetController extends Controller
     public function index()
     {
         $year_send= array();
-      
+
         $year_start = budget::select('year')->distinct('year')->orderBy('year','asc')->first();
-       
+
         if(!$year_start){
            // dd('not found budget');
             $year_now = date('Y');
@@ -38,16 +38,16 @@ class BudgetController extends Controller
             //dd($year_send);
             return Inertia::render('Admin/ListBudget',[
                 'years'=>$year_send,
-               
+
             ]);
         }
 
         $year_start = $year_start->year - 1;
-      
+
         array_push($year_send,$year_start);
 
         $budget_years = budget::select('year')->distinct()->get();
-    
+
         foreach($budget_years as  $year){
            // Log::info($year->year);
            array_push($year_send,$year->year);
@@ -60,7 +60,7 @@ class BudgetController extends Controller
         //Log::info($year_send);
         return Inertia::render('Admin/ListBudget',[
                             'years'=>$year_send,
-                           
+
                         ]);
     }
 
@@ -69,10 +69,7 @@ class BudgetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -109,8 +106,8 @@ class BudgetController extends Controller
             'action' => 'add_budget',
           ]);
 
-      
-       
+
+
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกงบประมาณสำเร็จ']);
     }
 
@@ -123,8 +120,8 @@ class BudgetController extends Controller
     public function show()
     {
        // $year_search =$year;
-      // logger('budgetController show');
-       // logger(request()->all());
+//      logger('budgetController show');
+//        logger(request()->all());
         $year_search = request()->input('year_selected');
         $budget = budget::where(['year'=>$year_search ])
                          ->first();
@@ -136,13 +133,13 @@ class BudgetController extends Controller
         $balance_budget=0.0;
         foreach($stocks as $key=>$stock){
             $budget_year = budget::where('stock_id',$stock->id)
-                                            ->where('year',$year_search) 
+                                            ->where('year',$year_search)
                                             ->first();
-                                          //  ->where('status','on')    
+                                          //  ->where('status','on')
            // Log::info($budget_year->count());
- 
+
             if(!$budget_year){
-               
+
                 $budget_year['budget_add']=0.00;
                 $budget_year['year']=0;
                 $balance_budget = 0.0;
@@ -162,7 +159,7 @@ class BudgetController extends Controller
                 }else{
                     $use_budget = 0.0;
                 }
-          
+
 
                 //*********ข้อมูลใบสั่งซื้อ
                 $purchase_orders = OrderPurchase::select('date_order','project_name','budget','timeline')
@@ -178,7 +175,7 @@ class BudgetController extends Controller
                     $purchase_use_budget = 0.0;
                 }
 
-                $balance_budget = (float)$budget_year->budget_add - (float)$use_budget - (float)$purchase_use_budget; 
+                $balance_budget = (float)$budget_year->budget_add - (float)$use_budget - (float)$purchase_use_budget;
 
                //*********ข้อมูล Import ใบสั่งซื้อ
 
@@ -195,12 +192,12 @@ class BudgetController extends Controller
 
 
             }
-          
+
             $stocks[$key]['budget'] = $budget_year;
-           
+
         }
 
-       
+
         /****************  insert resource_action_logs ****************/
         $detail_log =array();
         $detail_log['year'] = $year_search;
@@ -212,14 +209,14 @@ class BudgetController extends Controller
                     'log' => $detail_log,
                     ]);
         }
-    
-        
-     
+
+
+
 
         $year_send= array();
-      
+
         $year_start = budget::select('year')->distinct('year')->orderBy('year','asc')->first();
-       
+
         if(!$year_start){
            // dd('not found budget');
             $year_now = date('Y');
@@ -229,16 +226,16 @@ class BudgetController extends Controller
             //dd($year_send);
             return Inertia::render('Admin/ListBudget',[
                 'years'=>$year_send,
-               
+
             ]);
         }
 
         $year_start = $year_start->year - 1;
-      
+
         array_push($year_send,$year_start);
 
         $budget_years = budget::select('year')->distinct()->get();
-    
+
         foreach($budget_years as  $year){
            // Log::info($year->year);
            array_push($year_send,$year->year);
@@ -276,10 +273,10 @@ class BudgetController extends Controller
                         ->first();
         $original_val_budget = array();
         $original_val_budget = $budget->getOriginal(); //เก็บค่าเก่าไว้ก่อน
-  
+
         try{
           // budget::latest()->first();
-           
+
              $budget->update(['budget_add'=>request()->input('budget_edit')]);
             //Log::info($update_budget);
              $budget_changes = $budget->getChanges();
@@ -303,10 +300,10 @@ class BudgetController extends Controller
         }else{
             return Redirect::back()->with(['status' => 'Warnning', 'msg' => 'No Update']);
         }
-         
-       
+
+
             /****************  insert resource_action_logs ****************/
-        
+
          // $user_in = Auth::user();
 
           $budget->actionLogs()->create([
@@ -315,7 +312,7 @@ class BudgetController extends Controller
             'log' => $old_changes,
 
           ]);
-     
+
 
         return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขงบประมาณสำเร็จ']);
     }
@@ -327,10 +324,7 @@ class BudgetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -338,8 +332,5 @@ class BudgetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+
 }

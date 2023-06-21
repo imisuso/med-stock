@@ -10,7 +10,6 @@ use App\Models\LogActivity;
 use App\Models\StockItem;
 use App\Models\Stock;
 use Carbon\Carbon;
-use Database\Seeders\BudgetSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +56,7 @@ class ItemTransactionController extends Controller
            // $all_orders = array();
             $budget_used = 0.0;
             $budget_balance = 0.0;
-         
+
             foreach($all_orders as $key=>$order){
              // Logger($order);
               // dd($order);
@@ -106,10 +105,7 @@ class ItemTransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -119,7 +115,7 @@ class ItemTransactionController extends Controller
      */
     public function store(Request $request)
     {
-      
+
         $user = Auth::user();
         // Log::info('ItemTransactionController store');
        // dd($request->all());
@@ -133,8 +129,8 @@ class ItemTransactionController extends Controller
         //dd($item_balance);
         if($request->confirm_item_count >$item_balance )
           return Redirect::back()->with(['status' => 'error', 'msg' => 'ERROR!!จำนวนที่เบิกมากกว่าจำนวนที่คงเหลือ']);
-       
-      
+
+
         // Log::info($stock_item->stock);
         $year_checkout= substr($request->confirm_item_date,0,4);
         $month_checkout= substr($request->confirm_item_date,5,2);
@@ -142,7 +138,7 @@ class ItemTransactionController extends Controller
         $date_expire_last = ItemTransaction::select('date_expire')
                                     ->where(['stock_item_id'=>$stock_item->id,
                                                         'action'=>'checkin',
-                                                        'status'=>'active'    
+                                                        'status'=>'active'
                                                 ])
                                     ->orderBy('date_expire','desc')
                                     ->first();
@@ -166,16 +162,16 @@ class ItemTransactionController extends Controller
             //rollback
           //  return redirect()->back();
             return Redirect::back()->with(['status' => 'error', 'msg' => $e->getMessage()]);
-           
+
         }
 
-     
 
-        $msg_notify_test = $user->name.'  บันทึกการเบิกวัสดุสำเร็จ';
-        Logger($msg_notify_test);
-      
+
+        // $msg_notify_test = $user->name.'  บันทึกการเบิกวัสดุสำเร็จ';
+        // Logger($msg_notify_test);
+
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกการเบิกวัสดุสำเร็จ']);
-       
+
     }
 
     /**
@@ -188,7 +184,7 @@ class ItemTransactionController extends Controller
     {
       //Log::info('---------ItemTransactionController show ------------');
       // Log::info($stock_item);
-      
+
 
         $checkin_last = $stock_item->itemTransactionCheckinLatest();
         $item_balance = $stock_item->itemBalance();
@@ -197,16 +193,16 @@ class ItemTransactionController extends Controller
         $user = Auth::user();
 
         $role_admin = array('admin_it','admin_med_stock','super_officer');
-       
+
        /*  Validate  User View own Item Only  */
         if(!in_array($user->roles[0]['name'] , $role_admin)
             &&  ($user->unitid != $stock_item->stock->unit_id)
-          )   
+          )
         {
           // logger("can not view stock item");
-        
+
            return Redirect::back()->with(['status' => 'error', 'msg' => 'คุณไม่มีสิทธิดูข้อมูลการนำเข้า-เบิกออกของวัสดุนี้']);
-         
+
         }
         $main_menu_links = [
             'is_admin_division_stock'=> $user->can('view_master_data'),
@@ -238,16 +234,16 @@ class ItemTransactionController extends Controller
             //return "list checkout";
           // $stock_item = StockItem::where('id',$stock_item->id)->first();
             $stock = Stock::where('id',$stock_item->stock_id)->first();
-          
-      
+
+
             request()->session()->flash('mainMenuLinks', $main_menu_links);
-          
+
             return Inertia::render('Stock/ItemDetail',[
                                     'stock_item'=>$stock_item,
                                     'stock' => $stock,
                                     'item_trans' => $item_trans,
                                     'checkin_last'=>$checkin_last,
-                                    'item_balance'=>$item_balance,
+                                  'item_balance'=>$item_balance,
                                     'count_name'=>$stock_item->unit_count,
                                     'can_abilities'=>$user->abilities,
                                     'can'=>[
@@ -278,7 +274,7 @@ class ItemTransactionController extends Controller
         //dd($order_item_trans);
 
         /****************  insert resource_action_logs ****************/
-        
+
          // $user_in = Auth::user();
 
           $detail_log =array();
@@ -304,9 +300,73 @@ class ItemTransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update()
     {
-        //
+        //dd(request()->all());
+
+        $user = Auth::user();
+
+        /* Insert Log */
+        $item = ItemTransaction::where(['id'=>request()->input('item_tran_id')])
+                                ->first();
+
+        $original_val_item = array();
+        $original_val_item = $item->getOriginal(); //เก็บค่าเก่าไว้ก่อน
+
+        try{
+
+             $item->update(['price'=>request()->input('price_edit_new')]);
+
+            //Log::info($update_budget);
+             $item_changes = $item->getChanges();
+         //   logger($item_changes);
+            //  $msg_notify_test = $user->name.' แก้ไขราคาวัสดุสำเร็จ ';
+            //  Logger($msg_notify_test);
+        }catch(\Illuminate\Database\QueryException $e){
+            //rollback
+            Log::info($e->getMessage());
+            //return Redirect::back()->with(['status' => 'error', 'msg' => $e->getMessage()]);
+            return redirect()->back()->with(['status' => 'error', 'msg' =>  'เกิดความผิดพลาดในการแก้ไขข้อมูลราคาวัสดุกรุณาติดต่อเจ้าหน้าที่ IT ภาคฯ']);
+        }
+
+        $old_changes =[];
+        if (count($item_changes)) {
+            foreach ($item_changes as $key=>$val) {
+                //$old_changes[] = [ 'column'=>$key , 'old'=>$original_val_budget[$key] , 'new'=>$val];
+                $old_changes[$key] = ['old'=>$original_val_item[$key] , 'new'=>$val];
+            }
+            array_pop($old_changes); //เอา updated_at  ออก
+        }else{
+            return Redirect::back()->with(['status' => 'Warnning', 'msg' => 'No Update']);
+        }
+
+           /****************  insert resource_action_logs ****************/
+
+         $item->actionLogs()->create([
+          'user_id' => Auth::id(),
+          'action' => 'change_price',
+          'log' => $old_changes,
+
+        ]);
+
+        $use_in = Auth::user();
+        $detail_log =array();
+        $detail_log['item_transactions_id'] =$item->id;
+
+
+      //  dd($detail_log);
+
+        $log_activity = LogActivity::create([
+            'user_id' => $use_in->id,
+            'sap_id' => $use_in->sap_id,
+            'function_name' => 'change_price',
+            'action' => 'change_price_item',
+            'detail'=> $detail_log,
+        ]);
+
+
+      return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขราคาวัสดุสำเร็จ']);
+
     }
 
     /**
@@ -321,7 +381,7 @@ class ItemTransactionController extends Controller
       $item_tran->status = 'canceled';
       $item_tran->save();
 
-    
+
 
     //   $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
     //   $old_changes =array();
@@ -333,8 +393,8 @@ class ItemTransactionController extends Controller
     //   $stock_item->item_sum = $new_item_balance;
     //   $stock_item->save();
 
-    
-    
+
+
 
       /****************  insert log ****************/
         // logger($old_changes);
@@ -354,10 +414,10 @@ class ItemTransactionController extends Controller
             //'old_value'=> $old_changes,
         ]);
 
-        $msg_notify_test = $use_in->name.'  ยกเลิกการเบิกวัสดุสำเร็จ';
-        Logger($msg_notify_test);
+        // $msg_notify_test = $use_in->name.'  ยกเลิกการเบิกวัสดุสำเร็จ';
+        // Logger($msg_notify_test);
         return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการเบิกวัสดุสำเร็จ']);
-       
+
     }
 
     public function cancelCheckin()
@@ -373,17 +433,17 @@ class ItemTransactionController extends Controller
      $old_changes =array();
      $old_changes['item_tran_id_checkin'] = Request()->input('item_tran_id');
 
-    
+
      //logger($item_tran->stock_item_id);
       $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
-    
+
 
       //ตรวจสอบว่ามีการนำเข้าครั้งอื่นๆอีกหรือไม่
       $checkin = ItemTransaction::where('stock_item_id',$item_tran->stock_item_id)
                 ->whereStatus('active')
                 ->whereAction('checkin')
                 ->count();
-      
+
       //logger($checkin);
       if($checkin==0)  //ถ้าไม่มีการนำเข้าครั้งอื่น ให้ยกเลิกวัสดุนี้ได้เลย  และยกเลิกการตัดสต๊อกของวัสดุนี้ไปด้วย
       {
@@ -393,7 +453,7 @@ class ItemTransactionController extends Controller
         $old_changes['stock_item_id_canceled'] = $item_tran->stock_item_id;
 
         $datetime_now = Carbon::now();
- 
+
         $profile_log =array();
         $profile_log['user_cancel_checkin'] =$use_in->id;
         $profile_log['date_cancel'] =$datetime_now->toDateTimeString();
@@ -406,21 +466,21 @@ class ItemTransactionController extends Controller
                               ->update(['status' => 'canceled',
                                       'profile' =>  $profile_log
                                       ]
-                               );   
-       
-        // logger($cancel_checkout); 
-        $detail_log['cancel_checkout_rows'] =$cancel_checkout;                    
+                               );
+
+        // logger($cancel_checkout);
+        $detail_log['cancel_checkout_rows'] =$cancel_checkout;
       }
-     
+
     //  logger('not upadte status item =9');
-    
-   
-    
+
+
+
       /****************  insert log ****************/
         // logger($old_changes);
-       
 
-       
+
+
         $detail_log['table'] ='item_transactions';
 
       //  dd($detail_log);
@@ -434,9 +494,9 @@ class ItemTransactionController extends Controller
             'old_value'=> $old_changes,
         ]);
 
-        $msg_notify_test = $use_in->name.'  ยกเลิกการนำเข้าวัสดุสำเร็จ';
-        Logger($msg_notify_test);
+        // $msg_notify_test = $use_in->name.'  ยกเลิกการนำเข้าวัสดุสำเร็จ';
+        // Logger($msg_notify_test);
         return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการนำเข้าวัสดุสำเร็จ']);
-       
+
     }
 }

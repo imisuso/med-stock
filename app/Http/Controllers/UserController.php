@@ -37,10 +37,7 @@ class UserController extends Controller
             $roles = Role::all();
         }
       
-        // $users = User::select('slug','name','status','unitid','updated_at')
-        //                 ->with('unit:id,unitid,unitname')
-        //                 ->orderBy('unitid')
-        //                 ->get();
+     
                      
 
           $users = User::select('id','slug','name','status','unitid','updated_at')
@@ -129,17 +126,9 @@ class UserController extends Controller
                     'log' => $detail_log,
                     ]);
         
-        //    $log_activity = LogActivity::create([
-        //        'user_id' => $use_in->id,
-        //        'sap_id' => request()->input('sap_id'),
-        //        'function_name' => 'manage_user',
-        //        'action' => 'add_user',
-        //        'detail' => $detail_log,
-        //    ]);
 
-          // dd($log_activity);
-          $msg_notify_test = $use_in->name.'  เพิ่ม '.request()->input('employee_full_name').' เป็นผู้ใช้งานระบบสำเร็จ';
-          Logger($msg_notify_test);
+        //   $msg_notify_test = $use_in->name.'  เพิ่ม '.request()->input('employee_full_name').' เป็นผู้ใช้งานระบบสำเร็จ';
+        //   Logger($msg_notify_test);
         
         return Redirect::route('user-add')
                         ->with(['status' => 'success', 'msg' => 'เพิ่มรหัสเจ้าหน้าที่นี้เป็นผู้ใช้งานระบบวัสดุแล้ว']);
@@ -210,8 +199,7 @@ class UserController extends Controller
         $original_val_user = array();
         $original_val_user = $user->getOriginal(); //เก็บค่าเก่าไว้ก่อน
         $original_val_role = $user->roles;
-        // logger($original_val_role);
-        // logger($original_val_role[0]['name']);
+     
 
         $original_val_user['role_name']=$original_val_role[0]['name'];
        // logger($original_val_user);
@@ -261,12 +249,9 @@ class UserController extends Controller
 
             $detail_log =array();
             $detail_log['user_name'] =$user->name;
-            // $detail_log['unitid'] =request()->input('unit_id');
-            // $detail_log['status']= request()->input('user_status');
-            // $detail_log['new_role_name'] = $role_name;
-
            
-           //  dd($detail_log);
+           
+
             /****************  insert resource_action_logs ****************/
       
        
@@ -276,17 +261,10 @@ class UserController extends Controller
                 'log' => $old_changes,
                 ]);
   
-            //  $log_activity = LogActivity::create([
-            //      'user_id' => $use_in->id,
-            //      'sap_id' => $user->sap_id,
-            //      'function_name' => 'manage_user',
-            //      'action' => 'edit_user',
-            //      'detail'=> $detail_log,
-            //      'old_value'=> $old_changes,
-            //  ]);
+      
 
-             $msg_notify_test = $use_in->name.'  แก้ไขข้อมูลผู้ใช้งาน '.$user->name.' สำเร็จ';
-             Logger($msg_notify_test);
+            //  $msg_notify_test = $use_in->name.'  แก้ไขข้อมูลผู้ใช้งาน '.$user->name.' สำเร็จ';
+            //  Logger($msg_notify_test);
 
             return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
         }
@@ -311,8 +289,8 @@ class UserController extends Controller
     public function checkEmployeeStatus($sap_id,AuthUserAPI $api)
     {
         //Logger(request()->all());
-        //Logger($sap_id);
-
+       // Logger($sap_id);
+      //  dd('checkEmployeeStatus');
         $check_user = User::where('sap_id',$sap_id)->first();
 
         if($check_user)
@@ -343,20 +321,6 @@ class UserController extends Controller
            ]);
 
 
-        //    'ok' => true,
-        //    'found' => true,
-        //    'active' => false,
-        //    'login' => 'sirapat.poo',
-        //    'org_id' => '10035478',
-        //    'full_name' => 'น.ส. สิรภัทร พูลสงวน',
-        //    'document_id' => NULL,
-        //    'position_id' => '70000103',
-        //    'position_name' => 'นิติกร',
-        //    'division_id' => '00014976',
-        //    'division_name' => NULL,
-        //    'password_expires_in_days' => 0,
-        //    'remark' => 'นิติกร นิติกร สำนักงานคณบดี',
-      
         // Logger('found=');
         // Logger($check_status_emp['found']);
 
@@ -366,27 +330,40 @@ class UserController extends Controller
         //   Logger('api_provider=');
         // Logger($api_provider);
         if(strcmp($api_provider,'\App\APIs\HannahAPI')==0){
-            if(isset($check_status_emp['found']))
-            {
-                if(!$check_status_emp['found']){
-                    $get_user['status'] = 'not_found';
-                    return $get_user;
-                }
-            }else{
-                if(strcmp($check_status_emp['status'],'active') ==0)
+
+                if(isset($check_status_emp['found']))
                 {
-                    $get_user = array();
-    
-                    $get_user = $api->getUserAD($check_status_emp['login']);
-                    $get_user['status'] = 'active';
-                 //   Logger($get_user);
-                    return $get_user;
+                    if(!$check_status_emp['found']){
+                        $get_user['status'] = 'not_found';
+                        return $get_user;
+                    }
+                }else{
+                    if(strcmp($check_status_emp['status'],'active') ==0)
+                    {
+                        $get_user = array();
+        
+                        $get_user = $api->getUserAD($check_status_emp['login']);
+                        $get_user['status'] = 'active';
+                    //   Logger($get_user);
+                        return $get_user;
+                    }
+        
+                // Logger('Withdrawn');
+                    return $check_status_emp;
                 }
-    
-            // Logger('Withdrawn');
-                return $check_status_emp;
-            }
         }else{ //*****SiMedPortalAPI
+
+          
+            if($check_status_emp['reply_code'] == '9')
+            {
+                $get_user['status'] = 'error_sap';
+                $get_user['msg_error'] = $check_status_emp['reply_text'];
+                //    Logger('final return--->');
+                //     Logger($get_user);
+                return $get_user;
+            }
+
+
             if(!$check_status_emp['found'])
             {
               
@@ -395,15 +372,29 @@ class UserController extends Controller
                     return $get_user;
                // }
             }else{
-                // Logger('active=');
-                // Logger($check_status_emp['active']);
+              
                 if($check_status_emp['active'])
                 {
                     $get_user = array();
     
+
                     $get_user = $api->getUserAD($check_status_emp['login']);
-                    $get_user['status'] = 'active';
-                  //  Logger('check active user');
+                    // Logger($get_user);
+     
+                    // Logger('check active user');
+                    if($get_user['reply_code'] == '9')
+                    {
+                        $get_user['status'] = 'error';
+                        $get_user['msg_error'] = $get_user['reply_text'];
+                        $get_user['login'] = $check_status_emp['login'];
+                    }
+                    else
+                    {
+                        $get_user['status'] = 'active';
+                    }
+
+                    // Logger('final return--->');
+                    // Logger($get_user);
                     return $get_user;
                 }
     

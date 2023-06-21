@@ -1,7 +1,7 @@
 <template>
     <AppLayout>
 
-      
+
         <!-- {{stock_budgets}} -->
         <div class="p-2">
             <h1 class=" text-center font-bold text-lg">รายการข่าวประชาสัมพันธ์</h1>
@@ -9,7 +9,7 @@
             <textarea v-model="form.message"
                     class=" my-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 ">
             </textarea>
-            <button 
+            <button
                     class=" w-full flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-green-700 rounded-md hover:bg-green-400 focus:outline-none"
                     @click="addAnnouce()"
                 >
@@ -20,19 +20,19 @@
                 </button>
         </div>
         <div class=" ">
-        
+
             <p v-if="!annouces" class=" text-center font-bold text-lg"> ไม่พบข้อมูลข่าวประชาสัมพันธ์</p>
             <!-- {{annouces}}  -->
             <paginateMe :pagination="annouces" />
-            <Annouce 
-                v-for="(annouce,key) in annouces.data" :key="annouce.id" 
+            <Annouce
+                v-for="(annouce,key) in annouces.data" :key="annouce.id"
                 :annouceFrom="annouces.from"
                 :annouceIndex="key"
-                :annouce="annouce" 
+                :annouce="annouce"
                 :annouce_status_list = "annouce_status_list"
                 />
         </div>
-     
+
     </AppLayout>
 </template>
 <script setup>
@@ -40,7 +40,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import Annouce from '@/Components/Annouce.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
-import {  ref } from '@vue/reactivity';
+import { ref } from 'vue';
 
 
 defineProps({
@@ -63,14 +63,14 @@ const form=useForm({
 
 const addAnnouce=()=>{
  //  console.log('addAnnouce');
-   
+
      form.post(route('add-annouce-new'), {
             preserveState: false,
             preserveScroll: true,
-            onSuccess: page => { 
+            onSuccess: page => {
                 console.log('success');
                 },
-            onError: errors => { 
+            onError: errors => {
                 console.log('error');
             },
             onFinish: visit => { console.log('finish');},

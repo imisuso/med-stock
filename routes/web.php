@@ -95,6 +95,8 @@ Route::controller(ItemTransactionController::class)
             Route::post('/cancel-checkout-stock-item','destroy')->name('cancel-checkout-stock-item');
             //ยกเลิกรายการนำเข้าวัสดุ
             Route::post('/cancel-checkin-stock-item','cancelCheckin')->name('cancel-checkin-stock-item');
+            //แก้ไขราคาวัสดุ
+            Route::post('/edit-price-item','update')->name('edit-price-item');
         });
 //แสดงรายละเอียดการเบิก/ตรวจรับ วัสดุ
 //Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item')->middleware('auth');

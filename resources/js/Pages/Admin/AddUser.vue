@@ -78,6 +78,12 @@
                         <label for="" v-if="employeeStatus=='withdrawn'" class="  text-red-600"> 
                             สถานะ: {{employeeAccountName}} เจ้าหน้าที่นี้ลาออกแล้ว
                         </label>
+                        <label for="" v-if="employeeStatus=='error'" class="  text-red-600"> 
+                            สถานะ: error check username -->[{{ employeeAccountName }}]
+                        </label>
+                        <label for="" v-if="employeeStatus=='error_sap'" class="  text-red-600"> 
+                            สถานะ: error -->[{{ employeeAccountName }}]
+                        </label>
                     </div>
                 </div>
             </div>
@@ -320,6 +326,7 @@ const props =defineProps({
 const stocks_unit = ref('');
 const employeeStatus=ref('');
 const employeeAccountName=ref('');
+const employeeError=ref('');
 const confirm_add_user=ref(false);
 
 const form = useForm({
@@ -387,10 +394,13 @@ const CheckEmployeeStatus=(()=>{
                          {sap_id:form.sap_id }
                     )).then(res => {
                 // console.log(res.data);
-                // console.log(res.data.Status);
+               //  console.log(res.data.status);
                 employeeStatus.value =  res.data.status;
                 employeeAccountName.value = res.data.login
-
+                if(res.data.status == 'error_sap')
+                {
+                    employeeAccountName.value = res.data.msg_error
+                }
                 if(res.data.status == 'active')
                 {
                     form.employee_full_name = res.data.full_name

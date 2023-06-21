@@ -23,6 +23,18 @@
                     </svg>
                 </label>
         </div>
+
+        <div v-if="$page.props.flash.status=='Warnning'" 
+                class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
+                <input type="checkbox" class="hidden" id="banneralert">
+                
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-yellow-200 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+                 {{ $page.props.flash.msg }}
+                   <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </label>
+        </div>
         <button @click="goBack()"
           class=" flex text-gray-600 font-bold"
          >
@@ -155,7 +167,17 @@
                 <td class="text-left  block md:table-cell  md:border-b-2 md:border-gray-300 ">
                     <span class="inline-block w-1/3 md:hidden font-bold">จำนวน[ราคาต่อหน่วย]</span>
                     {{item_tran.item_count}}
-                    <label v-if="item_tran.action == 'checkin'">   [{{item_tran.price}}]</label>
+                    <label v-if="item_tran.action == 'checkin'">   [{{number_format_show(item_tran.price)}}]</label>
+                    <button v-if="item_tran.status != 'canceled' && 
+                                  item_tran.action == 'checkin' && 
+                                  item_tran.user_id == $page.props.auth.user.id
+                                "
+                        v-on:click="edit_price(item_tran.id,item_tran.price)"
+                        class=" ml-3  bg-green-300  hover:bg-green-200 border border-green-600 text-green-800 font-bold py-1 px-2  rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                        </svg>
+                    </button>
                 </td>
                 <td class="text-left  block md:table-cell  md:border-b-2 md:border-gray-300 ">
                     <span class="inline-block w-1/3 md:hidden font-bold">บริษัท</span>
@@ -257,6 +279,46 @@
                 </div>
             </template>
     </ModalUpToYou>
+
+    <ModalUpToYou :isModalOpen="show_edit_price" >
+            <template v-slot:header>
+                <p class="text-md font-bold text-blue-700 ">แก้ไขราคาวัสดุ</p> 
+                                        
+            </template>
+
+            <template v-slot:body>
+                <div class="text-gray-900 text-md font-medium ">
+                    <label  class="  flex  justify-start w-full text-md ">
+                        ราคาปัจจุบัน:{{number_format_show(price_data)}} บาท / หน่วย
+                    </label>
+                    <label  class="  flex  justify-start w-full text-md ">
+                        ระบุราคาที่ต้องการแก้ไข:
+                    </label>
+                    <input type="number"
+                      v-model="form.price_edit_new"
+                      class="w-full px-12 py- border-2 border-blue-600 rounded-md appearance-none focus:border-blue-700 focus:ring focus:ring-opacity-40 focus:ring-blue-500"
+                    >
+                  
+                </div>
+            </template>
+
+            <template v-slot:footer>
+                <div class=" w-full  text-center  md:block">
+                    <button 
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        v-on:click="okconfirmEditPrice"
+                        >
+                        ตกลง
+                    </button>
+                    <button 
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        v-on:click="cancelEditPrice"
+                    >
+                        ยกเลิก
+                    </button>
+                </div>
+            </template>
+    </ModalUpToYou>
         
      </AppLayout>
 </template>
@@ -288,7 +350,8 @@ const props =defineProps({
 })
 const form = useForm({
     item_tran_id:0,
-   // delete_stock_item_id:0,
+    price_edit_new:0,
+    update_item:'',
 })
 const confirm_delete_item=ref(false);
 const confirm_delete_item_name=ref('');
@@ -301,6 +364,37 @@ const number_format_show=(item)=>{
   // return '1,200.5';
 }
 
+const show_edit_price=ref(false);
+const price_data=ref('');
+const edit_price=(item_tran_id,price)=>{
+    //console.log(item_tran_id);
+   // console.log(price);
+    show_edit_price.value = true;
+    price_data.value = price;
+    form.item_tran_id = item_tran_id;
+}
+const  cancelEditPrice=()=>{
+   // console.log('cancelDeleteItem');
+   show_edit_price.value= false;
+}
+
+const okconfirmEditPrice=()=>{
+    //console.log(form.item_tran_id);
+    //console.log(form.price_edit_new);
+    form.update_item = "price";
+
+    form.post(route('edit-price-item'), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: page => { //console.log('success');
+        },
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { //console.log('finish');
+        },
+    })
+}
 
 const cancel_checkout=(item_tran_id)=>{
 
@@ -331,7 +425,7 @@ const confirm_cancel_checkin_item=(stock_item_id,item_name,pur_order)=>{
 const okconfirmDeleteItem=()=>{
    // console.log('okconfirmDeleteItem');
     confirm_delete_item.value = false;
-    console.log(form.item_tran_id);
+   // console.log(form.item_tran_id);
 
     form.post(route('cancel-checkin-stock-item'), {
         preserveState: false,

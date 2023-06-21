@@ -1,10 +1,10 @@
 <template>
     <AppLayout>
         <!--Header Alert-->
-        <div v-if="$page.props.flash.status=='success'" 
+        <div v-if="$page.props.flash.status=='success'"
             class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
-            
+
             <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
@@ -12,10 +12,10 @@
                 </svg>
             </label>
         </div>
-        <div v-if="$page.props.errors.error" 
+        <div v-if="$page.props.errors.error"
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
-                
+
                 <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-700 shadow rounded-md text-white font-bold" title="close" for="banneralert">
                  {{ $page.props.errors.error }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
@@ -29,17 +29,17 @@
                 {{$page.props.unit.unitname}}
             </div>
             <div class="mt-3" >
-                <label for="">เลือกคลังวัสดุ</label> 
+                <label for="">เลือกคลังวัสดุ</label>
             </div>
             <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                 <option v-for="(stock) in  $page.props.stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
             </select>
-           
+
         <!-- {{$page.props.stock_items}} -->
         </div>
-       
+
 <!-- {{$page.props.order_lists}} -->
-     
+
     <!-- show order lists -->
     <div class=" flex justify-between my-2 ">
             <div class=" font-bold" >รายการใบสัญญาสั่งซื้อวัสดุ</div>
@@ -61,15 +61,15 @@
         >
         <label for="">ไม่พบรายการใบสัญญาสั่งซื้อวัสดุ</label>
     </div>
-    <OrderDetail v-for="(order_list,key) in order_lists" :key=order_list.id 
-        :orderIndex="key" 
-        :orderList="order_list" 
+    <OrderDetail v-for="(order_list,key) in order_lists" :key=order_list.id
+        :orderIndex="key"
+        :orderList="order_list"
     >
         <template v-slot:messagesuggest>
             <span v-if="order_list.status == 'created'" class=" text-sm text-red-500">กดปุ่มพิมพ์และเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ แล้วกดปุ่มส่ง</span>
             <span v-if="order_list.status == 'sended'" class=" text-sm text-red-500">รออนุมัติการสั่งซื้อ จากภาควิชาฯ</span>
             <span v-if="order_list.status == 'approved'" class=" text-sm text-red-500">
-                รีบดำเนินการให้บริษัทเซ็นใบสั่งซื้อ+ส่งของ+ตรวจรับ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ เมื่อตรวจรับวัสดุตามเอกสารสั่งซื้อแล้ว ให้กดปุ่มตรวจรับวัสดุ แล้วกดปุ่มพิมพ์เอกสารตรวจรับวัสดุและเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ   
+                รีบดำเนินการให้บริษัทเซ็นใบสั่งซื้อ+ส่งของ+ตรวจรับ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ เมื่อตรวจรับวัสดุตามเอกสารสั่งซื้อแล้ว ให้กดปุ่มตรวจรับวัสดุ แล้วกดปุ่มพิมพ์เอกสารตรวจรับวัสดุและเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ
             </span>
         </template>
         <template v-slot:buttongroup>
@@ -93,8 +93,8 @@
                                 เอกสารตรวจรับวัสดุ
                             </span>
                         </a>
-                        
-                    
+
+
                         <button v-if="order_list.status == 'created'"
                             v-on:click="confirmSendOrder(order_list)"
                             class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white  py-1 px-2 border border-green-500 rounded">
@@ -123,11 +123,11 @@
         </template>
     </OrderDetail>
 
-    
+
     <ModalUpToYou :isModalOpen="confirm_send_order" >
         <template v-slot:header>
-            <p class="text-md font-bold text-red-600 ">คุณต้องการส่งเอกสารการสั่งซื้อวัสดุนี้ใช่หรือไม่?</p> 
-                                    
+            <p class="text-md font-bold text-red-600 ">คุณต้องการส่งเอกสารการสั่งซื้อวัสดุนี้ใช่หรือไม่?</p>
+
         </template>
 
         <template v-slot:body>
@@ -135,20 +135,20 @@
                  <label v-for="(confirm_item,index) in confirm_items" :key=confirm_item.id
                         class="  flex  justify-start w-full bg-red-100 text-sm text-red-900">
                     {{index+1}}.{{confirm_item[0].item_name}} จำนวน {{confirm_item[0].order_input}} x {{confirm_item[0].price}}  เป็นเงิน {{confirm_item[0].total}} บาท
-                
+
                 </label>
             </div>
         </template>
 
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
-                <button 
+                <button
                     class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="okConfirmSendOrder"
                     >
                     ตกลง
                 </button>
-                <button 
+                <button
                     class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                     v-on:click="cancelSendOrder"
                 >
@@ -157,7 +157,7 @@
             </div>
         </template>
     </ModalUpToYou>
-        
+
 
     </AppLayout>
 </template>
@@ -167,7 +167,7 @@ import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import OrderDetail from '@/Components/OrderDetail.vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import { router } from '@inertiajs/vue3';
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
 
 defineProps({
         stocks:Object,
@@ -197,7 +197,7 @@ const confirmSendOrder=(order)=>{
     confirm_send_order.value = true;
     confirm_items.value = order.items;
     form.confirm_order_id = order.id;
-           
+
 }
 
 const  cancelSendOrder=()=>{
@@ -211,12 +211,12 @@ const okConfirmSendOrder=()=>{
         preserveState: false,
         preserveScroll: true,
         onSuccess: page => { console.log('success');},
-        onError: errors => { 
+        onError: errors => {
             console.log('error');
         },
         onFinish: visit => { console.log('finish');},
     })
-    
+
 }
 
 </script>
