@@ -1,10 +1,10 @@
 <template>
           <div >
             <!--Header Alert-->
-            <!-- <div v-if="$page.props.flash.status=='success'" 
+            <!-- <div v-if="$page.props.flash.status=='success'"
                 class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
-                
+
                 <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
                     {{ $page.props.flash.msg }}
                     <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
@@ -12,10 +12,10 @@
                     </svg>
                 </label>
             </div>
-            <div v-if="$page.props.errors.error" 
+            <div v-if="$page.props.errors.error"
                     class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                     <input type="checkbox" class="hidden" id="banneralert">
-                    
+
                     <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-700 shadow rounded-md text-white font-bold" title="close" for="banneralert">
                     {{ $page.props.errors.error }}
                     <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
@@ -23,13 +23,13 @@
                         </svg>
                     </label>
             </div> -->
-         
-            <div 
+
+            <div
                 class="  py-2 border-b-2 border-red-300"
                 >
                 <div class="flex justify-between">
                     <div class="">
-                        <label class=" font-bold"> {{stockIndex+1}}.  {{stockBudget.stockname}}   </label>   
+                        <label class=" font-bold"> {{stockIndex+1}}.  {{stockBudget.stockname}}   </label>
                     </div>
                     <!-- <div v-if="stockBudget.budget['budget_add']==0" class=" px-3 bg-green-200 rounded-md">
                         บันทึก
@@ -39,9 +39,9 @@
                     </div> -->
                 </div>
                 <!-- {{stockBudget}} -->
-                <div v-if="stockBudget.budget['budget_add']==0 && $page.props.auth.user.roles[0].name=='admin_med_stock'" 
+                <div v-if="stockBudget.budget['budget_add']==0 && $page.props.auth.user.roles[0].name=='admin_med_stock'"
                     class="flex justify-between px-3 " >
-                       
+
                         <div>
                             <div v-if="show_alert"
                             class=" text-red-600"
@@ -55,7 +55,7 @@
                                 class=" rounded-md "
                                 v-model="form.budget_input"
                                 >
-                           
+
                 </div>
                         <div  class=" p-2 mr-2 ">
                             <!-- บันทึก -->
@@ -69,15 +69,15 @@
                 </div>
                 <!-- {{stockBudget.budget['budget_add']}} -->
                 <!-- {{stockBudget.count_import}} -->
-                <div v-if="stockBudget.budget['budget_add']!=0"  
+                <div v-if="stockBudget.budget['budget_add']!=0"
                     class="flex justify-between px-3 ">
                     <div>
                          <label class=" px-3 text-green-600 font-bold">
-                        ได้อนุมัติ  {{budget_add}} บาท 
+                        ได้อนุมัติ  {{budget_add}} บาท
                         </label>
                     </div>
                     <div class="flex px-2 ">
-                        <div  
+                        <div
                             class="px-3 ">
                              <button v-if="$page.props.auth.user.roles[0].name=='admin_med_stock'"
                                 class=" flex justify-center py-1 px-2 bg-yellow-200 text-yellow-900 rounded-md shadow-md hover:bg-yellow-300 focus:outline-none"
@@ -85,13 +85,13 @@
                                 >
                                 แก้ไข
                             </button>
-                          
+
                         </div>
                         <!-- view log change -->
                         <div class="px-3 "
                              v-if="$page.props.auth.user.roles[0].name=='admin_it'"
                             >
-                            <a :href="route('get-budget-log',stockBudget)" 
+                            <a :href="route('get-budget-log',stockBudget)"
                               class=" flex  py-1 px-2 rounded-md shadow-md bg-blue-300" >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -102,7 +102,7 @@
                         <div v-if="stockBudget.count_import>0"  class="flex mr-2">
                             <a :href="route('get-list-order',{stock_id:stockBudget.id,year:budgetYear})"
                                 class=" flex justify-center py-1 px-2 bg-pink-200 text-pink-900 rounded-md shadow-md hover:bg-pink-300 focus:outline-none"
-                              
+
                                 >
                                 ดูใบสั่งซื้อที่นำเข้าจากExcel
                             </a>
@@ -124,15 +124,15 @@
                                 เพิ่มงบประมาณ
                             </button> -->
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
                 <div v-if="view_order">
                     <!-- {{stockBudget.orders.length}} -->
                     <div v-if="stockBudget.orders.length!=0">
                          <label class=" px-6 font-bold">รายการใบสัญญาสั่งซื้อ</label>
-                        <BudgetOrder  v-for="(order,index) in stockBudget.orders" :key="order.id" 
+                        <BudgetOrder  v-for="(order,index) in stockBudget.orders" :key="order.id"
                             :orderIndex="index"
                             :orderItem="order"
                             >
@@ -147,30 +147,30 @@
                             :orderItem="purchase_order"
                         />
                     </div>
-                   
-          
+
+
                 </div>
                 <!-- <div v-if="stockBudget.budget['budget_add']!=0" class=" px-3">
-                    <label class=" px-3 text-red-600 font-bold"> 
+                    <label class=" px-3 text-red-600 font-bold">
                         คงเหลือ  {{budget_balance}}บาท
                     </label>
                 </div> -->
             </div>
         </div>
 
-        
+
     <ModalUpToYou :isModalOpen="confirm_add_budget" >
         <template v-slot:header>
-            <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกงบประมาณใช่หรือไม่?</p> 
-                                    
+            <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกงบประมาณใช่หรือไม่?</p>
+
         </template>
         <template v-slot:body>
             <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
                 <div for="">
-                    {{form.stock_name}} 
+                    {{form.stock_name}}
                 </div>
                 <div>
-                    ปีงบ:{{form.budget_year+543}} 
+                    ปีงบ:{{form.budget_year+543}}
                 </div>
                  <div for="">
                     จำนวน {{budget_confirm_show}} บาท
@@ -180,13 +180,13 @@
 
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
-                <button 
+                <button
                     class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="okConfirmAddBudget"
                     >
                     ตกลง
                 </button>
-                <button 
+                <button
                     class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                     v-on:click="cancelAddBudget"
                 >
@@ -198,16 +198,16 @@
 
     <ModalUpToYou :isModalOpen="confirm_edit_budget" >
         <template v-slot:header>
-            <p class="text-md font-bold text-red-600 ">แก้ไขงบประมาณ</p> 
-                                    
+            <p class="text-md font-bold text-red-600 ">แก้ไขงบประมาณ</p>
+
         </template>
         <template v-slot:body>
             <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
                 <div for="">
-                    {{form.stock_name}} 
+                    {{form.stock_name}}
                 </div>
                 <div>
-                    ปีงบ:{{form.budget_year+543}} 
+                    ปีงบ:{{form.budget_year+543}}
                 </div>
                  <div for="">
                     <div v-if="show_alert_edit"
@@ -215,7 +215,7 @@
                             >
                         <label >{{msg_alert}}</label>
                     </div>
-                     <input type="number" id="budget_edit"  class=" rounded-md " 
+                     <input type="number" id="budget_edit"  class=" rounded-md "
                         min="0"
                         v-model="form.budget_edit">
                 </div>
@@ -224,13 +224,13 @@
 
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
-                <button 
+                <button
                     class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="okConfirmEditBudget"
                     >
                     ตกลง
                 </button>
-                <button 
+                <button
                     class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                     v-on:click="cancelEditBudget"
                 >
@@ -242,31 +242,31 @@
 
     <ModalUpToYou :isModalOpen="show_alert_msg" >
         <template v-slot:header>
-            <p class="text-md font-bold text-red-600 ">กรุณาอ่าน </p> 
-                                    
+            <p class="text-md font-bold text-red-600 ">กรุณาอ่าน </p>
+
         </template>
         <template v-slot:body>
             <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
                 <div for="">
-                 {{ $page.props.flash.status }}:{{ $page.props.flash.msg }} 
-                
+                 {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}
+
                 </div>
             </div>
         </template>
- 
+
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
-                <button 
+                <button
                     class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="closeAlert"
                     >
                     ตกลง
                 </button>
-              
+
             </div>
         </template>
     </ModalUpToYou>
-    
+
 </template>
 <script setup>
 import BudgetOrder from '@/Components/BudgetOrder.vue';
@@ -274,9 +274,8 @@ import PurchaseOrder from '@/Components/PurchaseOrder.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { router } from '@inertiajs/vue3';
 import { useForm } from '@inertiajs/vue3';
-import {ref,computed,onMounted, watch} from 'vue';
-// const { ref, computed }=require("@vue/reactivity")
-// const { onMounted, watch }=require("@vue/runtime-core")
+import {ref,computed} from 'vue';
+
 
 const props = defineProps({
     stockIndex:{type:Number,required:true},
@@ -326,16 +325,16 @@ const budget_balance = computed(()=>{
 //     form.get(route('get-list-order'), {
 //             preserveState: true,
 //             preserveScroll: true,
-//             onSuccess: page => { 
+//             onSuccess: page => {
 //                 console.log('success');
 //                // show_alert_msg.value = true;
 //                 console.log(form.budget_year);
 //                 },
-//             onError: errors => { 
+//             onError: errors => {
 //                 console.log('error');
 //                 //  show_alert_msg.value = true;
 //             },
-//             onFinish: visit => { 
+//             onFinish: visit => {
 //                 console.log('finish');
 //             },
 //     })
@@ -365,7 +364,7 @@ const confirmAddBudget=(order)=>{
         document.getElementById("budget_add").focus();
         return false;
    }else{
-   
+
          show_alert_edit.value=false;
    }
 //    return false;
@@ -375,7 +374,7 @@ const confirmAddBudget=(order)=>{
     form.budget_year = props.budgetYear;
     form.year_selected = props.budgetYear;
     budget_confirm_show.value = form.budget_input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-           
+
 }
 
 const  cancelAddBudget=()=>{
@@ -385,14 +384,14 @@ const  cancelAddBudget=()=>{
 const  closeAlert=()=>{
    // console.log('close alert='+form.budget_year);
     show_alert_msg.value = false;
-  
+
     // form.get(route('get-list-budget'), {
     //     preserveState: false,
     //     preserveScroll: true,
-    //     onSuccess: page => { 
+    //     onSuccess: page => {
     //         console.log('success');
     //     },
-    //     onError: errors => { 
+    //     onError: errors => {
     //         console.log('error');
     //     },
     //     onFinish: visit => { console.log('finish');},
@@ -406,19 +405,19 @@ const okConfirmAddBudget=()=>{
     form.post(route('add-budget'), {
             preserveState: true,
             preserveScroll: true,
-            onSuccess: page => { 
+            onSuccess: page => {
                 console.log('success');
                 show_alert_msg.value = true;
                 },
-            onError: errors => { 
+            onError: errors => {
                 console.log('error');
                   show_alert_msg.value = true;
             },
-            onFinish: visit => { 
+            onFinish: visit => {
                 console.log('finish');
             },
     })
-    
+
 }
 
 const editBudget=()=>{
@@ -450,7 +449,7 @@ const okConfirmEditBudget=()=>{
         document.getElementById("budget_edit").focus();
         return false;
    }else{
-   
+
          show_alert_edit.value=false;
    }
 
@@ -460,10 +459,10 @@ const okConfirmEditBudget=()=>{
         document.getElementById("budget_edit").focus();
         return false;
    }else{
-   
+
          show_alert_edit.value=false;
    }
-  
+
    if(form.budget_input==0){
         show_alert.value=true
         msg_alert.value="กรุณาระบุงบประมาณก่อนกดปุ่มบันทึก";
@@ -480,16 +479,16 @@ const okConfirmEditBudget=()=>{
        form.post(route('edit-budget'), {
             preserveState: true,
             preserveScroll: true,
-            onSuccess: page => { 
+            onSuccess: page => {
                 console.log('success');
                 show_alert_msg.value = true;
                 console.log(form.budget_year);
                 },
-            onError: errors => { 
+            onError: errors => {
                 console.log('error');
                   show_alert_msg.value = true;
             },
-            onFinish: visit => { 
+            onFinish: visit => {
                 console.log('finish');
             },
     })
@@ -500,7 +499,7 @@ const  cancelEditBudget=()=>{
     confirm_edit_budget.value = false;
     show_alert_edit.value=false;
 }
-   
+
 
 
 </script>

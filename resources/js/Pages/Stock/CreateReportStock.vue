@@ -4,18 +4,18 @@
                 {{$page.props.unit.unitname}}
         </div>
         <div class=" w-full   p-2 rounded-md ">
-            
+
             <div class="mt-3 font-bold" >
-                <label for="">เลือกคลังวัสดุ</label> 
+                <label for="">เลือกคลังวัสดุ</label>
                 <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกคลังวัสดุ</label>
             </div>
             <select name="" id="" v-model="form.unit_selected"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
+                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 v-on:change="setStockID"
                 >
                 <option v-for="(stock) in  stocks" v-bind:key=stock.id v-bind:value="stock.id">{{stock.stockname}}</option>
             </select>
-           
+
         <!-- {{$page.props.stock_items}} -->
         </div>
         <!-- {{unit}} -->
@@ -38,9 +38,9 @@
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                     <option v-for="(month) in  months" :key=month.id v-bind:value="month.id">{{month.name}}</option>
                 </select>
-                
-            </div>  
-            
+
+            </div>
+
         </div>
         <div class="flex flex-col  ">
             <!-- <button
@@ -58,30 +58,30 @@
             </button>
         </div>
 
- 
+
     <!-- {{stocks}}-->
         <!-- {{stock_id}} -->
         <div  class=" w-full py-3 text-center font-bold text-lg ">
             <label for="">รายงานบันทึกตัดสต๊อก</label>
-        </div>  
+        </div>
         <div v-if="stock_id !=0"  class=" w-full text-center font-bold text-lg">
-            <label for="">  
+            <label for="">
                 <!-- {{stocks[stock_id-1].stockname}}  -->
             </label>
-        </div>    
+        </div>
         <div  class=" w-full py-3 text-center font-bold text-lg ">
             <label for=""> {{month_thai[form.month_selected]}} ปี {{year_thai(form.year_selected)}}</label>
-        </div>    
+        </div>
         <div v-if="item_trans.length==0" class=" w-full text-center">
             <label for="">ไม่พบข้อมูล</label>
-        </div> 
-        
+        </div>
+
         <div>
             <paginateMe :pagination="item_trans" />
-            <div 
+            <div
                 class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
-                    
+
                     <div class=" lg:w-5/12 ">
                         SAP-ชื่อวัสดุ:
                     </div>
@@ -91,7 +91,7 @@
                     <div class=" lg:w-2/12  ">
                         วันที่เบิก:
                     </div>
-                   
+
                     <div class=" lg:w-1/12 ">
                         จำนวนที่เบิก:
                     </div>
@@ -101,15 +101,15 @@
                     <!-- <div class=" lg:w-1/12 ">
                         จำนวนคงเหลือปัจจุบัน:
                     </div> -->
-                </div>     
+                </div>
             </div>
         </div>
-   
+
         <div  class="w-full mt-3  ">
-  
+
             <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
                 class="w-full border-b-2   border-gray-500 shadow-sm ">
-              
+
                 <div class="flex flex-col  lg:flex-row   "  >
                     <div class="   lg:w-5/12 lg:text-xs bg-blue-100 lg:bg-transparent  ">
                         <label for="" class="  ">  {{item_trans.from + key}}. </label>
@@ -117,7 +117,7 @@
                         <label class=" font-bold">
                             {{item_tran.stock_item['item_code']}} - {{item_tran.stock_item['item_name']}}
                         </label>
-                    
+
                     </div>
                     <div class=" lg:w-2/12  ">
                         <label for="" class="  lg:hidden">วันที่หมดอายุ:</label>
@@ -126,16 +126,16 @@
                         </label>
                     </div>
                     <div class="  lg:w-2/12  ">
-                       
+
                         <label for="" class="  lg:hidden">วันที่เบิก:</label>
                         <label class=" font-bold">
                             <!-- {{date_action_thai(item_tran.date_action)}} -->
                             {{dayjs(item_tran.date_action).locale('th').format('DD MMM BBBB')}}
                         </label>
                     </div>
-                
-                
-                  
+
+
+
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  lg:hidden">จำนวนที่เบิก:</label>
                         <label class=" font-bold">{{item_tran.item_count}} </label>
@@ -144,28 +144,28 @@
                         <label for="" class="   lg:hidden">ผู้เบิก:</label>
                         <label class=" font-bold">{{item_tran.user['name']}}</label>
                     </div>
-                
+
                     <!-- <div class="  lg:w-1/12 ">
                         <label for="" class="  lg:hidden">จำนวนคงเหลือปัจจุบัน:</label>
-                        <label class=" font-bold"> 
+                        <label class=" font-bold">
                             {{item_sum_format(item_tran.balance_now)}}
-                      
+
                         </label>
                     </div> -->
-                </div>     
+                </div>
             </div>
         </div>
-   
+
 
     <div v-if="item_trans.length !=0"   class=" mt-6 flex flex-col  ">
- 
+
         <!-- {{item_trans}} -->
-         <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-blue-700 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none" 
+         <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-blue-700 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none"
             :href="route('export-checkout-item', {stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })">
             Export Excel
         </a>
 
-        <!-- <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-yellow-600 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none" 
+        <!-- <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-yellow-600 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none"
             :href="route('export-checkout-item-test', {checkout_items:item_trans })">
             Export Excel Test
         </a> -->
@@ -181,7 +181,7 @@
                         พิมพ์รายงานตัดสต๊อกวัสดุ
                 </div>
             </a> -->
-          
+
             <a  :href="route('view-cutstockitem-pdf',{stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })" target="blank"
                  class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-purple-500 rounded-sm shadow-md hover:bg-purple-200 focus:outline-none"
                 >
@@ -192,10 +192,10 @@
                     พิมพ์รายงานตัดสต๊อกวัสดุ
                 </div>
             </a>
-           
+
     </div>
 
-     
+
 
     </AppLayout>
 </template>
@@ -206,7 +206,7 @@ import { router } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3'
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
 import { onMounted } from '@vue/runtime-core';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
@@ -215,7 +215,7 @@ dayjs.extend(buddhistEra)
 
 const props=defineProps({
     stocks:Object,
-    unit:Object, 
+    unit:Object,
     item_trans:{type:Object},
     unit_selected:{type:String},
     year_selected:{type:String},
@@ -233,30 +233,30 @@ const form = useForm({
 const month_thai=ref([
         '',
         'มกราคม' ,
-        'กุมภาพันธ์',	
+        'กุมภาพันธ์',
         'มีนาคม' ,
-        'เมษายน' ,	
-        'พฤษภาคม',	
-        'มิถุนายน' ,	
-        'กรกฎาคม',	
-        'สิงหาคม' ,	
-        'กันยายน' ,	
+        'เมษายน' ,
+        'พฤษภาคม',
+        'มิถุนายน' ,
+        'กรกฎาคม',
+        'สิงหาคม' ,
+        'กันยายน' ,
         'ตุลาคม' ,
-        'พฤศจิกายน',	
+        'พฤศจิกายน',
         'ธันวาคม',
 ])
 const months=ref([
         {id:1,name:'มกราคม' },
-        {id:2,name:'กุมภาพันธ์' },	
-        {id:3,name:'มีนาคม' },	
-        {id:4,name:'เมษายน' },	
-        {id:5,name:'พฤษภาคม' },	
-        {id:6,name:'มิถุนายน' },	
-        {id:7,name:'กรกฎาคม' },	
-        {id:8,name:'สิงหาคม' },	
-        {id:9,name:'กันยายน' },	
-        {id:10,name:'ตุลาคม' },	
-        {id:11,name:'พฤศจิกายน' },	
+        {id:2,name:'กุมภาพันธ์' },
+        {id:3,name:'มีนาคม' },
+        {id:4,name:'เมษายน' },
+        {id:5,name:'พฤษภาคม' },
+        {id:6,name:'มิถุนายน' },
+        {id:7,name:'กรกฎาคม' },
+        {id:8,name:'สิงหาคม' },
+        {id:9,name:'กันยายน' },
+        {id:10,name:'ตุลาคม' },
+        {id:11,name:'พฤศจิกายน' },
         {id:12,name:'ธันวาคม' },
 ])
 
@@ -321,10 +321,10 @@ const  getReportStock=(stock_id,year,month)=>{
    form.get(route('report-checkout-item',form.unitid),{
         preserveState: true,
         preserveScroll: true,
-        onSuccess: page => { 
+        onSuccess: page => {
             //console.log('success');
         },
-        onError: errors => { 
+        onError: errors => {
            // console.log('error');
         },
         onFinish: visit => { console.log('finish');},
@@ -337,7 +337,7 @@ const  getReportStock=(stock_id,year,month)=>{
     //     item_trans.value = res.data.item_trans;
 
     // });
-  
+
 }
 
 

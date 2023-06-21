@@ -1,10 +1,10 @@
 <template>
     <AppLayout>
         <!--Header Alert-->
-        <div v-if="$page.props.flash.status=='success'" 
+        <div v-if="$page.props.flash.status=='success'"
             class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
-            
+
             <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
@@ -28,21 +28,21 @@
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                     <option v-for="(month) in  months" :key=month.id v-bind:value="month.id">{{month.name}}</option>
                 </select>
-                
-            </div>  
-            
+
+            </div>
+
         </div> -->
         <!-- <div class="flex flex-col  ">
-          
-            <button 
+
+            <button
                 class=" flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
             >
                 ค้นหา
             </button>
         </div> -->
 
-     
-     
+
+
         <!-- show order lists -->
          <!-- <h1 class="p-2 mt-3 text-center" >รายการใบสั่งซื้อวัสดุจากสาขา/หน่วย</h1>
          <h1 class=" text-center" >(ณ เดือนปีปัจจุบัน)</h1> -->
@@ -67,19 +67,19 @@
             <label for="">ไม่พบรายการใบสั่งซื้อวัสดุ</label>
         </div>
 
-        <OrderDetail v-for="(order_list,key) in order_lists" :key=order_list.id 
-            :orderIndex="key" 
-            :orderList="order_list" 
+        <OrderDetail v-for="(order_list,key) in order_lists" :key=order_list.id
+            :orderIndex="key"
+            :orderList="order_list"
         >
             <template v-slot:stockname>
-                <p class="text-md font-bold text-red-600 ">{{order_list.stock['stockname']}}</p> 
-                                        
+                <p class="text-md font-bold text-red-600 ">{{order_list.stock['stockname']}}</p>
+
             </template>
             <template v-slot:messagesuggest>
                 <span v-if="order_list.status == 'created'" class=" text-sm text-red-500">รอสาขา/หน่วยกดปุ่มส่งเอกสารสั่งซื้อ และส่งเอกสารตัวจริงมาที่ภาควิชาฯ </span>
                 <span v-if="order_list.status == 'send'" class=" text-sm text-red-500">เมื่อหัวหน้าภาควิชาฯ เซ็นอนุมัติแล้ว ให้กดปุ่มอนุมัติ</span>
                 <span v-if="order_list.status == 'approve'" class=" text-sm text-red-500">
-                    รอสาขา/หน่วย ตรวจรับวัสดุ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ    
+                    รอสาขา/หน่วย ตรวจรับวัสดุ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ
                 </span>
             </template>
             <template v-slot:buttongroup>
@@ -103,7 +103,7 @@
                                     บันทึกข้อมูลลงระบบ SAP แล้ว
                                 </span>
                             </a>
-                            
+
                             <button v-if="order_list.status == 'send'"
                                 v-on:click="confirmApproveOrder(order_list)"
                                 class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-4 border border-green-500 rounded">
@@ -118,29 +118,29 @@
 <!-- {{order_lists}} -->
         <ModalUpToYou :isModalOpen="confirm_approve_order" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติใบสัญญาสั่งซื้อวัสดุนี้ใช่หรือไม่?</p> 
-                                        
+                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติใบสัญญาสั่งซื้อวัสดุนี้ใช่หรือไม่?</p>
+
             </template>
 
             <template v-slot:body>
                 <div class="text-gray-900 text-md font-medium dark:text-white">
-                    <label 
+                    <label
                             class="  flex  justify-start w-full text-sm text-red-900">
                         ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}}
-                    
+
                     </label>
                 </div>
             </template>
 
             <template v-slot:footer>
                 <div class=" w-full  text-center  md:block">
-                    <button 
+                    <button
                         class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="okConfirmApproveOrder"
                         >
                         ตกลง
                     </button>
-                    <button 
+                    <button
                         class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                         v-on:click="cancelApproveOrder"
                     >
@@ -151,7 +151,7 @@
     </ModalUpToYou>
 
 
-    
+
 
         <!-- Modal show checkin order -->
         <!-- {{show_view_checkin}} -->
@@ -159,9 +159,9 @@
             <div v-for="(item) in view_checkin" :key=item.stock_item_id>
                     {{item}}
             </div>
-             
+
         </div> -->
-      
+
 
     </AppLayout>
 </template>
@@ -173,7 +173,7 @@ import OrderDetail from '@/Components/OrderDetail.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import { router } from '@inertiajs/vue3';
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
 
 defineProps({
         order_lists:Array,
@@ -195,13 +195,13 @@ const confirmApproveOrder=(order)=>{
         // console.log(order);
         // console.log(order.id);
         // console.log(order.stock['stockname']);
-    
+
     confirm_approve_order.value = true;
     confirm_order_no.value = order.order_no;
     form.confirm_order_id = order.id;
     form.confirm_order_year = order.year;
     form.confirm_stockname_order = order.stock['stockname'];
-          
+
 }
 
 const cancelApproveOrder=()=>{
@@ -212,20 +212,20 @@ const okConfirmApproveOrder=()=>{
     confirm_approve_order.value = false;
     // console.log('OK ApproveOrder');
     // console.log(form.confirm_order_id);
-    
+
     form.post(route('approve-order'), {
             preserveState: false,
             preserveScroll: true,
-            onSuccess: page => { 
+            onSuccess: page => {
                 console.log('success');
                 },
-            onError: errors => { 
+            onError: errors => {
                 console.log('error');
             },
             onFinish: visit => { console.log('finish');},
     })
-            // Inertia.post(route('approve-order'), 
-            //                  { 
+            // Inertia.post(route('approve-order'),
+            //                  {
             //                      order_id:this.confirm_order_id,
             //                   },
             //                   {
@@ -251,17 +251,17 @@ const okConfirmApproveOrder=()=>{
 //             years:[2022,2021,2020,2019,2018],
 //             months:[
 // 				{id:1,name:'มกราคม' },
-// 				{id:2,name:'กุมภาพันธ์' },	
-// 				{id:3,name:'มีนาคม' },	
-//                 {id:4,name:'เมษายน' },	
-//                 {id:5,name:'พฤษภาคม' },	
-//                 {id:6,name:'มิถุนายน' },	
-//                 {id:7,name:'กรกฎาคม' },	
-//                 {id:8,name:'สิงหาคม' },	
-//                 {id:9,name:'กันยายน' },	
-//                 {id:10,name:'ตุลาคม' },	
-//                 {id:11,name:'พฤศจิกายน' },	
-//                 {id:12,name:'ธันวาคม' },		
+// 				{id:2,name:'กุมภาพันธ์' },
+// 				{id:3,name:'มีนาคม' },
+//                 {id:4,name:'เมษายน' },
+//                 {id:5,name:'พฤษภาคม' },
+//                 {id:6,name:'มิถุนายน' },
+//                 {id:7,name:'กรกฎาคม' },
+//                 {id:8,name:'สิงหาคม' },
+//                 {id:9,name:'กันยายน' },
+//                 {id:10,name:'ตุลาคม' },
+//                 {id:11,name:'พฤศจิกายน' },
+//                 {id:12,name:'ธันวาคม' },
 // 			],
 //             confirm_approve_order:0,
 //             confirm_stockname_order:'',
@@ -278,12 +278,12 @@ const okConfirmApproveOrder=()=>{
 //              console.log(order);
 //              console.log(order.id);
 //              console.log(order.stock['stockname']);
-          
+
 //             this.confirm_approve_order = 1;
 //             this.confirm_order_id = order.id;
 //             this.confirm_order_year = order.year;
 //             this.confirm_stockname_order = order.stock['stockname'];
-          
+
 //         },
 //         cancelSendOrder(){
 //             this.confirm_approve_order = 0;
@@ -292,8 +292,8 @@ const okConfirmApproveOrder=()=>{
 //             this.confirm_approve_order = 0;
 //             console.log('OK ApproveOrder');
 //             console.log(this.confirm_order_id);
-//             Inertia.post(route('approve-order'), 
-//                              { 
+//             Inertia.post(route('approve-order'),
+//                              {
 //                                  order_id:this.confirm_order_id,
 //                               },
 //                               {
@@ -306,7 +306,7 @@ const okConfirmApproveOrder=()=>{
 //             console.log(order_id);
 //             this.show_view_checkin=1;
 //               console.log(this.show_view_checkin);
-//             Inertia.get(route('view-checkin-order',order_id), 
+//             Inertia.get(route('view-checkin-order',order_id),
 //                               {
 //                                   preserveState: false,
 //                                 //   preserveScroll: true

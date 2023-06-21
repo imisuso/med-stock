@@ -5,12 +5,12 @@
                 {{unit.unitname}}
             </div>
             <div class="mt-3" >
-                <label for="">เลือกคลังวัสดุ</label> 
+                <label for="">เลือกคลังวัสดุ</label>
             </div>
             <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                 <option v-for="(stock) in  stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
             </select>
-           
+
         <!-- {{$page.props.stock_items}} -->
         </div>
         <!-- show stock items -->
@@ -19,10 +19,10 @@
             class=" mt-2 bg-green-50 rounded-sm">
                     {{stock_item.item_code}} {{stock_item.item_name}}
             </div>
-            
+
         </div> -->
 
-     
+
         <!-- show order lists -->
          <h1 class="p-2 m-4 text-center" >รายงานการเบิกวัสดุ</h1>
         <table class="min-w-full border-collapse block  md:table">
@@ -41,8 +41,8 @@
 				<td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
 					<span class="inline-block w-1/3 md:hidden font-bold">สถานะ</span>
                     <!-- {{report_stock_list.status}} -->
-                   
-					<button 
+
+					<button
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded"
                         @click="getCheckoutItem(report_stock_list.year,report_stock_list.month)"
                         >
@@ -50,7 +50,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
                         </svg>
                     </button>
-					
+
                     <!-- <button v-if="report_stock_list.status == 'สร้างรายงาน'"
                         class=" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,15 +63,15 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
                     </button> -->
-                  
+
 				</td>
 			</tr>
-			
+
 		</tbody>
 	</table>
 
-      
-        
+
+
 
     </AppLayout>
 </template>
@@ -80,7 +80,7 @@
 //import { usePage } from '@inertiajs/vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3'
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
 
 defineProps({
     stocks:Object,
@@ -90,17 +90,17 @@ defineProps({
 
 const months=ref(
         {id:1,name:'มกราคม' },
-        {id:2,name:'กุมภาพันธ์' },	
-        {id:3,name:'มีนาคม' },	
-        {id:4,name:'เมษายน' },	
-        {id:5,name:'พฤษภาคม' },	
-        {id:6,name:'มิถุนายน' },	
-        {id:7,name:'กรกฎาคม' },	
-        {id:8,name:'สิงหาคม' },	
-        {id:9,name:'กันยายน' },	
-        {id:10,name:'ตุลาคม' },	
-        {id:11,name:'ฟฤศจิกายน' },	
-        {id:12,name:'ธันวาคม' },	
+        {id:2,name:'กุมภาพันธ์' },
+        {id:3,name:'มีนาคม' },
+        {id:4,name:'เมษายน' },
+        {id:5,name:'พฤษภาคม' },
+        {id:6,name:'มิถุนายน' },
+        {id:7,name:'กรกฎาคม' },
+        {id:8,name:'สิงหาคม' },
+        {id:9,name:'กันยายน' },
+        {id:10,name:'ตุลาคม' },
+        {id:11,name:'ฟฤศจิกายน' },
+        {id:12,name:'ธันวาคม' },
 )
 
 const getCheckoutItem=(year,month)=>{
@@ -119,20 +119,20 @@ const getCheckoutItem=(year,month)=>{
 //     },
 //     data(){
 //         return{
-           
+
 //            months:[
 // 				{id:1,name:'มกราคม' },
-// 				{id:2,name:'กุมภาพันธ์' },	
-// 				{id:3,name:'มีนาคม' },	
-//                 {id:4,name:'เมษายน' },	
-//                 {id:5,name:'พฤษภาคม' },	
-//                 {id:6,name:'มิถุนายน' },	
-//                 {id:7,name:'กรกฎาคม' },	
-//                 {id:8,name:'สิงหาคม' },	
-//                 {id:9,name:'กันยายน' },	
-//                 {id:10,name:'ตุลาคม' },	
-//                 {id:11,name:'ฟฤศจิกายน' },	
-//                 {id:12,name:'ธันวาคม' },		
+// 				{id:2,name:'กุมภาพันธ์' },
+// 				{id:3,name:'มีนาคม' },
+//                 {id:4,name:'เมษายน' },
+//                 {id:5,name:'พฤษภาคม' },
+//                 {id:6,name:'มิถุนายน' },
+//                 {id:7,name:'กรกฎาคม' },
+//                 {id:8,name:'สิงหาคม' },
+//                 {id:9,name:'กันยายน' },
+//                 {id:10,name:'ตุลาคม' },
+//                 {id:11,name:'ฟฤศจิกายน' },
+//                 {id:12,name:'ธันวาคม' },
 // 			],
 //         }
 //     },

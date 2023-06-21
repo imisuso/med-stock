@@ -68,7 +68,7 @@ import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
 dayjs.extend(buddhistEra)
 
 defineProps({

@@ -29,7 +29,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                     <span class="inline-block w-1/3  font-bold">วันที่สร้างเอกสาร</span> {{orderList.created_at_format}} 
+                     <span class="inline-block w-1/3  font-bold">วันที่สร้างเอกสาร</span> {{orderList.created_at_format}}
                 </div>
                 <div v-if="orderList.status != 'created'  " >
                     <!-- arrow1 -->
@@ -41,7 +41,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                   
+
                     <span class="inline-block w-1/3  font-bold">วันที่ส่งใบสัญญาสั่งซื้อ</span>
                     <span v-if="orderList.order_no" class=" px-1" >
                         <span class=" ">{{orderList.timeline['send_datetime']}}</span>
@@ -71,9 +71,9 @@
                     </svg>
                      <span class="inline-block w-1/3  font-bold">วันที่ตรวจรับวัสดุ</span> {{orderList.timeline['checkin_datetime']}}
                 </div>
-                
+
                 <div>
-                        
+
                     <div>
                         <label class=" text-red-500 font-bold ">คำแนะนำ:</label>
                          <slot name="messagesuggest"></slot>
@@ -95,18 +95,18 @@
                     <div v-if="view_order">
                         <div v-for="(item,index) in view_items" :key=item.id>
                                 <span   class=" px-1" >
-                                     {{index+1}}.{{item[0].sap}}:{{item[0].item_name}} จำนวน {{item[0].order_input}} ชิ้น ราคาชิ้นละ {{item[0].price}} บาท 
+                                     {{index+1}}.{{item[0].sap}}:{{item[0].item_name}} จำนวน {{item[0].order_input}} ชิ้น ราคาชิ้นละ {{item[0].price}} บาท
                                      <!-- stock_item_id({{item[0].id}}) -->
                                 </span>
                         </div>
                     </div>
-                    
+
                     <div class=" flex justify-center">
                          <slot name="buttongroup"></slot>
                     </div>
-                    
+
                 </div>
-              
+
                 <div class="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
@@ -122,7 +122,7 @@
 </template>
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3'
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
 const props = defineProps({
     orderIndex:{type:Number,required:true},
     orderList:{type:Object,required:true},
