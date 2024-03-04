@@ -95,6 +95,9 @@
                     <div class=" lg:w-1/12 ">
                         จำนวนที่เบิก:
                     </div>
+                    <div class=" lg:w-1/12  ">
+                        จำนวนคงเหลือ:
+                    </div>
                     <div class=" lg:w-2/12 ">
                         ผู้เบิก:
                     </div>
@@ -139,6 +142,10 @@
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  lg:hidden">จำนวนที่เบิก:</label>
                         <label class=" font-bold">{{item_tran.item_count}} </label>
+                    </div>
+                    <div class="  lg:w-1/12 ">
+                        <label for="" class="  lg:hidden">จำนวนคงเหลือ(ปัจจุบัน):</label>
+                        <label class=" font-bold">{{item_tran.item_balance}} </label>
                     </div>
                     <div class=" lg:w-2/12  lg:text-xs ">
                         <label for="" class="   lg:hidden">ผู้เบิก:</label>

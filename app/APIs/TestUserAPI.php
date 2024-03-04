@@ -19,7 +19,7 @@ class TestUserAPI implements AuthUserAPI
        if(!$user_db){
          return  ['reply_code' => 1, 'reply_text' => 'ไม่พบผู้ใช้งานชื่อนี้ในระบบ'] ;
        }
-       
+
             $user['reply_code'] = 0;
             $user['org_id'] = $user_db->sap_id;
             $user['login'] = $login;
@@ -27,10 +27,10 @@ class TestUserAPI implements AuthUserAPI
             $user['name_en'] = '';
            // $user['email'] = $faker->unique()->safeEmail;
             return $user;
-   
-       
+
+
        // return  ['reply_code' => 1, 'reply_text' => 'ไม่พบผู้ใช้งานชื่อนี้ในระบบ'] ;
-       
+
     }
 
     public function authenticate($login, $password)
@@ -43,7 +43,7 @@ class TestUserAPI implements AuthUserAPI
     public function checkEmployeeStatus($sap)
     {
         $baseUrl = config('app.SIMED_PROTAL_API_SERVICE_URL');
-       
+
         $token = config('app.SIMED_PROTAL_API_SERVICE_TOKEN');
 
         $options = ['timeout' => 8.0, 'verify' => false];
@@ -52,11 +52,20 @@ class TestUserAPI implements AuthUserAPI
         $response = Http::withToken($token)
                     ->withOptions($options)
                     ->acceptJson()
-                    ->post($baseUrl.'user', ['org_id' => $sap])
-                    ->json();
+                    ->post($baseUrl.'user', ['org_id' => $sap]);
+
+
+        if ($response->successful() && $response->json()['ok']) {
+            $data = $response->json();
+            $data['reply_code'] = 0;
+            return $data;
+        }
+
+        $data = $response->json();
+        return ['reply_code' => '9', 'reply_text' => $data['message']];
        // Logger('checkEmployeeStatus By SAP');
        // Logger($response);
-        return $response;
+       // return $response;
     }
 
     public function getUserAD($username)
@@ -66,11 +75,11 @@ class TestUserAPI implements AuthUserAPI
         // $url = config('app.HAN_API_SERVICE_URL').'user';
         // $response = Http::withHeaders($headers)->withOptions($options)
         //                  ->post($url, ['login' => $username]);
-        
+
         // $data = json_decode($response->getBody(),true);
 
         $baseUrl = config('app.SIMED_PROTAL_API_SERVICE_URL');
-       
+
         $token = config('app.SIMED_PROTAL_API_SERVICE_TOKEN');
 
         $options = ['timeout' => 8.0, 'verify' => false];
@@ -81,7 +90,7 @@ class TestUserAPI implements AuthUserAPI
                     ->acceptJson()
                     ->post($baseUrl.'user', ['login' => $username])
                     ->json();
-       
+
         // if($response->status()!=200){
         //     return ['reply_code' => '1', 'reply_text' => 'request failed','found'=>'false'];
         // }
@@ -97,7 +106,7 @@ class TestUserAPI implements AuthUserAPI
         $data['division_name'] = $data['division_name'];
         $data['remark'] = $data['remark'];
         $data['reply_code'] = 0;
-     
+
        // Logger($data);
         return $data;
 

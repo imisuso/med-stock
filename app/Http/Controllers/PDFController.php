@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class PDFController extends Controller
 {
-   
+
     public function index()
     {
         $stock_items = StockItem::take(10)->get();
@@ -27,9 +27,9 @@ class PDFController extends Controller
         return $pdf->stream('test_pdf.pdf');
 
     }
-    public function viewPDF(int $stock_id,int $year,int $month) 
+    public function viewPDF(int $stock_id,int $year,int $month)
     {
-     
+
         $thaimonth_short = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
         $stock_item_checkouts = ItemTransaction::where(
                                                 [   'stock_id'=>$stock_id,
@@ -44,16 +44,16 @@ class PDFController extends Controller
                                                 ->orderBy('date_action')
                                                 ->get();
 
-     
+
 
     // logger($stock_item_checkouts);
-   
+
         foreach($stock_item_checkouts as $key=>$tran_checkout){
             // logger($tran_checkout);
             //  logger($tran_checkout->id);
             //  logger($tran_checkout->date_action);
             //  logger($tran_checkout['stock_item'][]);
-             // logger('------------');
+            //  logger('------------');
              $split_date_action = explode('-', $tran_checkout->date_action);
              $year_print = (int) $split_date_action[0] + 543;
              $date_action_show = $split_date_action[2].'  '.$thaimonth_short[(int) $split_date_action[1]].' '.$year_print;
@@ -61,7 +61,7 @@ class PDFController extends Controller
                 $date_expire_last = ItemTransaction::query()->select('date_expire')
                                                     ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
                                                                         'action'=>'checkin',
-                                                                        'status'=>'active'    
+                                                                        'status'=>'active'
                                                                 ])
                                                     ->orderBy('date_expire','desc')
                                                     ->first();
@@ -72,18 +72,36 @@ class PDFController extends Controller
                $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_show;
 
             // logger($stock_item_checkouts[$key]['date_expire_last']);
-          
+
+
+
+                //   Log::info('new checkin');
+                $checkin = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
+                    ->whereStatus('active')
+                    ->whereAction('checkin')
+                    ->whereDate('date_action','<',$tran_checkout->date_action)
+                    ->sum('item_count');
+
+                $checkout = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
+                    ->whereStatus('active')
+                    ->whereAction('checkout')
+                    ->whereDate('date_action','<=',$tran_checkout->date_action)
+                    ->sum('item_count');
+//                $item_balance = $checkin - $checkout;
+//                logger($item_balance);
+            $stock_item_checkouts[$key]['item_balance'] = $checkin - $checkout;
+
 
         }
- 
+
         $stock = Stock::find($stock_id);
         $head2 = $stock->stockname."  ภาควิชาอายุรศาสตร์";
-       
+
 
         $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
         $head3 = "เดือน".$thaimonth[(int) $month]."  ปี ".$year+543;
-       
-      
+
+
         // วันเวลาที่พิมพ์
         $mutable = Carbon::now();
         //\Log::info($mutable);
@@ -93,11 +111,11 @@ class PDFController extends Controller
         $date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year_print;
         $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
 
-       
+
         $pages = number_format(ceil(count($stock_item_checkouts)/15),0);
        // dd($pages);
-       
-        $pdf = Pdf::loadView('pdf.stock_item_view', 
+
+        $pdf = Pdf::loadView('pdf.stock_item_view',
                                     [
                                         'stock_items'=>$stock_item_checkouts,
                                         'head2'=>$head2,
@@ -110,7 +128,7 @@ class PDFController extends Controller
 
         return $pdf->stream('medstock_report_cutstock.pdf');
     }
-    public function downloadPDF() 
+    public function downloadPDF()
     {
         $stock_items = StockItem::take(10)->get();
         $pdf = Pdf::loadView('pdf.stock_item_view', ['stock_items'=>$stock_items])

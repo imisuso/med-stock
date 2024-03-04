@@ -30,46 +30,47 @@
 
               <!-- right navbar -->
               <div class="w-full flex justify-between ">
-                
+
                      <!-- <img src="/storage/images/hq_med_v3.png" class=""> -->
                 <div class=" flex flex-row ">
                     <!-- <p class="font-semibold mt-2 text-2xl text-blue-400 "> -->
                     <div class=" mt-2">
                         <a :href="route('annouce')"  >
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                             class="w-6 h-6 font-semibold  text-2xl text-blue-400">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                           </svg>
-                  
-                      </a>  
+
+                      </a>
                     </div>
-                    <div class="font-semibold  text-2xl text-blue-400 ">
+                    <div class=" flex font-semibold  text-2xl text-blue-400 ">
                       <a :href="route('annouce')"  >
                           ระบบพัสดุ
-                        </a>  
+                        </a>
+
                     </div>
-                   
+
                   <!-- </p> -->
-                 
+
                 </div>
-                
-                
+
+
                 <div class=" flex flex-row  text-md ">
                       <!-- <img src="https://a7sas.net/wp-content/uploads/2019/07/4060.jpeg" class="w-12 h-12 rounded-full shadow-lg" @click="dropDownOpen = !dropDownOpen"> -->
-                  
+
                     <div class="text-pink-400  ">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                       </svg>
                     </div>
                     <div>
-                     
+
                          {{$page.props.auth.user.name}}
                     </div>
                 </div>
 
               </div>
-            
+
               <div class=" bg-red-700 rounded-md text-white shadow-md p-2 ml-4">
                 <form @submit.prevent="submit">
                   <button type="submit">LOGOUT</button>

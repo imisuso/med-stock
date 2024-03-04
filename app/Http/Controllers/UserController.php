@@ -36,9 +36,9 @@ class UserController extends Controller
         }else{
             $roles = Role::all();
         }
-      
-     
-                     
+
+
+
 
           $users = User::select('id','slug','name','status','unitid','updated_at')
                         ->with('unit:id,unitid,unitname')
@@ -48,7 +48,7 @@ class UserController extends Controller
                         // ->paginate(10);
 
                         // ->paginate(10)
-                       
+
         //   Logger('StockItemImportController');
         return Inertia::render('Admin/AddUser',[
                                     'stocks'=>$stocks,
@@ -82,10 +82,10 @@ class UserController extends Controller
        //  Logger(request()->input('sap_id'));
 
          $check_user = User::where('sap_id',request()->input('sap_id'))->first();
-        
+
          if($check_user)
          {
-           
+
            // return Redirect::back()->withErrors()
             return Redirect::route('user-add')
                             ->with(['status' => 'error', 'msg' => 'พบรหัสเจ้าหน้าที่นี้แล้ว']);
@@ -99,7 +99,7 @@ class UserController extends Controller
         //         'unitid'=>request()->input('unit_id'),
         //     ];
 
-    
+
          $user = User::create([
             'sap_id'=>request()->input('sap_id'),
             'name' => request()->input('employee_full_name'),
@@ -116,20 +116,20 @@ class UserController extends Controller
         $detail_log['unitid'] =request()->input('unit_id');
         $detail_log['role_name'] =$role->name;
          //  dd($detail_log);
- 
+
         /****************  insert resource_action_logs ****************/
-      
-       
+
+
             $user->actionLogs()->create([
                     'user_id' => Auth::id(),
                     'action' => 'add_user',
                     'log' => $detail_log,
                     ]);
-        
+
 
         //   $msg_notify_test = $use_in->name.'  เพิ่ม '.request()->input('employee_full_name').' เป็นผู้ใช้งานระบบสำเร็จ';
         //   Logger($msg_notify_test);
-        
+
         return Redirect::route('user-add')
                         ->with(['status' => 'success', 'msg' => 'เพิ่มรหัสเจ้าหน้าที่นี้เป็นผู้ใช้งานระบบวัสดุแล้ว']);
 
@@ -165,7 +165,7 @@ class UserController extends Controller
         $user_edit = User::whereSlug($slug)
                     ->with('unit:unitid,unitname')
                     ->first();
-    
+
         $user_edit->roles;
         $units = Unit::all();
         $user = Auth::user();
@@ -195,21 +195,22 @@ class UserController extends Controller
      */
     public function update(User $user)
     {
-      //  Logger(request()->all());
+        //Logger(request()->all());
         $original_val_user = array();
         $original_val_user = $user->getOriginal(); //เก็บค่าเก่าไว้ก่อน
         $original_val_role = $user->roles;
-     
+
 
         $original_val_user['role_name']=$original_val_role[0]['name'];
        // logger($original_val_user);
         $old_changes =array();
         $user->update([
+                        'name'=> request()->input('user_name_thai'),
                         'unitid'=> request()->input('unit_id'),
                         'status'=> request()->input('user_status'),
                 ]); // สัมพันธ์กับ protected fillable ใน Model
         $changes = $user->getChanges(); //ได้เฉพาะคอลัมน์ที่มีการเปลี่ยนแปลงค่า + updated_at ถ้าตารางนี้มีการใช้ timestamp
-        
+
       //  update role user
        $role_name = request()->input('role_name');
        $role_change = 0;
@@ -224,17 +225,17 @@ class UserController extends Controller
                // logger($old_changes);
             }
 
-          
+
         } catch (\Exception  $e) {
             return Redirect::back()->withErrors(['msg' => 'ไม่สามารถแก้ไขผู้ใช้งานระบบได้เนื่องจาก ' .$e->getMessage()]);
         }
 
-       
+
        // dd($changes);
 
 
         if(count($changes) || $role_change){
-          
+
             if (count($changes)) {
                 foreach ($changes as $key=>$val) {
                  //   $old_changes[] = [ 'column'=>$key , 'old'=>$original_val_user[$key] , 'new'=>$val];
@@ -242,26 +243,26 @@ class UserController extends Controller
                 }
                 array_pop($old_changes); //เอา updated_at  ออก
             }
-           
+
             /****************  insert log ****************/
            // logger($old_changes);
             $use_in = Auth::user();
 
             $detail_log =array();
             $detail_log['user_name'] =$user->name;
-           
-           
+
+
 
             /****************  insert resource_action_logs ****************/
-      
-       
+
+
             $user->actionLogs()->create([
                 'user_id' => Auth::id(),
                 'action' => 'change_user',
                 'log' => $old_changes,
                 ]);
-  
-      
+
+
 
             //  $msg_notify_test = $use_in->name.'  แก้ไขข้อมูลผู้ใช้งาน '.$user->name.' สำเร็จ';
             //  Logger($msg_notify_test);
@@ -272,7 +273,7 @@ class UserController extends Controller
            // logger($old_changes);
         return Redirect::back()->with(['status' => 'warning', 'msg' => 'ข้อมูลที่ระบุมาไม่มีการเปลี่ยนแปลง']);
 
-      
+
     }
 
     /**
@@ -303,7 +304,7 @@ class UserController extends Controller
        //  Logger($check_status_emp);
         // Logger($check_status_emp['Status']);
 
-   
+
            /****************  insert log ****************/
           //  logger($old_changes);
           $use_in = Auth::user();
@@ -341,19 +342,19 @@ class UserController extends Controller
                     if(strcmp($check_status_emp['status'],'active') ==0)
                     {
                         $get_user = array();
-        
+
                         $get_user = $api->getUserAD($check_status_emp['login']);
                         $get_user['status'] = 'active';
                     //   Logger($get_user);
                         return $get_user;
                     }
-        
+
                 // Logger('Withdrawn');
                     return $check_status_emp;
                 }
         }else{ //*****SiMedPortalAPI
 
-          
+
             if($check_status_emp['reply_code'] == '9')
             {
                 $get_user['status'] = 'error_sap';
@@ -366,21 +367,21 @@ class UserController extends Controller
 
             if(!$check_status_emp['found'])
             {
-              
+
                 // if(!$check_status_emp['found']){
                     $get_user['status'] = 'not_found';
                     return $get_user;
                // }
             }else{
-              
+
                 if($check_status_emp['active'])
                 {
                     $get_user = array();
-    
+
 
                     $get_user = $api->getUserAD($check_status_emp['login']);
                     // Logger($get_user);
-     
+
                     // Logger('check active user');
                     if($get_user['reply_code'] == '9')
                     {
@@ -397,15 +398,15 @@ class UserController extends Controller
                     // Logger($get_user);
                     return $get_user;
                 }
-    
+
                // Logger('user not active ');
                 $check_status_emp['status'] = 'withdrawn';
                 return $check_status_emp;
             }
         }
-       
 
-        
-     
+
+
+
     }
 }
