@@ -25,7 +25,7 @@ class ReportStockController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
 
 
@@ -44,6 +44,7 @@ class ReportStockController extends Controller
             request()->session()->flash('mainMenuLinks', $main_menu_links);
         $year_has = ItemTransaction::select('year')
                                     ->where('action','checkout')
+                                    ->where('status','active')
                                     ->distinct('year')
                                     ->orderBy('year')
                                     ->get();
@@ -96,15 +97,15 @@ class ReportStockController extends Controller
                         $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
 
 
-                        if($tran_checkout->stock_item_id != $check_item_change){
+                     //   if($tran_checkout->stock_item_id != $check_item_change){
                          //   Log::info('new checkin');
                             $checkin = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
                                                     ->whereStatus('active')
                                                     ->whereAction('checkin')
-                                                    ->whereDate('date_action','<',$tran_checkout->date_action)
+                                                    ->whereDate('date_action','<=',$tran_checkout->date_action)
                                                     ->sum('item_count');
                              $balance_now = $checkin;
-                        }
+                  //      }
 
 
                         $checkout = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
@@ -113,6 +114,9 @@ class ReportStockController extends Controller
                                                 ->whereDate('date_action','<=',$tran_checkout->date_action)
                                                 ->sum('item_count');
 
+//                        logger("stock_item_id=".$tran_checkout->stock_item_id);
+//                        logger($checkin);
+//                        logger($checkout);
                         $stock_item_checkouts[$key]['item_balance'] = $checkin - $checkout;
 
 

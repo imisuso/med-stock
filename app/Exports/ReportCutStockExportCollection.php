@@ -79,7 +79,7 @@ WithMapping ,WithHeadings, ShouldAutoSize, WithStrictNullComparison
                 $checkin = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
                                         ->whereStatus('active')
                                         ->whereAction('checkin')
-                                        ->whereDate('date_action','<',$tran_checkout->date_action)
+                                        ->whereDate('date_action','<=',$tran_checkout->date_action)
                                         ->sum('item_count');
                 $checkout = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
                                         ->whereStatus('active')

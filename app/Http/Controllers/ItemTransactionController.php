@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Budget;
+use DateTime;
 use Inertia\Inertia;
 use App\Models\ItemTransaction;
 use App\Models\LogActivity;
@@ -119,7 +120,9 @@ class ItemTransactionController extends Controller
         $user = Auth::user();
         // Log::info('ItemTransactionController store');
        // dd($request->all());
-       //  return "store";
+       // logger($request->all());
+
+
         // Log::info($request->confirm_item_slug);
         // Log::info($request->confirm_item_date);
         // Log::info($request->confirm_item_count);
@@ -134,7 +137,23 @@ class ItemTransactionController extends Controller
         // Log::info($stock_item->stock);
         $year_checkout= substr($request->confirm_item_date,0,4);
         $month_checkout= substr($request->confirm_item_date,5,2);
+        $year_now = date("Y");
+        $year_now_th = $year_now + 543;
+//        logger($year_checkout);
+//        logger($year_now);
+//        logger($year_now_th);
+        //logger($this->validateDate('2024-02-29', 'Y-m-d'));
+        if($year_checkout > 2500){
+            if($year_checkout > $year_now_th)
+                return Redirect::back()->with(['status' => 'error', 'msg' => 'ปีที่ระบุมากกว่าปีปัจจุบัน กรุณาระบุวันที่เบิกอีกครั้ง']);
+            $year_checkout = $year_checkout -543;
+        }else{
+            if($year_checkout > $year_now)
+                return Redirect::back()->with(['status' => 'error', 'msg' => 'ปีที่ระบุมากกว่าปีปัจจุบัน กรุณาระบุวันที่เบิกอีกครั้ง']);
+        }
 
+       // logger('year store='.$year_checkout);
+        //return "store";
         $date_expire_last = ItemTransaction::select('date_expire')
                                     ->where(['stock_item_id'=>$stock_item->id,
                                                         'action'=>'checkin',
@@ -498,5 +517,10 @@ class ItemTransactionController extends Controller
         // Logger($msg_notify_test);
         return Redirect::back()->with(['status' => 'success', 'msg' => 'ยกเลิกการนำเข้าวัสดุสำเร็จ']);
 
+    }
+    function validateDate($date, $format = 'Y-m-d H:i:s')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
     }
 }
