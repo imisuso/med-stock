@@ -25,25 +25,26 @@ class ReportStockController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
 
-    
+
     public function index($division_id)
     {
-       
+
        // logger('ReportStockController index');
        //  logger(request()->all());
-  
+
         $user = Auth::user();
             $main_menu_links = [
                     'is_admin_division_stock'=> $user->can('view_master_data'),
                 // 'user_abilities'=>$user->abilities,
             ];
-      
+
             request()->session()->flash('mainMenuLinks', $main_menu_links);
         $year_has = ItemTransaction::select('year')
                                     ->where('action','checkout')
+                                    ->where('status','active')
                                     ->distinct('year')
                                     ->orderBy('year')
                                     ->get();
@@ -51,7 +52,7 @@ class ReportStockController extends Controller
        $role_admin = array('admin_it','admin_med_stock','super_officer');
 
     //   if(!in_array($user->roles[0]['name'] , $role_admin)){
-        if(in_array($user->roles[0]['name'] , $role_admin)){  
+        if(in_array($user->roles[0]['name'] , $role_admin)){
             $stocks = Stock::where('status',1)->get();
 
 
@@ -79,7 +80,7 @@ class ReportStockController extends Controller
                                                             // ->get();
 
                     // Log::info($stock_item_checkouts);
-                  
+
                     $check_item_change=0;
                     foreach($stock_item_checkouts as $key=>$tran_checkout){
                        // Log::info('--------------');
@@ -88,55 +89,60 @@ class ReportStockController extends Controller
                         $date_expire_last = ItemTransaction::select('date_expire')
                                         ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
                                                             'action'=>'checkin',
-                                                            'status'=>'active'    
+                                                            'status'=>'active'
                                                     ])
                                         ->orderBy('date_expire','desc')
                                         ->first();
                         //  Log::info($date_expire_last->date_expire);
                         $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
-                      
-                     
-                        if($tran_checkout->stock_item_id != $check_item_change){
+
+
+                     //   if($tran_checkout->stock_item_id != $check_item_change){
                          //   Log::info('new checkin');
                             $checkin = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
                                                     ->whereStatus('active')
                                                     ->whereAction('checkin')
+                                                    ->whereDate('date_action','<=',$tran_checkout->date_action)
                                                     ->sum('item_count');
                              $balance_now = $checkin;
-                        }
-                       
-                      
+                  //      }
+
+
                         $checkout = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
                                                 ->whereStatus('active')
                                                 ->whereAction('checkout')
+                                                ->whereDate('date_action','<=',$tran_checkout->date_action)
                                                 ->sum('item_count');
 
+//                        logger("stock_item_id=".$tran_checkout->stock_item_id);
+//                        logger($checkin);
+//                        logger($checkout);
                         $stock_item_checkouts[$key]['item_balance'] = $checkin - $checkout;
 
-                        
+
 
                         $balance_now = $balance_now-$tran_checkout->item_count;
-                    
+
                         $check_item_change = $tran_checkout->stock_item_id;
                         $stock_item_checkouts[$key]['balance_now'] = $balance_now;
                       //  Log::info('balance_now=');
                        // Log::info($balance_now);
-                     
+
                     }
                    // logger(count($stock_item_checkouts));
                 if(count($stock_item_checkouts)>0){
                     $msg_notify_test = $user->name.' ดูข้อมูลการตัดสต๊อก '.$stock_item_checkouts[0]->stock['stockname'].' เดือน '.$month_selected.' ปี '.$year_selected;
-                 
+
                     /****************  insert log ****************/
                     $detail_log =array();
                     $detail_log['stock_id'] = $stock_item_checkouts[0]->stock['stockname'];
                     $detail_log['year'] = $year_selected;
                     $detail_log['month'] = $month_selected;
                     $detail_log['result'] = count($stock_item_checkouts);
-            
-    
+
+
                 //  dd($detail_log);
-    
+
                     $log_activity = LogActivity::create([
                         'user_id' => $user->id,
                         'sap_id' => $user->sap_id,
@@ -144,21 +150,21 @@ class ReportStockController extends Controller
                         'action' => 'get_report',
                         'detail'=> $detail_log,
                     ]);
-                    
+
                 }else{
                     $stock_selected_name = Stock::select('stockname')->where('id',$unit_selected)->first();
                     $msg_notify_test = $user->name.' ดูข้อมูลการตัดสต๊อก '.$stock_selected_name->stockname.' เดือน '.$month_selected.' ปี '.$year_selected.' ไม่พบข้อมูลการตัดสต๊อก';
-                    
+
                          /****************  insert log ****************/
                          $detail_log =array();
                          $detail_log['stock_id'] = $stock_selected_name->stockname;
                          $detail_log['year'] = $year_selected;
                          $detail_log['month'] = $month_selected;
                          $detail_log['result'] = 'ไม่พบข้อมูลการตัดสต๊อก';
-                 
-         
+
+
                      //  dd($detail_log);
-         
+
                          $log_activity = LogActivity::create([
                              'user_id' => $user->id,
                              'sap_id' => $user->sap_id,
@@ -166,9 +172,9 @@ class ReportStockController extends Controller
                              'action' => 'get_report',
                              'detail'=> $detail_log,
                          ]);
-               
+
                 }
-              
+
                // Logger($msg_notify_test);
 
             }else{
@@ -181,7 +187,7 @@ class ReportStockController extends Controller
             // logger('count =>');
             // logger(count($stock_item_checkouts));
 
-           
+
             return Inertia::render('Stock/CreateReportStock',[
                                 'stocks'=>$stocks,
                                 //'stock_items'=>$stock_items,
@@ -205,10 +211,10 @@ class ReportStockController extends Controller
                                     'unit'=> $unit,
                                     ]);
         }
-       
+
     }
 
-   
+
 
     /**
      * Show the form for creating a new resource.
@@ -244,7 +250,7 @@ class ReportStockController extends Controller
         // Log::info($year);
         // Log::info($month);
 
-     
+
         //dd('show');
 
         $stock_item_checkouts = ItemTransaction::where(
@@ -267,31 +273,31 @@ class ReportStockController extends Controller
             $date_expire_last = ItemTransaction::query()->select('date_expire')
                                                 ->where(['stock_item_id'=>$tran_checkout->stock_item_id,
                                                                     'action'=>'checkin',
-                                                                    'status'=>'active'    
+                                                                    'status'=>'active'
                                                             ])
                                                 ->orderBy('date_expire','desc')
                                                 ->first();
           //  Log::info($date_expire_last->date_expire);
             $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_last->date_expire;
-            
+
         }
-  
-      
+
+
         $user = Auth::user();
         $main_menu_links = [
                 'is_admin_division_stock'=> $user->can('view_master_data'),
             // 'user_abilities'=>$user->abilities,
         ];
-  
+
         request()->session()->flash('mainMenuLinks', $main_menu_links);
       //  Log::info($stock_item_checkouts);
         return response()->json([
             'item_trans' => $stock_item_checkouts
         ]);
-       
+
     }
 
-    public function export($stock_id,$year,$month) 
+    public function export($stock_id,$year,$month)
     {
         $format_month = sprintf("%02d",$month);
         $unit = Unit::select('shortname')->whereUnitid($stock_id)->first();
@@ -306,7 +312,7 @@ class ReportStockController extends Controller
            $detail_log['stock'] = $unit->shortname;
            $detail_log['year'] = $year;
            $detail_log['month'] = $month;
-   
+
 
        //  dd($detail_log);
 
@@ -322,18 +328,18 @@ class ReportStockController extends Controller
         return Excel::download(new ReportCutStockExportCollection($stock_id,$year,$month), $filename_xls);
     }
     public function exportBalanceStock($stock_id)
-    {   
+    {
         $stock = Stock::find($stock_id);
-      
+
         $date_now = date('YMd');
-       
+
         $filename_xls = 'ReportBalanceStock'."_".$stock->stockengname."_".$date_now.'.xlsx';
         //dd($filename_xls);
         $user = Auth::user();
 
         $detail_log =array();
         $detail_log['stock'] = $stock->stockname;
-    
+
 
 
     //  dd($detail_log);
@@ -350,12 +356,12 @@ class ReportStockController extends Controller
 
     }
 
-    public function export_test($checkout_items) 
+    public function export_test($checkout_items)
     {
         // Log::info('export_test');
         // Log::info($checkout_items);
 
-      
+
 
         $checkout_items_array = explode(',',$checkout_items);
        // Log::info($checkout_items_array[0]['id']);
@@ -365,7 +371,7 @@ class ReportStockController extends Controller
         //Logger($checkout_items);
 
         // $filename_xls = 'ReportCutStock'."_".$stock_name->stockengname."_".$format_month.$year.'.xlsx';
-       
+
         // return (new ReportCutStockExport($stock_id,$year,$month,$stock_name->stockengname))->download($filename_xls);
     }
 

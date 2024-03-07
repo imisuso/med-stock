@@ -32,7 +32,7 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
 
     public function map($TransactionCheckout): array
     {
-    
+
       //  Log::info("In Map");
        // Log::info($TransactionCheckout);
        //  Log::info($TransactionCheckout->id);
@@ -43,9 +43,9 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
         // Log::info($TransactionCheckout->stockItem->id);
         // Log::info($TransactionCheckout->stockItem->item_code);
        // Log::info($TransactionCheckout->date_expire_last);
-        
+
         return [
-          
+
                 $TransactionCheckout->stockItem->item_code,
                 $TransactionCheckout->stockItem->item_name,
                 $TransactionCheckout->date_expire,
@@ -54,7 +54,7 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
                 $TransactionCheckout->user->name,
                 $TransactionCheckout->stockItem->item_sum,
             // Date::dateTimeToExcel($TransactionCheckout->created_at),
-           
+
         ];
     }
 
@@ -89,9 +89,9 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
                                 // ->get();
 
           //  Log::info('In Query');
-   
-       
-      
+
+
+
         return $TransactionCheckout;
     }
     public function title(): string
@@ -105,10 +105,10 @@ class ReportCutStockExport implements FromQuery ,WithMapping ,WithHeadings  ,Wit
     {
         return [
             'A' => 9,
-            'B' => 40, 
-            'C' => 16,   
-            'D' => 16, 
-            'F' => 20,            
+            'B' => 40,
+            'C' => 16,
+            'D' => 16,
+            'F' => 20,
         ];
     }
 
