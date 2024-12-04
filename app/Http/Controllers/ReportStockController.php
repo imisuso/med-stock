@@ -115,8 +115,8 @@ class ReportStockController extends Controller
                                                 ->sum('item_count');
 
 //                        logger("stock_item_id=".$tran_checkout->stock_item_id);
-//                        logger($checkin);
-//                        logger($checkout);
+                        logger($checkin);
+                        logger($checkout);
                         $stock_item_checkouts[$key]['item_balance'] = $checkin - $checkout;
 
 
