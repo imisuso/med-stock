@@ -1,13 +1,13 @@
 <template>
     <!-- give the sidebar z-50 class so its higher than the navbar if you want to see the logo -->
     <!-- you will need to add a little "X" button next to the logo in order to close it though -->
-    <div class="overflow-y-auto  w-2/3 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 lg:h-screen lg:block bg-gray-100 border-r z-30" 
+    <div class="overflow-y-auto  w-2/3 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 lg:h-screen lg:block bg-gray-100 border-r z-30"
       :class="sideBarOpen ? '' : 'hidden'" id="main1-nav">
 
       <div class=" flex justify-center  ">
-            <img src="../../images/logo_med_tranparent.gif" 
+            <img src="../../images/logo_med_tranparent.gif"
             class="mt-8 hidden lg:block lg:w-2/3 lg:mt-1 "
-          
+
             >
              <!-- <p class="font-semibold text-2xl text-blue-400 pl-4">
           ระบบวัสดุ
@@ -20,7 +20,7 @@
       </div>
   <!-- {{$page.props.auth}} -->
 <!-- {{$page.props.auth.user.roles[0].name}} -->
-      <div v-if="(!$page.props.auth.abilities.includes('manage_master_data') && $page.props.auth.user.roles[0].name != 'super_officer')" 
+      <div v-if="(!$page.props.auth.abilities.includes('manage_master_data') && $page.props.auth.user.roles[0].name != 'super_officer')"
          class="mt-20 lg:mt-2 mb-4 px-4 text-sm">
         <p class="pl-4  font-semibold mb-1">เมนูหลักของสาขา</p>
         <Link :href="route('stock')">
@@ -52,11 +52,11 @@
       </div>
 <!-- v-if="$page.props.flash.mainMenuLinks.is_admin_division_stock" -->
 <!-- {{$page.props.auth.abilities.includes("manage_master_data")}} -->
-      <div v-if="$page.props.auth.abilities.includes('manage_master_data') || $page.props.auth.user.roles[0].name == 'super_officer'" 
+      <div v-if="$page.props.auth.abilities.includes('manage_master_data') || $page.props.auth.user.roles[0].name == 'super_officer'"
         class=" mt-20 lg:mt-2 mb-4 px-4 text-sm">
         <p class="pl-4  font-semibold mb-1">เมนูหลัก</p>
 
-        <div 
+        <div
           class="w-full flex items-center justify-between text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" @click="managementMenuOpen = !managementMenuOpen">
           <div class="flex flex-row">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -64,7 +64,7 @@
               <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z" />
               <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z" />
             </svg>
-            <span class="text-gray-700 ml-2">การจัดการข้อมูล</span> 
+            <span class="text-gray-700 ml-2">การจัดการข้อมูล</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
             <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
           </svg>
@@ -84,15 +84,15 @@
               <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>หน่วยนับ</div>
             </div>
           </Link> -->
-            <Link :href="route('user-add')" 
+            <Link :href="route('user-add')"
                 :data="{ 'remember': 'forget' }"
             >
               <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
-              
+
                 <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>เพิ่ม/แก้ไข ผู้ใช้งาน</div>
-              
+
               </div>
-            </link>
+            </Link>
           </div>
 
         <Link :href="route('stock-item-import')" v-if="$page.props.auth.abilities.includes('import_item_excel')">
@@ -168,7 +168,7 @@
           </div>
         </Link>
 
-       
+
         <Link :href="route('index-get-log')" v-if="$page.props.auth.user.roles[0].name=='admin_it'">
           <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -183,7 +183,7 @@
 
       </div>
 
-     
+
 
     </div>
 </template>
@@ -228,7 +228,7 @@ export default {
 <style scoped>
 .submenu-icon-style {
     /* background-color: aquamarine; */
-    color: #ffb380; 
+    color: #ffb380;
     font-size: 0.7rem;
 }
 
