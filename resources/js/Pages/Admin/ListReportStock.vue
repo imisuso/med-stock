@@ -260,33 +260,29 @@ const msg_validate_stock=ref(false);
 
 const form = useForm({
             stock_selected:props.stock_selected ? props.stock_selected :0,
-            // year_selected:'',
-            // month_selected:'',
+
             unitid:usePage().props.auth.user.unitid ? usePage().props.auth.user.unitid :0,
-        //    unitid:props.auth.user.unitid ? props.auth.user.unitid :0 ,
+
 })
 
 const price_format=(price)=>{
-   // console.log(price)
+
    let  price_show = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     return price_show;
-  // return '1,200.5';
+
 }
 
 watch( search, value => {
 
-  // if(value.length >= 3){
-     //  console.log('key search=' + value)
+
      router.get(route('report-list',form.unitid), { search: value ,stock_selected: form.stock_selected}, {
            preserveState: true,
            replace: true
        })
- //  }
+
 })
 const getStockReport=()=>{
-    //console.log('aaaaaaaaaa');
 
-    //console.log(usePage().props.value.auth.user.unitid);
 
     msg_validate_stock.value = false
 
@@ -303,7 +299,9 @@ const getStockReport=()=>{
         onError: errors => {
            // console.log('error');
         },
-        onFinish: visit => { console.log('finish');},
+        onFinish: visit => {
+            //console.log('finish');
+            },
     })
 
 
@@ -312,18 +310,7 @@ const getStockReport=()=>{
 const cancel_stock_item=(stock_item_id)=>{
 
 console.log('cancel stock_item_id='+item_tran_id);
-//form.item_tran_id = item_tran_id;
-// form.post(route('cancel-checkout-stock-item'), {
-//      preserveState: false,
-//      preserveScroll: true,
-//      onSuccess: page => { //console.log('success');
-//      },
-//      onError: errors => {
-//          console.log('error');
-//      },
-//      onFinish: visit => { //console.log('finish');
-//      },
-//  })
+
 }
 
 

@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
+
 use App\Models\StockItem;
 use App\Models\Stock;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+
 
 class StockItemController extends Controller
 {
@@ -16,18 +14,18 @@ class StockItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($item_id)
+    public function index($item_id):void
     {
-       
-        $stock_item = StockItem::where('id',$item_id)->first();
-        $stock = Stock::where('id',$stock_item->stock_id)->first();
-      
-      
+
+        $stock_item = StockItem::query()->where('id',$item_id)->first();
+        $stock = Stock::query()->where('id',$stock_item->stock_id)->first();
+
+
         // \Log::info($stock_item);
         // \Log::info('------------------------');
         // \Log::info($stock_items);
-       
-     
+
+
     }
 
     /**
@@ -35,10 +33,6 @@ class StockItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -46,10 +40,7 @@ class StockItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+
 
     /**
      * Display the specified resource.
@@ -57,10 +48,6 @@ class StockItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
 
     public function searchByItemName($item_name_search)
     {
@@ -68,7 +55,7 @@ class StockItemController extends Controller
         // Log::info($item_name_search);
 
         //Do.ต้องเพิ่ม where status=2 ไปด้วย หลังจากทำฟังก์ชันตรวจรับวัสดุจากใบสั่งซื้อเสร็จ
-        $items = StockItem::select('slug','item_code','item_name','unit_count','price','profile')
+        $items = StockItem::query()->select('slug','item_code','item_name','unit_count','price','profile')
                 ->where('item_name','like',"%{$item_name_search}%")->get();
        // Log::info($items);
 
@@ -83,10 +70,7 @@ class StockItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -95,10 +79,7 @@ class StockItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -106,8 +87,5 @@ class StockItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+
 }

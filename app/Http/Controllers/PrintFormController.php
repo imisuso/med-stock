@@ -20,18 +20,18 @@ use setasign\Fpdi\Fpdi;
 
 class PrintFormController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
 
-     
-    public function index()
+
+    public function index():void
     {
        // $pdf = new setasign\Fpdi\Fpdi();
-    
+
 
         //$pdf = new FPDF();
         $pdf = new FPDI('l');
@@ -40,7 +40,7 @@ class PrintFormController extends Controller
         $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
 
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
 
         //title
         $division_name = 'สาขาวิชาการบริบาลผู้ป่วยนอก';
@@ -51,13 +51,13 @@ class PrintFormController extends Controller
         $pdf->Cell(0,0,iconv('UTF-8', 'cp874', $title),0,0,'C');
 
         $pdf->SetFont('THSarabunNew');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
         $pdf->SetXY(20, 19);
         $pdf->Cell(25,10,iconv('UTF-8', 'cp874', 'รายการที่ 1'));
 
        // $pdf->SetTitle('แบบฟอร์มรายการสั่งซื้อวัสดุของ สาขา/หน่วยงาน');
-       
-       
+
+
         $pdf->Output('I');
     }
 
@@ -66,7 +66,7 @@ class PrintFormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(OrderItem $order)
+    public function create(OrderItem $order):void
     {
            //Log::info($order->items);
 
@@ -75,35 +75,35 @@ class PrintFormController extends Controller
           $pdf->AddPage();
           $pdf->AddFont('THSarabunNew','','THSarabunNew.php');
           $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
-  
+
           // add  image watermark
          // $pdf->Image('https://a7sas.net/wp-content/uploads/2019/07/4060.jpeg',60,30,90,0);
         // $pdf->Image(storage_path('images/logo_med_tranparent.gif'),60,30,90,0,'GIF');
          //$pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
-          
+
           //title
           $pdf->SetFont('THSarabunNew','B');
-          $pdf->SetFontSize('20'); 
-          $unit = Unit::where('unitid',$order->items[0][0]['stock_id'])->first();
+          $pdf->SetFontSize('20');
+          $unit = Unit::query()->where('unitid',$order->items[0][0]['stock_id'])->first();
         //  Log::info($unit);
           $division_name = $unit->unitname;
           $head = 'แบบฟอร์มบันทึกการรับวัสดุ สาขา/หน่วยงาน';
           $title = $head.'  '.$division_name;
           $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $title),0,0,'C');
-  
-   
+
+
           //head column
           $pdf->SetFont('THSarabunNew','B');
-          $pdf->SetFontSize('16'); 
+          $pdf->SetFontSize('16');
           $pdf->SetXY(18, 25);
          // $pdf->SetLineWidth(2);
           // $pdf->Line(10,50,10,50);
           $pdf->SetLineWidth(1);
           $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ    รหัส              ชื่อ                                               บริษัทผู้ขาย                                               วันที่รับเข้า               จำนวนสั่งซื้อ        คงเหลือ           '),'B');
-       
+
           //list item
           $pdf->SetFont('THSarabunNew');
-          $pdf->SetFontSize('16'); 
+          $pdf->SetFontSize('16');
           $total_all = 0;
           $x=20;
           $y=35;
@@ -115,14 +115,14 @@ class PrintFormController extends Controller
               $i = $index;
               $index = $index+1;
               if(strlen($item[0]['item_name'])>30){
-                $pdf->SetFontSize('12'); 
+                $pdf->SetFontSize('12');
               }
               $item_print = $index.'. '.$item[0]['sap'].'    '.$item[0]['item_name'];
               $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_print),'B');
-             
-              
+
+
               if(strlen($item[0]['business_name'])>100){
-                  $pdf->SetFontSize('12'); 
+                  $pdf->SetFontSize('12');
               }
               $pdf->SetXY(110, $y);
               $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['business_name']));
@@ -130,7 +130,7 @@ class PrintFormController extends Controller
               $pdf->SetFontSize('16');
               $pdf->SetXY(200, $y);
               $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $order->timeline['checkin_datetime']));
-  
+
               $pdf->SetFontSize('16');
               $pdf->SetXY(243, $y);
               $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['order_input']));
@@ -142,24 +142,24 @@ class PrintFormController extends Controller
               $pdf->SetXY(268, $y);
               $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_sum));
 
-          
+
             //   $pdf->SetXY(250, $y);
             //   $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($item[0]['total'],2)));
-  
+
               $total_all = $total_all+$item[0]['total'];
               $y = $y+10;
               $pdf->SetXY($x, $y);
           }
-  
+
         //   $pdf->SetXY(225, $y);
         //   $total_all_print = 'รวมเป็นเงิน  '.number_format($total_all,2).'  บาท';
         //   $pdf->SetFont('THSarabunNew','B');
-        //   $pdf->SetFontSize('18'); 
+        //   $pdf->SetFontSize('18');
         //   $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $total_all_print));
-  
+
           $y = $y+50;
           $pdf->SetFont('THSarabunNew');
-          $pdf->SetFontSize('16'); 
+          $pdf->SetFontSize('16');
           $pdf->SetXY(20, $y);
           $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลงชื่อ................................................เจ้าหน้าที่สโตร์/ผู้รับผิดชอบ'));
           $y = $y+10;
@@ -168,9 +168,9 @@ class PrintFormController extends Controller
           $y = $y+10;
           $pdf->SetXY(20, $y);
           $pdf->Cell(0,10,iconv('UTF-8', 'cp874', '         วันที่......................................'));
-  
-       
-  
+
+
+
           $y = 100;
           $pdf->SetXY(180, $y);
           $pdf->Cell(0,10,iconv('UTF-8', 'cp874', '          ลงนาม................................................หัวหน้าห้องปฎิบัติการ'));
@@ -180,8 +180,8 @@ class PrintFormController extends Controller
           $y = $y+10;
           $pdf->SetXY(180, $y);
           $pdf->Cell(0,10,iconv('UTF-8', 'cp874', '                  วันที่......................................'));
-  
-          
+
+
           // วันเวลาที่พิมพ์
           $mutable = Carbon::now();
           //\Log::info($mutable);
@@ -190,7 +190,7 @@ class PrintFormController extends Controller
           $year = (int) $split_date_now[0] + 543;
           $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
           $date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year;
-  
+
           $pdf->SetFontSize('14');
           $pdf->SetXY(200,3);
           $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
@@ -199,13 +199,13 @@ class PrintFormController extends Controller
           $pdf->SetXY(10,3);
           $date_print = 'อ้างอิงจากเลขที่ใบสั่งซื้อ:'.'  '.$order['create_no'].'/'.$order['year'];
           $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
-  
+
           //test font color
           // $pdf->SetFontSize('50');
           // $pdf->SetTextColor(255,192,203);
           // $pdf->SetXY(100,100);
           // $pdf->Cell(0,15,iconv('UTF-8', 'cp874', 'TEST  TEST'));
-  
+
           $pdf->Output('I');
     }
 
@@ -228,7 +228,7 @@ class PrintFormController extends Controller
      */
     public function show(OrderItem $order)
     {
-        
+
        // Log::info($order);
        // Log::info($order->items);
 
@@ -240,10 +240,10 @@ class PrintFormController extends Controller
 
         // add  image watermark
        //$pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
-        
+
         //title
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('20'); 
+        $pdf->SetFontSize('20');
         $unit = Unit::where('unitid',$order->items[0][0]['stock_id'])->first();
         //Log::info($unit);
         $division_name = $unit->unitname;
@@ -251,19 +251,19 @@ class PrintFormController extends Controller
         $title = $head.'  '.$division_name;
         $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $title),0,0,'C');
 
- 
+
         //head column
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
         $pdf->SetXY(18, 25);
         $pdf->SetLineWidth(2);
         // $pdf->Line(10,50,10,50);
         $pdf->SetLineWidth(1);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ    รหัส              ชื่อ                                               บริษัทผู้ขาย                                   จำนวนสั่งซื้อ      มูลค่า(บาท)/หน่วย           รวม'),'B');
-     
+
         //list item
         $pdf->SetFont('THSarabunNew');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
         $total_all = 0;
         $x=20;
         $y=35;
@@ -272,14 +272,14 @@ class PrintFormController extends Controller
         foreach($order->items as $index=>$item){
             $index = $index+1;
             if(strlen($item[0]['item_name'])>30){
-                $pdf->SetFontSize('12'); 
+                $pdf->SetFontSize('12');
             }
             $item_print = $index.'. '.$item[0]['sap'].'    '.$item[0]['item_name'];
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_print),'B');
-           
-            
+
+
             if(strlen($item[0]['business_name'])>100){
-                $pdf->SetFontSize('12'); 
+                $pdf->SetFontSize('12');
             }
             $pdf->SetXY(110, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['business_name']));
@@ -287,7 +287,7 @@ class PrintFormController extends Controller
             $pdf->SetFontSize('16');
             $pdf->SetXY(200, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['order_input']));
-        
+
             $pdf->SetXY(215, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($item[0]['price'],2)));
 
@@ -302,12 +302,12 @@ class PrintFormController extends Controller
         $pdf->SetXY(225, $y);
         $total_all_print = 'รวมเป็นเงิน  '.number_format($total_all,2).'  บาท';
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('18'); 
+        $pdf->SetFontSize('18');
         $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $total_all_print));
 
         $y = $y+50;
         $pdf->SetFont('THSarabunNew');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
         $pdf->SetXY(20, $y);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลงชื่อ................................................'));
         $y = $y+10;
@@ -333,7 +333,7 @@ class PrintFormController extends Controller
         $pdf->SetXY(180, $y);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', '             หัวหน้าภาควิชาอายุรศาสตร์'));
 
-        
+
         // วันเวลาที่พิมพ์
         $mutable = Carbon::now();
         //\Log::info($mutable);
@@ -376,13 +376,13 @@ class PrintFormController extends Controller
         //$stock = Stock::whereId($stock_id)->get();
         $use_budget=0;
         $balance_budget=0.0;
-       
+
         $budget_year = budget::where('stock_id',$stock_id)
                                             ->where('year',$year)
-                                            ->where('status','on')          
+                                            ->where('status','on')
                                             ->first();
-     
-        
+
+
         //$pdf = new FPDI('l'); //แนวนอน
         $pdf = new FPDI();
         $pdf->AddPage();
@@ -391,30 +391,30 @@ class PrintFormController extends Controller
 
         // add  image watermark
       // $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),7,15,0,0,'png');
-        
+
         //title
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('18'); 
+        $pdf->SetFontSize('18');
         $unit = Unit::where('unitid',$stock_id)->first();
         //Log::info($unit);
         $division_name = $unit->unitname;
         $head = 'รายงานการเบิกงบประมาณการสั่งซื้อวัสดุของ สาขา/หน่วยงาน';
         $title = $head.'  '.$division_name;
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $title),0,0,'C');
-        
+
         $pdf->SetXY(18, 15);
         $year_print = $year+543;
         $title2 = 'ปีงบประมาณ  '.$year_print.' ได้รับงบ '.number_format($budget_year->budget_add,2).'  บาท';
         $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $title2),0,0,'C');
- 
+
         //head column
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
         $pdf->SetXY(12, 27);
         $pdf->SetLineWidth(1);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ                    วันที่สั่งซื้อ                                  งบประมาณที่ใช้(บาท)'),'B');
-        
-       
+
+
         //**************************order list
         $pdf->SetFont('THSarabunNew','U');
         $pdf->SetXY(13, 38);
@@ -453,20 +453,20 @@ class PrintFormController extends Controller
 
                 $pdf->SetXY(150, $y);
                 $pdf->Cell(0,10, number_format($order->timeline['approve_budget'],2));
-               
+
                 $y = $y+10;
                 $pdf->SetXY($x, $y);
                 // $pdf->SetXY(18, 50);
                 // $pdf->SetLineWidth(1);
             }
 
-           
+
             $pdf->SetFont('THSarabunNew','U');
             $pdf->SetXY(130, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'รวม '));
             $pdf->SetXY(150, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($use_budget,2).'   บาท'));
-           
+
              //$pdf->Line(10,0,20,0);
         // }else{
         //      $use_budget = 0.0;
@@ -477,7 +477,7 @@ class PrintFormController extends Controller
         $pdf->SetFont('THSarabunNew','U');
         $pdf->SetXY(13, $y);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ใบสั่งซื้อ'),0,0);
-        
+
         $purchase_orders = OrderPurchase::where('unit_id',$stock_id)
                                 ->where('year',$year)
                                 ->whereIn('status',['approved','checkin','received'])
@@ -516,7 +516,7 @@ class PrintFormController extends Controller
             // $pdf->SetXY(18, 50);
             // $pdf->SetLineWidth(1);
         }
-     
+
         $balance_budget = (float)$budget_year->budget_add - (float)$use_budget - (float)$use_budget_purchase;
         $y = $y+10;
         $pdf->SetFont('THSarabunNew','U');
@@ -546,14 +546,14 @@ class PrintFormController extends Controller
          $year = (int) $split_date_now[0] + 543;
          $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
          $date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year;
- 
+
          $pdf->SetFontSize('12');
          $pdf->SetXY(190,3);
          $date_print = 'ข้อมูล ณ วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
          $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'R');
- 
-        
-        
+
+
+
         $pdf->Output('I');
     }
     public function printBudgetOrderImport($stock_id,$year)
@@ -566,13 +566,13 @@ class PrintFormController extends Controller
         //$stock = Stock::whereId($stock_id)->get();
         $use_budget=0;
         $balance_budget=0.0;
-       
-        $budget_year = budget::where('stock_id',$stock_id)
+
+        $budget_year = budget::query()->where('stock_id',$stock_id)
                                             ->where('year',$year)
-                                            ->where('status','on')          
+                                            ->where('status','on')
                                             ->first();
-     
-        
+
+
         //$pdf = new FPDI('l'); //แนวนอน
         $pdf = new FPDI();
         $pdf->AddPage();
@@ -601,10 +601,10 @@ class PrintFormController extends Controller
 
         //title
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('18'); 
-        $unit = Unit::where('unitid',$stock_id)->first();
+        $pdf->SetFontSize('18');
+        $unit = Unit::query()->where('unitid',$stock_id)->first();
 
-     
+
 
         //Log::info($unit);
         $division_name = $unit->unitname;
@@ -617,20 +617,20 @@ class PrintFormController extends Controller
         $head2 = 'ของ สาขา/หน่วยงาน';
         $title2 = $head2.'  '.$division_name;
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $title2),0,0,'C');
-        
+
         $pdf->SetXY(18, 23);
         $year_print = $year+543;
         $title2 = 'ปีงบประมาณ  '.$year_print.' ได้รับงบ '.number_format($budget_year->budget_add,2).'  บาท';
         $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $title2),0,0,'C');
- 
+
         //head column
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
         $pdf->SetXY(12, 32);
         $pdf->SetLineWidth(1);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ              ประเภท                      วันที่ตรวจรับ                   งบประมาณที่ใช้(บาท)'),'B');
-        
-       
+
+
         //**************************order list
 
 
@@ -643,11 +643,11 @@ class PrintFormController extends Controller
         $pdf->SetLineWidth(0.1);
 
         //--------------------------
-        $stock_budget = budget::select('stock_id','budget_add','year')
+        $stock_budget = budget::query()->select('stock_id','budget_add','year')
                                 ->where(['stock_id'=>$stock_id,'year'=>$year,'status'=>'on'])
                                 ->with('stock:id,stockname,status')
                                 ->first();
-            $orders = ItemTransaction::select('pur_order')
+            $orders = ItemTransaction::query()->select('pur_order')
                                     ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])
                                     ->groupBy('pur_order')
                                     ->orderBy('date_action')
@@ -658,12 +658,12 @@ class PrintFormController extends Controller
             {
                 $stock_orders = array();
                 $budget_used = 0.0;
-                $budget_balance = 0.0;
+
 
                 foreach($orders as $key=>$order){
                  // Logger($order->pur_order);
                     $sum_price = 0.0;
-                    $order_items = ItemTransaction::select('id','item_count','price','date_action','order_type')
+                    $order_items = ItemTransaction::query()->select('id','item_count','price','date_action','order_type')
                                         ->where(['stock_id'=>$stock_id,'year'=>$year,'action'=>'checkin','status'=>'active'])
                                         ->where('pur_order',$order->pur_order)
                                         ->get();
@@ -695,12 +695,12 @@ class PrintFormController extends Controller
             //  logger(count($stock_item_checkouts));
             $page_all = ceil(count($stock_orders)/$line_per_page);
             $count_page = 1;
-            
+
             $count_line = 0;
             foreach($stock_orders as $order){
               //  Logger($order);
                 $seq++;
-             
+
                 $pdf->SetXY($x, $y);
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq),'B'); //print line buttom
 
@@ -720,50 +720,50 @@ class PrintFormController extends Controller
 
                 $pdf->SetXY(160, $y);
                 $pdf->Cell(0,10, number_format($order['sum_price'],2));
-               
+
                 $y = $y+10;
                 $pdf->SetXY($x, $y);
 
                 $count_line++;
                 if( $count_line==$line_per_page ){
                     $count_line =0;
-                    $count_page++;
+               //     $count_page++;
                     $pdf->SetXY(160, $y);
-                    $pdf->SetFontSize('14'); 
+                    $pdf->SetFontSize('14');
                     $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/'.$page_all,0,0,'C');
                     $pdf->AddPage();
-                 
+
                      //head column
                     $pdf->SetFont('THSarabunNew','B');
-                    $pdf->SetFontSize('16'); 
+                    $pdf->SetFontSize('16');
                     $pdf->SetXY(12, 16);
                     $pdf->SetLineWidth(1);
                     $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ              ประเภท                      วันที่ตรวจรับ                  งบประมาณที่ใช้(บาท)'),'B');
-        
+
                     $y=28;
                     $x=15;
                     $pdf->SetFont('THSarabunNew');
                     $pdf->SetXY($x, $y);
                     $pdf->SetLineWidth(0.1);
                 }
-               
+
             }
 
-           
+
             $pdf->SetFont('THSarabunNew','U');
             $pdf->SetXY(130, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'รวม '));
             $pdf->SetXY(150, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($budget_used,2).'   บาท'));
-           
+
              //$pdf->Line(10,0,20,0);
         // }else{
         //      $use_budget = 0.0;
         // }
 
-     
-     
-       
+
+
+
 
         $pdf->SetFont('THSarabunNew');
         $y = $y+10;
@@ -780,10 +780,10 @@ class PrintFormController extends Controller
 
         $y = $y+3;
         $pdf->SetXY(160, 265);
-        $pdf->SetFontSize('14'); 
+        $pdf->SetFontSize('14');
         $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/'.$page_all,0,0,'C');
 
- 
+
          $use_in = Auth::user();
          $msg_notify_test = $use_in->name.'  พิมพ์รายงานสรุปใบสั่งซื้อสำเร็จ ';
          Logger($msg_notify_test);
@@ -793,8 +793,8 @@ class PrintFormController extends Controller
 
            $detail_log =array();
            $detail_log['year_budget'] = $year_print;
- 
-   
+
+
 
            $log_activity = LogActivity::create([
                'user_id' => $use_in->id,
@@ -819,8 +819,8 @@ class PrintFormController extends Controller
 
         //title
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('18'); 
-     
+        $pdf->SetFontSize('18');
+
 
         $pdf->SetXY(170,5);
         $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', "แบบ บก.๐๖"), 0, 0);
@@ -835,11 +835,11 @@ class PrintFormController extends Controller
 
         //body
         $purchase_order = OrderPurchase::find($purchase_id);
-      
+
         $y=32;
         $y = $y+8;
         $pdf->SetFont('THSarabunNew');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
 
         $pdf->SetXY(20, $y);
         $line1 = "๑. ชื่อโครงการ ".$purchase_order->project_name." จำนวน ".count($purchase_order->items)." รายการ";
@@ -875,7 +875,7 @@ class PrintFormController extends Controller
         $i=1;
         foreach($purchase_order->items as $index=>$item){
            // Log::info($item[0]['business_name']);
-            
+
             if($tmp_business_name != $item[0]['business_name'])
             {
                 $y = $y+8;
@@ -884,7 +884,7 @@ class PrintFormController extends Controller
                 $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line5),0,0);
                 $i++;
             }
-           
+
             $tmp_business_name = $item[0]['business_name'];
         }
 
@@ -921,7 +921,7 @@ class PrintFormController extends Controller
         $y = $y+30;
         $x = 100;
         $pdf->SetFont('THSarabunNew');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
         $pdf->SetXY($x, $y);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', '(ลงชื่อ)..............................................................'));
         $y = $y+10;
@@ -931,21 +931,21 @@ class PrintFormController extends Controller
         $pdf->SetXY($x, $y);
         $sign_foot = "         หัวหน้า".$purchase_order->Unit->unitname;
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $sign_foot));
-   
+
         $pdf->Output('I');
     }
     public function printPurchaseOrderItem($purchase_id)
     {
         //Log::info('printPurchaseOrderItem');
         $pdf = new FPDI('l'); //แนวนอน
-        
+
         $pdf->AddPage();
         $pdf->AddFont('THSarabunNew','','THSarabunNew.php');
         $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
 
         //title
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('18'); 
+        $pdf->SetFontSize('18');
 
         // วันเวลาที่พิมพ์
         $mutable = Carbon::now();
@@ -958,7 +958,7 @@ class PrintFormController extends Controller
 
 
         $purchase_order = OrderPurchase::find($purchase_id);
-      
+
         $pdf->SetXY(14, 15);
         $head = 'วัสดุวิทยาศาสตร์ สารเคมี ทางการแพทย์ และวัสดุอื่นๆ ภ.อายุรศาสตร์ '.$year;
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $head),0,0,'C');
@@ -969,11 +969,11 @@ class PrintFormController extends Controller
 
          //head column
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
         $pdf->SetXY(12, 32);
         $pdf->SetLineWidth(1);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่             รายการ                          Material      จำนวน      หน่วยนับ      ราคา/หน่วย        ราคารวม                             บริษัท            '),'B');
-       
+
         //body  list item
 
         $y=45;
@@ -982,15 +982,15 @@ class PrintFormController extends Controller
         $pdf->SetXY($x, $y);
        // $pdf->SetLineWidth(0.1);
         $pdf->SetLineWidth(0.1);
-       
+
       //  if( $stock_orders->count()!=0){
             $seq = 0;
             $total_budget = 0.0;
         foreach ($purchase_order->items as $item) {
             $seq++;
           // logger($item);
-            $pdf->SetFontSize('16'); 
-          
+            $pdf->SetFontSize('16');
+
             // $pdf->SetXY($x, $y);
             // $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq),'B'); //print line buttom
 
@@ -998,10 +998,10 @@ class PrintFormController extends Controller
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq));
 
             $pdf->SetXY(23, $y);
-            $pdf->SetFontSize('14'); 
+            $pdf->SetFontSize('14');
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['item_name']));
 
-            $pdf->SetFontSize('16'); 
+            $pdf->SetFontSize('16');
             $pdf->SetXY(83, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['material']));
 
@@ -1018,13 +1018,13 @@ class PrintFormController extends Controller
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  number_format($item[0]['total'],2)));
 
             $pdf->SetXY(200, $y);
-            $pdf->SetFontSize('14'); 
+            $pdf->SetFontSize('14');
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['business_name']));
 
             $total_budget += $item[0]['total'];
              $y = $y+10;
              $pdf->SetXY($x, $y);
-        
+
 
         }
         $y=$y-5;
@@ -1034,26 +1034,26 @@ class PrintFormController extends Controller
         $y = $y+10;
         $pdf->SetXY(160, $y);
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
         $total_all_print = 'รวมเป็นเงิน    '.number_format($total_budget,2).'  บาท';
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $total_all_print));
 
         $pdf->Output('I');
-       
+
     }
 
     public function printCutStock(int $stock_id,int $year,int $month)
     {
       //  logger('printCutStock');
          $pdf = new FPDI('l'); //แนวนอน
-        
+
         $pdf->AddPage();
         $pdf->AddFont('THSarabunNew','','THSarabunNew.php');
         $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
 
         //title
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('18'); 
+        $pdf->SetFontSize('18');
 
         // วันเวลาที่พิมพ์
         $mutable = Carbon::now();
@@ -1080,7 +1080,7 @@ class PrintFormController extends Controller
 
 
          $stock = Stock::find($stock_id);
-      
+
         $pdf->SetXY(14, 10);
         $head = 'รายงานบันทึกการตัดสต๊อกวัสดุ ';
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $head),0,0,'C');
@@ -1095,7 +1095,7 @@ class PrintFormController extends Controller
 
          //head column
         $pdf->SetFont('THSarabunNew','B');
-        $pdf->SetFontSize('16'); 
+        $pdf->SetFontSize('16');
         $pdf->SetXY(12, 37);
         $pdf->SetLineWidth(1);
         //$pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                  วันที่หมดอายุ   วันที่รับเข้า   จำนวนยกมา    วันที่เบิกจ่าย   จำนวนที่เบิก           ผู้เบิก           คงเหลือ ณ ปัจจุบัน '),'B');
@@ -1117,13 +1117,13 @@ class PrintFormController extends Controller
 
         foreach($stock_item_checkouts as $key=>$tran_checkout){
             //  Log::info($tran_checkout->stock_item_id);
-          
+
                 // $checkin_last_item = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
                 //                                     ->whereStatus('active')
                 //                                     ->whereAction('checkin')
                 //                                     ->first();
-                // logger($checkin_last_item);     
-                
+                // logger($checkin_last_item);
+
                 // $stock_item_checkouts[$key]['check_in_date'] = $checkin_last_item->date_action;
                 // $stock_item_checkouts[$key]['check_in_item_count'] = $checkin_last_item->item_count;
                 $checkin = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
@@ -1147,10 +1147,10 @@ class PrintFormController extends Controller
 
                 $stock_item_checkouts[$key]['item_balance'] = $checkin - $checkout;
 
-      
 
 
-                
+
+
         }
         $y=48;
         $x=15;
@@ -1158,7 +1158,7 @@ class PrintFormController extends Controller
         $pdf->SetXY($x, $y);
        // $pdf->SetLineWidth(0.1);
         $pdf->SetLineWidth(0.1);
-       
+
 
             $seq = 0;
             $tmp_item_code = '0';
@@ -1166,13 +1166,13 @@ class PrintFormController extends Controller
           //  logger(count($stock_item_checkouts));
             $page_all = ceil(count($stock_item_checkouts)/$line_per_page);
             $count_page = 1;
-           
+
             $count_line = 0;
         foreach ($stock_item_checkouts as $item) {
-          
+
            // logger($item);
-            $pdf->SetFontSize('14'); 
-          
+            $pdf->SetFontSize('14');
+
             // $pdf->SetXY($x, $y);
             // $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq),'B'); //print line buttom
 
@@ -1190,11 +1190,11 @@ class PrintFormController extends Controller
 
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_code']));
 
-             
+
                 $pdf->SetXY(41, $y);
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item->stockItem['item_name']));
             }
-          
+
             //วันที่หมดอายุ
             if(strlen($item->date_expire)==0){
                 $date_expire_show= "-";
@@ -1203,21 +1203,21 @@ class PrintFormController extends Controller
             }else{
                 $split_date_expire = explode('-', $item->date_expire);
                 $year_print = (int) $split_date_expire[0] + 543;
-                $date_expire_show = $split_date_expire[2].'  '.$thaimonth_short[(int) $split_date_expire[1]].' '.$year_print;       
+                $date_expire_show = $split_date_expire[2].'  '.$thaimonth_short[(int) $split_date_expire[1]].' '.$year_print;
                 $pdf->SetXY(127, $y);
                 $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $date_expire_show));
             }
-           
+
             // //วันที่รับเข้า
             // $pdf->SetXY(123, $y);
             // $split_check_in_date = explode('-', $item->check_in_date);
             // $year_print = (int) $split_check_in_date[0] + 543;
             // $check_in_date_show = $split_check_in_date[2].'  '.$thaimonth_short[(int) $split_check_in_date[1]].' '.$year_print;
             // $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $check_in_date_show));
-                   
-            
+
+
             // //จำนวนรับเข้า
-            // if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0) 
+            // if (strcmp($tmp_item_code, $item->stockItem['item_code']) !=0)
             // {
             //     $pdf->SetXY(150, $y);
             //     $pdf->SetFontSize('14');
@@ -1240,7 +1240,7 @@ class PrintFormController extends Controller
             $pdf->SetXY(195, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->item_count));
 
-         
+
             $pdf->SetXY(220, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $item->user['name']));
 
@@ -1254,7 +1254,7 @@ class PrintFormController extends Controller
             // $item_balance_now = $item_balance_now - $item->item_count;
             // // $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item_balance_now,0) ));
             //     $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', number_format($item->item_balance,0) ));
-            
+
             $tmp_item_code = $item->stockItem['item_code'];
 
             // $total_budget += $item[0]['total'];
@@ -1274,15 +1274,15 @@ class PrintFormController extends Controller
                 $count_line =0;
                 $count_page++;
                 $pdf->SetXY(255, 178);
-                $pdf->SetFontSize('14'); 
+                $pdf->SetFontSize('14');
                 $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/'.$page_all,0,0,'C');
                 $pdf->AddPage();
 
-             
+
 
                  //head column
                 $pdf->SetFont('THSarabunNew','B');
-                $pdf->SetFontSize('16'); 
+                $pdf->SetFontSize('16');
                 $pdf->SetXY(12, 17);
                 $pdf->SetLineWidth(1);
                 //$pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่      รหัสวัสดุ   ชื่อวัสดุ                                         วันที่หมดอายุ          วันที่เบิกจ่าย       จำนวนที่เบิก                ผู้เบิก                     คงเหลือ ณ ปัจจุบัน            '),'B');
@@ -1297,14 +1297,14 @@ class PrintFormController extends Controller
             }
 
 
-              
-          
-          
+
+
+
           //  $pdf->SetXY($x, $y);
-          
+
         }
 
-      
+
         $y=$y-5;
         $pdf->SetXY($x, $y);
         $pdf->Cell(0,10,iconv('UTF-8', 'cp874', ''),'B'); //print line buttom
@@ -1316,7 +1316,7 @@ class PrintFormController extends Controller
          $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
 
         $pdf->SetXY(255, 178);
-        $pdf->SetFontSize('14'); 
+        $pdf->SetFontSize('14');
         $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/'.$page_all,0,0,'C');
 
         $use_in = Auth::user();
@@ -1331,7 +1331,7 @@ class PrintFormController extends Controller
            $detail_log['stock_id'] = $stock->stockname;
            $detail_log['year'] = $year;
            $detail_log['month'] = $month;
-   
+
 
        //  dd($detail_log);
 
@@ -1344,7 +1344,7 @@ class PrintFormController extends Controller
            ]);
 
         $pdf->Output('I');
-       
+
     }
 
 

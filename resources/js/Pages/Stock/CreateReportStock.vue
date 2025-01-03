@@ -334,7 +334,9 @@ const  getReportStock=(stock_id,year,month)=>{
         onError: errors => {
            // console.log('error');
         },
-        onFinish: visit => { console.log('finish');},
+        onFinish: visit => {
+           // console.log('finish');
+            },
     })
 
     // axios.get(route('get-checkout-item',

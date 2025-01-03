@@ -53,12 +53,14 @@ const getListBudget=()=>{
         preserveState: true,
         preserveScroll: true,
         onSuccess: page => {
-            console.log('success');
+           // console.log('success');
         },
         onError: errors => {
-            console.log('error');
+            //console.log('error');
         },
-        onFinish: visit => { console.log('finish');},
+        onFinish: visit => {
+            //console.log('finish');
+            },
     })
 
 }

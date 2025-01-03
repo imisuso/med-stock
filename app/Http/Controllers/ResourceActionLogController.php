@@ -17,8 +17,8 @@ class ResourceActionLogController extends Controller
     {
         $budget_year = (int)$budget->year+543;
         $title_head = $budget->stock['stockname']." ปีงบประมาณ ".$budget_year;
-        return Inertia::render('Admin/ShowLogs',[  
-                                'title_name'=> $title_head, 
+        return Inertia::render('Admin/ShowLogs',[
+                                'title_name'=> $title_head,
                                 'logs'=> $budget->actionLogs()->with('user:id,name')->orderBy('timestamp','desc')->get(),
                                 'back_url'=> 'get-list-budget',
         ]) ;
@@ -27,9 +27,9 @@ class ResourceActionLogController extends Controller
 
     public function showLogUser(User $user)
     {
-       
-        return Inertia::render('Admin/ShowLogs',[  
-                                'title_name'=> $user->name, 
+
+        return Inertia::render('Admin/ShowLogs',[
+                                'title_name'=> $user->name,
                                 'logs'=> $user->actionLogs()->with('user:id,name')->orderBy('timestamp','desc')->get(),
                                 'back_url'=> 'user-add',
         ]) ;
@@ -39,8 +39,8 @@ class ResourceActionLogController extends Controller
     public function showLogStock(Stock $stock)
     {
      //  dd('showLogStock');
-        return Inertia::render('Admin/ShowLogs',[  
-                                'title_name'=> $stock->stockname, 
+        return Inertia::render('Admin/ShowLogs',[
+                                'title_name'=> $stock->stockname,
                                 'logs'=> $stock->actionLogs()->with('user:id,name')->orderBy('timestamp','desc')->get(),
                                 'back_url'=> 'stock-add',
         ]) ;
@@ -51,31 +51,7 @@ class ResourceActionLogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -105,38 +81,38 @@ class ResourceActionLogController extends Controller
         //                     ->with('user:id,name')
         //                     ->orderBy('created_at','asc')
         //                     ->get();
-       
+
        // logger(count($logs));
        if($model == 'user'){
                 if(count($logs)>0){
-                
+
                     $user_name=$logs[0]->loggable->name;
                 }else{
-                  
+
                     $logs = array();
                     $user_name='';
                 }
             $route_back = $model."-add";
         }else  if($model == 'stock'){
             if(count($logs)>0){
-               
+
                 $user_name=$logs[0]->loggable->stockname;
             }else{
-             
+
                 $logs = array();
                 $user_name='';
             }
             $route_back = $model."-add";
         }else if($model == 'budget'){
             if(count($logs)>0){
-               
+
                 $user_name=$logs[0]->loggable->stockname;
             }else{
-             
+
                 $logs = array();
                 $user_name='';
             }
-          
+
             $route_back = "get-list-budget";
         }else{
             $user_name='';
@@ -151,37 +127,6 @@ class ResourceActionLogController extends Controller
                         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

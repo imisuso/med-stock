@@ -115,8 +115,8 @@ class ReportStockController extends Controller
                                                 ->sum('item_count');
 
 //                        logger("stock_item_id=".$tran_checkout->stock_item_id);
-                        logger($checkin);
-                        logger($checkout);
+         //               logger($checkin);
+          //              logger($checkout);
                         $stock_item_checkouts[$key]['item_balance'] = $checkin - $checkout;
 
 
@@ -179,9 +179,9 @@ class ReportStockController extends Controller
 
             }else{
                 $stock_item_checkouts = [];
-                $unit_selected = 0;
-                $year_selected = 0;
-                $month_selected = 0;
+                $unit_selected = "0";
+                $year_selected = "0";
+                $month_selected = "0";
             }
 
             // logger('count =>');
@@ -358,21 +358,10 @@ class ReportStockController extends Controller
 
     public function export_test($checkout_items)
     {
-        // Log::info('export_test');
-        // Log::info($checkout_items);
-
-
-
         $checkout_items_array = explode(',',$checkout_items);
-       // Log::info($checkout_items_array[0]['id']);
-        //dd('export_test');
+
         return Excel::download(new ReportCutStockExportTest, 'test_export_cut_stock.xlsx');
-        //return (new ReportCutStockExportTest->download('test_export_cut_stock.xlsx');
-        //Logger($checkout_items);
 
-        // $filename_xls = 'ReportCutStock'."_".$stock_name->stockengname."_".$format_month.$year.'.xlsx';
-
-        // return (new ReportCutStockExport($stock_id,$year,$month,$stock_name->stockengname))->download($filename_xls);
     }
 
     /**

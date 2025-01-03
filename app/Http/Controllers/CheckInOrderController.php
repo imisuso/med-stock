@@ -19,20 +19,7 @@ class CheckInOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -42,18 +29,18 @@ class CheckInOrderController extends Controller
      */
     public function store(Request $request)
     {
-        // Log::info('CheckInOrderController Store');  
+        // Log::info('CheckInOrderController Store');
          Log::info($request->all());
-       
+
         $order = OrderItem::find($request->order_id);
-       
-        //$datetime_now = Carbon::now(); 
+
+        //$datetime_now = Carbon::now();
        // $tmp_date_now = explode(' ', $datetime_now);
 
-         
+
         foreach($order->items as $item ){
            // Log::info($item);
-          
+
             try{
                     $profile = [
                                 "catalog_number"=>$item[0]['catalog_number'],
@@ -83,11 +70,11 @@ class CheckInOrderController extends Controller
                         Log::info('-->'.$balance);
 
                         StockItem::whereId($item[0]['id'])->update(['item_sum'=>$balance]);
-                       
-                      
+
+
                     }catch(\Illuminate\Database\QueryException $e){
                         //rollback
-                      
+
                         return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
                     }
 
@@ -101,7 +88,7 @@ class CheckInOrderController extends Controller
                         //item_sum_old
                        // Log::info('-->'.$item_sum_old);
                         $old_timeline['item_sum_old']=$item_sum_old;
-                     
+
                         // Log::info($old_timeline);
                         OrderItem::find($request->order_id)->update([
                                                                     'status'=>'checkin',
@@ -148,7 +135,7 @@ class CheckInOrderController extends Controller
         return Inertia::render('Admin/CheckOrder',[
                  'view_checkin'=>$item_checkin
              ]);
-     
+
     }
 
     /**
@@ -159,7 +146,7 @@ class CheckInOrderController extends Controller
      */
     public function edit()
     {
-       
+
     }
 
     /**
@@ -174,8 +161,8 @@ class CheckInOrderController extends Controller
         Log::info('CheckInOrderController index');
         // Log::info($order);
         // Log::info($order->items);
-       
-        
+
+
        //  Log::info($order->Stock['stockname']);
 
         foreach($order->items as $key=>$item ){
@@ -183,11 +170,11 @@ class CheckInOrderController extends Controller
             $old_item_sum = StockItem::select('item_sum')->whereId($item[0]['id'])->first();
            // Log::info($old_item_sum);
             $old_items_sum[]=$old_item_sum['item_sum'];
-           
+
         }
        // return 'test';
         // Log::info($old_items_sum);
-       
+
         return Inertia::render('Stock/ReceiveOrder',
                                 [
                                     'order' => $order,
