@@ -1,8 +1,6 @@
 <template>
     <AppLayout>
          <!--Header Alert-->
-         <!-- {{status}} -->
-        <!-- {{$page.props.flash.status}} -->
          <div v-if="$page.props.flash.status=='success'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
@@ -158,7 +156,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { useForm } from '@inertiajs/vue3';
-import { ref ,computed} from 'vue';
+import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3'
 
 
@@ -183,7 +181,7 @@ const  cancelEditStock=()=>{
 }
 
 const form = useForm({
-   // unit:props.stock.unit_id,
+
     stock_id:props.stock.id,
     stock_name_thai:props.stock.stockname ? props.stock.stockname : '',
     stock_name_en:props.stock.stockengname ? props.stock.stockengname : '',
@@ -203,7 +201,7 @@ const okconfirmEditStock=()=>{
       form.post(route('update-stock',form.stock_id), {
         preserveState: false,
         preserveScroll: true,
-      
+
     })
 }
 
