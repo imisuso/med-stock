@@ -19,7 +19,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
@@ -44,12 +44,7 @@ class UserController extends Controller
                         ->with('unit:id,unitid,unitname')
                         ->orderBy('unitid')
                         ->paginate(10);
-                        //->withQueryString();
-                        // ->paginate(10);
 
-                        // ->paginate(10)
-
-        //   Logger('StockItemImportController');
         return Inertia::render('Admin/AddUser',[
                                     'stocks'=>$stocks,
                                     'units'=> $units,
@@ -77,9 +72,7 @@ class UserController extends Controller
     public function store()
     {
         $use_in = Auth::user();
-        //dd($use_in->id);
-        // Logger(request()->all());
-       //  Logger(request()->input('sap_id'));
+
 
          $check_user = User::where('sap_id',request()->input('sap_id'))->first();
 
@@ -94,11 +87,6 @@ class UserController extends Controller
          $profile = array();
          $profile['user_id_in'] = $use_in->id;
          $profile['user_name_in'] = $use_in->name;
-
-        //  $detail_log = ['sap_id'=>request()->input('sap_id'),
-        //         'unitid'=>request()->input('unit_id'),
-        //     ];
-
 
          $user = User::create([
             'sap_id'=>request()->input('sap_id'),
@@ -115,7 +103,7 @@ class UserController extends Controller
         $detail_log['sap_id'] =request()->input('sap_id');
         $detail_log['unitid'] =request()->input('unit_id');
         $detail_log['role_name'] =$role->name;
-         //  dd($detail_log);
+
 
         /****************  insert resource_action_logs ****************/
 
@@ -127,8 +115,6 @@ class UserController extends Controller
                     ]);
 
 
-        //   $msg_notify_test = $use_in->name.'  เพิ่ม '.request()->input('employee_full_name').' เป็นผู้ใช้งานระบบสำเร็จ';
-        //   Logger($msg_notify_test);
 
         return Redirect::route('user-add')
                         ->with(['status' => 'success', 'msg' => 'เพิ่มรหัสเจ้าหน้าที่นี้เป็นผู้ใช้งานระบบวัสดุแล้ว']);
@@ -155,8 +141,7 @@ class UserController extends Controller
      */
     public function edit($slug)
     {
-        //Logger($slug);
-      //   dd('edit user');
+
         $user_status_list = array(
             ['id'=>'1','desc'=>'ปกติ'],
             ['id'=>'2','desc'=>'ยกเลิก'],
@@ -191,18 +176,18 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(User $user)
     {
-        //Logger(request()->all());
+
         $original_val_user = array();
         $original_val_user = $user->getOriginal(); //เก็บค่าเก่าไว้ก่อน
         $original_val_role = $user->roles;
 
 
         $original_val_user['role_name']=$original_val_role[0]['name'];
-       // logger($original_val_user);
+
         $old_changes =array();
         $user->update([
                         'name'=> request()->input('user_name_thai'),
@@ -231,26 +216,15 @@ class UserController extends Controller
         }
 
 
-       // dd($changes);
-
 
         if(count($changes) || $role_change){
 
             if (count($changes)) {
                 foreach ($changes as $key=>$val) {
-                 //   $old_changes[] = [ 'column'=>$key , 'old'=>$original_val_user[$key] , 'new'=>$val];
                     $old_changes[$key] = ['old'=>$original_val_user[$key] , 'new'=>$val];
                 }
                 array_pop($old_changes); //เอา updated_at  ออก
             }
-
-            /****************  insert log ****************/
-           // logger($old_changes);
-            $use_in = Auth::user();
-
-            $detail_log =array();
-            $detail_log['user_name'] =$user->name;
-
 
 
             /****************  insert resource_action_logs ****************/
@@ -262,17 +236,13 @@ class UserController extends Controller
                 'log' => $old_changes,
                 ]);
 
+            return Redirect::route('user-add')
+                ->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
 
-
-            //  $msg_notify_test = $use_in->name.'  แก้ไขข้อมูลผู้ใช้งาน '.$user->name.' สำเร็จ';
-            //  Logger($msg_notify_test);
-
-            return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขข้อมูลสำเร็จ']);
         }
             /****************  insert log ****************/
-           // logger($old_changes);
-        return Redirect::back()->with(['status' => 'warning', 'msg' => 'ข้อมูลที่ระบุมาไม่มีการเปลี่ยนแปลง']);
 
+        return Redirect::back()->with(['status' => 'warning', 'msg' => 'ข้อมูลที่ระบุมาไม่มีการเปลี่ยนแปลง']);
 
     }
 
@@ -289,9 +259,7 @@ class UserController extends Controller
 
     public function checkEmployeeStatus($sap_id,AuthUserAPI $api)
     {
-        //Logger(request()->all());
-       // Logger($sap_id);
-      //  dd('checkEmployeeStatus');
+
         $check_user = User::where('sap_id',$sap_id)->first();
 
         if($check_user)
@@ -301,17 +269,16 @@ class UserController extends Controller
         }
 
         $check_status_emp = $api->checkEmployeeStatus($sap_id);
-       //  Logger($check_status_emp);
-        // Logger($check_status_emp['Status']);
+
 
 
            /****************  insert log ****************/
-          //  logger($old_changes);
+
           $use_in = Auth::user();
 
            $detail_log =array();
            $detail_log['sap_id'] =$sap_id;
-         //  dd($detail_log);
+
 
            $log_activity = LogActivity::create([
                'user_id' => $use_in->id,
@@ -322,14 +289,11 @@ class UserController extends Controller
            ]);
 
 
-        // Logger('found=');
-        // Logger($check_status_emp['found']);
 
         //******เมษายน 2566 check config('app.AUTH_USER_PROVIDER') เนื่องจาก  format data return ต่างกัน
 
         $api_provider = config('app.AUTH_USER_PROVIDER');
-        //   Logger('api_provider=');
-        // Logger($api_provider);
+
         if(strcmp($api_provider,'\App\APIs\HannahAPI')==0){
 
                 if(isset($check_status_emp['found']))
@@ -359,19 +323,16 @@ class UserController extends Controller
             {
                 $get_user['status'] = 'error_sap';
                 $get_user['msg_error'] = $check_status_emp['reply_text'];
-                //    Logger('final return--->');
-                //     Logger($get_user);
+
                 return $get_user;
             }
 
 
             if(!$check_status_emp['found'])
             {
-
-                // if(!$check_status_emp['found']){
                     $get_user['status'] = 'not_found';
                     return $get_user;
-               // }
+
             }else{
 
                 if($check_status_emp['active'])
@@ -380,9 +341,7 @@ class UserController extends Controller
 
 
                     $get_user = $api->getUserAD($check_status_emp['login']);
-                    // Logger($get_user);
 
-                    // Logger('check active user');
                     if($get_user['reply_code'] == '9')
                     {
                         $get_user['status'] = 'error';
@@ -394,19 +353,13 @@ class UserController extends Controller
                         $get_user['status'] = 'active';
                     }
 
-                    // Logger('final return--->');
-                    // Logger($get_user);
                     return $get_user;
                 }
 
-               // Logger('user not active ');
                 $check_status_emp['status'] = 'withdrawn';
                 return $check_status_emp;
             }
         }
-
-
-
 
     }
 }

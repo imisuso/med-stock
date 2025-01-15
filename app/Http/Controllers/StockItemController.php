@@ -51,13 +51,11 @@ class StockItemController extends Controller
 
     public function searchByItemName($item_name_search)
     {
-        // Log::info('searchByItemName');
-        // Log::info($item_name_search);
 
         //Do.ต้องเพิ่ม where status=2 ไปด้วย หลังจากทำฟังก์ชันตรวจรับวัสดุจากใบสั่งซื้อเสร็จ
         $items = StockItem::query()->select('slug','item_code','item_name','unit_count','price','profile')
                 ->where('item_name','like',"%{$item_name_search}%")->get();
-       // Log::info($items);
+
 
         return response()->json([
             'items' => $items

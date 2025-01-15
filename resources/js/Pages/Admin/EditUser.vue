@@ -7,7 +7,9 @@
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
-            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold"
+                   title="close"
+                   for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -170,10 +172,11 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { useForm,Link } from '@inertiajs/vue3';
 import { ref ,computed} from 'vue';
+import * as timers from "node:timers";
 
 
 const props =defineProps({
-    user:Array,
+    user: {type:Object},
     user_status_list:{type:Array,required:true},
     units:Object,
     roles:Object,
@@ -186,89 +189,58 @@ const confirm_edit_user=ref(false);
 
 
 const status_desc_selectd =(status)=>{
-   // console.log(status)
+
     return  props.user_status_list[status-1].desc;
 };
 
-const role_desc_selectd =(role_id)=>{
-    // console.log('role_id='+role_id)
-    // console.log('role_desc='+props.roles[0].label)
-    // console.log('==>'+props.roles[role_id].label)
-    return  props.roles[role_id].label;
-};
 
 const getRolename = () => {
-   // console.log('getRolename')
     let role = {}
     role = props.roles.find( item => item.id === form.role_id) // เอาค่าแรกที่เจอค่าเดียว
-  //  console.log(unit)
     form.role_name = role.name
     return role.label
 }
-
-
 
 const  cancelEditUser=()=>{
     confirm_edit_user.value = false;
 }
 
 const form = useForm({
-   // unit:props.stock.unit_id,
     user_id:props.user.id,
     unit_id:props.user.unitid,
     role_id:props.user.roles[0]['id'],
     role_name:props.user.roles[0]['label'],
     user_name_thai:props.user.name ? props.user.name : '',
-   // user_name_en:props.user.userengname ? props.user.userengname : '',
     user_status:props.user.status ? props.user.status : 0,
 
 })
 
 const getUnitname = () => {
-   // console.log('getUnitname')
     let unit = {}
     unit = props.units.find( item => item.unitid === form.unit_id) // เอาค่าแรกที่เจอค่าเดียว
-  //  console.log(unit)
     return unit.unitname
 }
 
 const confirmEditUser=(()=>{
-  //console.log('----------confirmAddStock------');
-
   confirm_edit_user.value = true;
 })
 
 const okconfirmEditUser=()=>{
     confirm_edit_user.value = false;
-    // console.log(form.order_id);
-     //  console.log('----------okconfirmEditUser------');
+
       form.post(route('update-user',form.user_id), {
         preserveState: false,
         preserveScroll: true,
-        onSuccess: page => { console.log('success');},
+        onSuccess: page => {
+           // form.get(route('user-add'));
+        },
         onError: errors => {
             console.log('error');
         },
         onFinish: visit => { console.log('finish');},
     })
 }
-const getListUser=(()=>{
-    // console.log('----------getListUser------')
-    // console.log(form.unit);
 
-    form.get(route('user-add'), {
-        preserveState: false,
-        preserveScroll: true,
-        onSuccess: page => {
-            console.log('success');
-        },
-        onError: errors => {
-            console.log('error');
-        },
-        onFinish: visit => { console.log('finish');},
-    })
-
-})
 
 
 </script>

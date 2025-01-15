@@ -20,10 +20,9 @@ class StockItemImportController extends Controller
     public function index()
     {
 
-    //logger('StockItemImportController index');
 
     $user = Auth::user();
-   // logger($user->unitid);
+
     if($user->unitid != 27){  //หน่วยวัสดุ
         $stocks = Stock::where(['unit_id'=>$user->unitid,'status'=>1])->get();
     }else{
@@ -35,19 +34,14 @@ class StockItemImportController extends Controller
        return Inertia::render('Admin/StockItemImport',[
                                 'stocks'=>$stocks,
                                 'unit'=> $unit,
-                               // 'stock_item_import'=> $stock_item_import
+
                             ]);
-       //return view('stock.StockItemImport');
+
 
     }
     public function show(Request $request)
     {
-       // dd($request->all());
-        //logger($request->all());
-        // "unit_id" => "1"
-        // "stock_item_status" => "1"
-        // "file_stock_item" =>
-        //$file = $request->file('file_stock_item');
+
         $input_rules = [
                         'unit_id' => 'required|numeric|min:1',
                         'stock_item_status' => 'required|numeric|min:1',
@@ -66,8 +60,7 @@ class StockItemImportController extends Controller
         ];
 
         $input_validate = Validator::make($request->all(),$input_rules,$input_customMessages)->errors();
-       // dd($input_validate);
-      //  logger(count($input_validate));
+
         if(count($input_validate)>0){
             return Inertia::render('Admin/StockItemImportShow',[
                 'validate_input'=>false,
@@ -78,7 +71,7 @@ class StockItemImportController extends Controller
         $stock = Stock::where('id',$request->stock_id)->first();
 
         $rows = Excel::toArray(new StockItemImportToCollection(),$request->file('file_stock_item'));
-        //$rows = Excel::toCollection(new StockItemImportToCollection(),$request->file('file_stock_item'));
+
 
         //****rule validate excel import
         $col_excel = 10;
@@ -100,7 +93,6 @@ class StockItemImportController extends Controller
         $error_index=array();
         foreach ($rows[0] as $key => $row)
         {
-          //  Logger($row);
 
             //* validate head row */
             if($key==0){
@@ -116,8 +108,7 @@ class StockItemImportController extends Controller
 
 
                 $result=array_diff($row,$head_row);
-                // logger($result);
-                // logger(count($result));
+
 
                 if(count($result)>0){
                     $error_validate_excel ='พบชื่อคอลัมน์ไม่ตรงกับที่กำหนด ดังนี้';
@@ -171,13 +162,9 @@ class StockItemImportController extends Controller
                     '9.date_format'=>'ข้อมูล date_expire รูปแบบของวันที่ไม่ถูกต้องหรือเป็นวันที่ที่ไม่มีจริง (ตัวอย่างรูปแบบวันที่ 31-12-2022 , 01-03-2022)',
                 ];
 
-                    //dd(Validator::make($row,$rules,$customMessages)->errors());
-                    //if(Validator::make($row,$rules,$customMessages)->passes())
+
                     $tmp_error_validate = Validator::make($row,$rules,$customMessages)->errors();
-                    //  Logger($tmp_error_validate);
-                    // Logger($tmp_error_validate->first($key));
-                    // dd($tmp_error_validate);
-                    // dd($tmp_error_validate->array_count_values($tmp_error_validate['messages']));
+
                if(count($tmp_error_validate)>0){
                      $error_validate[$key] = $tmp_error_validate;
                }else{
@@ -185,9 +172,6 @@ class StockItemImportController extends Controller
                     $date_format_receive = date_format($date_receive_temp,"Y-m-d");
                     $date_expire_temp=date_create($row[9]);
                     $date_format_expire = date_format($date_expire_temp,"Y-m-d");
-                //  $row[3]->formatDates(true, 'Y-m-d');
-                // $reader->formatDates(true, 'Y-m-d');
-
 
                     $collect[]= array(
                         'material_number' => $row[0],
@@ -204,7 +188,7 @@ class StockItemImportController extends Controller
                 }
             }
         }
-      //  dd(count($error_validate));
+
 
         if(count($error_validate)>0){
             return Inertia::render('Admin/StockItemImportShow',[
@@ -213,9 +197,7 @@ class StockItemImportController extends Controller
                 'validate_input'=>true,
             ]);
          }
-      //  Logger($collect);
-       //  Logger(count($collect));
-      //  dd('test');
+
 
         if(count($collect)>50){
             $error_validate_excel ='จำนวนรายการวัสดุต้องไม่เกิน 50 รายการต่อการนำเข้าระบบ 1 ครั้ง';
@@ -226,7 +208,7 @@ class StockItemImportController extends Controller
                         'validate_input'=>true,
                     ]);
         }
-      //  Logger('aaaa');
+
         return Inertia::render('Admin/StockItemImportShow',[
                                 'stock_id'=>$stock->id,
                                 'stock_name'=>$stock->stockname,
@@ -243,17 +225,11 @@ class StockItemImportController extends Controller
     }
     public function store(Request $request)
     {
-       // Logger($request->all());
 
         $user = Auth::user();
-        // Logger($request->stock_id);
-       //  Logger($request->stock_item_status);
-        // Logger($request->date_receive);
 
         foreach($request->import_items as $key => $item )
         {
-
-
             $date_split = explode('-',$item['date_receive']);
 
             if((int)$date_split[1]>9){
@@ -297,13 +273,12 @@ class StockItemImportController extends Controller
 
                     }catch(\Illuminate\Database\QueryException $e){
                         //rollback
-                       // return redirect()->back();
+
                         return Redirect::back()->with(['status' => 'error', 'msg' => $e->getMessage()]);
                     }
 
 
             }else{
-               // Logger('no item');
                 //******insert stock_item
                 try{
 
@@ -325,11 +300,9 @@ class StockItemImportController extends Controller
 
                     }catch(\Illuminate\Database\QueryException $e){
                         //rollback
-                       // return redirect()->back();
                         return Redirect::back()->with(['status' => 'error', 'msg' => $e->getMessage()]);
                     }
                 //****insert item_transactions
-
 
                 try{
                     ItemTransaction::create([
@@ -356,10 +329,9 @@ class StockItemImportController extends Controller
 
                     }catch(\Illuminate\Database\QueryException $e){
                         //rollback
-                       // return redirect()->back();
+
                         return Redirect::back()->with(['status' => 'error', 'msg' => $e->getMessage()]);
                     }
-                //return Redirect::back()->with(['status' => 'error', 'msg' => 'test error']);
 
             }
 
@@ -368,7 +340,7 @@ class StockItemImportController extends Controller
 
 
           /****************  insert log ****************/
-        // logger($old_changes);
+
         $use_in = Auth::user();
 
         $detail_log =array();
@@ -376,8 +348,6 @@ class StockItemImportController extends Controller
         $detail_log['stock_id'] =$request->stock_id;
         $detail_log['pur_order'] =$item['pur_order'];
 
-
-      //  dd($detail_log);
 
         $log_activity = LogActivity::create([
             'user_id' => $use_in->id,
@@ -388,9 +358,6 @@ class StockItemImportController extends Controller
         ]);
 
         $msg = 'เพิ่มวัสดุจากไฟล์ excel จำนวน '.$cnt.' รายการ เรียบร้อย';
-
-        // $msg_notify_test = $user->name.' '.$msg;
-        // Logger($msg_notify_test);
 
         return Redirect::back()->with(['status' => 'success', 'msg' => $msg]);
     }
