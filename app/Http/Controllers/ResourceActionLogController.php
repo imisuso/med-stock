@@ -75,14 +75,7 @@ class ResourceActionLogController extends Controller
                                     // ->orWhere('action','like','%add%')
                                     ->with('user:id,name')
                                     ->get();
-        // $logs = LogActivity::where('sap_id',$user->sap_id)
-        //                     ->where('function_name','manage_user')
-        //                     ->whereIn('action',['add_user','edit_user'])
-        //                     ->with('user:id,name')
-        //                     ->orderBy('created_at','asc')
-        //                     ->get();
 
-       // logger(count($logs));
        if($model == 'user'){
                 if(count($logs)>0){
 
@@ -118,8 +111,7 @@ class ResourceActionLogController extends Controller
             $user_name='';
             $route_back = '';
         }
-       logger('3333333');
-        logger($user_name);
+
         return Inertia::render('Admin/ShowLogsUser',[
                             'user_change_logs'=> $logs,
                             'user_name'=> $user_name,

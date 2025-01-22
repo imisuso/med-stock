@@ -114,24 +114,13 @@ class UserController extends Controller
                     'log' => $detail_log,
                     ]);
 
-
-
         return Redirect::route('user-add')
                         ->with(['status' => 'success', 'msg' => 'เพิ่มรหัสเจ้าหน้าที่นี้เป็นผู้ใช้งานระบบวัสดุแล้ว']);
 
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.

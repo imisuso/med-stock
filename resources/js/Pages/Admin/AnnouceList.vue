@@ -39,9 +39,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Annouce from '@/Components/Annouce.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
-import { useForm, usePage } from '@inertiajs/vue3';
-import { ref } from 'vue';
-
+import { useForm } from '@inertiajs/vue3';
 
 defineProps({
   //years:{type:Object,required:true},
@@ -49,31 +47,16 @@ defineProps({
   annouce_status_list:{type:Object,required:true}
 })
 
-//const years=ref([2021,2022])
-//const balance_budget = ref(0);
-//const sum_order = ref(0);
-//const stock_order = ref('');
-const stock_budgets = ref('');
-const rerender=ref(true);
-
 const form=useForm({
     message:'',
 })
 
 
 const addAnnouce=()=>{
- //  console.log('addAnnouce');
 
      form.post(route('add-annouce-new'), {
             preserveState: false,
             preserveScroll: true,
-            onSuccess: page => {
-                console.log('success');
-                },
-            onError: errors => {
-                console.log('error');
-            },
-            onFinish: visit => { console.log('finish');},
     })
 }
 

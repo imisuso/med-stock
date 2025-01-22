@@ -11,23 +11,19 @@ class AgreementController extends Controller
 
     public function index()
     {
-       // dd(request()->all());
 
        $user = Auth::user();
-       //$user->needAcceptAgreement();
-      // Logger($user);
+
 
         if($user->needAcceptAgreement())
         {
-           // logger('need accept agreement');
             $user_agreement = true;
         }else{
-           // logger('no need accept agreement');
             $user_agreement = false;
         }
 
         $user->agreements()->attach(request()->input('agreement_id'));
-        // $user->agreements()->detach()
+
 
         return Inertia('Agreement',[
                         'agreements'=> Agreement::OrderByDesc('date_effected')->first(),
@@ -38,10 +34,8 @@ class AgreementController extends Controller
 
     public function store()
     {
-       // dd(request()->all());
         $user= Auth::user();
         $user->agreements()->attach(request()->input('agreement_id'));
-        // $user->agreements()->detach()
 
         return Redirect::route('annouce');
 

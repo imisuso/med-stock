@@ -3,7 +3,7 @@
          <!--Header Alert-->
          <!-- {{status}} -->
         <!-- {{$page.props.flash.status}} -->
-         <div v-if="$page.props.flash.status=='success'"
+         <div v-if="$page.props.flash.status==='success'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -16,7 +16,7 @@
                 </svg>
             </label>
         </div>
-        <div v-if="$page.props.flash.status=='warning'"
+        <div v-if="$page.props.flash.status==='warning'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -27,7 +27,7 @@
                 </svg>
             </label>
         </div>
-        <div v-if="$page.props.flash.status=='error'"
+        <div v-if="$page.props.flash.status==='error'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -167,13 +167,11 @@
     </AppLayout>
  </template>
  <script setup>
-//import { ref } from 'vue'
+
 import AppLayout from '@/Layouts/AppLayout.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { useForm,Link } from '@inertiajs/vue3';
-import { ref ,computed} from 'vue';
-import * as timers from "node:timers";
-
+import { ref } from 'vue';
 
 const props =defineProps({
     user: {type:Object},
@@ -231,13 +229,7 @@ const okconfirmEditUser=()=>{
       form.post(route('update-user',form.user_id), {
         preserveState: false,
         preserveScroll: true,
-        onSuccess: page => {
-           // form.get(route('user-add'));
-        },
-        onError: errors => {
-            console.log('error');
-        },
-        onFinish: visit => { console.log('finish');},
+
     })
 }
 

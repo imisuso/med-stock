@@ -120,12 +120,7 @@ class ItemTransactionController extends Controller
         $user = Auth::user();
         // Log::info('ItemTransactionController store');
        // dd($request->all());
-       // logger($request->all());
 
-
-        // Log::info($request->confirm_item_slug);
-        // Log::info($request->confirm_item_date);
-        // Log::info($request->confirm_item_count);
         $stock_item = StockItem::whereSlug($request->confirm_item_slug)->first();
         // Log::info($stock_item);
         $item_balance = $stock_item->itemBalance();
@@ -399,19 +394,6 @@ class ItemTransactionController extends Controller
       $item_tran = ItemTransaction::whereId(Request()->input('item_tran_id'))->first();
       $item_tran->status = 'canceled';
       $item_tran->save();
-
-
-
-    //   $stock_item = StockItem::whereId($item_tran->stock_item_id)->first();
-    //   $old_changes =array();
-    //   $old_changes['stock_item_id'] = $item_tran->stock_item_id;
-    //   $old_changes['item_sum_old'] = $stock_item->item_sum;
-
-    //   $new_item_balance = $stock_item->item_sum + $item_tran->item_count;
-    //  // logger($new_item_balance);
-    //   $stock_item->item_sum = $new_item_balance;
-    //   $stock_item->save();
-
 
 
 

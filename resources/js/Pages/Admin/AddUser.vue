@@ -1,7 +1,7 @@
 <template>
     <AppLayout>
          <!--Header Alert-->
-         <div v-if="$page.props.flash.status=='success'"
+         <div v-if="$page.props.flash.status==='success'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -12,7 +12,7 @@
                 </svg>
             </label>
         </div>
-        <div v-if="$page.props.flash.status=='warning'"
+        <div v-if="$page.props.flash.status==='warning'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -23,7 +23,7 @@
                 </svg>
             </label>
         </div>
-        <div v-if="$page.props.flash.status=='error'"
+        <div v-if="$page.props.flash.status==='error'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -36,10 +36,10 @@
         </div>
         <!-- sap test:  10032608 , โลหิต 10003133 ,หายใจ 10016895 ,วัสดุ 10019699 10030727 -->
         <div class=" w-full text-sm p-4 my-2  justify-center bg-red-100">
-            <p for="" class=" underline underline-offset-1 " >คำแนะนำการเพิ่มผู้ใช้งาน</p>
-            <p for="">1.ระบุรหัสเจ้าหน้าที่ แล้วกดปุ่มตรวจสอบสถานะ แล้วตรวจสอบข้อมูลว่าเป็นบุคคลที่ต้องการเพิ่มเป็นผู้ใช้งานระบบนี้หรือไม่</p>
-            <p for="">2.ระบุหน่วยงานภายในภาควิชาฯที่บุคคลนี้สังกัด ซึ่งหากสังกัดหน่วยงานใดก็จะมีสิทธิเข้าถึงคลังวัสดุของหน่วยงานนั้นเท่านั้น </p>
-            <p for="">3.ระบุสิทธิการใช้งานระบบ (หากเป็นเจ้าหน้าที่สาขาที่ทำหน้าที่บันทึกตัดสต๊อก ให้ระบุสิทธิเป็น เจ้าหน้าที่)</p>
+            <p  class=" underline underline-offset-1 " >คำแนะนำการเพิ่มผู้ใช้งาน</p>
+            <p >1.ระบุรหัสเจ้าหน้าที่ แล้วกดปุ่มตรวจสอบสถานะ แล้วตรวจสอบข้อมูลว่าเป็นบุคคลที่ต้องการเพิ่มเป็นผู้ใช้งานระบบนี้หรือไม่</p>
+            <p >2.ระบุหน่วยงานภายในภาควิชาฯที่บุคคลนี้สังกัด ซึ่งหากสังกัดหน่วยงานใดก็จะมีสิทธิเข้าถึงคลังวัสดุของหน่วยงานนั้นเท่านั้น </p>
+            <p >3.ระบุสิทธิการใช้งานระบบ (หากเป็นเจ้าหน้าที่สาขาที่ทำหน้าที่บันทึกตัดสต๊อก ให้ระบุสิทธิเป็น เจ้าหน้าที่)</p>
         </div>
         <div class=" w-full p-4 flex-col justify-center bg-blue-100 rounded-md ">
             <div class=" text-center text-lg font-bold ">
@@ -66,35 +66,35 @@
                         สถานะ:{{employeeStatus}}
                     </label> -->
                     <div class="mt-3">
-                        <div v-if="employeeStatus=='found_user_med_stock'"
+                        <div v-if="employeeStatus==='found_user_med_stock'"
                              class=" flex flex-col  text-red-600  text-center"
                          >
                            <label for=""> สถานะ:พบรหัสเจ้าหน้าที่ตามที่ระบุในฐานข้อมูลผู้ใช้งานระบบวัสดุแล้ว </label>
 
                         </div>
-                        <label for="" v-if="employeeStatus=='not_found'" class="  text-red-600">
+                        <label for="" v-if="employeeStatus==='not_found'" class="  text-red-600">
                             สถานะ:ไม่พบรหัสเจ้าหน้าที่ตามที่ระบุ
                         </label>
-                        <label for="" v-if="employeeStatus=='withdrawn'" class="  text-red-600">
+                        <label for="" v-if="employeeStatus==='withdrawn'" class="  text-red-600">
                             สถานะ: {{employeeAccountName}} เจ้าหน้าที่นี้ลาออกแล้ว
                         </label>
-                        <label for="" v-if="employeeStatus=='error'" class="  text-red-600">
+                        <label for="" v-if="employeeStatus==='error'" class="  text-red-600">
                             สถานะ: error check username -->[{{ employeeAccountName }}]
                         </label>
-                        <label for="" v-if="employeeStatus=='error_sap'" class="  text-red-600">
+                        <label for="" v-if="employeeStatus==='error_sap'" class="  text-red-600">
                             สถานะ: error -->[{{ employeeAccountName }}]
                         </label>
                     </div>
                 </div>
             </div>
 
-            <div v-if="employeeStatus=='active'">
+            <div v-if="employeeStatus==='active'">
                 <div class=" bg-red-100 border-2 border-red-400 p-4 text-sm">
                     <div class="flex">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-red-600">
                         <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
                         </svg>
-                        <p for="" class=" text-red-500 font-bold text-lg">กรุณาตรวจสอบความถูกต้องก่อนเพิ่มผู้ใช้งาน</p>
+                        <p class=" text-red-500 font-bold text-lg">กรุณาตรวจสอบความถูกต้องก่อนเพิ่มผู้ใช้งาน</p>
                     </div>
 
                     <label for="">ข้อมูลนี้ได้รับมาจากการเชื่อมโยงกับระบบของคณะฯ:</label>
@@ -308,11 +308,8 @@ const props =defineProps({
     //stock_item_import: {type:Array, default:[]},
 
 })
-
-const stocks_unit = ref('');
 const employeeStatus=ref('');
 const employeeAccountName=ref('');
-const employeeError=ref('');
 const confirm_add_user=ref(false);
 
 const form = useForm({
@@ -364,11 +361,11 @@ const CheckEmployeeStatus=(()=>{
 
                 employeeStatus.value =  res.data.status;
                 employeeAccountName.value = res.data.login
-                if(res.data.status == 'error_sap')
+                if(res.data.status === 'error_sap')
                 {
                     employeeAccountName.value = res.data.msg_error
                 }
-                if(res.data.status == 'active')
+                if(res.data.status === 'active')
                 {
                     form.employee_full_name = res.data.full_name
                     form.employee_division_name = res.data.division_name
@@ -385,16 +382,7 @@ const addUser=(()=>{
     form.post(route('add-user'), {
         preserveState: false,
         preserveScroll: true,
-        onSuccess: page => {
-            console.log('success');
 
-        },
-        onError: errors => {
-            console.log('error');
-        },
-        onFinish: visit => {
-            console.log('finish add user');
-        },
     })
 
 })

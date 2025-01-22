@@ -1,7 +1,7 @@
 <template>
     <AppLayout>
          <!--Header Alert-->
-         <div v-if="$page.props.flash.status=='success'"
+         <div v-if="$page.props.flash.status==='success'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -12,7 +12,7 @@
                 </svg>
             </label>
         </div>
-        <div v-if="$page.props.flash.status=='error'"
+        <div v-if="$page.props.flash.status==='error'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -106,7 +106,7 @@
     </AppLayout>
  </template>
  <script setup>
-//import { ref } from 'vue'
+
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { useForm } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3'
@@ -115,16 +115,13 @@ import { ref } from 'vue';
 const props =defineProps({
     stocks: {type:Array},
     unit:{type:Object},
-    //stock_item_import: {type:Array, default:[]},
+
 
 })
 const msg_alert=ref('');
 const box_alert=ref(false);
 const box_alert_file=ref(false);
 
-const stock_item_types=[{'type_id':'1','type_name':'ใบสัญญาสั่งซื้อ'},
-                      {'type_id':'2','type_name':'ใบสั่งซื้อ'}
-                     ]
 
 
 const form = useForm({
@@ -147,7 +144,7 @@ const onChangeFile=((e)=>{
 const ImportStockItem=(()=>{
 
 
-    if(form.stock_item_status==0){
+    if(form.stock_item_status===0){
         box_alert.value=true
         msg_alert.value="กรุณาเลือกประเภทการจัดซื้อวัสดุ";
       //  console.log('กรุณาระบุวันที่เบิก');

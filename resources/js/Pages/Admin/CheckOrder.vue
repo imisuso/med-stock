@@ -1,7 +1,7 @@
 <template>
     <AppLayout>
         <!--Header Alert-->
-        <div v-if="$page.props.flash.status=='success'"
+        <div v-if="$page.props.flash.status==='success'"
             class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <div v-if="order_lists.length==0"
+        <div v-if="order_lists.length===0"
             class=" flex justify-center text-red-600"
             >
             <label for="">ไม่พบรายการใบสั่งซื้อวัสดุ</label>
@@ -76,14 +76,14 @@
 
             </template>
             <template v-slot:messagesuggest>
-                <span v-if="order_list.status == 'created'" class=" text-sm text-red-500">รอสาขา/หน่วยกดปุ่มส่งเอกสารสั่งซื้อ และส่งเอกสารตัวจริงมาที่ภาควิชาฯ </span>
-                <span v-if="order_list.status == 'send'" class=" text-sm text-red-500">เมื่อหัวหน้าภาควิชาฯ เซ็นอนุมัติแล้ว ให้กดปุ่มอนุมัติ</span>
-                <span v-if="order_list.status == 'approve'" class=" text-sm text-red-500">
+                <span v-if="order_list.status === 'created'" class=" text-sm text-red-500">รอสาขา/หน่วยกดปุ่มส่งเอกสารสั่งซื้อ และส่งเอกสารตัวจริงมาที่ภาควิชาฯ </span>
+                <span v-if="order_list.status === 'send'" class=" text-sm text-red-500">เมื่อหัวหน้าภาควิชาฯ เซ็นอนุมัติแล้ว ให้กดปุ่มอนุมัติ</span>
+                <span v-if="order_list.status === 'approve'" class=" text-sm text-red-500">
                     รอสาขา/หน่วย ตรวจรับวัสดุ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ
                 </span>
             </template>
             <template v-slot:buttongroup>
-                     <a :href="route('print-checkin',order_list.id)" v-if="order_list.status == 'checkin'" target="blank">
+                     <a :href="route('print-checkin',order_list.id)" v-if="order_list.status === 'checkin'" target="blank">
                                 <span
                                     class="flex flex-row text-sm py-1 px-2 leading-5 text-white bg-yellow-500 rounded-md"
                                 >
@@ -93,7 +93,7 @@
                                     เอกสารตรวจรับวัสดุ
                                 </span>
                             </a>
-                             <a :href="route('print-checkin',order_list.id)" v-if="order_list.status == 'checkin'" target="blank">
+                             <a :href="route('print-checkin',order_list.id)" v-if="order_list.status === 'checkin'" target="blank">
                                 <span
                                     class="flex flex-row text-sm ml-2 py-1 px-2 leading-5 text-white bg-green-600 rounded-md"
                                 >
@@ -104,7 +104,7 @@
                                 </span>
                             </a>
 
-                            <button v-if="order_list.status == 'send'"
+                            <button v-if="order_list.status === 'send'"
                                 v-on:click="confirmApproveOrder(order_list)"
                                 class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-4 border border-green-500 rounded">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -166,13 +166,11 @@
     </AppLayout>
 </template>
 <script setup>
-//import { ref } from 'vue';
-//import { usePage } from '@inertiajs/vue3'
+
 import AppLayout from '@/Layouts/AppLayout.vue';
 import OrderDetail from '@/Components/OrderDetail.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { Link, useForm } from '@inertiajs/vue3'
-import { router } from '@inertiajs/vue3';
+import {useForm } from '@inertiajs/vue3'
 import { ref } from 'vue';
 
 defineProps({
@@ -216,13 +214,6 @@ const okConfirmApproveOrder=()=>{
     form.post(route('approve-order'), {
             preserveState: false,
             preserveScroll: true,
-            onSuccess: page => {
-                console.log('success');
-                },
-            onError: errors => {
-                console.log('error');
-            },
-            onFinish: visit => { console.log('finish');},
     })
             // Inertia.post(route('approve-order'),
             //                  {

@@ -21,9 +21,9 @@ class LogActivityController extends Controller
     {
       //  logger('LogActivityController index');
         $user = Auth::user();
-        
+
       //  logger(request()->all());
-      
+
         $function_name_all = LogActivity::distinct()
                                         ->orderBy('function_name','asc')
                                         ->get(['function_name'])
@@ -32,18 +32,18 @@ class LogActivityController extends Controller
         $unit = Unit::where('unitid',$user->unitid)->first();
 
         $year_send= array();
-      
+
         $year_now = date('Y');
         array_push($year_send,(int)$year_now);
         for($i=1;$i<5;$i++){
             array_push($year_send,(int)$year_now-$i);
         }
-     
+
         //logger($year_send);
         if(request()->input('function_selected') ){
             // logger(request()->input('function_selected'));
           //  logger(request()->all());
-      
+
             $log_activites = LogActivity::with('user:id,name')
                                         ->where('function_name',request()->input('function_selected'))
                                         ->whereYear('created_at', request()->input('year_selected'))
@@ -54,17 +54,17 @@ class LogActivityController extends Controller
         }else{
             $log_activites = [];
         }
-      
+
 
         return Inertia::render('Admin/LogActivity',[
                                         'unit'=> $unit,
                                         'item_trans' => $log_activites,
                                         'function_name_all'=> $function_name_all,
                                         'years' => $year_send,
-                                      
+
                                     ]);
 
-      
+
     }
 
     /**
@@ -104,52 +104,16 @@ class LogActivityController extends Controller
                             ->with('user:id,name')
                             ->orderBy('created_at','asc')
                             ->get();
-        
-       
+
+
        // logger($logs);
         return Inertia::render('Admin/ShowLogsUser',[
                             'user_change_logs'=> $logs,
                             'user_name'=> $user->name,
                         ]);
-        // return Redirect::back()
-        //                  ->with(['status' => 'success', 
-        //                             'msg' => 'ประวัติการแก้ไข',
-        //                             'user_change_logs'=> $logs,
-        //                     ]);
-        //dd($logs);
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
