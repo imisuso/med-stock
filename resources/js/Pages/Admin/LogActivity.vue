@@ -173,14 +173,11 @@
     </AppLayout>
 </template>
 <script setup>
-//import { ref } from 'vue';
-//import { usePage } from '@inertiajs/vue3'
-import { router } from '@inertiajs/vue3';
+
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
 import { ref } from 'vue';
-import { onMounted } from '@vue/runtime-core';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
@@ -246,7 +243,7 @@ const msg_validate_month=ref(false);
 const year_thai = (year_select)=>{
    // console.log('year_select=')
    // console.log(year_select)
-    if(year_select.length==0)
+    if(year_select.length===0)
          return '';
     else
          return parseInt(year_select)+543;
@@ -267,21 +264,21 @@ const  getReportLogActivity=()=>{
 //    msg_validate_stock.value = false
 //    msg_validate_year.value = false
 //    msg_validate_month.value = false
-    if(form.function_selected.length==0){
+    if(form.function_selected.length===0){
      msg_validate_stock.value = true
      return false;
     }else{
         msg_validate_stock.value = false;
     }
 
-    if(form.year_selected.length==0){
+    if(form.year_selected.length===0){
         msg_validate_year.value = true
         return false;
     }else{
         msg_validate_year.value = false
     }
 
-    if(form.month_selected.length==0){
+    if(form.month_selected.length===0){
         msg_validate_month.value = true
         return false;
     }else{
@@ -296,13 +293,6 @@ const  getReportLogActivity=()=>{
    form.get(route('get-log'),{
         preserveState: true,
         preserveScroll: true,
-        onSuccess: page => {
-            //console.log('success');
-        },
-        onError: errors => {
-           // console.log('error');
-        },
-        onFinish: visit => { console.log('finish');},
     })
 
 

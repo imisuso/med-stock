@@ -1,9 +1,9 @@
 <template>
     <AppLayout>
-        <div v-if="$page.props.flash.status=='success'" 
+        <div v-if="$page.props.flash.status==='success'"
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
-                
+
                 <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
                  {{ $page.props.flash.msg }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
@@ -11,11 +11,11 @@
                     </svg>
                 </label>
         </div>
-      
-        <div v-if="$page.props.errors.error" 
+
+        <div v-if="$page.props.errors.error"
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
-                
+
                 <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-700 shadow rounded-md text-white font-bold" title="close" for="banneralert">
                  {{ $page.props.errors.error }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
@@ -27,10 +27,10 @@
         <div class=" bg-pink-50">
             <div class=" w-full flex justify-center font-bold  ">บันทึกการตรวจรับวัสดุจากใบสัญญาสั่งซื้อ</div>
             <div class=" w-full flex justify-center font-bold">{{stockname}} </div>
-            
+
             <div class="w-full flex justify-between p-2 my-2  border-b-2 border-gray-600 font-bold " >
                 <div>เลขที่ใบสั่งซื้อ:{{order.order_no}}/{{order.year}}</div>
-                <div v-if="order.status == 'checkin'"
+                <div v-if="order.status === 'checkin'"
                     class=" flex justify-center text-green-700 text-lg"
                     >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -45,7 +45,7 @@
         <div v-for="(item,key) in order.items" :key="key"
             class=" w-full flex flex-col p-2 my-2 space-y-2 bg-pink-100  border-2 border-gray-500 rounded "
             >
-           
+
              <div class=" flex   ">
                 <span class=" font-bold">  {{key+1}}. {{item[0].sap}}-{{item[0].item_name}}</span>
                 <span class=" font-bold mx-2 "> จำนวนสั่งซื้อ: </span>
@@ -62,20 +62,20 @@
                 <span class=" font-bold text-green-600 mx-4 "> {{old_items_sum[key]}} </span>
                 <span class=" font-bold ">ชิ้น</span>
              </div>
-            <div v-if="order.status != 'checkin'" class=" flex flex-row   ">
+            <div v-if="order.status !== 'checkin'" class=" flex flex-row   ">
                 <span class=" font-bold "> จำนวนรวมหลังตรวจรับ: </span>
                 <span class=" font-bold text-blue-600 mx-4 "> {{parseInt(item[0].order_input)+parseInt(old_items_sum[key])}} </span>
                 <span class=" font-bold ">ชิ้น</span>
              </div>
              <div>
                   <span class="inline-block  font-bold"> บริษัทผู้ขาย:</span>  {{item[0].business_name}}
-             
+
              </div>
               <div>
                   <span class="inline-block   font-bold"> Cat.No/Lot.No:</span> {{item[0].catalog_number}}/{{item[0].lot_number}}
              </div>
 
-            <div v-if="order.status != 'checkin'"  class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
+            <div v-if="order.status !== 'checkin'"  class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
                 <div class=" m-2">
                     <label for="">วันที่รับเข้า:</label>
                     <input type="date" name="" id=""
@@ -84,16 +84,16 @@
                 </div>
                 <div class=" m-2">
                     <label for="">วันที่หมดอายุ:</label>
-                    <input type="date" name="" id="" 
+                    <input type="date" name="" id=""
                         v-model="form.date_expire[item[0].id]"
                     class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
-                </div>  
+                </div>
             </div>
-          
+
         </div>
-        <div v-if="order.status == 'approve' " 
+        <div v-if="order.status === 'approve' "
             class=" w-full flex justify-center">
-            <button 
+            <button
                 v-on:click="confirmCheckinOrder(order.id)"
                 class="flex flex-row text-md py-1 px-6 ml-3 bg-green-500 hover:bg-green-700 text-white  text-center border border-green-500 rounded">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,18 +102,16 @@
                 ตรวจรับวัสดุ
             </button>
         </div>
-       
-        
+
+
     </AppLayout>
 </template>
 
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { router } from '@inertiajs/vue3';
 import { useForm,usePage  } from '@inertiajs/vue3';
-import {ref , onMounted} from "vue"
-// import { onMounted } from '@vue/runtime-core';
-// const { ref }=require("@vue/reactivity");
+import {onMounted} from "vue"
+
 
 defineProps({
       order :{type:Object , required:true},
@@ -130,9 +128,9 @@ defineProps({
 });
 
 onMounted(() => {
- 
+
       form.order_id = usePage().props.order.id;
-     
+
 });
 
 const confirmCheckinOrder=()=>{
@@ -143,13 +141,9 @@ const confirmCheckinOrder=()=>{
     // console.log(form.date_expire);
     // console.log(form.order_id);
     form.post(route('checkin-order'), {
-        onSuccess: page => { console.log('success');},
-        onError: errors => { 
-            console.log('error');
-        },
-        onFinish: visit => { console.log('finish');},
+
     })
-       
+
 }
 
 </script>

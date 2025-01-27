@@ -28,11 +28,11 @@ class AnnouceController extends Controller
         }
         if(request()->input('message'))
         {
-          
+
             //   logger($user);
           //  logger($user->roles[0]['name']);
 
-          
+
 
              $annouce =   Annouce::create([
                         'user_id'=>$user->id,
@@ -41,14 +41,14 @@ class AnnouceController extends Controller
                         'show_on_page'=>$show_page,
                     ]);
 
-            
+
           /****************  insert log ****************/
                 // logger($annouce);
-             
+
 
                 $detail_log =array();
                 $detail_log['id'] =$annouce->id;
-           
+
                 $log_activity = LogActivity::create([
                     'user_id' => $user->id,
                     'sap_id' => $user->sap_id,
@@ -68,34 +68,16 @@ class AnnouceController extends Controller
                             ->whereIn('status',['on','off'])
                             ->orderBy('updated_at','desc')
                             ->paginate(5);
-       
+
         return Inertia::render('Admin/AnnouceList',[
                               'annouces'=>$annouces,
                               'annouce_status_list' =>$annouce_status_list,
-           
+
                          ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+
 
     /**
      * Display the specified resource.
@@ -105,7 +87,7 @@ class AnnouceController extends Controller
      */
     public function show()
     {
-      
+
        //Logger($user->agreements());
        // Logger($user->needAcceptAgreement());
         $annouces = Annouce::where(['status'=>'on','show_on_page'=>'annouce'])
@@ -143,11 +125,11 @@ class AnnouceController extends Controller
 
             /****************  insert log ****************/
                 // logger($annouce);
-             
+
                  $user = Auth::user();
                 $detail_log =array();
                 $detail_log['id'] =request()->input('annouce_id');
-           
+
                 $log_activity = LogActivity::create([
                     'user_id' => $user->id,
                     'sap_id' => $user->sap_id,
@@ -156,20 +138,11 @@ class AnnouceController extends Controller
                     'detail'=> $detail_log,
                 ]);
 
-        
+
 
         return Redirect::back();
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+
 }

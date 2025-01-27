@@ -20,15 +20,14 @@ class SiMedPortalAPI implements AuthUserAPI
         $options = ['timeout' => 8.0, 'verify' => false];
 
 
-        $baseUrl = config('app.SIMED_PROTAL_API_SERVICE_URL');
+        $baseUrl = config('app.SIMED_PROTAL_API_AUTH_SERVICE_URL');
 
         $token = config('app.SIMED_PROTAL_API_SERVICE_TOKEN');
-        //$token = '11121213';
-       // $baseUrl='aaaa';
+
         $response = Http::withToken($token)
                     ->withOptions($options)
                     ->acceptJson()
-                    ->post($baseUrl.'authenticate', ['login' => $orgId,'password' => $password]);
+                    ->post($baseUrl, ['login' => $orgId,'password' => $password]);
 
 
         // Logger('authenticate-->');
@@ -44,15 +43,13 @@ class SiMedPortalAPI implements AuthUserAPI
                     return ['reply_code' => '1', 'reply_text' => $response['message'],'found'=>'false'];
                 }
 
-              //  $data = array();
+
                 $data = $response->json();
                 $data['name'] = $data['full_name'];
                 $data['remark'] = $data['office_name']." ".$data['department_name'];
                 $data['name_en'] = $data['full_name_en'];
                 $data['reply_code'] = 0;
-            // dd($data);
-            // Logger('data-->');
-            // Logger($data);
+
             return $data;
         }
         else
@@ -76,8 +73,7 @@ class SiMedPortalAPI implements AuthUserAPI
                     ->acceptJson()
                     ->post($baseUrl.'user', ['org_id' => $sap]);
 
-        // Logger('checkEmployeeStatus By SAP');
-        // Logger($response->json());
+
         if ($response->successful() && $response->json()['ok']) {
             $data = $response->json();
             $data['reply_code'] = 0;
@@ -92,9 +88,6 @@ class SiMedPortalAPI implements AuthUserAPI
 
     public function getUserAD($username)
     {
-        //Logger('----getUserAD-----');
-        // Logger('username-->');
-        // Logger($username);
 
 
         $baseUrl = config('app.SIMED_PROTAL_API_SERVICE_URL');
@@ -107,15 +100,11 @@ class SiMedPortalAPI implements AuthUserAPI
                     ->withOptions($options)
                     ->acceptJson()
                     ->post($baseUrl.'user', ['login' => $username]);
-                    //->json();
 
-//        Logger($response->status());
-//        Logger($response->json());
 
       if ($response->successful() && $response->json()['ok'])
       {
-          //  Logger($response->json());
-      //  $data = array();
+
         $data = $response->json();
             if(!$data['found']) {
                 return ['reply_code' => '1', 'reply_text' => $data['body'],'found'=>'false'];
@@ -125,11 +114,8 @@ class SiMedPortalAPI implements AuthUserAPI
             $data['name'] = $data['full_name'];
             $data['reply_code'] = 0;
 
-        // Logger($data);
             return $data;
       }
-
-
 
         $data = $response->json();
         return ['reply_code' => '9', 'reply_text' => $data['message']];

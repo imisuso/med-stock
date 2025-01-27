@@ -39,7 +39,7 @@
                     </div> -->
                 </div>
                 <!-- {{stockBudget}} -->
-                <div v-if="stockBudget.budget['budget_add']==0 && $page.props.auth.user.roles[0].name=='admin_med_stock'"
+                <div v-if="stockBudget.budget['budget_add']===0 && $page.props.auth.user.roles[0].name==='admin_med_stock'"
                     class="flex justify-between px-3 " >
 
                         <div>
@@ -59,7 +59,7 @@
                 </div>
                         <div  class=" p-2 mr-2 ">
                             <!-- บันทึก -->
-                              <button v-if="$page.props.auth.user.roles[0].name=='admin_med_stock'"
+                              <button v-if="$page.props.auth.user.roles[0].name==='admin_med_stock'"
                                 class=" flex justify-center py-1 px-2 bg-green-200 text-green-900 rounded-md shadow-md hover:bg-green-300 focus:outline-none"
                                 v-on:click="confirmAddBudget"
                                 >
@@ -138,7 +138,7 @@
                             >
                         </BudgetOrder>
                     </div>
-                    <div v-if="stockBudget.purchase_orders.length!=0"
+                    <div v-if="stockBudget.purchase_orders.length!==0"
                         class="mt-2"
                         >
                          <label class=" px-6 font-bold">รายการใบสั่งซื้อ</label>
@@ -166,13 +166,13 @@
         </template>
         <template v-slot:body>
             <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
-                <div for="">
+                <div >
                     {{form.stock_name}}
                 </div>
                 <div>
                     ปีงบ:{{form.budget_year+543}}
                 </div>
-                 <div for="">
+                 <div >
                     จำนวน {{budget_confirm_show}} บาท
                 </div>
             </div>
@@ -203,13 +203,13 @@
         </template>
         <template v-slot:body>
             <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
-                <div for="">
+                <div >
                     {{form.stock_name}}
                 </div>
                 <div>
                     ปีงบ:{{form.budget_year+543}}
                 </div>
-                 <div for="">
+                 <div >
                     <div v-if="show_alert_edit"
                             class=" text-red-600"
                             >
@@ -247,7 +247,7 @@
         </template>
         <template v-slot:body>
             <div class="w-full flex flex-col text-gray-900 text-md font-medium ">
-                <div for="">
+                <div >
                  {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}
 
                 </div>
@@ -272,7 +272,6 @@
 import BudgetOrder from '@/Components/BudgetOrder.vue';
 import PurchaseOrder from '@/Components/PurchaseOrder.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { router } from '@inertiajs/vue3';
 import { useForm } from '@inertiajs/vue3';
 import {ref,computed} from 'vue';
 
@@ -303,48 +302,18 @@ const form = useForm({
 
 })
 
-const form_close = useForm({})
-
-
 const budget_add = computed(()=>{
     //console.log(props.stockBudget.budget)
     return  props.stockBudget.budget['budget_add'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 })
 
-const budget_balance = computed(()=>{
-     if(props.stockBudget.budget['budget_add']!=0){
-      //  console.log('balance_budget-->'+props.stockBudget.balance_budget);
-       return  props.stockBudget.balance_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-       // console.log(budget_balance.value);
-    }else{
-        return '0';
-    }
-})
 
-// const viewAllOrder=()=>{
-//     form.get(route('get-list-order'), {
-//             preserveState: true,
-//             preserveScroll: true,
-//             onSuccess: page => {
-//                 console.log('success');
-//                // show_alert_msg.value = true;
-//                 console.log(form.budget_year);
-//                 },
-//             onError: errors => {
-//                 console.log('error');
-//                 //  show_alert_msg.value = true;
-//             },
-//             onFinish: visit => {
-//                 console.log('finish');
-//             },
-//     })
-// }
 const msg_alert=ref('');
 const show_alert=ref(false);
 const show_alert_edit=ref(false);
 
 const confirmAddBudget=(order)=>{
-    console.log('confirmAddBudget');
+    //console.log('confirmAddBudget');
   //  console.log('budget='+form.budget_input);
    // console.log('length='+form.budget_input.length);
    // console.log(document.getElementById('budget_add').value)
@@ -406,15 +375,15 @@ const okConfirmAddBudget=()=>{
             preserveState: true,
             preserveScroll: true,
             onSuccess: page => {
-                console.log('success');
+             //   console.log('success');
                 show_alert_msg.value = true;
                 },
             onError: errors => {
-                console.log('error');
+               // console.log('error');
                   show_alert_msg.value = true;
             },
             onFinish: visit => {
-                console.log('finish');
+                //console.log('finish');
             },
     })
 
@@ -480,16 +449,16 @@ const okConfirmEditBudget=()=>{
             preserveState: true,
             preserveScroll: true,
             onSuccess: page => {
-                console.log('success');
+              //  console.log('success');
                 show_alert_msg.value = true;
-                console.log(form.budget_year);
+             //   console.log(form.budget_year);
                 },
             onError: errors => {
-                console.log('error');
+                //console.log('error');
                   show_alert_msg.value = true;
             },
             onFinish: visit => {
-                console.log('finish');
+               // console.log('finish');
             },
     })
 

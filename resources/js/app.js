@@ -1,4 +1,5 @@
 import './bootstrap';
+import '../css/app.css';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
@@ -18,12 +19,13 @@ createInertiaApp({
       color: '#4B5563',
     },
    // resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
-    resolve: name => {
-      const pages = import.meta.glob('./Pages/**/*.vue')
-      return pages[`./Pages/${name}.vue`]()
-    },
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    // resolve: name => {
+    //   const pages = import.meta.glob('./Pages/**/*.vue')
+    //   return pages[`./Pages/${name}.vue`]()
+    // },
     setup({ el, App, props, plugin }) {
-      createApp({ render: () => h(App, props) })
+      return createApp({ render: () => h(App, props) })
         .use(plugin)
         .mixin({ methods: { route } })
         .mount(el)

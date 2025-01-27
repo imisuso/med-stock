@@ -1,7 +1,7 @@
 <template>
     <AppLayout>
         <!--Header Alert-->
-        <div v-if="$page.props.flash.status=='success'"
+        <div v-if="$page.props.flash.status==='success'"
             class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -56,7 +56,7 @@
             </div>
     </div>
 
-    <div v-if="order_lists.length==0"
+    <div v-if="order_lists.length===0"
         class=" flex justify-center text-red-600"
         >
         <label for="">ไม่พบรายการใบสัญญาสั่งซื้อวัสดุ</label>
@@ -66,9 +66,9 @@
         :orderList="order_list"
     >
         <template v-slot:messagesuggest>
-            <span v-if="order_list.status == 'created'" class=" text-sm text-red-500">กดปุ่มพิมพ์และเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ แล้วกดปุ่มส่ง</span>
-            <span v-if="order_list.status == 'sended'" class=" text-sm text-red-500">รออนุมัติการสั่งซื้อ จากภาควิชาฯ</span>
-            <span v-if="order_list.status == 'approved'" class=" text-sm text-red-500">
+            <span v-if="order_list.status === 'created'" class=" text-sm text-red-500">กดปุ่มพิมพ์และเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ แล้วกดปุ่มส่ง</span>
+            <span v-if="order_list.status === 'sended'" class=" text-sm text-red-500">รออนุมัติการสั่งซื้อ จากภาควิชาฯ</span>
+            <span v-if="order_list.status === 'approved'" class=" text-sm text-red-500">
                 รีบดำเนินการให้บริษัทเซ็นใบสั่งซื้อ+ส่งของ+ตรวจรับ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ เมื่อตรวจรับวัสดุตามเอกสารสั่งซื้อแล้ว ให้กดปุ่มตรวจรับวัสดุ แล้วกดปุ่มพิมพ์เอกสารตรวจรับวัสดุและเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ
             </span>
         </template>
@@ -83,7 +83,7 @@
                                     พิมพ์ใบสั่งซื้อ
                             </span>
                         </a>
-                        <a :href="route('print-checkin',order_list.id)" v-if="order_list.status == 'checkin'" target="self">
+                        <a :href="route('print-checkin',order_list.id)" v-if="order_list.status === 'checkin'" target="self">
                             <span
                                 class="flex flex-row text-sm py-1 px-2 ml-3 leading-5 text-white bg-yellow-500 rounded-md"
                             >
@@ -95,7 +95,7 @@
                         </a>
 
 
-                        <button v-if="order_list.status == 'created'"
+                        <button v-if="order_list.status === 'created'"
                             v-on:click="confirmSendOrder(order_list)"
                             class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white  py-1 px-2 border border-green-500 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -103,7 +103,7 @@
                             </svg>
                             ส่งเอกสารสั่งซื้อ
                         </button>
-                        <a :href="route('receive-order',order_list)" v-if="order_list.status == 'approved'" >
+                        <a :href="route('receive-order',order_list)" v-if="order_list.status === 'approved'" >
                             <span
                                 class="flex flex-row text-sm py-1 px-2 ml-3  leading-5 text-white bg-green-500 hover:bg-green-700 rounded"
                             >
@@ -113,7 +113,7 @@
                             ตรวจรับวัสดุ
                             </span>
                         </a>
-                        <button v-if="order_list.status == 'created'"
+                        <button v-if="order_list.status === 'created'"
                             class="flex ml-3 bg-red-500 hover:bg-red-700 text-white d py-1 px-8 text-sm border border-red-500 rounded">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -165,8 +165,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import OrderDetail from '@/Components/OrderDetail.vue'
-import { Link, useForm } from '@inertiajs/vue3'
-import { router } from '@inertiajs/vue3';
+import {  useForm } from '@inertiajs/vue3'
 import { ref } from 'vue';
 
 defineProps({
@@ -210,11 +209,7 @@ const okConfirmSendOrder=()=>{
     form.post(route('send-order'), {
         preserveState: false,
         preserveScroll: true,
-        onSuccess: page => { console.log('success');},
-        onError: errors => {
-            console.log('error');
-        },
-        onFinish: visit => { console.log('finish');},
+
     })
 
 }

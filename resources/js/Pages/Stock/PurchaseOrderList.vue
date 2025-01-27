@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-        <div v-if="$page.props.flash.status=='success'"
+        <div v-if="$page.props.flash.status==='success'"
             class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
@@ -78,7 +78,6 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import ShowPurchaseOrder from '@/Components/ShowPurchaseOrder.vue';
 import PaginateMe from '@/Components/PaginateMe.vue';
 import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 const props = defineProps({
   years:{type:Object},
@@ -86,8 +85,6 @@ const props = defineProps({
   purchase_orders : {type:Object},
 })
 console.log('year_selected='+ props.year_selected);
-const filter_key=ref('');
-//const purchase_orders = ref([]);
 
 const form = useForm({
     year_selected: props.year_selected ? props.year_selected : '',
@@ -108,32 +105,5 @@ const getListPurchase = () => {
    // forceUpdate();
 }
 
-const purchase_filter = () => {
-  console.log(filter_key.value)
- // purchaseOrder.stock['stockname']
-  let filter_purchase = props.purchase_orders.data.filter( (elmt) => {
-
-    if( elmt.stock['stockname'].match(filter_key.value)
-        || elmt.project_name.match(filter_key.value)
-        || elmt.user.name.match(filter_key.value)
-        || date_purchase_convert(elmt.date_order).match(filter_key.value)
-        ) {
-      return elmt
-    }
-  })
-
-}
-
-const date_purchase_convert = (date_order)=>{
-    //console.log(props.stockBudget.budget)
-    let thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
-    //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
-    let date_arr = date_order.split('-');
-
-    let month = thaimonth[parseInt(date_arr[1])];
-    let year = parseInt(date_arr[0])+543;
-    let output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
-    return output;
-}
 
 </script>

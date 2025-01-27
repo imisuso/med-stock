@@ -30,36 +30,33 @@ class AdminReportStockController extends Controller
     {
           // logger('AdminReportStockController index');
         $user = Auth::user();
-  
-        //dd(request()->all());
-  
- 
+
         $role_admin = array('admin_it','admin_med_stock','super_officer');
 
         if(!in_array($user->roles[0]['name'] , $role_admin)
              &&  ($user->unitid != $division_id)
-        )   
+        )
         {
             // logger("can not view ");
             return Redirect::back()->with(['status' => 'error', 'msg' => 'คุณไม่มีสิทธิดูจำนวนคงเหลือของคลังนี้']);
-        
+
         }
 
         if(!in_array($user->roles[0]['name'] , $role_admin)){
-            
+
             //user สาขา Login มา จะเข้า logic ตรงนี้
-          
+
             $stocks = Stock::where('unit_id',$division_id)->where('status',1)->get();
             $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();
-           
+
         }
         else{
             $stocks = Stock::where('status',1)->get();
         }
-    
-      
+
+
     if(request()->input('stock_selected')){
-      
+
        $stock_selected_id = request()->input('stock_selected');
       // $stock_selected_name = Stock::select('stockname')->where('unit_id',$stock_selected_id)->first();
        $stock_selected_name = Stock::select('stockname')->where('id',request()->input('stock_selected'))->first();
@@ -72,32 +69,26 @@ class AdminReportStockController extends Controller
                             ->paginate(10)
                             ->withQueryString();
 
-        
+
         foreach($stock_items as $key=>$stock_item){
-          
+
             $checkin_last = $stock_item->itemTransactionCheckinLatest();
             $item_balance = $stock_item->itemBalance();
-           // logger('checkin_last11==>');
-           // logger($checkin_last);
-            //  logger($checkin_last->date_action);
-           // $stock_items[$key]['checkin_last'] = $checkin_last->date_action;
+
            $stock_items[$key]['checkin_last'] = $checkin_last;
             $stock_items[$key]['price_last'] = $checkin_last->price;
             $stock_items[$key]['item_balance'] = $item_balance;
             //$stock_items[$key]['checkin_last'] = $checkin_last;
         }
-        // $msg_notify_test = $user->name.' ดูจำนวนคงเหลือ '.$stock_selected_name->stockname;
-        // Logger($msg_notify_test);
-            
+
+
         /****************  insert log ****************/
-           // logger($old_changes);
-           // $use_in = Auth::user();
+
            $detail_log =array();
         if($stock_selected_name)
            $detail_log['stock_id'] = $stock_selected_name->stockname;
-   
 
-        //dd($detail_log);
+
             if(request()->search == null && request()->input('stock_selected')){
                     $log_activity = LogActivity::create([
                         'user_id' => $user->id,
@@ -108,10 +99,10 @@ class AdminReportStockController extends Controller
                     ]);
             }
 
-        
-   
+
+
     }else{
-     
+
         if(!in_array($user->roles[0]['name'] , $role_admin)){
           //  $stocks = [];
             $stock_selected_id = $user->unitid;
@@ -123,16 +114,14 @@ class AdminReportStockController extends Controller
             $stock_items = $query->orderBy('item_name')
                         ->paginate(10)
                         ->withQueryString();
-   
+
 
 
             foreach($stock_items as $key=>$stock_item){
-              
+
 
                 $checkin_last = $stock_item->itemTransactionCheckinLatest();
                 $item_balance = $stock_item->itemBalance();
-             //   logger('checkin_last22==>');
-              //  logger($checkin_last);
                 $stock_items[$key]['checkin_last'] = $checkin_last;
                 $stock_items[$key]['price_last'] = $checkin_last->price;
                 $stock_items[$key]['item_balance'] = $item_balance;
@@ -142,34 +131,33 @@ class AdminReportStockController extends Controller
           //  Logger($msg_notify_test);
 
                  /****************  insert log ****************/
-                    // logger($old_changes);
-                    // $use_in = Auth::user();
+
 
                     $detail_log =array();
                     $detail_log['stock_id'] = $stock_selected_name->stockname;
-            
 
-                  
+
+
         }else{
                 $stock_items = [];
                 $stock_selected_id=0;
                 $stock_selected_name=[];
-              
+
         }
     }
 
        // logger(count($stock_items));
-     
-        
 
-       
+
+
+
         return Inertia::render('Admin/ListReportStock',[
                             'stocks'=>$stocks,
                             'stock_items'=> $stock_items,
                             'stock_items_count' => count($stock_items),
                             'stock_selected' => (int)$stock_selected_id,
                             'stock_selected_name' => $stock_selected_name,
-                            'filters' => request()->only(['search'])        
+                            'filters' => request()->only(['search'])
                         ]);
     }
 
@@ -198,20 +186,14 @@ class AdminReportStockController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show()
     {
-       // Log::info('AdminReportStockController show');
-      //  logger(request()->all());
+
         $stock = array();
         $stock = request()->input('stock_selected');
-       // dd($stock['id']);
-      //  dd(request()->input('stock_slug'));
-       // Log::info($stock_slug);
-        // Log::info($year);
-        // Log::info($month);
-      //  return "test";
+
 
         $stocks = Stock::where('slug',$stock['id'])->first();
         if(!$stocks){
@@ -223,7 +205,7 @@ class AdminReportStockController extends Controller
                                 ->paginate(3);
                                // ->get();
 
-        
+
         foreach($stock_items as $key=>$stock_item){
             $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
                                             ->where('action','checkin')
@@ -244,8 +226,8 @@ class AdminReportStockController extends Controller
         Log::info($stock_item_checkouts);
 
         $stocks = Stock::all();
-    
-    
+
+
         $user = Auth::user();
         $main_menu_links = [
                 'is_admin_division_stock'=> $user->can('view_master_data'),
@@ -263,43 +245,13 @@ class AdminReportStockController extends Controller
                                     'stock_items'=> $stock_items,
                                     'item_tran' => $stock_item_checkouts
                                 ]);
-      //  return  $stocks;
 
 
-    
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+
+
+
 }
