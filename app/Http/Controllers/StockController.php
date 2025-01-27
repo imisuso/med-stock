@@ -26,8 +26,6 @@ class StockController extends Controller
     public function index()
     {
 
-       // Log::info('StockController index');
-       // logger(Request()->all());
         $user = Auth::user();
 
              /*  Validate  User View own Item Only  */
@@ -45,10 +43,6 @@ class StockController extends Controller
                         ],
                 ]);
         }
-
-
-
-
 
         if(request()->input('stock_id')){
 

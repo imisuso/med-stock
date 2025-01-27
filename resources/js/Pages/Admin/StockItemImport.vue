@@ -122,6 +122,9 @@ const msg_alert=ref('');
 const box_alert=ref(false);
 const box_alert_file=ref(false);
 
+const stock_item_types=[{'type_id':'1','type_name':'ใบสัญญาสั่งซื้อ'},
+    {'type_id':'2','type_name':'ใบสั่งซื้อ'}
+]
 
 
 const form = useForm({
