@@ -48,18 +48,24 @@
                             >
                             <label >{{msg_alert}}</label>
                         </div >
-                             <label  class=" ">
+                             <label >
                             ระบุงบประมาณ:
                             </label>
-                             <input type="number"  id="budget_add"
+                             <input type="number" pattern="^\d*(\.\d{0,2})?$"
+                                    id="budget_add"
                                 class=" rounded-md "
                                 v-model="form.budget_input"
+                                    @keyup="isBudgetFormat"
                                 >
-
+                            <label v-if="show_warning_msg_budget"
+                                class="text-red-600">
+                                ระบุทศนิยมได้มากที่สุด 2 หลัก
+                            </label>
                 </div>
                         <div  class=" p-2 mr-2 ">
                             <!-- บันทึก -->
-                              <button v-if="$page.props.auth.user.roles[0].name==='admin_med_stock'"
+
+                              <button v-if="$page.props.auth.user.roles[0].name==='admin_med_stock' && !show_warning_msg_budget "
                                 class=" flex justify-center py-1 px-2 bg-green-200 text-green-900 rounded-md shadow-md hover:bg-green-300 focus:outline-none"
                                 v-on:click="confirmAddBudget"
                                 >
@@ -282,15 +288,14 @@ const props = defineProps({
     budgetYear:{type:Number,required:true},
 })
 
-//const budget_add = ref(0);
-//const budget_balance = ref(0);
+
 const view_order=ref(false);
 const confirm_add_budget=ref(false);
 const budget_confirm_show = ref(0);
 const show_alert_msg=ref(false);
 
 const confirm_edit_budget=ref(false);
-
+const show_warning_msg_budget=ref(false);
 
 const form = useForm({
     stock_id:{type:Number},
@@ -303,20 +308,28 @@ const form = useForm({
 })
 
 const budget_add = computed(()=>{
-    //console.log(props.stockBudget.budget)
     return  props.stockBudget.budget['budget_add'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 })
 
+
+const isBudgetFormat=()=>{
+    //console.log(form.budget_input)
+    if (form.budget_input *100 % 1 !== 0) {
+        show_warning_msg_budget.value = true
+        //console.log('t')
+    }else{
+       // console.log('f')
+        show_warning_msg_budget.value = false
+    }
+
+}
 
 const msg_alert=ref('');
 const show_alert=ref(false);
 const show_alert_edit=ref(false);
 
 const confirmAddBudget=(order)=>{
-    //console.log('confirmAddBudget');
-  //  console.log('budget='+form.budget_input);
-   // console.log('length='+form.budget_input.length);
-   // console.log(document.getElementById('budget_add').value)
+
     if(form.budget_input==0){
         show_alert.value=true
         msg_alert.value="กรุณาระบุงบประมาณก่อนกดปุ่มบันทึก";
@@ -354,17 +367,7 @@ const  closeAlert=()=>{
    // console.log('close alert='+form.budget_year);
     show_alert_msg.value = false;
 
-    // form.get(route('get-list-budget'), {
-    //     preserveState: false,
-    //     preserveScroll: true,
-    //     onSuccess: page => {
-    //         console.log('success');
-    //     },
-    //     onError: errors => {
-    //         console.log('error');
-    //     },
-    //     onFinish: visit => { console.log('finish');},
-    // })
+
 }
 
 const okConfirmAddBudget=()=>{
@@ -398,19 +401,10 @@ const editBudget=()=>{
     form.year_selected = props.budgetYear;
     confirm_edit_budget.value = true;
 
-    //form.budget_edit= props.stockBudget.budget;
-    // Inertia.visit(route('edit-budget'),{
-    //     method: 'get',
-    //     data: {budget:props.stockBudget.budget},
-    // });
 }
 
 const okConfirmEditBudget=()=>{
-    //  console.log('okConfirmEditBudget');
-    //   console.log('budget edit='+form.budget_edit);
-    //   console.log('budget_year edit='+form.budget_year);
-    //   console.log('year_selected edit='+form.year_selected);
-//    console.log(document.getElementById('budget_edit').value);
+
 
    if(document.getElementById('budget_edit').value==''){
         show_alert_edit.value=true
@@ -468,7 +462,6 @@ const  cancelEditBudget=()=>{
     confirm_edit_budget.value = false;
     show_alert_edit.value=false;
 }
-
 
 
 </script>
