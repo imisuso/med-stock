@@ -51,7 +51,8 @@
                              <label  class=" ">
                             ระบุงบประมาณ:
                             </label>
-                             <input type="number"  id="budget_add"
+                             <input type="number" pattern="^\d*(\.\d{0,2})?$"
+                                    id="budget_add"
                                 class=" rounded-md "
                                 v-model="form.budget_input"
                                 >
@@ -313,10 +314,7 @@ const show_alert=ref(false);
 const show_alert_edit=ref(false);
 
 const confirmAddBudget=(order)=>{
-    //console.log('confirmAddBudget');
-  //  console.log('budget='+form.budget_input);
-   // console.log('length='+form.budget_input.length);
-   // console.log(document.getElementById('budget_add').value)
+
     if(form.budget_input==0){
         show_alert.value=true
         msg_alert.value="กรุณาระบุงบประมาณก่อนกดปุ่มบันทึก";
@@ -354,17 +352,7 @@ const  closeAlert=()=>{
    // console.log('close alert='+form.budget_year);
     show_alert_msg.value = false;
 
-    // form.get(route('get-list-budget'), {
-    //     preserveState: false,
-    //     preserveScroll: true,
-    //     onSuccess: page => {
-    //         console.log('success');
-    //     },
-    //     onError: errors => {
-    //         console.log('error');
-    //     },
-    //     onFinish: visit => { console.log('finish');},
-    // })
+
 }
 
 const okConfirmAddBudget=()=>{

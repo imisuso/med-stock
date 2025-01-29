@@ -199,9 +199,10 @@
                                   item_tran.user_id === $page.props.auth.user.id
                                 "
                         v-on:click="cancel_checkout(item_tran.id)"
-                        class=" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">
+                        class=" ml-3 bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     </button>
                     <button v-if="item_tran.status !== 'canceled' &&
@@ -227,7 +228,39 @@
         >
          กลับ
     </button>
+     <ModalUpToYou :isModalOpen="confirm_delete_checkout" >
+         <template v-slot:header>
+             <p class="text-md font-bold text-blue-700 "> ยืนยันการลบ</p>
 
+         </template>
+
+         <template v-slot:body>
+             <div class="text-gray-900 text-md font-medium ">
+
+                 <label  class="  flex  justify-start w-full text-md ">
+                    คุณต้องการลบข้อมูลการตัดสต๊อกวัสดุนี้ใช่หรือไม่?
+                 </label>
+
+             </div>
+         </template>
+
+         <template v-slot:footer>
+             <div class=" w-full  text-center  md:block">
+                 <button
+                     class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                     v-on:click="okconfirmDeleteCheckout"
+                 >
+                     ตกลง
+                 </button>
+                 <button
+                     class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                     v-on:click="cancelDeleteCheckout"
+                 >
+                     ยกเลิก
+                 </button>
+             </div>
+         </template>
+     </ModalUpToYou>
     <ModalUpToYou :isModalOpen="confirm_delete_item" >
             <template v-slot:header>
                 <p class="text-md font-bold text-blue-700 ">คุณต้องการลบวัสดุนี้ออกจากข้อมูลคลังวัสดุใช่หรือไม่?</p>
@@ -344,6 +377,8 @@ const confirm_delete_item=ref(false);
 const confirm_delete_item_name=ref('');
 const confirm_delete_item_pur_order=ref('');
 
+const confirm_delete_checkout=ref(false);
+const confirm_delete_checkout_name=ref('');
 const number_format_show=(item)=>{
     return item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -373,16 +408,27 @@ const okconfirmEditPrice=()=>{
 }
 
 const cancel_checkout=(item_tran_id)=>{
+    confirm_delete_checkout.value = true;
+    confirm_delete_checkout_name.value = item_tran_id;
 
- //  console.log('cancel checkout item='+item_tran_id);
    form.item_tran_id = item_tran_id;
-  form.post(route('cancel-checkout-stock-item'), {
-        preserveState: false,
-        preserveScroll: true,
 
-    })
+}
+const okconfirmDeleteCheckout=()=>{
+
+    confirm_delete_checkout.value = false;
+
+     form.post(route('cancel-checkout-stock-item'), {
+           preserveState: false,
+           preserveScroll: true,
+
+       })
 }
 
+const  cancelDeleteCheckout=()=>{
+
+    confirm_delete_checkout.value= false;
+}
 const confirm_cancel_checkin_item=(stock_item_id,item_name,pur_order)=>{
 
     confirm_delete_item.value = true;
