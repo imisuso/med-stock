@@ -24,7 +24,7 @@ class AdminReportStockController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index($division_id)
     {
@@ -74,11 +74,11 @@ class AdminReportStockController extends Controller
 
             $checkin_last = $stock_item->itemTransactionCheckinLatest();
             $item_balance = $stock_item->itemBalance();
-
+            $item_time_in_stock = $stock_item->itemTimeInStock();
            $stock_items[$key]['checkin_last'] = $checkin_last;
             $stock_items[$key]['price_last'] = $checkin_last->price;
             $stock_items[$key]['item_balance'] = $item_balance;
-            //$stock_items[$key]['checkin_last'] = $checkin_last;
+            $stock_items[$key]['$item_time_in_stock'] = $item_time_in_stock;
         }
 
 
@@ -122,9 +122,11 @@ class AdminReportStockController extends Controller
 
                 $checkin_last = $stock_item->itemTransactionCheckinLatest();
                 $item_balance = $stock_item->itemBalance();
+                $item_time_in_stock = $stock_item->itemTimeInStock();
                 $stock_items[$key]['checkin_last'] = $checkin_last;
                 $stock_items[$key]['price_last'] = $checkin_last->price;
                 $stock_items[$key]['item_balance'] = $item_balance;
+                $stock_items[$key]['$item_time_in_stock'] = $item_time_in_stock;
             }
             $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();
            // $msg_notify_test = $user->name.' ดูจำนวนคงเหลือ '.$stock_selected_name->stockname;
