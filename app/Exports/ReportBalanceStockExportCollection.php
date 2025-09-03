@@ -15,11 +15,11 @@ class ReportBalanceStockExportCollection implements FromCollection ,
 WithMapping ,WithHeadings, ShouldAutoSize, WithStrictNullComparison
 {
     protected $stock_id;
-   
+
 
     function __construct($stock_id) {
             $this->stock_id = $stock_id;
-          
+
     }
     // public function columnFormats(): array
     // {
@@ -29,13 +29,13 @@ WithMapping ,WithHeadings, ShouldAutoSize, WithStrictNullComparison
     // }
     public function map($stock_items): array
     {
-    
+
         //logger("In Map");
        // logger($stock_items);
-       
-        
+
+
         return [
-          
+
                 $stock_items->item_code,
                 $stock_items->item_name,
                 $stock_items->item_balance,
@@ -44,15 +44,15 @@ WithMapping ,WithHeadings, ShouldAutoSize, WithStrictNullComparison
                 $stock_items->pur_order_last,
                 $stock_items->invoice_last,
                 $stock_items->checkin_last,
-               // $item_trans->stockItem->item_sum,
+                $stock_items->item_time_in_stock,
               //  $item_trans->item_balance,
             // Date::dateTimeToExcel($TransactionCheckout->created_at),
-           
+
         ];
     }
     public function collection()
     {
-     
+
         // logger('In collection');
         // logger($this->stock_id);
 
@@ -64,18 +64,20 @@ WithMapping ,WithHeadings, ShouldAutoSize, WithStrictNullComparison
 
 
         foreach($stock_items as $key=>$stock_item){
-          
+
 
             $checkin_last = $stock_item->itemTransactionCheckinLatest();
             $item_balance = $stock_item->itemBalance();
-            //   logger('checkin_last22==>');
-            //  logger($checkin_last);
+            $item_time_in_stock = $stock_item->itemTimeInStock();
+//              logger('checkin_last22==>');
+//              logger($item_time_in_stock);
             $stock_items[$key]['checkin_last'] = $checkin_last->date_action;
             $stock_items[$key]['price_last'] = $checkin_last->price;
             $stock_items[$key]['business_name_last'] = $checkin_last->business_name;
             $stock_items[$key]['pur_order_last'] = $checkin_last->pur_order;
             $stock_items[$key]['invoice_last'] = $checkin_last->invoice_number;
             $stock_items[$key]['item_balance'] = $item_balance;
+            $stock_items[$key]['item_time_in_stock'] = $item_time_in_stock;
             }
 
         return $stock_items;
@@ -93,6 +95,7 @@ WithMapping ,WithHeadings, ShouldAutoSize, WithStrictNullComparison
             'Pur.Order',
             'Invoice No.',
             'วันที่รับเข้า',
+            'จำนวนวันที่อยู่ในคลัง',
         ];
     }
 }

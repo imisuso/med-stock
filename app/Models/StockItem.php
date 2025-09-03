@@ -12,8 +12,8 @@ class StockItem extends Model
     use HasFactory;
 
     protected $table = 'stock_items';
- 
-    protected $fillable = [ 
+
+    protected $fillable = [
         'id',
         'stock_id',
         'stock_categories_id',
@@ -32,7 +32,7 @@ class StockItem extends Model
         'profile',
     ];
 
-    
+
     protected $casts = [
         'profile' => 'array',
     ];
@@ -77,6 +77,17 @@ class StockItem extends Model
                                     ->sum('item_count');
         return $checkin - $checkout;
     }
+    public function itemTimeInStock()
+    {
+        $last_date_checkin = ItemTransaction::query()->where('stock_item_id',$this->id)
+                                            ->whereStatus('active')
+                                            ->whereAction('checkin')
+                                            ->orderBy('date_action','desc')
+                                            ->first();
+        $date_now = date('Y-m-d');
+        $diff = date_diff(date_create($last_date_checkin->date_action), date_create($date_now));
+        return $diff->days;
+    }
 
     public function scopeFilterbySearch($query, $search)
     {
@@ -90,7 +101,7 @@ class StockItem extends Model
 
 
     public static function loadData($fileName){
-        
+
     //  Log::info('loadData');
         $stock_items = loadCSV($fileName);
        //$stock_items = loadCSV('business_load_utf8');
@@ -105,14 +116,14 @@ class StockItem extends Model
         if(!$user_add){
             return "not found user admin_med_stock";
         }
-        
+
         foreach($stock_items as $stock_item){
         //     Log::info($stock_item);
         //     Log::info($stock_item['stock_id']);
         //    Log::info($stock_item['material_number']);
 
             $date_split = explode('-',$stock_item['date_receive']);
-            
+
             if((int)$date_split[1]>9){
                 $year_budget = (int)$date_split[0]+1;
             }else{
@@ -156,7 +167,7 @@ class StockItem extends Model
                 ]);
             }else{
 
-        
+
                 $stock_item_add=  StockItem::create([
                                         'stock_id'=>$stock_item['stock_id'],
                                         'user_id'=>$user_add->id,
@@ -193,15 +204,15 @@ class StockItem extends Model
                         ],
                 ]);
 
-        
+
             }
-      
-          
+
+
         }
     }
     public static function loadDataOrderPurchase($fileName){
-        
-      
+
+
         $stock_items = loadCSV($fileName);
        //$stock_items = loadCSV('business_load_utf8');
       //  \Log::info('FILENAME==>'.$fileName);

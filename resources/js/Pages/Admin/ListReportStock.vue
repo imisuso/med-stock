@@ -89,9 +89,9 @@
                     <div class=" lg:w-1/12 ">
                         วันที่รับเข้า
                     </div>
-                    <!-- <div class=" lg:w-1/12 ">
-                        วันที่หมดอายุ
-                    </div> -->
+                    <div class=" lg:w-1/12 ">
+                        จำนวนวันที่อยู่ในคลัง
+                    </div>
 
                     <div class=" lg:w-1/12 text-xs ">
                         ประวัติรับเข้า-เบิกออก
@@ -176,7 +176,22 @@
                             {{dayjs(stock_item.checkin_last.date_action).locale('th').format('D MMM BBBB')}}
                         </label>
                     </div>
+                    <div class="  lg:w-1/12 lg:text-xs  ">
+                        <label for="" class="   lg:hidden">จำนวนวันที่อยู่ในคลัง:</label>
+                        <div v-if="stock_item.item_balance != 0">
+                            <label
+                                class=" ml-2 text-xl "
+                                :class="{ 'text-red-500 text-xl': stock_item.$item_time_in_stock > 30 }" >
+                                {{stock_item.$item_time_in_stock }}
+                            </label>
+                        </div>
+                        <div v-else
+                             class=" ml-2 text-xl "
+                            >
+                            <label>-</label>
+                        </div>
 
+                    </div>
 
                     <div class="  lg:w-1/12 ">
                         <label for="" class="  hidden"> ประวัติรับเข้า-เบิกออก</label>
