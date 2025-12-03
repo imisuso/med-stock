@@ -1,22 +1,22 @@
 <template>
     <AppLayout>
         <!--Header Alert-->
-        <div v-if="$page.props.flash.status=='success'" 
+        <div v-if="$page.props.flash.status=='success'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
-            
-            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow-xs rounded-md text-green-800 font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
                 </svg>
             </label>
         </div>
-        <div v-if="$page.props.flash.status=='error'" 
+        <div v-if="$page.props.flash.status=='error'"
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
-            
-            <label class="close cursor-pointer text-white flex items-center justify-between w-full p-2 bg-red-800 shadow rounded-md font-bold" title="close" for="banneralert">
+
+            <label class="close cursor-pointer text-white flex items-center justify-between w-full p-2 bg-red-800 shadow-xs rounded-md font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -48,19 +48,19 @@
         <div>
             <paginateMe :pagination="all_orders" />
         </div>
-      
-        <div 
-            class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
-           
+
+        <div
+            class="w-full my-3  border-b-4 border-gray-500 shadow-xs hidden lg:block ">
+
                 <div class="flex flex-col font-bold text-lg  lg:flex-row lg:justify-between  mx-2"  >
-                    
+
                     <div class=" lg:w-3/12  ">
                         เลขที่ใบสั่งซื้อ
                     </div>
                     <div class=" lg:w-3/12  ">
                         ประเภท
                     </div>
-                
+
                     <div class=" lg:w-3/12 ">
                         งบประมาณที่ใช้
                     </div>
@@ -72,16 +72,16 @@
                     <div class=" lg:w-1/12 ">
                         ::
                     </div>
-                  
-                </div>     
+
+                </div>
          </div>
     </div>
-      
+
     <div  class="w-full mt-3  ">
 
         <div v-for="(order,key) in all_orders.data" :key=order.id
-            class="w-full p-2 border-b-2   border-gray-500 shadow-sm ">
-            
+            class="w-full p-2 border-b-2   border-gray-500 shadow-xs ">
+
             <div class="flex flex-col text-sm  lg:flex-row   "  >
                 <div class=" hidden lg:block">{{key+1}}.</div>
                 <div class=" bg-blue-100 lg:bg-transparent lg:w-3/12  ">
@@ -117,7 +117,7 @@
                             </svg>
                         </a> -->
 
-                        <button type="submit" 
+                        <button type="submit"
                                 class="  inline-flex text-sm ml-3 "
                                 @click="getOrderDetail(stock_budget.stock_id,year_budget,order.pur_order,order.sum_price)"
                                 >
@@ -128,8 +128,8 @@
                     </div>
 
                 </div>
-                
-            </div>     
+
+            </div>
         </div>
 
         <div class="my-2 p-2 bg-yellow-200">
@@ -157,7 +157,7 @@
                         กลับ
         </Link>
     </div>
-    
+
     </AppLayout>
 </template>
 <script setup>
@@ -199,15 +199,15 @@ const getOrderDetail=(stock_id,year_budget,pur_order,sum_price)=>{
     form.post(route('get-list-budget-detail'), {
         preserveState: true,
         preserveScroll: true,
-        onSuccess: page => { 
+        onSuccess: page => {
             //console.log('success');
         },
-        onError: errors => { 
+        onError: errors => {
             console.log('error');
         },
-        onFinish: visit => { 
+        onFinish: visit => {
            // console.log('finish');
-           // import_stock_items.value = res.data.stock_item_import;   
+           // import_stock_items.value = res.data.stock_item_import;
         },
     })
 

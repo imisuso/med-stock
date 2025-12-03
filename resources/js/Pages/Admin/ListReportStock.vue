@@ -5,7 +5,7 @@
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
 
-                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-300 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-300 shadow-xs rounded-md text-red-800 font-bold" title="close" for="banneralert">
                  {{ $page.props.flash.msg }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -21,7 +21,7 @@
                 <label for="">เลือกชื่อคลังวัสดุ</label>
                 <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกคลังวัสดุ</label>
                 <select name="" id="" v-model="form.stock_selected"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline" >
                     <option v-for="(stock) in  stocks" :key=stock.id :value=stock.id >{{stock.stockname}}</option>
                 </select>
             </div>
@@ -32,7 +32,7 @@
             class="flex flex-col  ">
 
                 <button
-                    class=" w-full flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                    class=" w-full flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-hidden"
                     @click="getStockReport()"
                 >
 
@@ -53,7 +53,7 @@
         <div v-if="stock_items_count!=0" class="w-full">
             <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อวัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา"
                     v-model="search"
-                class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
+                class="mt-2 border-green-600 border-2 block w-full shadow-xs sm:text-sm  rounded-md"
             >
         </div>
     <div v-if="stock_items_count!=0" class="w-full  p-2   ">
@@ -64,7 +64,7 @@
             </div>
 
             <div
-                class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
+                class="w-full my-3  border-b-4 border-gray-500 shadow-xs hidden lg:block ">
                 <div class="flex flex-col text-xs  lg:flex-row lg:justify-between  mx-2"  >
 
                     <div class=" lg:w-2/12  ">
@@ -109,7 +109,7 @@
         <div  class="w-full mt-3  ">
 
             <div v-for="(stock_item,key) in stock_items.data" :key=stock_item.index
-                class="w-full border-b-2   border-gray-500 shadow-sm ">
+                class="w-full border-b-2   border-gray-500 shadow-xs ">
 
                 <div class="flex flex-col  lg:flex-row   "  >
 
@@ -214,7 +214,7 @@
 
                         <!-- <button
                             v-on:click="cancel_stock_item(stock_item.id)"
-                            class=" ml-3 bg-red-700 hover:bg-red-500 text-white font-bold py-1 px-2 border border-red-500 rounded">
+                            class=" ml-3 bg-red-700 hover:bg-red-500 text-white font-bold py-1 px-2 border border-red-500 rounded-xs">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
@@ -223,7 +223,7 @@
                 </div>
             </div>
 
-            <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-blue-700 rounded-sm shadow-md hover:bg-blue-500 focus:outline-none"
+            <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-blue-700 rounded-xs shadow-md hover:bg-blue-500 focus:outline-hidden"
             :href="route('export-balance-stock', stock_items.data[0].stock_id)"
                 >
                 Export Excel

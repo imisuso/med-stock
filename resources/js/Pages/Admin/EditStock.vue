@@ -5,7 +5,7 @@
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
-            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow-xs rounded-md text-green-800 font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -16,7 +16,7 @@
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
-            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-yellow-200 shadow rounded-md text-yellow-800 font-bold" title="close" for="banneralert">
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-yellow-200 shadow-xs rounded-md text-yellow-800 font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-red " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -27,7 +27,7 @@
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
-            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-200 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-200 shadow-xs rounded-md text-red-800 font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-red " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -79,7 +79,7 @@
                         <div v-for="(status) in stock_status_list" :key=status.id
                             class="form-check">
                             <input type="radio"  :value="status.id" v-model="form.stock_status"
-                                class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                                class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-hidden transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                             />
                             <label for="one">{{status.desc}}</label>
                         </div>
@@ -91,14 +91,14 @@
                 <div class="  ">
                     <button type="submit"
                         v-if="$page.props.auth.user.roles[0].name=='admin_med_stock'"
-                        class=" w-full flex justify-center py-2  text-md  bg-green-500 hover:bg-green-700 text-white  border border-green-500 rounded"
+                        class=" w-full flex justify-center py-2  text-md  bg-green-500 hover:bg-green-700 text-white  border border-green-500 rounded-xs"
                         @click="confirmEditStock()"
                         >
                         แก้ไข
                     </button>
 
                     <Link :href="route('stock-add')" >
-                        <div class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded">
+                        <div class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-xs">
                             <span class=" text-white ml-2">กลับ</span>
                         </div>
                     </Link>
@@ -132,13 +132,13 @@
             <template v-slot:footer>
                 <div class=" w-full  text-center  md:block">
                     <button
-                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="okconfirmEditStock"
                         >
                         ตกลง
                     </button>
                     <button
-                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                         v-on:click="cancelEditStock"
                     >
                         ยกเลิก

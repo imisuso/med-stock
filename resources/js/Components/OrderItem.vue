@@ -70,7 +70,7 @@
                     </div>
                     <div class=" w-3/4 ">
                         <select id="business_input"
-                            class="block appearance-none w-full  bg-white border hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight "
+                            class="block appearance-none w-full  bg-white border hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight "
                             :class="[business_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
                             v-model="form.business_input"
                             >
@@ -88,7 +88,7 @@
                 <div class=" m-2">
 
                         <button
-                            class="w-full flex justify-center text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                            class="w-full flex justify-center text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-hidden"
                             @click="addOrder"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8  " fill="none" viewBox="0 0 24 24" stroke="currentColor">

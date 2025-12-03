@@ -105,7 +105,7 @@
 
                                 <input type="date" id="dateCheckout"
                                     v-model="form.date_checkout"
-                                    class="w-full bg-gray-300 px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                                    class="w-full bg-gray-300 px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring-3 focus:ring-black/50 focus:ring-indigo-500"
                                     :class="[date_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
                                     @keydown="checkKeydown" readonly
                                 >
@@ -127,7 +127,7 @@
                                     :max="stockItem.item_balance"
                                     pattern = "[0-9]"
                                     v-model="form.unit_checkout"
-                                    class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                                    class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring-3 focus:ring-black/50 focus:ring-indigo-500"
                                     :class="[unitcheckout_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
                                 >
 
@@ -144,7 +144,7 @@
                     <div v-if="canAbility.checkout_item && stockItem.item_balance!=0" class="flex flex-col lg:flex-row px-2 py-2  ">
 
                         <button
-                            class=" flex justify-center px-4 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
+                            class=" flex justify-center px-4 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-hidden"
                             v-on:click="confirmCheckout(stockItem)"
                         >
                             <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -178,13 +178,13 @@
             <template v-slot:footer>
                 <div class=" w-full  text-center  md:block">
                     <button
-                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="okConfirmCheckout"
                         >
                         ตกลง
                     </button>
                     <button
-                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                         v-on:click="cancelConfirmCheckout"
                     >
                         ยกเลิก

@@ -3,7 +3,7 @@
         <div class=" w-full flex  justify-between ">
                 <label class=" text-lg font-bold text-red-600" >เพิ่มรายการวัสดุให้ครบก่อนกดปุ่มบันทึกใบสั่งซื้อ:</label>
                 <button 
-                        class="  flex  p-2 justify-center mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        class="  flex  p-2 justify-center mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="openSearchItem"
                         >
                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -56,7 +56,7 @@
         <div class=" m-2 p-2">
                     
             <button
-                class="w-full flex  p-2 justify-center text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                class="w-full flex  p-2 justify-center text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-hidden"
                 @click="addOrder"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -84,7 +84,7 @@
                                </div>
                                <div class="  w-1/4 ml-2">
                                         <button
-                                                class="w-full flex  p-2 justify-center text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                                                class="w-full flex  p-2 justify-center text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-hidden"
                                                 @click="searchStockItem"
                                         >
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -107,7 +107,7 @@
                                                 <label v-if="!item.profile"> [ไม่พบข้อมูลชื่อบริษัท]</label>
                                                 <label v-else>[{{item.profile.business_name}}]</label>
                                                 <button
-                                                        class=" mx-2 px-2  justify-center text-sm  text-white bg-green-700 rounded-md hover:bg-green-400 focus:outline-none"
+                                                        class=" mx-2 px-2  justify-center text-sm  text-white bg-green-700 rounded-md hover:bg-green-400 focus:outline-hidden"
                                                         @click="fillItemToForm(item)"
                                                         >
                                                         เลือก
@@ -122,7 +122,7 @@
                         <template v-slot:footer>
                         <div class=" w-full  text-center  md:block">
                                 <button 
-                                class="mx-4 md:mb-0 bg-blue-700 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                                class="mx-4 md:mb-0 bg-blue-700 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                                 v-on:click="closeSearchItem"
                                 >
                                 ปิด

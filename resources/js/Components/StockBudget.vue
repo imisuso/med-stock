@@ -5,7 +5,7 @@
                 class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
 
-                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow-xs rounded-md text-green-800 font-bold" title="close" for="banneralert">
                     {{ $page.props.flash.msg }}
                     <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -16,7 +16,7 @@
                     class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                     <input type="checkbox" class="hidden" id="banneralert">
 
-                    <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-700 shadow rounded-md text-white font-bold" title="close" for="banneralert">
+                    <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-700 shadow-xs rounded-md text-white font-bold" title="close" for="banneralert">
                     {{ $page.props.errors.error }}
                     <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                             <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -66,7 +66,7 @@
                             <!-- บันทึก -->
 
                               <button v-if="$page.props.auth.user.roles[0].name==='admin_med_stock' && !show_warning_msg_budget "
-                                class=" flex justify-center py-1 px-2 bg-green-200 text-green-900 rounded-md shadow-md hover:bg-green-300 focus:outline-none"
+                                class=" flex justify-center py-1 px-2 bg-green-200 text-green-900 rounded-md shadow-md hover:bg-green-300 focus:outline-hidden"
                                 v-on:click="confirmAddBudget"
                                 >
                                 บันทึก
@@ -86,7 +86,7 @@
                         <div
                             class="px-3 ">
                              <button v-if="$page.props.auth.user.roles[0].name=='admin_med_stock'"
-                                class=" flex justify-center py-1 px-2 bg-yellow-200 text-yellow-900 rounded-md shadow-md hover:bg-yellow-300 focus:outline-none"
+                                class=" flex justify-center py-1 px-2 bg-yellow-200 text-yellow-900 rounded-md shadow-md hover:bg-yellow-300 focus:outline-hidden"
                                 v-on:click="editBudget"
                                 >
                                 แก้ไข
@@ -107,7 +107,7 @@
                         </div>
                         <div v-if="stockBudget.count_import>0"  class="flex mr-2">
                             <a :href="route('get-list-order',{stock_id:stockBudget.id,year:budgetYear})"
-                                class=" flex justify-center py-1 px-2 bg-pink-200 text-pink-900 rounded-md shadow-md hover:bg-pink-300 focus:outline-none"
+                                class=" flex justify-center py-1 px-2 bg-pink-200 text-pink-900 rounded-md shadow-md hover:bg-pink-300 focus:outline-hidden"
 
                                 >
                                 ดูใบสั่งซื้อที่นำเข้าจากExcel
@@ -125,7 +125,7 @@
                                  </span>
                               </a> -->
                             <!-- <button
-                                class=" flex justify-center px-2 ml-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
+                                class=" flex justify-center px-2 ml-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-hidden"
                                 >
                                 เพิ่มงบประมาณ
                             </button> -->
@@ -187,13 +187,13 @@
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
                 <button
-                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="okConfirmAddBudget"
                     >
                     ตกลง
                 </button>
                 <button
-                    class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                    class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                     v-on:click="cancelAddBudget"
                 >
                     ยกเลิก
@@ -231,13 +231,13 @@
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
                 <button
-                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="okConfirmEditBudget"
                     >
                     ตกลง
                 </button>
                 <button
-                    class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                    class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                     v-on:click="cancelEditBudget"
                 >
                     ยกเลิก
@@ -263,7 +263,7 @@
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
                 <button
-                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="closeAlert"
                     >
                     ตกลง

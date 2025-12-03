@@ -1,11 +1,11 @@
 <template>
 <AppLayout>
         <!--Header Alert-->
-        <!-- <div v-if="$page.props.flash.status=='success'" 
+        <!-- <div v-if="$page.props.flash.status=='success'"
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
-                
-                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow-xs rounded-md text-green-800 font-bold" title="close" for="banneralert">
                         {{ $page.props.flash.msg }}
                         <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -31,26 +31,26 @@
                                         <div class="bg-blue-800 text-white text-xl text-center ">
                                                 {{$page.props.auth.user.profile.division_id}}
                                         </div>
-                                
-                                        
+
+
                                 </div> -->
                                 <!-- {{stocks}} -->
                                 <select v-model="form.stock_select"
-                                        class="block appearance-none w-full bg-white border  focus:border-indigo-600  rounded-md  " 
+                                        class="block appearance-none w-full bg-white border  focus:border-indigo-600  rounded-md  "
                                         :class="[stock_alert ? 'border-red-500 border-3 ' : 'border-gray-500' ]"
                                         >
-                                        <!-- <option v-for="(stock) in  stocks" :key=stock.id  
+                                        <!-- <option v-for="(stock) in  stocks" :key=stock.id
                                                 :value="{stockid:stock.id,stockname:stock.stockname}" >
                                                {{stock.stockname}}
                                         </option> -->
-                                           <option v-for="(stock) in  stocks" :key=stock.id  
+                                           <option v-for="(stock) in  stocks" :key=stock.id
                                                 :value="stock.id" >
                                                {{stock.stockname}}
                                         </option>
                                 </select>
                         </div>
-                       
-                      
+
+
                         <div class=" my-2 ">
                                 <div class="flex justify-start ">
                                         <svg xmlns="http://www.w3.org/2000/svg" v-if="date_alert" class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
@@ -74,7 +74,7 @@
                                 <input type="text" name="" id=""
                                     v-model="form.project_name"
                                     class="w-full  py-2 rounded-md  "
-                                    
+
                                  >
                         </div>
                         <div class=" my-2 ">
@@ -106,16 +106,16 @@
                                                         </svg>
                                                 </button>
                                         </div>
-                                    
+
                                         <div class=" pl-4">
-                                                จำนวน {{order_old[0].order_old_input}} {{order_old[0].unit_count}} 
-                                                x {{order_old[0].price}}  ราคารวม {{order_old[0].total}} บาท 
+                                                จำนวน {{order_old[0].order_old_input}} {{order_old[0].unit_count}}
+                                                x {{order_old[0].price}}  ราคารวม {{order_old[0].total}} บาท
                                         </div>
                                 </div>
                         </div>
                         <div v-if="form.preview_orders.length!=0 && action == 'add' "
                                 class=" p-2 border-2 border-green-600 rounded-md">
-                               
+
                                 <label class="font-bold">รายการวัสดุที่สั่งซื้อ:</label>
                                 <div v-for="(order,index) in form.preview_orders" :key=order.id
                                         class=" bg-white my-2"
@@ -132,38 +132,38 @@
                                                         </svg>
                                                 </button>
                                         </div>
-                                    
+
                                         <div class=" pl-4">
-                                                จำนวน {{order[0].order_input}} {{order[0].unit_count}} 
-                                                x {{order[0].price}}  ราคารวม {{order[0].total}} บาท 
+                                                จำนวน {{order[0].order_input}} {{order[0].unit_count}}
+                                                x {{order[0].price}}  ราคารวม {{order[0].total}} บาท
                                         </div>
-                                      
-                                </div>    
+
+                                </div>
                         </div>
                         <div v-if="form.preview_orders.length!=0  "
                           class=" mt-2"
                           >
-                                <button 
-                                        class="w-full flex justify-center bg-green-600 py-2 text-md shadow-sm font-medium  border text-white rounded-md hover:shadow-lg hover:bg-green-400"
+                                <button
+                                        class="w-full flex justify-center bg-green-600 py-2 text-md shadow-xs font-medium  border text-white rounded-md hover:shadow-lg hover:bg-green-400"
                                         v-on:click="addOrderPurchase"
                                         >
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                                         </svg>
-                                       <label v-if=" action == 'add'">บันทึกใบสั่งซื้อ</label> 
-                                       <label v-else>แก้ไขใบสั่งซื้อ</label> 
+                                       <label v-if=" action == 'add'">บันทึกใบสั่งซื้อ</label>
+                                       <label v-else>แก้ไขใบสั่งซื้อ</label>
                                 </button>
                         </div>
-                      
+
                 </div>
-                <PurchaseItem 
+                <PurchaseItem
                             @previewOrder="getOrder"
                          />
 
                 <ModalUpToYou :isModalOpen="confirm_add_purchase" >
                         <template v-slot:header>
-                        <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกการสั่งซื้อใช่หรือไม่?</p> 
-                                                
+                        <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกการสั่งซื้อใช่หรือไม่?</p>
+
                         </template>
 
                         <template v-slot:body>
@@ -180,14 +180,14 @@
 
                         <template v-slot:footer>
                         <div class=" w-full  text-center  md:block">
-                                <button 
-                                class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                                <button
+                                class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                                 v-on:click="okConfirmAddPurchase"
                                 >
                                 ตกลง
                                 </button>
-                                <button 
-                                class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                                <button
+                                class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                                 v-on:click="cancelAddPurchase"
                                 >
                                 ยกเลิก
@@ -198,35 +198,35 @@
 
                 <ModalUpToYou :isModalOpen="show_alert_msg" >
                         <template v-slot:header>
-                        <p class="text-md font-bold text-red-600 ">กรุณาอ่าน </p> 
-                                                
+                        <p class="text-md font-bold text-red-600 ">กรุณาอ่าน </p>
+
                         </template>
                         <template v-slot:body>
                         <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
                                 <div for="">
-                                {{ $page.props.flash.status }}:{{ $page.props.flash.msg }} 
-                                
+                                {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}
+
                                 </div>
                         </div>
                         </template>
-                
+
                         <template v-slot:footer>
                         <div class=" w-full  text-center  md:block">
-                                <button 
-                                class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                                <button
+                                class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                                 v-on:click="closeAlert"
                                 >
                                 ตกลง
                                 </button>
-                        
+
                         </div>
                         </template>
                 </ModalUpToYou>
 
                 <ModalUpToYou :isModalOpen="show_alert_msg_edit_success" >
                         <template v-slot:header>
-                        <p class="text-md font-bold text-red-600 ">กรุณาอ่าน: </p> 
-                                                
+                        <p class="text-md font-bold text-red-600 ">กรุณาอ่าน: </p>
+
                         </template>
                         <template v-slot:body>
                         <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
@@ -236,16 +236,16 @@
                                 </div>
                         </div>
                         </template>
-                
+
                         <template v-slot:footer>
                         <div class=" w-full  text-center  md:block">
-                                <button 
-                                class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                                <button
+                                class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                                 v-on:click="closeAlertEdit"
                                 >
                                 ตกลง
                                 </button>
-                        
+
                         </div>
                         </template>
                 </ModalUpToYou>
@@ -287,24 +287,24 @@ const form=useForm({
         order_purchase_id:0,
 })
 console.log(`{stockid:${props.stocks[0].id},stockname:${props.stocks[0].stockname}}`);
- 
+
 // const testStock = ()=>{
 //         alert(form.stock_select.stockid)
-// } 
+// }
  onMounted(() => {
    console.log('onMounted');
    //console.log(usePage().props.order_purchase);
    // console.log(usePage().props.value.stocks);
-       
+
         if(usePage().props.stocks.length==1){
                 form.stock_select = usePage().props.stocks[0].id;
                 console.log(form.stock_select);
         }
-     
+
          console.log(usePage().props.action);
         if(usePage().props.action == 'edit'){
                 form.preview_orders.push(usePage().props.order_purchase.items);
-                 console.log(form.preview_orders[0].length)   
+                 console.log(form.preview_orders[0].length)
                 count_order_edit.value = form.preview_orders[0].length;
                 show_total_bath.value = usePage().props.order_purchase.budget;
                 form.total_budget = usePage().props.order_purchase.budget;
@@ -316,7 +316,7 @@ console.log(`{stockid:${props.stocks[0].id},stockname:${props.stocks[0].stocknam
         }else{
 
         }
-     
+
 })
 
 const getOrder=(item)=>{
@@ -331,10 +331,10 @@ const getOrder=(item)=>{
     }else{
              form.preview_orders.push(item);
     }
-   
+
    // console.log(form.total_budget);
-     console.log(form.preview_orders.length)   
-    
+     console.log(form.preview_orders.length)
+
 }
 
 const removeItem=(index)=>{
@@ -342,7 +342,7 @@ const removeItem=(index)=>{
         // console.log(form.preview_orders[index][0].total);
         form.total_budget -= Number(form.preview_orders[index][0].total);
         form.preview_orders.splice(index ,1);
-       
+
 }
 const removeItemEdit=(index)=>{
         console.log('removeEdit');
@@ -355,7 +355,7 @@ const removeItemEdit=(index)=>{
         show_total_bath.value= form.total_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         // show_total_bath.value -= Number(form.preview_orders[0][index][0].total);
          form.preview_orders[0].splice(index ,1);
-       
+
 }
 const addOrderPurchase=()=>{
         //console.log('addOrderPurchase');
@@ -401,14 +401,14 @@ const okConfirmAddPurchase=()=>{
                 form.post(route('store-purchase'), {
                         preserveState: true,
                         preserveScroll: true,
-                        onSuccess: page => { 
+                        onSuccess: page => {
                                 console.log('success');
                                 form.date_purchase = '';
                                 form.preview_orders = [];
                                 show_total_bath.value = '';
                                 form.total_budget = 0.0;
                         },
-                        onError: errors => { 
+                        onError: errors => {
                         //  console.log('error');
                         },
                         onFinish: visit => { //console.log('finish');
@@ -420,7 +420,7 @@ const okConfirmAddPurchase=()=>{
                    form.post(route('edit-purchase'), {
                         preserveState: true,
                         preserveScroll: true,
-                        onSuccess: page => { 
+                        onSuccess: page => {
                                 console.log('success');
                                 // form.date_purchase = '';
                                 // form.preview_orders = [];
@@ -428,16 +428,16 @@ const okConfirmAddPurchase=()=>{
                                 // form.total_budget = 0.0;
                                 show_alert_msg_edit_success.value = true;
                         },
-                        onError: errors => { 
+                        onError: errors => {
                         //  console.log('error');
                         },
                         onFinish: visit => { //console.log('finish');
                         },
                 })
         }
-        
-      
-        // 
+
+
+        //
 }
 
 const cancelAddPurchase=()=>{

@@ -51,7 +51,7 @@
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
                 <button
-                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="closeNews"
                     >
                     ปิด

@@ -6,7 +6,7 @@
           :disabled="noPreviousPage"
           :class="{'opacity-50': noPreviousPage}"
           @click="loadPage(1)"
-          class="inline-flex justify-center items-center w-11 h-11 text-gray-700 bg-white rounded border border-gray-200 shadow-sm outline-none hover:bg-gray-50 lg:h-9 lg:w-9 lg:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+          class="inline-flex justify-center items-center w-11 h-11 text-gray-700 bg-white rounded-xs border border-gray-200 shadow-xs outline-hidden hover:bg-gray-50 lg:h-9 lg:w-9 lg:text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 lg:h-3 lg:w-3" fill="none" viewBox="0 0 24 24"
              stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
@@ -16,41 +16,41 @@
           :disabled="noPreviousPage"
           :class="{'opacity-50': noPreviousPage}"
           @click="loadPage(pagination.current_page - 1)"
-          class="inline-flex justify-center items-center w-11 h-11 text-gray-700 bg-white rounded border border-gray-200 shadow-sm outline-none hover:bg-gray-50 lg:h-9 lg:w-9 focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+          class="inline-flex justify-center items-center w-11 h-11 text-gray-700 bg-white rounded-xs border border-gray-200 shadow-xs outline-hidden hover:bg-gray-50 lg:h-9 lg:w-9 focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 lg:h-3 lg:w-3" fill="none" viewBox="0 0 24 24"
              stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg>
       </button>
- 
+
       <div class="flex flex-col items-center space-y-2 md:flex-row md:space-y-0 md:items-center md:space-x-1">
         <div class="px-2 text-gray-600 lg:text-sm">หน้า </div>
-        <input type="number" 
+        <input type="number"
             @keydown.enter="loadPage(cpage)"
-            @change="loadPage(cpage)" 
+            @change="loadPage(cpage)"
             v-model="cpage"
-            min="1" :max="pagination.last_page" 
-            class="px-2 w-11 h-11 text-center rounded border border-gray-400 shadow-sm lg:h-9 lg:w-12 lg:text-sm focus:ring-blue-500 focus:border-blue-500"
+            min="1" :max="pagination.last_page"
+            class="px-2 w-11 h-11 text-center rounded-xs border border-gray-400 shadow-xs lg:h-9 lg:w-12 lg:text-sm focus:ring-blue-500 focus:border-blue-500"
         />
         <div class="px-2 text-gray-600 lg:text-sm">จาก {{ pagination.last_page }}</div>
       </div>
- 
+
       <button
           :disabled="noNextPage"
           :class="{'opacity-50': noNextPage}"
           @click="loadPage(pagination.current_page + 1)"
-          class="inline-flex justify-center items-center w-11 h-11 text-gray-700 bg-white rounded border border-gray-300 shadow-sm outline-none hover:bg-gray-50 lg:h-9 lg:w-9 focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+          class="inline-flex justify-center items-center w-11 h-11 text-gray-700 bg-white rounded-xs border border-gray-300 shadow-xs outline-hidden hover:bg-gray-50 lg:h-9 lg:w-9 focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 lg:h-3 lg:w-3" fill="none" viewBox="0 0 24 24"
              stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
       </button>
- 
+
       <button
           :disabled="noNextPage"
           :class="{'opacity-50': noNextPage}"
           @click="loadPage(pagination.last_page)"
-          class="inline-flex justify-center items-center w-11 h-11 text-gray-700 bg-white rounded border border-gray-300 shadow-sm outline-none hover:bg-gray-50 lg:h-9 lg:w-9 focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+          class="inline-flex justify-center items-center w-11 h-11 text-gray-700 bg-white rounded-xs border border-gray-300 shadow-xs outline-hidden hover:bg-gray-50 lg:h-9 lg:w-9 focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 lg:h-3 lg:w-3" fill="none" viewBox="0 0 24 24"
              stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
@@ -60,7 +60,7 @@
     <div class="ml-2  text-sm text-gray-800  border-b-2 border-gray-400 place-self-center hidden md:block">รวมทั้งหมด {{ pagination.total }} รายการ</div>
   </div>
 </template>
- 
+
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
@@ -74,7 +74,7 @@ const cpage = ref(props.pagination.current_page)
 
 const loadPage = (page) => {
     //console.log(props.pagination.links[page].url)
-    
+
     router.get(usePage().url, {page: page}, {
         preserveState: true,
         preserveScroll: true
@@ -82,14 +82,14 @@ const loadPage = (page) => {
 }
 
 const noPreviousPage = computed( () => {
-    return props.pagination.current_page - 1 <= 0    
+    return props.pagination.current_page - 1 <= 0
 })
 
 const noNextPage = computed( () => {
-    return props.pagination.current_page + 1 > props.pagination.last_page    
+    return props.pagination.current_page + 1 > props.pagination.last_page
 })
 
-watch( 
+watch(
     () => props.pagination.current_page,
     (newValue, oldValue) => {
         cpage.value = newValue
