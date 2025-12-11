@@ -5,7 +5,7 @@
             <div class=" flex justify-between text-sm ">
                 <button class=" inline-flex text-sm ml-3 bg-green-800 hover:bg-green-500 text-white  py-1 px-1 rounded-full"
                        v-on:click="openNews()">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-200">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
                     </svg>
                     What's New
@@ -42,9 +42,9 @@
                 <li >4 มีนาคม 2567 เพิ่ม Feature ให้ admin สามารถแก้ไขชื่อผู้ใช้งานระบบได้เอง เพื่อรองรับกรณีผู้ใช้งานเปลี่ยนชื่อหรือนามสกุล</li>
                 <li >6 มีนาคม 2567 เพิ่มแสดงคอลัมจำนวนคงเหลือที่หน้ารายงานบันทึกตัดสต๊อก ,พิมพ์ PDF และ Export Excel File</li>
                 <li >1 พฤษภาคม 2567 ให้หน่วยงบประมาณพัสดุเป็นผู้เพิ่มวัสดุหลังจากตรวจรับ และสาขาวิชาไม่สามารถตัดสต๊อคย้อนหลังได้</li>
-                <li >27 มกราคม 2568 ปรับปรุงเวอร์ชัน Laravel Framework จากเวอร์ชัน 10 เป็นเวอร์ชัน 11 และ Library ต่างๆ ที่เรียกใช้งาน</li>
+                <li >27 มกราคม 2568 ปรับปรุงเวอร์ชัน Laravel Framework จากเวอร์ชัน 10 เป็นเวอร์ชัน 11 และ Library ต่างๆ ที่เรียกใช้งาน เพื่อความปลอดภัยของระบบสารสนเทศ</li>
                 <li >สิงหาคม 2568 เพิ่มแสดงจำนวนวันของสินค้าคงคลัง</li>
-                <li >ธันวาคม 2568 ปรับปรุงเวอร์ชัน Laravel Framework จากเวอร์ชัน 11 เป็นเวอร์ชัน 12 และ Library ต่างๆ ที่เรียกใช้งาน</li>
+                <li >ธันวาคม 2568 ปรับปรุงเวอร์ชัน Laravel Framework จากเวอร์ชัน 11 เป็นเวอร์ชัน 12 และ Library ต่างๆ ที่เรียกใช้งาน  เพื่อความปลอดภัยของระบบสารสนเทศ</li>
             </div>
         </template>
 
