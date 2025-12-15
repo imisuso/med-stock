@@ -31,7 +31,7 @@
                         รหัสวัสดุ:{{stockItem.item_code}}
                         <label for="" class="text-blue-600">{{stockItem.item_name}}</label>
                         (หน่วย: {{stockItem.unit_count}})
-                        <Link :href="route('list-stock-item',stockItem)">
+                        <Link :href="route('list-stock-item',stockItem.hashed_key)">
                         <span
                             class="inline-flex text-md font-semibold leading-5 text-green-800 bg-green-200 rounded-lg"
                         >

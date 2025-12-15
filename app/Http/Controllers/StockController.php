@@ -80,6 +80,8 @@ class StockController extends Controller
             $item_balance = $stock_item->itemBalance();
             $stock_items[$key]['checkin_last'] = $checkin_last;
             $stock_items[$key]['item_balance'] = $item_balance;
+            $hashed_key = $stock_item->hashed_key;
+            $stock_items[$key]['hashed_key'] = $hashed_key;
 
         }
         $unit = Unit::where('unitid',$user->unitid)->first();

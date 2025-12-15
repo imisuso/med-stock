@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\PKHashidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -10,7 +11,7 @@ use Illuminate\Support\Str;
 class StockItem extends Model
 {
     use HasFactory;
-
+    use PKHashidTrait;
     protected $table = 'stock_items';
 
     protected $fillable = [
