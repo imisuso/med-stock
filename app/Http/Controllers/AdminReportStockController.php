@@ -78,7 +78,9 @@ class AdminReportStockController extends Controller
            $stock_items[$key]['checkin_last'] = $checkin_last;
             $stock_items[$key]['price_last'] = $checkin_last->price;
             $stock_items[$key]['item_balance'] = $item_balance;
-            $stock_items[$key]['$item_time_in_stock'] = $item_time_in_stock;
+            $stock_items[$key]['item_time_in_stock'] = $item_time_in_stock;
+            $hashed_key = $stock_item->hashed_key;
+            $stock_items[$key]['hashed_key'] = $hashed_key;
         }
 
 
@@ -126,7 +128,9 @@ class AdminReportStockController extends Controller
                 $stock_items[$key]['checkin_last'] = $checkin_last;
                 $stock_items[$key]['price_last'] = $checkin_last->price;
                 $stock_items[$key]['item_balance'] = $item_balance;
-                $stock_items[$key]['$item_time_in_stock'] = $item_time_in_stock;
+                $stock_items[$key]['item_time_in_stock'] = $item_time_in_stock;
+                $hashed_key = $stock_item->hashed_key;
+                $stock_items[$key]['hashed_key'] = $hashed_key;
             }
             $stock_selected_name = Stock::select('stockname')->where('unit_id',$division_id)->first();
            // $msg_notify_test = $user->name.' ดูจำนวนคงเหลือ '.$stock_selected_name->stockname;

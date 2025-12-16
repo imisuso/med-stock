@@ -10,7 +10,7 @@
                 <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกคลังวัสดุ</label>
             </div>
             <select name="" id="" v-model="form.unit_selected"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline"
                 v-on:change="setStockID"
                 >
                 <option v-for="(stock) in  stocks" v-bind:key=stock.id v-bind:value="stock.id">{{stock.stockname}}</option>
@@ -23,7 +23,7 @@
                 <label for="">ปี พ.ศ. (ปีปฏิทิน ตามที่มีการบันทึกตัดสต๊อก)</label>
                 <label v-if="msg_validate_year" class=" text-red-600">   !กรุณาเลือกปี พ.ศ.</label>
                 <select name="" id="" v-model="form.year_selected"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline" >
                     <option v-for="(year,index) in  year_has" :key=index v-bind:value="year.year">{{year.year+543}}</option>
                 </select>
             </div>
@@ -31,7 +31,7 @@
                 <label for="">เดือน</label>
                 <label v-if="msg_validate_month" class=" text-red-600">   !กรุณาเลือกเดือน</label>
                 <select name="" id="" v-model="form.month_selected"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline" >
                     <option v-for="(month) in  months" :key=month.id v-bind:value="month.id">{{month.name}}</option>
                 </select>
 
@@ -41,7 +41,7 @@
         <div class="flex flex-col  ">
 
             <button v-on:click="getReportStock(form.unit_selected,form.year_selected,form.month_selected)"
-                class=" flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                class=" flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-hidden"
             >
                 ดูข้อมูลการเบิก
             </button>
@@ -65,7 +65,7 @@
         <div>
             <paginateMe :pagination="item_trans" />
             <div
-                class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
+                class="w-full my-3  border-b-4 border-gray-500 shadow-xs hidden lg:block ">
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
 
                     <div class=" lg:w-5/12 ">
@@ -95,7 +95,7 @@
         <div  class="w-full mt-3  ">
 
             <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
-                class="w-full border-b-2   border-gray-500 shadow-sm ">
+                class="w-full border-b-2   border-gray-500 shadow-xs ">
 
                 <div class="flex flex-col  lg:flex-row   "  >
                     <div class="   lg:w-5/12 lg:text-xs bg-blue-100 lg:bg-transparent  ">
@@ -144,13 +144,13 @@
     <div v-if="item_trans.length !=0"   class=" mt-6 flex flex-col  ">
 
         <!-- {{item_trans}} -->
-         <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-blue-700 rounded-sm shadow-md hover:bg-yellow-200 focus:outline-none"
+         <a class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-blue-700 rounded-xs shadow-md hover:bg-yellow-200 focus:outline-hidden"
             :href="route('export-checkout-item', {stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })">
             Export Excel
         </a>
 
             <a  :href="route('view-cutstockitem-pdf',{stock_id:form.unit_selected, year:form.year_selected, month:form.month_selected })" target="blank"
-                 class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-purple-500 rounded-sm shadow-md hover:bg-purple-200 focus:outline-none"
+                 class="flex justify-center mt-3 px-8 py-1   text-md  text-white bg-purple-500 rounded-xs shadow-md hover:bg-purple-200 focus:outline-hidden"
                 >
                 <div class=" flex items-center " >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">

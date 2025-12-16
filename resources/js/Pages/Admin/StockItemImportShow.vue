@@ -13,7 +13,7 @@
             </li>
 
             <button type="submit"
-                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-xs"
                         @click="backImportExcel()"
                         >
                         กลับ
@@ -34,7 +34,7 @@
 
             </li>
             <button type="submit"
-                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-xs"
                         @click="backImportExcel()"
                         >
                         กลับ
@@ -50,7 +50,7 @@
             </li>
             <p  v-if="validate_excel">ในไฟล์นี้พบว่ามี {{stock_item_import_count}} รายการ</p>
             <button type="submit"
-                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-xs"
                         @click="backImportExcel()"
                         >
                         กลับ
@@ -66,7 +66,7 @@
             </li>
             <p for="" v-if="validate_excel">ในไฟล์นี้พบว่ามี {{stock_item_import_count}} รายการ</p>
             <button type="submit"
-                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-xs"
                         @click="backImportExcel()"
                         >
                         กลับ
@@ -99,7 +99,7 @@
         </div>
         <div v-if="validate_excel && validate_row_excel && validate_input && stock_item_import_count>0" class=" mt-2">
             <button
-            class="  w-full flex justify-center py-2  text-md   font-bold bg-green-300 hover:bg-green-200 focus:outline-none"
+            class="  w-full flex justify-center py-2  text-md   font-bold bg-green-300 hover:bg-green-200 focus:outline-hidden"
             @click="CheckInToStockItem()"
             >
                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,7 +109,7 @@
             </button>
 
             <button type="submit"
-                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+                        class=" w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-xs"
                         @click="backImportExcel()"
                         >
                         กลับ
@@ -134,7 +134,7 @@
             <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
                     <button
-                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="closeAlertEdit"
                     >
                     ตกลง

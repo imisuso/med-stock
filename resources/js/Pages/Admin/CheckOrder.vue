@@ -5,7 +5,7 @@
             class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
-            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow-xs rounded-md text-green-800 font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -18,14 +18,14 @@
             <div class=" m-2">
                 <label for="">ปี พ.ศ.</label>
                 <select name="" id="" v-model="year_selected"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline" >
                     <option v-for="(year,index) in  years" :key=index v-bind:value="year">{{year+543}}</option>
                 </select>
             </div>
             <div  class=" m-2">
                 <label for="">เดือน</label>
                 <select name="" id="" v-model="month_selected"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline" >
                     <option v-for="(month) in  months" :key=month.id v-bind:value="month.id">{{month.name}}</option>
                 </select>
 
@@ -35,7 +35,7 @@
         <!-- <div class="flex flex-col  ">
 
             <button
-                class=" flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                class=" flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-hidden"
             >
                 ค้นหา
             </button>
@@ -50,7 +50,7 @@
             <div class=" font-bold" >รายการใบสั่งซื้อวัสดุ จากสาขา/หน่วย</div>
             <div >
                 <select name="" id=""
-                    class=" w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow  focus:outline-none focus:shadow-outline"
+                    class=" w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs  focus:outline-hidden focus:shadow-outline"
                 >
                     <option value="">รายการทั้งหมด</option>
                     <option value="">รายการที่ยังไม่ส่งมาภาคฯ</option>
@@ -106,7 +106,7 @@
 
                             <button v-if="order_list.status === 'send'"
                                 v-on:click="confirmApproveOrder(order_list)"
-                                class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-4 border border-green-500 rounded">
+                                class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-4 border border-green-500 rounded-xs">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                                 </svg>
@@ -135,13 +135,13 @@
             <template v-slot:footer>
                 <div class=" w-full  text-center  md:block">
                     <button
-                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="okConfirmApproveOrder"
                         >
                         ตกลง
                     </button>
                     <button
-                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                         v-on:click="cancelApproveOrder"
                     >
                         ยกเลิก

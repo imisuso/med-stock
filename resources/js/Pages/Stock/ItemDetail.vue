@@ -4,7 +4,7 @@
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
 
-                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow-xs rounded-md text-green-800 font-bold" title="close" for="banneralert">
                  {{ $page.props.flash.msg }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -16,7 +16,7 @@
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
 
-                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-300 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-300 shadow-xs rounded-md text-red-800 font-bold" title="close" for="banneralert">
                  {{ $page.props.flash.msg }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -28,7 +28,7 @@
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
 
-                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-yellow-200 shadow rounded-md text-red-800 font-bold" title="close" for="banneralert">
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-yellow-200 shadow-xs rounded-md text-red-800 font-bold" title="close" for="banneralert">
                  {{ $page.props.flash.msg }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -199,7 +199,7 @@
                                   item_tran.user_id === $page.props.auth.user.id
                                 "
                         v-on:click="cancel_checkout(item_tran.id)"
-                        class=" ml-3 bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">
+                        class=" ml-3 bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded-xs">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round"
                               stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -210,7 +210,7 @@
                                   item_tran.user_id === $page.props.auth.user.id
                                 "
                         v-on:click="confirm_cancel_checkin_item(item_tran.id,$page.props.stock_item.item_name,item_tran.pur_order)"
-                        class=" ml-3 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 border border-yellow-500 rounded">
+                        class=" ml-3 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 border border-yellow-500 rounded-xs">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
@@ -224,7 +224,7 @@
     <!-- END table -->
 
     <button @click="goBack()"
-         class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded"
+         class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-xs"
         >
          กลับ
     </button>
@@ -247,13 +247,13 @@
          <template v-slot:footer>
              <div class=" w-full  text-center  md:block">
                  <button
-                     class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                     class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                      v-on:click="okconfirmDeleteCheckout"
                  >
                      ตกลง
                  </button>
                  <button
-                     class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                     class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                      v-on:click="cancelDeleteCheckout"
                  >
                      ยกเลิก
@@ -287,13 +287,13 @@
             <template v-slot:footer>
                 <div class=" w-full  text-center  md:block">
                     <button
-                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="okconfirmDeleteItem"
                         >
                         ตกลง
                     </button>
                     <button
-                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                         v-on:click="cancelDeleteItem"
                     >
                         ยกเลิก
@@ -318,7 +318,7 @@
                     </label>
                     <input type="number"
                       v-model="form.price_edit_new"
-                      class="w-full px-12 py- border-2 border-blue-600 rounded-md appearance-none focus:border-blue-700 focus:ring focus:ring-opacity-40 focus:ring-blue-500"
+                      class="w-full px-12 py- border-2 border-blue-600 rounded-md appearance-none focus:border-blue-700 focus:ring-3 focus:ring-black/50 focus:ring-blue-500"
                     >
 
                 </div>
@@ -327,13 +327,13 @@
             <template v-slot:footer>
                 <div class=" w-full  text-center  md:block">
                     <button
-                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="okconfirmEditPrice"
                         >
                         ตกลง
                     </button>
                     <button
-                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                         v-on:click="cancelEditPrice"
                     >
                         ยกเลิก

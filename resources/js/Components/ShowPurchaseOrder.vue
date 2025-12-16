@@ -1,7 +1,7 @@
 <template>
  <div class=" py-2 font-bold"> {{purchaseOrder.stock['stockname']}}</div>
-        <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:justify-between"> 
-            <p class=" text-red-700 font-bold">วันที่สั่งซื้อ: {{date_purchase}}</p> 
+        <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:justify-between">
+            <p class=" text-red-700 font-bold">วันที่สั่งซื้อ: {{date_purchase}}</p>
             <!-- <p class=" bg-none md:bg-green-200  md:px-2  md:mx-4 text-red-700 font-bold rounded-md" >
                     สถานะ:{{purchaseOrder.status}}
             </p>
@@ -15,7 +15,7 @@
                 <span v-if="purchaseOrder.status=='received'"  >ตรวจรับวัสดุแล้ว</span>
                 <span v-if="purchaseOrder.status=='received' && purchaseOrder.timeline['create_by']=='admin'" > บันทึกข้อมูลย้อนหลัง</span>
             </span>
-           
+
         </div>
         <div> ๑.ชื่อโครงการ:{{purchaseOrder.project_name}} จำนวน {{purchaseOrder.items.length}} รายการ</div>
         <div> ๒.วงเงินงบประมาณ:{{budget_show}} บาท</div>
@@ -27,7 +27,7 @@
             <p class=" px-2 text-gray-600 text-sm">ผู้บันทึกข้อมูล</p>
         </div>
         <div class=" flex flex-col space-y-2  md:flex-row md:space-y-0 ">
-            <!-- <a :href="route('print-purchase-order',purchaseOrder.id)" 
+            <!-- <a :href="route('print-purchase-order',purchaseOrder.id)"
                 v-if="$page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
                     target="blank">
                 <span
@@ -40,7 +40,7 @@
                 </span>
             </a> -->
             <a :href="route('print-purchase-order-item',purchaseOrder.id)"  target="blank"
-                    class="inline-flex text-sm  md:ml-3   bg-blue-200 border hover:bg-blue-500  border-blue-500 py-1 px-2   rounded">
+                    class="inline-flex text-sm  md:ml-3   bg-blue-200 border hover:bg-blue-500  border-blue-500 py-1 px-2   rounded-xs">
                 <div class="flex items-center" >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
@@ -50,39 +50,39 @@
             </a>
 
             <!-- for admin -->
-            <button v-if="purchaseOrder.status == 'sended' &&  
+            <button v-if="purchaseOrder.status == 'sended' &&
                     $page.props.auth.user.profile.division_id==27"
                         v-on:click="confirmApprovePurchaseOrder(purchaseOrder)"
-                class=" inline-flex text-sm md:ml-3 bg-green-200 hover:bg-green-500   py-1 px-2 border border-green-500 rounded">
+                class=" inline-flex text-sm md:ml-3 bg-green-200 hover:bg-green-500   py-1 px-2 border border-green-500 rounded-xs">
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                 </svg>
                 อนุมัติ
-            </button>    
-            <button v-if="purchaseOrder.status == 'sended' &&  
+            </button>
+            <button v-if="purchaseOrder.status == 'sended' &&
                     $page.props.auth.user.profile.division_id==27"
                         v-on:click="confirmReturnPurchaseOrder(purchaseOrder)"
-                class=" inline-flex text-sm md:ml-3 bg-yellow-100 hover:bg-yellow-500   py-1 px-2 border border-yellow-500 rounded">
+                class=" inline-flex text-sm md:ml-3 bg-yellow-100 hover:bg-yellow-500   py-1 px-2 border border-yellow-500 rounded-xs">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
                 </svg>
                 ส่งคืนเพื่อแก้ไข
-            </button>   
+            </button>
 
             <!-- for officer division -->
-            <button v-if="purchaseOrder.status == 'created' &&  
+            <button v-if="purchaseOrder.status == 'created' &&
                     $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
                         v-on:click="confirmSendOrder(purchaseOrder)"
-                class=" inline-flex text-sm md:ml-3 bg-green-200 hover:bg-green-500   py-1 px-2 border border-green-500 rounded">
+                class=" inline-flex text-sm md:ml-3 bg-green-200 hover:bg-green-500   py-1 px-2 border border-green-500 rounded-xs">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
                 ส่งเอกสารสั่งซื้อ
-            </button>    
+            </button>
 
-            <button v-if="purchaseOrder.status == 'created' &&  
+            <button v-if="purchaseOrder.status == 'created' &&
                     $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
-                class=" inline-flex text-sm md:ml-3 bg-yellow-200 hover:bg-yellow-700   py-1 px-2 border border-yellow-500 rounded"
+                class=" inline-flex text-sm md:ml-3 bg-yellow-200 hover:bg-yellow-700   py-1 px-2 border border-yellow-500 rounded-xs"
                 @click="editOrderPurchase(purchaseOrder.id)"
                 >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -91,21 +91,21 @@
                 แก้ไข
             </button>
 
-            <button v-if="purchaseOrder.status == 'created' &&  
+            <button v-if="purchaseOrder.status == 'created' &&
                     $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
-                class=" inline-flex text-sm md:ml-3 bg-red-300 hover:bg-red-700   py-1 px-2 border border-red-500 rounded">
+                class=" inline-flex text-sm md:ml-3 bg-red-300 hover:bg-red-700   py-1 px-2 border border-red-500 rounded-xs">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
                 ลบ
             </button>
 
-          
-            <a :href="route('receive-order-purchase',purchaseOrder)" 
-                v-if="purchaseOrder.status == 'approved' &&  
+
+            <a :href="route('receive-order-purchase',purchaseOrder)"
+                v-if="purchaseOrder.status == 'approved' &&
                     $page.props.auth.user.profile.division_id==purchaseOrder.unit_id" >
                 <span
-                    class="flex flex-row text-sm py-1 px-2 ml-3  leading-5 text-white bg-green-500 hover:bg-green-700 rounded"
+                    class="flex flex-row text-sm py-1 px-2 ml-3  leading-5 text-white bg-green-500 hover:bg-green-700 rounded-xs"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
@@ -117,8 +117,8 @@
 
         <ModalUpToYou :isModalOpen="confirm_send_order" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการส่งเอกสารใบสั่งซื้อวัสดุนี้ใช่หรือไม่?</p> 
-                                        
+                <p class="text-md font-bold text-red-600 ">คุณต้องการส่งเอกสารใบสั่งซื้อวัสดุนี้ใช่หรือไม่?</p>
+
             </template>
 
             <template v-slot:body>
@@ -126,7 +126,7 @@
                     <!-- <label v-for="(confirm_item,index) in confirm_items" :key=confirm_item.id
                             class="  flex  justify-start w-full bg-red-100 text-sm text-red-900">
                         {{index+1}}.{{confirm_item[0].item_name}} จำนวน {{confirm_item[0].order_input}} x {{confirm_item[0].price}}  เป็นเงิน {{confirm_item[0].total}} บาท
-                    
+
                     </label> -->
                     <label for="">วงเงินงบประมาณ {{confirm_budget}} บาท</label>
                 </div>
@@ -134,14 +134,14 @@
 
             <template v-slot:footer>
                 <div class=" w-full  text-center  md:block">
-                    <button 
-                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    <button
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="okConfirmSendOrder"
                         >
                         ตกลง
                     </button>
-                    <button 
-                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                    <button
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                         v-on:click="cancelSendOrder"
                     >
                         ยกเลิก
@@ -152,13 +152,13 @@
 
         <ModalUpToYou :isModalOpen="confirm_approve_order" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติใบสั่งซื้อวัสดุนี้ใช่หรือไม่?</p> 
-                                        
+                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติใบสั่งซื้อวัสดุนี้ใช่หรือไม่?</p>
+
             </template>
 
             <template v-slot:body>
                 <div class="text-gray-900 text-md font-medium dark:text-white">
-                    <label 
+                    <label
                             class="  flex  justify-start w-full text-sm text-red-900">
                         <!-- ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}} -->
                         วงเงินงบประมาณ {{confirm_approve_budget}} บาท
@@ -168,14 +168,14 @@
 
             <template v-slot:footer>
                 <div class=" w-full  text-center  md:block">
-                    <button 
-                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    <button
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="okConfirmApprovePurchaseOrder"
                         >
                         ตกลง
                     </button>
-                    <button 
-                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                    <button
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                         v-on:click="cancelApproveOrder"
                     >
                         ยกเลิก
@@ -186,13 +186,13 @@
 
         <ModalUpToYou :isModalOpen="confirm_return_order" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการส่งคืนใบสั่งซื้อวัสดุนี้ใช่หรือไม่?</p> 
-                                        
+                <p class="text-md font-bold text-red-600 ">คุณต้องการส่งคืนใบสั่งซื้อวัสดุนี้ใช่หรือไม่?</p>
+
             </template>
 
             <template v-slot:body>
                 <div class="text-gray-900 text-md font-medium dark:text-white">
-                    <label 
+                    <label
                             class="  flex  justify-start w-full text-sm text-red-900">
                         <!-- ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}} -->
                         วงเงินงบประมาณ {{confirm_approve_budget}} บาท
@@ -202,14 +202,14 @@
 
             <template v-slot:footer>
                 <div class=" w-full  text-center  md:block">
-                    <button 
-                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    <button
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                         v-on:click="okConfirmReturnPurchaseOrder"
                         >
                         ตกลง
                     </button>
-                    <button 
-                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                    <button
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                         v-on:click="cancelReturnOrder"
                     >
                         ยกเลิก
@@ -217,7 +217,7 @@
                 </div>
             </template>
         </ModalUpToYou>
-  
+
 </template>
 <script setup>
 import { router } from '@inertiajs/vue3';
@@ -249,7 +249,7 @@ const confirmSendOrder=(order)=>{
     confirm_budget.value = order.budget;
     form.order_id = order.id;
     form.order_action = 'sended';
-           
+
 }
 
 const  cancelSendOrder=()=>{
@@ -260,13 +260,13 @@ const okConfirmSendOrder=(order)=>{
     confirm_send_order.value = false;
     // console.log(form.order_id);
        console.log(order);
- 
-    
+
+
       form.post(route('send-order-purchase',form.order_id), {
         preserveState: false,
         preserveScroll: true,
         onSuccess: page => { console.log('success');},
-        onError: errors => { 
+        onError: errors => {
             console.log('error');
         },
         onFinish: visit => { console.log('finish');},
@@ -278,14 +278,14 @@ const confirmApprovePurchaseOrder=(order)=>{
         // console.log(order);
         // console.log(order.id);
         // console.log(order.stock['stockname']);
-    
+
     confirm_approve_order.value = true;
     confirm_approve_budget.value = order.budget;
     form.order_id = order.id;
     form.order_action = 'approved';
     // form.confirm_order_year = order.year;
     // form.confirm_stockname_order = order.stock['stockname'];
-          
+
 }
 const cancelApproveOrder=()=>{
     confirm_approve_order.value = false;
@@ -296,27 +296,27 @@ const okConfirmApprovePurchaseOrder=()=>{
     // console.log('OK ApproveOrder');
      console.log(form.order_id);
     console.log(form.order_action);
-    
+
     form.post(route('approve-order-purchase',form.order_id), {
             preserveState: false,
             preserveScroll: true,
-            onSuccess: page => { 
+            onSuccess: page => {
                 console.log('success');
                 },
-            onError: errors => { 
+            onError: errors => {
                 console.log('error');
             },
             onFinish: visit => { console.log('finish');},
     })
-           
+
 }
 
 const confirmReturnPurchaseOrder=(order)=>{
      console.log('confirmReturnPurchaseOrder');
-      
+
     confirm_return_order.value = true;
     confirm_approve_budget.value = order.budget;
-    form.order_id = order.id; 
+    form.order_id = order.id;
     form.order_action = 'created';
 }
 const cancelReturnOrder=()=>{
@@ -327,19 +327,19 @@ const okConfirmReturnPurchaseOrder=()=>{
     // console.log('OK ApproveOrder');
      console.log(form.order_id);
     console.log(form.order_action);
-    
+
     form.post(route('approve-order-purchase',form.order_id), {
             preserveState: false,
             preserveScroll: true,
-            onSuccess: page => { 
+            onSuccess: page => {
                 console.log('success');
                 },
-            onError: errors => { 
+            onError: errors => {
                 console.log('error');
             },
             onFinish: visit => { console.log('finish');},
     })
-           
+
 }
 onMounted(() => {
     budget_show.value = props.purchaseOrder['budget'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -378,7 +378,7 @@ const date_purchase = computed(()=>{
 //             id: order.id,
 //         },
 //     })
-           
+
 // }
 
 </script>

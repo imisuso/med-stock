@@ -5,7 +5,7 @@
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
 
-                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow-xs rounded-md text-green-800 font-bold" title="close" for="banneralert">
                  {{ $page.props.flash.msg }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -18,7 +18,7 @@
                 <input type="checkbox" class="hidden" id="banneralert">
 
                 <label
-                    class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-200 shadow rounded-md text-red-700 font-bold text-2xl border-2 border-red-500"
+                    class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-200 shadow-xs rounded-md text-red-700 font-bold text-2xl border-2 border-red-500"
                     title="close" for="banneralert">
                  {{ $page.props.flash.msg }}
                    <svg class="fill-current text-red-700 w-8 h-8 " xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 18 18">
@@ -45,7 +45,7 @@
                 </div>
                 <!-- {{stocks}} -->
                 <select name="" id=""
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline"
                     v-model="form.stock_id"
                     @change="getListStockItem()"
                     >
@@ -57,13 +57,13 @@
             <!-- <div >
                 <input type="text" placeholder="พิมพ์ชื่อวัสดุหรือชื่อบริษัทที่ต้องการค้นหา อย่างน้อย 3 ตัวอักษร"
                     @keyup="purchase_filter" v-model="search"
-                    class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
+                    class="mt-2 border-green-600 border-2 block w-full shadow-xs sm:text-sm  rounded-md"
                     >
             </div> -->
             <div class="w-full">
                             <input type="text" placeholder="พิมพ์รหัสวัสดุ หรือชื่อวัสดุ หรือชื่อบริษัท ที่ต้องการค้นหา"
                                  v-model="search"
-                                class="mt-2 border-green-600 border-2 block w-full shadow-sm sm:text-sm  rounded-md"
+                                class="mt-2 border-green-600 border-2 block w-full shadow-xs sm:text-sm  rounded-md"
                             >
             </div>
             <div class=" w-full flex mt-2  text-sm   rounded-md ">

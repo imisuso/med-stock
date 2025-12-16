@@ -29,13 +29,13 @@
                 <!-- <div class="flex">
                     <label class=" font-bold"> สถานะ:   {{annouce.status}}  </label>
                         <button v-if="annouce.status=='on'"
-                            class=" flex justify-center mx-2 px-2 bg-red-200 text-red-900 border-2  border-red-400 rounded-md shadow-md hover:bg-red-300 focus:outline-none"
+                            class=" flex justify-center mx-2 px-2 bg-red-200 text-red-900 border-2  border-red-400 rounded-md shadow-md hover:bg-red-300 focus:outline-hidden"
                             v-on:click="closeAnnouce"
                             >
                             ปิดการแสดงผล
                         </button>
                         <button v-else
-                            class=" flex justify-center mx-2 px-2 bg-green-200 text-green-900 border-2  border-green-400  rounded-md shadow-md hover:bg-green-300 focus:outline-none"
+                            class=" flex justify-center mx-2 px-2 bg-green-200 text-green-900 border-2  border-green-400  rounded-md shadow-md hover:bg-green-300 focus:outline-hidden"
                             v-on:click="openAnnouce()"
                             >
                             เปิดการแสดงผล
@@ -53,7 +53,7 @@
                             class="form-check">
                             <input type="radio" id="one"  :value="status.id"
                                 v-model="form.annouce_status"
-                                class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                                class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-hidden transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 @change="confirmUpdateStatusAnnouce()"
                                 />
                             <label for="one">{{status.desc}}</label>
@@ -97,13 +97,13 @@
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
                 <button
-                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="okUpdateStatusAnnouce"
                     >
                     ตกลง
                 </button>
                 <button
-                    class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                    class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                     v-on:click="cancelUpdateStatusAnnouce"
                 >
                     ยกเลิก
@@ -132,13 +132,13 @@
         <template v-slot:footer>
             <div class=" w-full  text-center  md:block">
                 <button
-                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-xs font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
                     v-on:click="deleteAnnouce"
                     >
                     ตกลง
                 </button>
                 <button
-                    class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                    class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-xs font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
                     v-on:click="cancelCancelAnnouce"
                 >
                     ยกเลิก

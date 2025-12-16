@@ -40,7 +40,7 @@
         </div> -->
         <div class="w-full flex justify-center">
             <button
-                 class=" flex justify-center px-4 py-1   text-sm  text-white bg-red-500 rounded-md hover:bg-green-400 focus:outline-none"
+                 class=" flex justify-center px-4 py-1   text-sm  text-white bg-red-500 rounded-md hover:bg-green-400 focus:outline-hidden"
             >
             ตรวจรับทั้งหมด?
             </button>

@@ -82,7 +82,7 @@
                         <div class="flex flex-row">
                             <span class="  font-bold">รายละเอียด</span>
                              <button
-                                class=" flex justify-center px-2  text-white rounded-md hover:bg-blue-200 focus:outline-none"
+                                class=" flex justify-center px-2  text-white rounded-md hover:bg-blue-200 focus:outline-hidden"
                                 v-on:click="viewDetailItem(orderList.items)"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

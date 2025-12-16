@@ -4,7 +4,7 @@
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
 
-                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow-xs rounded-md text-green-800 font-bold" title="close" for="banneralert">
                  {{ $page.props.flash.msg }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -16,7 +16,7 @@
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
 
-                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-700 shadow rounded-md text-white font-bold" title="close" for="banneralert">
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-700 shadow-xs rounded-md text-white font-bold" title="close" for="banneralert">
                  {{ $page.props.errors.error }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -43,7 +43,7 @@
         </div>
           <!-- {{order}}       -->
         <div v-for="(item,key) in order.items" :key="key"
-            class=" w-full flex flex-col p-2 my-2 space-y-2 bg-pink-100  border-2 border-gray-500 rounded "
+            class=" w-full flex flex-col p-2 my-2 space-y-2 bg-pink-100  border-2 border-gray-500 rounded-xs "
             >
 
              <div class=" flex   ">
@@ -80,13 +80,13 @@
                     <label for="">วันที่รับเข้า:</label>
                     <input type="date" name="" id=""
                         v-model="form.date_receive[item[0].id]"
-                        class="w-full px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                        class="w-full px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring-3 focus:ring-black/50 focus:ring-indigo-500">
                 </div>
                 <div class=" m-2">
                     <label for="">วันที่หมดอายุ:</label>
                     <input type="date" name="" id=""
                         v-model="form.date_expire[item[0].id]"
-                    class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                    class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring-3 focus:ring-black/50 focus:ring-indigo-500">
                 </div>
             </div>
 
@@ -95,7 +95,7 @@
             class=" w-full flex justify-center">
             <button
                 v-on:click="confirmCheckinOrder(order.id)"
-                class="flex flex-row text-md py-1 px-6 ml-3 bg-green-500 hover:bg-green-700 text-white  text-center border border-green-500 rounded">
+                class="flex flex-row text-md py-1 px-6 ml-3 bg-green-500 hover:bg-green-700 text-white  text-center border border-green-500 rounded-xs">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
                 </svg>

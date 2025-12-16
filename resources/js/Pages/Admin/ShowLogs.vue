@@ -14,7 +14,7 @@
             <div class=" text-blue-700 underline underline-offset-1">
             ประวัติการเปลี่ยนแปลงข้อมูลของ {{title_name}}
             </div>
-            <div class="w-full hidden lg:flex border-b-2 my-2 bg-blue-100  border-gray-500 shadow-sm ">
+            <div class="w-full hidden lg:flex border-b-2 my-2 bg-blue-100  border-gray-500 shadow-xs ">
                 <div class=" w-2/12">
                     <p>วันที่บันทึก/แก้ไข</p>
                 </div>
@@ -23,7 +23,7 @@
                 <div class=" w-5/12">รายละเอียดข้อมูลที่แก้ไข</div>
             </div>
             <div v-for="(user_log,index_user) in  logs" :key=index_user :value="user_log.id"
-                        class="w-full lg:flex border-b-2 my-2  border-gray-500 shadow-sm "
+                        class="w-full lg:flex border-b-2 my-2  border-gray-500 shadow-xs "
                     >
 
                     <div class=" lg:w-2/12">
@@ -47,13 +47,13 @@
 
         <div>
             <Link :href="route(back_url)" >
-                        <div class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded">
+                        <div class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-xs">
                             <span class=" text-white ml-2">กลับ</span>
                         </div>
             </Link>
 
             <!-- <Link :href="route(route_back)" >
-                        <div class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded">
+                        <div class="w-full flex justify-center my-2 py-2  text-md  bg-blue-500 hover:bg-blue-700 text-white  border border-blue-500 rounded-xs">
                             <span class=" text-white ml-2">กลับ</span>
                         </div>
             </Link> -->

@@ -5,7 +5,7 @@
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
-            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow-xs rounded-md text-green-800 font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -16,7 +16,7 @@
             class="alert-banner  fixed  right-0 m-4 w-2/3 md:w-full max-w-sm ">
             <input type="checkbox" class="hidden" id="banneralert">
 
-            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-white shadow rounded-md border-2 border-red-600 text-red-800 font-bold" title="close" for="banneralert">
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-white shadow-xs rounded-md border-2 border-red-600 text-red-800 font-bold" title="close" for="banneralert">
                 {{ $page.props.flash.msg }}
                 <svg class="fill-current text-red-600 " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -58,7 +58,7 @@
                 <div class="mt-3" >
                     <label for="">เลือกคลังวัสดุที่ต้องการเพิ่มวัสดุ</label>
                 </div>
-                <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline"
                     v-model="form.stock_id"
                 >
                     <option v-for="(stock) in  stocks" :key=stock.id :value="stock.id">{{stock.stockname}}</option>
@@ -67,7 +67,7 @@
                     <label for="">เลือกประเภทการจัดซื้อวัสดุ</label>
                     <label v-if="box_alert" class=" text-red-600"> !!{{msg_alert}}</label>
                 </div>
-                <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline"
                     v-model="form.stock_item_status"
                 >
                     <option v-for="(stock_item_types) in  stock_item_types" :key=stock_item_types.type_id :value="stock_item_types.type_id">{{stock_item_types.type_name}}</option>
@@ -90,7 +90,7 @@
                         </div>
                         <div class="p-2">
                             <button type="submit"
-                                class=" w-full flex justify-center text-sm  bg-green-500 hover:bg-green-700 text-white py-2 px-6 border border-green-500 rounded"
+                                class=" w-full flex justify-center text-sm  bg-green-500 hover:bg-green-700 text-white py-2 px-6 border border-green-500 rounded-xs"
                                 @click="ImportStockItem()"
                                 >
                                 ตกลง

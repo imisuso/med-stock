@@ -28,7 +28,7 @@
         <div class="">
            
             <div 
-                class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
+                class="w-full my-3  border-b-4 border-gray-500 shadow-xs hidden lg:block ">
                     <div class="flex flex-col font-bold text-md  lg:flex-row lg:justify-between  mx-2"  >
                         
                         <div class=" lg:w-4/12  ">
@@ -64,7 +64,7 @@
         <div  class="w-full mt-3  ">
 
             <div v-for="(order,key) in order_item_trans" :key=order.id
-                class="w-full p-2 border-b-2   border-gray-500 shadow-sm ">
+                class="w-full p-2 border-b-2   border-gray-500 shadow-xs ">
                 
                 <div class="flex flex-col text-sm  lg:flex-row   "  >
                     <div class=" hidden lg:block">{{key+1}}.</div>

@@ -23,7 +23,7 @@
             <div  class="flex flex-col  px-2 py-2  ">
                         
                 <button
-                    class=" w-full  justify-center px-4 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
+                    class=" w-full  justify-center px-4 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-hidden"
                     @click="AcceptAgreement()"
                 >
             
@@ -31,7 +31,7 @@
                 </button>
                       
                 <button
-                    class=" w-full mt-2 justify-center px-4 py-1   text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                    class=" w-full mt-2 justify-center px-4 py-1   text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-hidden"
                     @click="UserLogout"
                 >
             

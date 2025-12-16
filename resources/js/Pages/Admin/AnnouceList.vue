@@ -10,7 +10,7 @@
                     class=" my-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 ">
             </textarea>
             <button
-                    class=" w-full flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-green-700 rounded-md hover:bg-green-400 focus:outline-none"
+                    class=" w-full flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-green-700 rounded-md hover:bg-green-400 focus:outline-hidden"
                     @click="addAnnouce()"
                 >
                     <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
