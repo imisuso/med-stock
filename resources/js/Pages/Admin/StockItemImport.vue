@@ -82,7 +82,13 @@
                     <!-- <form action="" method="post" enctype="multipart/form-data"> -->
                         <div class=" ">
                             เลือกไฟล์ excel รายการวัสดุที่ต้องการนำเข้าคลังสาขา
-                            <input type="file" name="file" id="uploadFile" @change="onChangeFile">
+                            <input type="file" name="file" id="uploadFile"
+                                   class="file:mr-4 file:py-2 file:px-4
+                                          file:rounded-full file:border-2
+                                          file:text-sm file:font-semibold
+                                          file:bg-blue-50 file:text-blue-700
+                                          hover:file:bg-blue-200 "
+                                   @change="onChangeFile">
 
                         </div>
                         <div>
