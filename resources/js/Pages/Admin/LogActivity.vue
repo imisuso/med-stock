@@ -9,7 +9,7 @@
                 <label v-if="msg_validate_stock" class=" text-red-600">   !กรุณาเลือกหัวข้อ</label>
             </div>
             <select name="" id="" v-model="form.function_selected"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline"
 
                 >
                 <option v-for="(function_name) in  function_name_all" v-bind:key=function_name.id v-bind:value="function_name.function_name">{{function_name.function_name}}</option>
@@ -26,7 +26,7 @@
                 <label for="">ปี พ.ศ.</label>
                 <label v-if="msg_validate_year" class=" text-red-600">   !กรุณาเลือกปี พ.ศ.</label>
                 <select name="" id="" v-model="form.year_selected"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline" >
                     <option v-for="(year,index) in  years" :key=index v-bind:value="year">{{year+543}}</option>
                 </select>
             </div>
@@ -34,7 +34,7 @@
                 <label for="">เดือน</label>
                 <label v-if="msg_validate_month" class=" text-red-600">   !กรุณาเลือกเดือน</label>
                 <select name="" id="" v-model="form.month_selected"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline" >
                     <option v-for="(month) in  months" :key=month.id v-bind:value="month.id">{{month.name}}</option>
                 </select>
 
@@ -43,12 +43,12 @@
         </div>
         <div class="flex flex-col  ">
             <!-- <button
-                class="px-3 py-1  text-sm text-gray-700 bg-gray-400 rounded-md hover:bg-gray-300 focus:outline-none"
+                class="px-3 py-1  text-sm text-gray-700 bg-gray-400 rounded-md hover:bg-gray-300 focus:outline-hidden"
             >
                 Cancel
             </button> -->
             <button v-on:click="getReportLogActivity()"
-                class=" flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                class=" flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-hidden"
             >
                 <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -78,7 +78,7 @@
         <div>
             <paginateMe :pagination="item_trans" />
             <div
-                class="w-full my-3  border-b-4 border-gray-500 shadow-sm hidden lg:block ">
+                class="w-full my-3  border-b-4 border-gray-500 shadow-xs hidden lg:block ">
                 <div class="flex flex-col  lg:flex-row lg:justify-between  mx-2"  >
 
                     <div class=" lg:w-2/12  ">
@@ -101,7 +101,7 @@
         <div v-if="item_trans">
 
             <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
-                    class="w-full lg:flex lg:flex-row     text-sm  border-b-2   border-gray-500 shadow-sm "
+                    class="w-full lg:flex lg:flex-row     text-sm  border-b-2   border-gray-500 shadow-xs "
                 >
                     {{item_trans.from + key}}.
                      <!-- {{item_tran}} -->
@@ -124,7 +124,7 @@
         <!-- <div  class="w-full mt-3  ">
 
             <div v-for="(item_tran,key) in item_trans.data" :key=item_tran.id
-                class="w-full border-b-2   border-gray-500 shadow-sm ">
+                class="w-full border-b-2   border-gray-500 shadow-xs ">
 
                 <div class="flex flex-col  lg:flex-row   "  >
 

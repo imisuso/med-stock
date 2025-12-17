@@ -69,7 +69,7 @@
               <input
                 type="text"
                 placeholder="ชื่อ.นามสกุล 3 ตัว (ภาษาอังกฤษ)"
-                class="form-control block w-full px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                class="form-control block w-full px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-xs transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-hidden"
                 v-model="form.username"
                 @keyup.enter="goInputNext('pwdInput')"
               />
@@ -79,7 +79,7 @@
             <div class="mb-6">
               <input id="pwdInput"
                 type="password"
-                class="form-control block w-full px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                class="form-control block w-full px-4 py-2 text-md font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-xs transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-hidden"
                 :class="[enter_login_show ? 'cursor-not-allowed ' : 'border-gray-400' ]"
                 v-model="form.password"
                 @keyup.enter="goInputNext('loginBtn')"
@@ -93,7 +93,7 @@
 
             <div class="flex items-center justify-between">
             <button id="loginBtn"
-                class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+                class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-xs"
                 :class="[enter_login_show ? 'border-blue-300 border-4  cursor-pointer ' : 'border-gray-400' ]"
                 @click="authAD"
                 >

@@ -7,7 +7,7 @@
             <div class="mt-3" >
                 <label for="">เลือกคลังวัสดุ</label>
             </div>
-            <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
+            <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded-xs shadow-xs leading-tight focus:outline-hidden focus:shadow-outline" >
                 <option v-for="(stock) in  stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
             </select>
 
@@ -16,7 +16,7 @@
         <!-- show stock items -->
         <!-- <div class="w-full mt-3 p-2 bg-blue-400 rounded-md">
             <div  v-for="(stock_item) in  $page.props.stock_items" :key=stock_item.id
-            class=" mt-2 bg-green-50 rounded-sm">
+            class=" mt-2 bg-green-50 rounded-xs">
                     {{stock_item.item_code}} {{stock_item.item_name}}
             </div>
 
@@ -43,7 +43,7 @@
                     <!-- {{report_stock_list.status}} -->
 
 					<button
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded-xs"
                         @click="getCheckoutItem(report_stock_list.year,report_stock_list.month)"
                         >
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -52,13 +52,13 @@
                     </button>
 
                     <!-- <button v-if="report_stock_list.status == 'สร้างรายงาน'"
-                        class=" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">
+                        class=" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded-xs">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     </button>
                     <button v-if="report_stock_list.status == 'สร้างรายงาน'"
-                        class=" ml-3 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
+                        class=" ml-3 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded-xs">
                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>

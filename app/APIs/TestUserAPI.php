@@ -13,7 +13,7 @@ class TestUserAPI implements AuthUserAPI
     {
         $faker = Factory::create();
        // $user = array();
-        $user_db = User::where('name',$login)->first();
+        $user_db = User::where('sap_id',$login)->first();
 
        // dd($user_db);
        if(!$user_db){
