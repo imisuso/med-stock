@@ -1,1 +1,0 @@
-import{A as t}from"./AppLayout-6pK9au1e.js";import{j as r,f as e,a as o,o as s}from"./app-BAzGNY5n.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";import"./Navbar-J242VETL.js";const i={__name:"Dashboard",setup(p){return(l,a)=>(s(),r(t,null,{default:e(()=>[...a[0]||(a[0]=[o("div",null,[o("label",{for:""},"HELLO")],-1)])]),_:1}))}};export{i as default};
