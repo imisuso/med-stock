@@ -20,7 +20,8 @@
         "vite": "^7.2.6"
     },
     "dependencies": {
-        "@inertiajs/vue3": "2.0",
+        "@inertiajs/vite": "^3.5.0",
+        "@inertiajs/vue3": "^3.5.0",
         "vue": "^3.2.36",
         "vue-loader": "^17.0.0"
     }
