@@ -1,0 +1,1 @@
+import{D as e,S as t,h as n,m as r}from"./app-B3JLvEuU.js";import{t as i}from"./AppLayout-jRKtqFZX.js";var a={__name:`EditOrderPurchase`,setup(a){return(a,o)=>(t(),n(i,null,{default:e(()=>[...o[0]||=[r(`div`,{class:`w-full p-2`},[r(`div`,null,[r(`h1`,{class:`text-center font-bold text-lg`},`แก้ไขเอกสารใบสั่งซื้อ`)])],-1)]]),_:1}))}};export{a as default};

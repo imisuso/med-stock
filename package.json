@@ -17,10 +17,11 @@
         "lodash": "^4.17.19",
         "postcss": "^8.5.1",
         "tailwindcss": "^4.1.17",
-        "vite": "^7.2.6"
+        "vite": "^8.0.0"
     },
     "dependencies": {
-        "@inertiajs/vue3": "2.0",
+        "@inertiajs/vite": "^3.5.0",
+        "@inertiajs/vue3": "^3.5.0",
         "vue": "^3.2.36",
         "vue-loader": "^17.0.0"
     }
