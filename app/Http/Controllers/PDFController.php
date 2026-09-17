@@ -40,8 +40,8 @@ class PDFController extends Controller
                                                 ])
                                                 ->with('stockItem:id,item_name,item_code,item_sum')
                                                 ->with('user:id,name')
-                                                ->orderBy('stock_item_id')
                                                 ->orderBy('date_action')
+                                                ->orderBy('stock_item_id')
                                                 ->get();
 
 

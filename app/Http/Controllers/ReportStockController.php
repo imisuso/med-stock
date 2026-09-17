@@ -28,9 +28,7 @@ class ReportStockController extends Controller
 
     public function index($division_id)
     {
-
-
-
+    //    dd('test');
         $user = Auth::user();
             $main_menu_links = [
                     'is_admin_division_stock'=> $user->can('view_master_data'),
@@ -68,8 +66,8 @@ class ReportStockController extends Controller
                                                             ->with('stockItem:id,item_name,item_code,item_sum')
                                                             ->with('stock:id,stockname')
                                                             ->with('user:id,name')
-                                                            ->orderBy('stock_item_id')
                                                             ->orderBy('date_action')
+                                                            ->orderBy('stock_item_id')
                                                             ->paginate(10)
                                                             ->withQueryString();
                                                             // ->get();
