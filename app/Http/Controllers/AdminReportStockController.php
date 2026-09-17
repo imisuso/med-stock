@@ -65,7 +65,7 @@ class AdminReportStockController extends Controller
                             ->where('status','!=',9)
                             ->filterBySearch(request()->search);
 
-        $stock_items = $query->orderBy('item_name')
+        $stock_items = $this->sortByLatestCheckinAndBalance($query)
                             ->paginate(10)
                             ->withQueryString();
 
@@ -113,7 +113,7 @@ class AdminReportStockController extends Controller
                             ->where('status','!=',9)
                             ->filterBySearch(request()->search);
 
-            $stock_items = $query->orderBy('item_name')
+            $stock_items = $this->sortByLatestCheckinAndBalance($query)
                         ->paginate(10)
                         ->withQueryString();
 
@@ -165,6 +165,25 @@ class AdminReportStockController extends Controller
                             'stock_selected_name' => $stock_selected_name,
                             'filters' => request()->only(['search'])
                         ]);
+    }
+
+    private function sortByLatestCheckinAndBalance($query)
+    {
+        $transaction_summary = ItemTransaction::query()
+            ->select('stock_item_id')
+            ->selectRaw("MAX(CASE WHEN action = 'checkin' THEN date_action END) AS latest_checkin_date")
+            ->selectRaw("SUM(CASE WHEN action = 'checkin' THEN item_count WHEN action = 'checkout' THEN -item_count ELSE 0 END) AS item_balance")
+            ->where('status', 'active')
+            ->groupBy('stock_item_id');
+
+        return $query->select('stock_items.*')
+            ->leftJoinSub($transaction_summary, 'transaction_summary', function ($join) {
+                $join->on('stock_items.id', '=', 'transaction_summary.stock_item_id');
+            })
+            ->orderByRaw('CASE WHEN COALESCE(transaction_summary.item_balance, 0) = 0 THEN 1 ELSE 0 END')
+            ->orderByDesc('transaction_summary.latest_checkin_date')
+            ->orderByRaw('COALESCE(transaction_summary.item_balance, 0) DESC')
+            ->orderBy('stock_items.id');
     }
 
     /**
