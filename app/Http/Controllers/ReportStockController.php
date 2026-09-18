@@ -187,27 +187,6 @@ class ReportStockController extends Controller
 
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -287,23 +266,36 @@ class ReportStockController extends Controller
     }
     public function exportBalanceStock($stock_id)
     {
+       // dd('test');
         $stock = Stock::find($stock_id);
 
         $date_now = date('YMd');
 
         $filename_xls = 'ReportBalanceStock'."_".$stock->stockengname."_".$date_now.'.xlsx';
 
+        $use_in = Auth::user();
 
+        $detail_log =array();
+        $detail_log['stock_id'] =$stock_id;
+        $detail_log['stock_eng_name'] =$stock->stockengname;
+
+         LogActivity::create([
+            'user_id' => $use_in->id,
+            'sap_id' => $use_in->sap_id,
+            'function_name' => 'export-balance-stock',
+            'action' => 'export-balance-stock',
+            'detail'=> $detail_log,
+        ]);
         return Excel::download(new ReportBalanceStockExportCollection($stock_id), $filename_xls);
 
     }
 
-    public function export_test($checkout_items)
-    {
-
-        return Excel::download(new ReportCutStockExportTest, 'test_export_cut_stock.xlsx');
-
-    }
+//    public function export_test($checkout_items)
+//    {
+//
+//        return Excel::download(new ReportCutStockExportTest, 'test_export_cut_stock.xlsx');
+//
+//    }
 
 
 
