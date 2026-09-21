@@ -65,7 +65,7 @@ class AdminReportStockController extends Controller
                             ->where('status','!=',9)
                             ->filterBySearch(request()->search);
 
-        $stock_items = $this->sortByLatestCheckinAndBalance($query)
+        $stock_items = $query->orderByLatestCheckinAndBalance()
                             ->paginate(10)
                             ->withQueryString();
 
@@ -113,7 +113,7 @@ class AdminReportStockController extends Controller
                             ->where('status','!=',9)
                             ->filterBySearch(request()->search);
 
-            $stock_items = $this->sortByLatestCheckinAndBalance($query)
+            $stock_items = $query->orderByLatestCheckinAndBalance()
                         ->paginate(10)
                         ->withQueryString();
 
@@ -167,45 +167,6 @@ class AdminReportStockController extends Controller
                         ]);
     }
 
-    private function sortByLatestCheckinAndBalance($query)
-    {
-        $transaction_summary = ItemTransaction::query()
-            ->select('stock_item_id')
-            ->selectRaw("MAX(CASE WHEN action = 'checkin' THEN date_action END) AS latest_checkin_date")
-            ->selectRaw("SUM(CASE WHEN action = 'checkin' THEN item_count WHEN action = 'checkout' THEN -item_count ELSE 0 END) AS item_balance")
-            ->where('status', 'active')
-            ->groupBy('stock_item_id');
-
-        return $query->select('stock_items.*')
-            ->leftJoinSub($transaction_summary, 'transaction_summary', function ($join) {
-                $join->on('stock_items.id', '=', 'transaction_summary.stock_item_id');
-            })
-            ->orderByRaw('CASE WHEN COALESCE(transaction_summary.item_balance, 0) = 0 THEN 1 ELSE 0 END')
-            ->orderByDesc('transaction_summary.latest_checkin_date')
-            ->orderByRaw('COALESCE(transaction_summary.item_balance, 0) DESC')
-            ->orderBy('stock_items.id');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -215,8 +176,6 @@ class AdminReportStockController extends Controller
      */
     public function show()
     {
-
-        $stock = array();
         $stock = request()->input('stock_selected');
 
 

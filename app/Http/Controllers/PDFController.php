@@ -40,8 +40,8 @@ class PDFController extends Controller
                                                 ])
                                                 ->with('stockItem:id,item_name,item_code,item_sum')
                                                 ->with('user:id,name')
-                                                ->orderBy('stock_item_id')
                                                 ->orderBy('date_action')
+                                                ->orderBy('stock_item_id')
                                                 ->get();
 
 
@@ -49,11 +49,7 @@ class PDFController extends Controller
     // logger($stock_item_checkouts);
 
         foreach($stock_item_checkouts as $key=>$tran_checkout){
-            // logger($tran_checkout);
-            //  logger($tran_checkout->id);
-            //  logger($tran_checkout->date_action);
-            //  logger($tran_checkout['stock_item'][]);
-            //  logger('------------');
+
              $split_date_action = explode('-', $tran_checkout->date_action);
              $year_print = (int) $split_date_action[0] + 543;
              $date_action_show = $split_date_action[2].'  '.$thaimonth_short[(int) $split_date_action[1]].' '.$year_print;
@@ -71,11 +67,6 @@ class PDFController extends Controller
 
                $stock_item_checkouts[$key]['date_expire_last'] = $date_expire_show;
 
-            // logger($stock_item_checkouts[$key]['date_expire_last']);
-
-
-
-                //   Log::info('new checkin');
                 $checkin = ItemTransaction::where('stock_item_id',$tran_checkout->stock_item_id)
                     ->whereStatus('active')
                     ->whereAction('checkin')
