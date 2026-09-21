@@ -98,9 +98,9 @@ Route::get('/get-checkout-item/{stock_id}/{year}/{month}', [ReportStockControlle
 Route::get('/export-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'export'])
     ->name('export-checkout-item')
     ->middleware('auth');
-Route::get('/export-checkout-item-test/{checkout_items}', [ReportStockController::class,'export_test'])
-    ->name('export-checkout-item-test')
-    ->middleware('auth');
+//Route::get('/export-checkout-item-test/{checkout_items}', [ReportStockController::class,'export_test'])
+//    ->name('export-checkout-item-test')
+//    ->middleware('auth');
 Route::get('/print-cutstock/pdf/{stock_id}/{year}/{month}', [PrintFormController::class,'printCutStock'])
     ->name('print-cutstock-pdf')
     ->middleware('auth');

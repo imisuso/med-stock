@@ -1111,8 +1111,8 @@ class PrintFormController extends Controller
                                                         ])
                                                         ->with('stockItem:id,item_name,item_code,item_sum')
                                                         ->with('user:id,name')
-                                                        ->orderBy('stock_item_id')
                                                         ->orderBy('date_action')
+                                                        ->orderBy('stock_item_id')
                                                         ->get();
 
         foreach($stock_item_checkouts as $key=>$tran_checkout){

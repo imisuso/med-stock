@@ -62,9 +62,7 @@ class ResourceActionLogController extends Controller
 
     public function show($model,$id)
     {
-        logger('ResourceActionLogController show');
-        logger($id);
-        logger($model);
+
 
         $log_type = "%".$model."%";
         $route_back = $model."-add";

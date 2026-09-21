@@ -25,7 +25,6 @@ class StockController extends Controller
      */
     public function index()
     {
-
         $user = Auth::user();
 
              /*  Validate  User View own Item Only  */
@@ -68,7 +67,7 @@ class StockController extends Controller
         }
 
 
-             $stock_items = $query->orderBy('item_name')
+             $stock_items = $query->orderByLatestCheckinAndBalance()
                                     ->paginate(10)
                                     ->withQueryString();
 

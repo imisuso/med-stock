@@ -128,7 +128,7 @@ class StockItemImportController extends Controller
                           '1' => 'required|max:100',        //item_name
                           '2' => 'required|integer|digits_between:1,5', //item_receive
                           '3' => 'required|max:20',         //unit_count
-                          '4' => 'required|regex:/^(([0-9]*)(\.([0-9]+))?)$/|max:8',    //price
+                          '4' => 'required|regex:/^[0-9]{1,8}(\.[0-9]{1,2})?$/',    //price
                           '5' => 'required|max:200',    //vendor
                           '6' => 'required|max:50',    //Pur.Order
                           '7' => 'required|max:50',    //Invoice Number
@@ -148,8 +148,7 @@ class StockItemImportController extends Controller
                     '3.required' => 'ต้องใส่ข้อมูลหน่วยนับของวัสดุที่ตรวจรับในคอลัมน์ unit_count ',
                     '3.max' => 'ข้อมูลหน่วยนับในคอลัมน์ unit_count ต้องไม่เกิน 20 ตัวอักษร ',
                     '4.required' => 'ต้องใส่ข้อมูลราคาต่อหน่วยของวัสดุในคอลัมน์ price ',
-                    '4.regex' => 'ข้อมูล price ต้องเป็นตัวเลขเท่านั้น',
-                    '4.max' => 'ข้อมูลราคาวัสดุในคอลัมน์ price ต้องเป็นตัวเลขไม่เกิน 8 หลักเท่านั้น',
+                    '4.regex' => 'ข้อมูล price ต้องเป็นตัวเลขจำนวนเต็มไม่เกิน 8 หลัก และทศนิยมไม่เกิน 2 หลัก',
                     '5.required' => 'ต้องใส่ข้อมูลในคอลัมน์ vendor',
                     '5.max'=>'ข้อมูล vendor ต้องไม่เกิน 200 ตัวอักษร',
                     '6.required' => 'ต้องใส่ข้อมูลในคอลัมน์ Pur.Order',
